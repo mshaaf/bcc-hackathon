@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createAppServer, isMainModule } from "../server.mjs";
+import { communityConfigFrom, createAppServer, isMainModule } from "../server.mjs";
 
 async function withServer(server, run) {
   await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
@@ -116,4 +116,41 @@ test("accepts reads only", async () => {
 test("recognizes the documented relative Node entrypoint", () => {
   assert.equal(isMainModule(new URL("../server.mjs", import.meta.url).href, "server.mjs"), true);
   assert.equal(isMainModule(new URL("../server.mjs", import.meta.url).href, "test/server.test.mjs"), false);
+});
+
+const CONFIG_ENV = { COMMUNITY_SUPABASE_URL: "http://127.0.0.1:54321/", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_example" };
+
+test("shared community settings are optional, browser-safe, and add only the exact provider origins to the CSP", async () => {
+  assert.equal(communityConfigFrom({}), null);
+  await withServer(createAppServer(), async baseUrl => {
+    const missing = await fetch(`${baseUrl}/api/community-config`);
+    assert.equal(missing.status, 404, "unset configuration is reported, not faked");
+    assert.match((await fetch(baseUrl)).headers.get("content-security-policy"), /connect-src 'self';/);
+  });
+  const community = communityConfigFrom(CONFIG_ENV);
+  await withServer(createAppServer({ community }), async baseUrl => {
+    const response = await fetch(`${baseUrl}/api/community-config`);
+    assert.deepEqual(await response.json(), { url: "http://127.0.0.1:54321", publishableKey: "sb_publishable_example", communityId: "b10c0000-0000-4000-8000-000000000001" });
+    const csp = (await fetch(baseUrl)).headers.get("content-security-policy");
+    assert.match(csp, /connect-src 'self' http:\/\/127\.0\.0\.1:54321 ws:\/\/127\.0\.0\.1:54321;/);
+    assert.doesNotMatch(csp, /\*/, "no wildcard sources");
+    assert.match(csp, /script-src 'self';/);
+    for (const path of ["/community.mjs", "/community-api.mjs", "/lib/community.mjs", "/vendor/supabase/supabase.js"]) {
+      assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, path);
+    }
+    assert.equal((await fetch(`${baseUrl}/vendor/supabase/LICENSE`)).status, 404, "only listed files are served");
+    assert.equal((await fetch(`${baseUrl}/supabase/config.toml`)).status, 404);
+  });
+});
+
+test("a secret or service-role key, a partial setup, or a bad URL is refused instead of served to browsers", () => {
+  assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_secret_abc" }), /secret/i);
+  const serviceRole = `x.${Buffer.from(JSON.stringify({ role: "service_role" })).toString("base64url")}.y`;
+  assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_PUBLISHABLE_KEY: serviceRole }), /secret|service-role/i);
+  const anon = `x.${Buffer.from(JSON.stringify({ role: "anon" })).toString("base64url")}.y`;
+  assert.equal(communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_PUBLISHABLE_KEY: anon }).publishableKey, anon);
+  assert.throws(() => communityConfigFrom({ COMMUNITY_SUPABASE_URL: "http://127.0.0.1:54321" }), /both/i);
+  assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_URL: "javascript:alert(1)" }), /http/i);
+  assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_URL: "https://user:pw@x.supabase.co" }), /origin/i);
+  assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_ID: "not-a-uuid" }), /UUID/);
 });
