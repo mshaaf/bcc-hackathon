@@ -66,6 +66,13 @@ test("suggests same-street records for review without grouping missing addresses
   assert.match(missingAddress.explanation, /unavailable/i);
 });
 
+test("orders candidate history by source date with undated records last", () => {
+  const reversed = normalizeFeatureSet({ ...featureSet, features: [...featureSet.features].reverse() });
+  const group = suggestStreetGroups(reversed).find(candidate => candidate.records.length > 1);
+
+  assert.deepEqual(group.records.map(record => record.id), ["REQ-1", "REQ-2"]);
+});
+
 test("reports source fetch failure for the caller to recover from", async () => {
   await assert.rejects(
     fetchArcGisSnapshot(async () => { throw new Error("offline"); }, new Date("2026-10-21T16:00:00.000Z")),

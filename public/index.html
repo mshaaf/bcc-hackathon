@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Block Ops — Neighborhood worktable</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.mjs"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="masthead">
+        <a class="brand" href="/" aria-label="Block Ops home">
+          <span class="brand-mark" aria-hidden="true">B</span>
+          <span>Block Ops</span>
+        </a>
+        <p class="scope-label">Ward 8 <span aria-hidden="true">/</span> Illegal dumping</p>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="intro-copy">
+            <p class="eyebrow">Neighborhood worktable</p>
+            <h1 id="page-title">Make the service history useful.</h1>
+            <p>Review public reports, decide what belongs together, and carry a clear next step into the room.</p>
+          </div>
+          <div class="source-controls" aria-label="Choose source data">
+            <p class="source-label">Start with a source</p>
+            <div class="button-row">
+              <button class="button button-primary" id="load-live" type="button">Load live DC data</button>
+              <button class="button button-secondary" id="load-demo" type="button">Use fictional sample</button>
+            </div>
+            <p class="source-status" id="snapshot-status" aria-live="polite">Loading the fictional sample…</p>
+          </div>
+        </section>
+
+        <aside class="sample-notice" id="sample-notice" hidden>
+          Fictional demo data. Every sample ticket and address is invented; none are DC records.
+        </aside>
+        <p class="error-notice" id="error-notice" role="status" aria-live="polite" hidden></p>
+
+        <section class="worktable" aria-label="Review reports and prepare a group brief">
+          <section class="source-panel" aria-labelledby="source-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Source review</p>
+                <h2 id="source-title">Candidate reports</h2>
+              </div>
+              <span class="count-badge" id="selected-count">0 selected</span>
+            </div>
+            <p class="explanation">Suggestions share a street name and category. A shared street does not prove these reports describe one incident.</p>
+
+            <label class="field-label" for="group-select">Candidate group</label>
+            <select id="group-select" aria-describedby="group-hint"></select>
+            <p class="group-hint" id="group-hint"></p>
+            <div class="record-list" id="record-list" aria-label="Reports in this candidate group"></div>
+
+            <div class="review-action">
+              <button class="button button-primary" id="confirm-review" type="button" disabled>Confirm selected records</button>
+              <p id="review-status" aria-live="polite">Inspect the source fields, then confirm the records for this draft.</p>
+            </div>
+          </section>
+
+          <section class="plan-panel" aria-labelledby="plan-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Your next step</p>
+                <h2 id="plan-title">Build the group brief</h2>
+              </div>
+              <span class="draft-stamp">Draft only</span>
+            </div>
+            <p class="plan-note">Nothing is sent to the city. Leave the observation blank if current conditions are unknown.</p>
+
+            <div class="field-block">
+              <label class="field-label" for="observed-on">Observation date</label>
+              <input id="observed-on" type="date">
+            </div>
+            <div class="field-block">
+              <label class="field-label" for="observation">What did the group observe? <span class="optional">Optional</span></label>
+              <textarea id="observation" rows="3" placeholder="Use the group's own words. Leave blank if unverified."></textarea>
+            </div>
+            <div class="field-block">
+              <label class="field-label" for="ask">Draft request <span class="optional">Edit for your group</span></label>
+              <textarea id="ask" rows="2" required></textarea>
+            </div>
+
+            <fieldset class="task-set">
+              <legend>Two next-step tasks</legend>
+              <div class="task-fields">
+                <div class="field-block">
+                  <label class="field-label" for="task-one-role">Role</label>
+                  <input id="task-one-role" type="text" required>
+                </div>
+                <div class="field-block">
+                  <label class="field-label" for="task-one-action">Task</label>
+                  <input id="task-one-action" type="text" required>
+                </div>
+              </div>
+              <div class="task-fields">
+                <div class="field-block">
+                  <label class="field-label" for="task-two-role">Role</label>
+                  <input id="task-two-role" type="text" required>
+                </div>
+                <div class="field-block">
+                  <label class="field-label" for="task-two-action">Task</label>
+                  <input id="task-two-action" type="text" required>
+                </div>
+              </div>
+            </fieldset>
+
+            <section class="brief-section" aria-labelledby="brief-title">
+              <div class="section-heading brief-heading">
+                <div>
+                  <p class="eyebrow">Current selection</p>
+                  <h3 id="brief-title">Brief preview</h3>
+                </div>
+                <div class="brief-actions">
+                  <button class="button button-secondary" id="download-brief" type="button" disabled>Download .md</button>
+                  <button class="button button-secondary" id="print-brief" type="button" disabled>Print / Save PDF</button>
+                </div>
+              </div>
+              <p class="export-status" id="export-status" aria-live="polite"></p>
+              <article class="brief-paper" id="brief-paper" aria-label="Generated neighborhood brief"></article>
+            </section>
+          </section>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        Block Ops prepares a group conversation. It does not confirm cleanup, predict a city response, or submit a ticket.
+      </footer>
+    </div>
+  </body>
+</html>
