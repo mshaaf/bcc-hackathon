@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-21 — Block Ops selected
+
+- Recorded the user's explicit Block Ops choice for Track 3 — Community Development.
+- Activated its MVP profile and aligned the agent instructions, current plans, architecture, presentation, and workflow state.
+- Kept Phase 1 next for Luna's technical planning. No product implementation, remote push, deployment, or submission occurred.
+
 ## 2026-10-21 — Luna phase handoff
 
 - Added delivery phases 0–6, concrete completion checks, batch execution rules, and copy/paste prompts.

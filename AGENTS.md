@@ -2,9 +2,9 @@
 
 ## Purpose and current state
 
-This is a two-person BCC hackathon workspace. Read `README.md`, `docs/DECISIONS.md`, and `docs/FINALISTS.md` before proposing or implementing changes. Research was gathered October 20–21, 2026. The product choice is still open; Block Ops is a recommendation, not an accepted decision.
+This is a two-person BCC hackathon workspace. The user selected **Block Ops, Track 3 — Community Development**, on October 21, 2026. Read `README.md`, `docs/DECISIONS.md`, and `docs/specs/block-ops.md` before implementing changes. Consult `docs/FINALISTS.md` for the earlier comparison and product picture. Do not reopen project selection without the user's direction.
 
-The current authorized work is research organization, specification, planning, Git setup, and a phased Luna implementation handoff. A later user instruction to select or build a named project authorizes that work. Do not interpret mockups or an archived recommendation as a user selection.
+The user chose a Luna terminal for implementation in numbered phase batches. Block Ops is the active scope; the other finalist profiles are historical alternatives. Product implementation has not started. Follow the requested batch boundaries when execution begins.
 
 ## Phased implementation
 

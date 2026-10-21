@@ -31,6 +31,8 @@ Final setup results are recorded in [workflow/verification.json](workflow/verifi
 
 ## Selected-product checks
 
+**Active project:** Block Ops. Use its profile and the Block Ops fixture row below for implementation phases; other rows are retained research context.
+
 Use a small labeled fixture set rather than tests that merely mirror the implementation. Exercise:
 
 - A clean complete input, edited confirmation, and changed export.

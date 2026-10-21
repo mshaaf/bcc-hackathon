@@ -36,5 +36,13 @@
   "product_work": "not started",
   "commit": "Initial local documentation commit; git log is authoritative",
   "push": "not performed",
-  "setup_status": "complete"
+  "setup_status": "complete",
+  "selection": {
+    "project": "Block Ops",
+    "track": "Community Development",
+    "date": "2026-10-21",
+    "basis": "explicit user instruction",
+    "next_delivery_phase": 1,
+    "product_implementation_started": false
+  }
 }

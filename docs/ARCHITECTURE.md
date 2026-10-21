@@ -1,6 +1,14 @@
 # Proposed architecture
 
-**Status:** design guidance until a project is chosen. There is no application stack or deployment yet. Do not build a six-product platform.
+**Status:** Block Ops is selected. Luna finalizes the stack, files, and interfaces in Phase 1. There is no application implementation or deployment yet.
+
+## Active Block Ops design
+
+Bounded DC records → normalized source-preserving records → transparent candidate groups → human include/exclude review → attributed observation and chosen ask/tasks → printable brief and source appendix.
+
+Start with Ward 8 / Illegal Dumping and the dated public-data evidence already saved. Phase 2 verifies the live query or accurately labeled cache path. Keep original ticket statuses distinct from resident observations, and preserve unknown present conditions. Grouping proposes relationships; the group confirms them. A model, login, and database are not required for this core loop.
+
+The exact implementation modules and commands belong to Phase 1's concrete plan. The table of other candidates below is historical comparison, not additional scope.
 
 ## Common shape
 

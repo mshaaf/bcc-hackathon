@@ -1,6 +1,6 @@
 # Conditional project specifications
 
-These are alternatives. Shared requirements, data/privacy constraints, source discipline, and performance/accessibility targets are in [the foundation specification](../SPECIFICATION.md). Only the user's selected project becomes an active implementation scope.
+**Active profile: [Block Ops](block-ops.md), selected by the user October 21, 2026.** The other profiles are retained as research alternatives. Shared requirements, data/privacy constraints, source discipline, and performance/accessibility targets are in [the foundation specification](../SPECIFICATION.md).
 
 | Track | Project | Profile |
 |---|---|---|
@@ -11,4 +11,4 @@ These are alternatives. Shared requirements, data/privacy constraints, source di
 | Community | Block Ops | [block-ops.md](block-ops.md) |
 | Community | People's Chamber | [peoples-chamber.md](peoples-chamber.md) |
 
-Every profile is a draft until selected and its first dependency gate passes. The current concept previews illustrate a subset of the proposed behavior; they are not completed applications.
+Block Ops proceeds through Phase 1 technical planning and Phase 2 dependency proof. The other profiles remain inactive drafts. The concept previews illustrate proposed behavior; they are not completed applications.

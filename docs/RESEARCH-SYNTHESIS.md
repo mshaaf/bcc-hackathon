@@ -2,7 +2,7 @@
 
 ## Summary
 
-For two engineers with three build days and a preference for meaningful judge participation, **Block Ops is the strongest overall recommendation**. **The Switch** is the experimental challenger and **Casebreaker** the strongest document-focused alternative; the team has not selected a project. The six-finalist previews make the intended experience concrete, but do not validate demand, institutional outcomes, or winning odds.
+For two engineers with three build days and a preference for meaningful judge participation, **Block Ops was the strongest overall recommendation and is now the user's selected project** (October 21, 2026). **The Switch** and **Casebreaker** remain research alternatives. The six-finalist previews make the intended experience concrete, but do not validate demand, institutional outcomes, or winning odds.
 
 ## Evidence grading
 
@@ -40,7 +40,7 @@ These comparative judgments are design recommendations, not high-confidence empi
 
 ## Contradictions and resolutions
 
-1. **Original Reclaim recommendation vs current Block Ops recommendation:** the user added participation and aura preferences. The underlying research was retained; the optimization priorities changed. No user selection has been inferred.
+1. **Original Reclaim recommendation vs Block Ops direction:** the user added participation and aura preferences, changing the recommendation, then explicitly selected Block Ops. The underlying research was retained; the choice is now a recorded user decision.
 2. **October 24 deadline vs Friday submission target:** 12:00 a.m. on October 24 is the start of Saturday. Submit Friday evening with a buffer. Recheck the live event clock before submission.
 3. **Judging 3–5 p.m. vs a 3 p.m. winners label:** unresolved schedule wording. Preserve both as a logistics question rather than guessing.
 4. **Multiple closed reports vs an unresolved neighborhood problem:** not equivalent. The snapshot supports a record history, not a physical-condition conclusion.
@@ -59,7 +59,7 @@ No community interviews, practitioner review, real applicant/patient records, pr
 
 ## Recommendations
 
-1. Choose one finalist and record the choice before implementation.
+1. Implement the recorded Block Ops selection; do not reopen the finalist choice. Luna completes its technical plan in Phase 1.
 2. Prove the selected dependency in a short day-one experiment: real public data for Block Ops, reviewed paired runs for The Switch, source-linked extraction for Casebreaker, or a complete controlled fixture flow for the others.
 3. Complete input → human decision → export on day one. Cut features before sacrificing that loop.
 4. Ask one relevant reviewer to assess the output if available. This is a proposed next step, not completed outreach.

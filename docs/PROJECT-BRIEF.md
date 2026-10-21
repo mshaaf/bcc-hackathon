@@ -2,6 +2,8 @@
 
 ## Objective
 
+**Selected project:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. The active [Block Ops profile](specs/block-ops.md) governs implementation; other finalists remain research history.
+
 Build one memorable, functioning hackathon entry that fits a BCC track, serves a concrete need in Black communities, and can be finished by two strong generalist engineers in three days.
 
 The user's ambition is to win through an idea with both immersive participation and a recognizable identity: a judge takes a role, makes a consequential choice, and sees a useful result. Those preferences supplement the official criteria; they are not new judging categories.

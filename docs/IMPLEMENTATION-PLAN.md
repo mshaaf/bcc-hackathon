@@ -1,6 +1,6 @@
 # Three-day implementation plan
 
-**Status:** ready to activate after selection. This plan does not mean an app has been built. Engineer A / Engineer B are provisional work allocations, not named assignments.
+**Status:** active for Block Ops, selected by the user October 21, 2026. Luna must finalize the concrete technical tasks in Phase 1. No app has been built. Engineer A / Engineer B are provisional work allocations, not named assignments.
 
 **Execution entry point:** use the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase ledger](PHASE-STATUS.md). Phase 1 turns this high-level outline into exact tasks/files/interfaces for the selected project. The daily outline below remains the time budget, not a second competing phase system.
 
@@ -12,7 +12,7 @@
 
 ## Before coding
 
-Record the selected project and one-sentence promise in `DECISIONS.md`. Activate its profile under `specs/`. Pick the team's familiar stack, a single demo scenario, and the simplest export. Recheck the event rules that affect eligibility and pre-existing work.
+The Block Ops selection and initial scope are recorded in `DECISIONS.md`, and `specs/block-ops.md` is active. Use Ward 8 / Illegal Dumping as the initial bounded data scope. In Phase 1, pick the team's familiar stack, exact files/interfaces and checks, and the simplest export. The demo action is rejecting an unrelated candidate report and inspecting the changed brief. Recheck the event rules that affect eligibility and pre-existing work.
 
 ## Day one — prove the idea and complete the loop
 
@@ -44,11 +44,8 @@ Keep the last period for reliability and submission, not a new feature or unfami
 | Project | First gate | A owns | B owns | Cut first |
 |---|---|---|---|---|
 | Block Ops | Fetch a bounded real snapshot and reproduce one transparent candidate group | Query, normalized candidates, provenance | Worktable, group review, brief | Map animation, multiplayer, monitoring |
-| The Switch | Reviewed pairs and repeat controls produce a meaningful reproducible experiment | Runs, invariant checks, exact source verification | Wording switch, claim challenge, receipt | Audio, extra models, endpoint onboarding |
-| Casebreaker | Two text PDFs yield editable source-linked fields; ambiguous joins abstain | Parser, identifiers/dates/status comparison | Evidence viewer, confirmation, packet | Scanned OCR, court lookup, broad legal rules |
-| The Room | One short practice flow preserves chosen words and supporter role | Scenario/state and saved wording | Goals, retry, visit card | Voice, avatars, unrestricted AI dialogue |
-| Reclaim | A same-report pair and missing-date case produce a conservative packet | Source fields, confirmation, missing-state checks | Evidence desk and packet | OCR, calculations, EHR integration |
-| People's Chamber | One notice, one rehearsal question, and edited ask survive export | Notice/source context and rehearsal state | Floor interface, revision, statement | Voice transcription, hearing discovery, submission automation |
+
+Other finalist splits remain in the research comparison and their inactive profiles. Do not implement them alongside Block Ops.
 
 ## Daily handoff
 

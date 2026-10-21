@@ -10,6 +10,8 @@
 
 **Spec:** [Foundation specification](../../SPECIFICATION.md), [conditional profiles](../../specs/README.md), and [current decisions](../../DECISIONS.md).
 
+**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Phase 1 is next and must finalize technical details without asking the user to choose again.
+
 ## Global constraints
 
 - One core workflow, two engineers, three days; prefer the team's familiar stack and available dependencies.
@@ -17,7 +19,7 @@
 - Keyboard-operable native controls, visible focus, clear labels, legible light/dark appearance, and no horizontal clipping at a 320-pixel viewport.
 - Synthetic demo identities, no real sensitive records in Git, no secrets in the client or committed configuration, minimal data retention.
 - Record source/run dates and configuration needed to reproduce important results. Distinguish live, cached, replayed, and synthetic material.
-- The project is still unselected. An explicit user instruction naming a project supplies that decision; a research recommendation does not.
+- Block Ops is the user's selected project. Implement its active profile; do not substitute another finalist without the user's direction.
 
 ## Review focus
 
@@ -170,13 +172,13 @@ For a riskier idea such as The Switch, request **Phases 1–2 first** so the exp
 
 ## Copy/paste prompts
 
-Replace the bracketed project name with the actual selection before sending. The replacement is the user's decision; Luna must not infer it from the recommendation.
+The first prompt is ready for the confirmed Block Ops selection. The second resumes subsequent phase batches.
 
 ```text
-We are building [PROJECT NAME] for the BCC hackathon.
+We are building Block Ops for the BCC hackathon.
 Read AGENTS.md, README.md, docs/DECISIONS.md, docs/PHASE-STATUS.md,
 and docs/superpowers/plans/2026-10-21-luna-phase-execution.md.
-Execute phases 1–3 in order. Record my selection in Phase 1.
+Execute phases 1–3 in order. Use the recorded Block Ops selection.
 Continue automatically within this batch when phase checks pass.
 Update the phase ledger and actual verification results, make focused local
 commits, and stop after Phase 3. Do not push, publish, or submit anything.

@@ -37,8 +37,11 @@
       "destination": "docs/FINALISTS.md",
       "source_sha256": "7d3013980acd740fa34fbacb65d688a6cf07b5d3a9936e447dbe17a7b8d990d9",
       "copy": "byte-identical",
-      "destination_sha256": "7d3013980acd740fa34fbacb65d688a6cf07b5d3a9936e447dbe17a7b8d990d9",
-      "transformations": []
+      "destination_sha256": "a0ca009b880bbc85ba042f07f5f778d556b80b85b83309979111d7cdd61979e4",
+      "transformations": [],
+      "post_import_updates": [
+        "prepend dated Block Ops selection banner; comparison text unchanged"
+      ]
     },
     {
       "source": "work/track-ai.md",

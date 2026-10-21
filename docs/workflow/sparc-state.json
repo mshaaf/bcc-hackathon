@@ -4,7 +4,7 @@
   "phase": 1,
   "phase_name": "specification",
   "documentation_status": "complete",
-  "product_selection": "pending",
+  "product_selection": "Block Ops",
   "implementation_started": false,
   "requirements_artifact": "docs/SPECIFICATION.md",
   "conditional_profiles": [
@@ -24,5 +24,8 @@
     "research-synthesize",
     "goal-plan"
   ],
-  "remote_memory_written": false
+  "remote_memory_written": false,
+  "primary_track": "Community Development",
+  "active_profile": "docs/specs/block-ops.md",
+  "next_delivery_phase": 1
 }

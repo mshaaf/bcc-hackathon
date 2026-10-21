@@ -4,7 +4,7 @@ The researched deadline is **October 24, 2026 at 12:00 a.m. EDT**. That is the s
 
 ## Before the final day
 
-- [ ] Project and primary track selected; decision log and specification agree.
+- [x] Block Ops / Community Development selected; decision log and specification agree. Product implementation remains to be completed.
 - [ ] Current event eligibility, team, pre-existing work, AI-use, and submission requirements checked.
 - [ ] Full input → review → changed output path works.
 - [ ] One uncertain case and one external failure have a clear behavior.

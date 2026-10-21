@@ -2,6 +2,16 @@
 
 This is a proposed three-minute format, not a verified event presentation limit. Recheck the actual format before final rehearsal.
 
+## Active presentation: Block Ops
+
+**Opening:** “We have several ticket numbers and a meeting tomorrow. Help us make the history clear.”
+
+**Live interaction:** the judge acts as records keeper. They inspect a candidate report from another site and remove it. The timeline and source appendix update. The group adds its attributed observation or leaves conditions unknown, chooses its request, and reviews two role-based tasks.
+
+**Proof and finish:** open an original source record and the actual regenerated group brief. Show that the rejected report is absent and the chosen request is present. Use a separate real dated record to demonstrate source fidelity; label fictional stage observations explicitly. End with the usable brief and next-step plan. The product prepares the group; no city response or cleanup outcome is claimed.
+
+The six-candidate table below is retained for comparison. Block Ops is the only active presentation scope.
+
 ## Shared structure
 
 | Time | Beat | What the audience should understand |

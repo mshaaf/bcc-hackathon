@@ -1,8 +1,8 @@
 {
-  "checked_utc": "2026-10-21T15:42:33.228140+00:00",
+  "checked_utc": "2026-10-21T15:48:47.553838+00:00",
   "status": "passed",
   "markdown_files": 46,
-  "relative_links_checked": 348,
+  "relative_links_checked": 353,
   "broken_links": [],
   "workstation_paths_in_markdown": [],
   "json_files_parsed": 9,
@@ -70,7 +70,7 @@
     "method": "local pattern check and context review; no Ruflo service called"
   },
   "scope": "workspace and previews only; product not implemented",
-  "import_verification": "all 26 destinations verified against original hash or recorded link/EOF normalization",
+  "import_verification": "all 26 destinations verified against recorded destination hashes; source-preserving changes recorded in import manifest",
   "git_checks": {
     "staged_whitespace": "passed",
     "ignored_raw_snapshot": "passed",
@@ -95,10 +95,23 @@
     ],
     "phase_0": "complete",
     "phases_1_to_6": "not started",
-    "product_selection": "pending",
+    "product_selection": "Block Ops",
     "research_and_previews_unchanged": true,
     "links": "passed",
     "whitespace": "passed",
     "product_tests": "not applicable: documentation only"
+  },
+  "selection_update": {
+    "project": "Block Ops",
+    "track": "Community Development",
+    "next_phase": 1,
+    "implementation_started": false,
+    "status": "passed",
+    "current_docs_and_state": "Block Ops consistently selected",
+    "phase_1": "next; not marked complete",
+    "internal_links_checked": 353,
+    "import_hashes": "passed",
+    "research_and_previews": "unchanged except dated finalist selection banner",
+    "product_tests": "not applicable: selection/documentation only"
   }
 }

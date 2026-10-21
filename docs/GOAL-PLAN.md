@@ -6,7 +6,7 @@
 
 Done means the required files exist, internal links resolve, prior work is preserved, the portable preview works, `origin` names the supplied repository, and the handoff clearly separates completed setup from unbuilt product work.
 
-**Next objective after selection:** deliver one complete, source-checkable workflow and presentation within the three-day window. Winning remains an aspiration, not a controllable acceptance criterion.
+**Next objective:** implement the user-selected Block Ops workflow and presentation in Luna's requested phase batches. Selection was confirmed October 21, 2026. Winning remains an aspiration, not a controllable acceptance criterion.
 
 ## Starting state and gap
 
@@ -38,7 +38,7 @@ Total relative cost: **11 units**. The machine-readable action graph and depende
 
 The current task does not require a remote publication. Configuring and checking `origin` is sufficient to connect the supplied workspace; a push is a separate action whose status must be stated accurately.
 
-## Product plan after selection
+## Product plan — Block Ops selected
 
 The milestones below are a summary. Numbered delivery boundaries are defined by the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md), with completion recorded in [the phase ledger](PHASE-STATUS.md).
 

@@ -54,8 +54,9 @@
     ]
   },
   "runtime_tracking": "local files; Ruflo MCP tools unavailable",
-  "product_selection": "pending",
+  "product_selection": "Block Ops",
   "remote_publication": "not performed",
   "current_state": 63,
-  "status": "workspace goal achieved"
+  "status": "workspace goal achieved",
+  "product_execution": "Luna terminal; Phase 1 next"
 }

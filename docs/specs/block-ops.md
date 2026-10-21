@@ -1,8 +1,10 @@
 # Specification: Block Ops
 
-**Track:** Community Development. **Status:** recommended; not selected. **User:** a neighborhood group preparing a service follow-up conversation.
+**Track:** Community Development. **Status:** selected by the user October 21, 2026; active implementation profile. **User:** a neighborhood group preparing a service follow-up conversation.
 
 **Promise:** turn reviewed public service history, attributed observations, and a chosen next step into a usable group brief.
+
+**Initial scope:** Ward 8 / Illegal Dumping, one bounded dated snapshot, group-reviewed records, one resident observation or explicit unknown, one concrete ask, two role-based tasks, and print/export with source references. Ward/category are implementation defaults from the existing research. Luna chooses the stack and exact file-level plan in Phase 1; no model, database, or login is required for the core promise.
 
 ## Functional requirements
 

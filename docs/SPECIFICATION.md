@@ -1,12 +1,12 @@
 # Specification: BCC hackathon project foundation
 
-**Phase:** SPARC specification. **Status:** documentation baseline complete; application selection pending. The six project profiles are conditional drafts, not six implementations. Scope approval comes from the user's actual selection or subsequent build instruction, not from an archived report.
+**Phase:** SPARC specification. **Status:** documentation baseline complete; Block Ops selected by the user October 21, 2026. Its profile is active; the other five remain research alternatives. Luna's Phase 1 will finalize the selected technical plan. No application implementation has started.
 
 ## Requirements
 
 ### Functional
 
-- **FR-1 — Decision context:** retain exactly two current finalists per track, with a plain-language promise, user, output, dependency, and cut list.
+- **FR-1 — Decision context:** preserve the researched two-finalist comparison per track, with promise, user, output, dependency, and cut list, while identifying Block Ops as the sole active project.
 - **FR-2 — Evidence context:** preserve the original research, dated sources, query evidence, and contradictions without turning recommendations into facts.
 - **FR-3 — Concept comparison:** preserve the six local interactive concepts and their opening/demo/closing storyboards. Label illustrative people, records, and outputs.
 - **FR-4 — Selected workflow:** once a project is chosen, implement its input → inspect → revise/confirm → output loop. Use the relevant [conditional specification](specs/README.md).
@@ -29,7 +29,7 @@
 
 ## Foundation acceptance criteria
 
-- **AC-1:** Given the repository, when a new engineer reads the README and decision log, then they can identify the six finalists, current recommendation, and unresolved product choice without accessing the original chat.
+- **AC-1:** Given the repository, when a new engineer reads the README and decision log, then they can identify Block Ops as the user's chosen project and distinguish the historical alternatives without accessing the original chat.
 - **AC-2:** Given the imported research, when a reader follows an internal Markdown link, then it resolves to a repository file rather than an old workstation path.
 - **AC-3:** Given the portable preview, when a reader selects each concept and switches Product / Presentation, then the matching interface and three storyboard beats appear without browser errors in the checked environment.
 - **AC-4:** Given a selected project's reviewed input, when the user changes a consequential choice, then both the derived state and output reflect the new choice.
@@ -38,7 +38,7 @@
 - **AC-7:** Given a public demo fixture, when the final artifact is opened, then its fictional identity and illustrative nature are clear and no institutional action is claimed.
 - **AC-8:** Given the local Git checkout, when `git remote get-url origin` is run, then it returns the supplied repository URL. A local configuration check does not imply a remote push.
 
-AC-1/2/3/8 concern this handoff. AC-4/5/6/7 are product requirements to verify after selection; concept behavior alone is not product acceptance.
+AC-1/2/3/8 concern this handoff. AC-4/5/6/7 are product requirements to verify during Block Ops implementation; concept behavior alone is not product acceptance.
 
 ## Data requirements
 
@@ -72,4 +72,4 @@ Create only the minimum draft and export data needed. Do not assume server persi
 
 ## Phase handoff
 
-The specification baseline is saved in `docs/workflow/`. Selection is still pending. After the user selects a project, resolve its dependency gate, finalize that profile, then proceed to pseudocode/architecture and implementation. Ruflo `/sparc advance` is an optional workflow command if its runtime becomes available; it is not a confirmation requirement imposed on the user here.
+The specification baseline is saved in `docs/workflow/`. Block Ops is selected. Luna should finalize its technical plan in Phase 1, prove its data mechanism in Phase 2, and complete the product loop in Phase 3. Ruflo `/sparc advance` is an optional workflow command if its runtime becomes available; it is not a confirmation requirement imposed on the user here.

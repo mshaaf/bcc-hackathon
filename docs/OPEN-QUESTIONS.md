@@ -4,10 +4,11 @@ These are decision records, not requests for another approval round.
 
 ## Before application implementation
 
-1. **Which project and primary track?** The user has not selected one. Recommendation: Block Ops. Alternative: The Switch after a successful early experiment, or Casebreaker for a document-oriented build.
-2. **What is the single demo scenario?** Choose a bounded input and a judge action that changes the finished output.
-3. **What source or experiment proves the core can work?** Establish it before building the full interface.
-4. **Which familiar stack can both engineers maintain?** No framework, hosting provider, model provider, or paid budget is assumed.
+**Resolved:** the user selected Block Ops / Community Development. The initial scope is Ward 8 / Illegal Dumping, and the judge rejects an unrelated candidate report before opening the changed brief. Do not ask for project selection again.
+
+1. **What exact technical plan implements the scope?** Luna resolves the familiar stack, files/interfaces, input limits, and commands in Phase 1. No paid service or model dependency is assumed.
+2. **Can the source path be reproduced?** Phase 2 verifies the bounded data load, original field preservation, explainable grouping, and labeled fallback.
+3. **Which final demo records will be used?** Keep real source evidence separate from clearly fictional resident observations. Select the stage fixture during implementation.
 
 ## Before final presentation and submission
 

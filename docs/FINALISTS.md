@@ -1,5 +1,7 @@
 # Six finalists: the product, the pitch, and the three-day cut
 
+> **Selection update — October 21, 2026:** the user chose **Block Ops, Track 3 — Community Development**. The comparison below is preserved as research history. Use the [active profile](specs/block-ops.md) and [phase ledger](PHASE-STATUS.md) for implementation.
+
 Prepared October 21, 2026 for a team of two engineers. These are six alternatives; choose one to build. The accompanying interactive previews use fictional people and records. They demonstrate proposed interactions, not completed integrations or measured outcomes.
 
 **My pick is Block Ops.** It combines a familiar problem, a distinctive group decision, accessible public data, and an output the judge can inspect. **The Switch is the higher-risk challenger:** its stage moment is stronger if an early, honest experiment establishes something worth showing. **Casebreaker is the strongest alternative if you prefer document engineering over civic data.**
