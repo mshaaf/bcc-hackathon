@@ -4,9 +4,19 @@
 
 The user selected **Sonnet 5.5 in Claude** for implementation and now explicitly wants larger outcome-based assignments, not a hand-back after every small work order. The label records their preference, not a verified API identifier or benchmark. Implement inline, without automatic subagents.
 
-S1.1 is complete at `9f09667` and independently reviewed: 87 tests passed; generated brief wording inspected. **B1 (S1.2–S2.2)** is the next assignment: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Backend access is unconfirmed, not an established blocker until inspected.
+S1.1 is complete at `9f09667`. **B1 (S1.2–S2.2) is complete on a local Supabase stack** (see PHASE-STATUS); **B2 (S3) is next**. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Backend access is unconfirmed, not an established blocker until inspected.
 
 Current context and execution contract: [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md), and [detailed plan](superpowers/plans/2026-10-21-community-missions.md). This review/checkpoint task changes documentation only; the prepared assignment is for Sonnet's implementation session.
+
+## B1 builder decisions (October 21)
+
+- **Backend:** Supabase, run locally with the Supabase CLI + Docker because no hosted project/access existed. Anonymous Auth for guest identities. Nothing paid, nothing deployed. A hosted project is a later, user-authorized step (B3).
+- **Writes only through SECURITY DEFINER functions**, tables are SELECT-only under RLS; the actor is always `auth.uid()`. Idempotency by `(author, operation_id)`.
+- **Moderator** is set by an operator in SQL, never by a client or inferred from a display name.
+- **Hidden posts** keep their row but blank their text; the original goes to a non-exposed table.
+- **Members learn of departures** via `communities.activity_at` because Realtime does not row-filter DELETE events.
+- **Routing:** `#/community[/<uuid>]` is the default; `#/map` holds the map and campaigns. `server.mjs` serves `/api/community-config` (URL + publishable key only) and adds only the provider's exact HTTP(S)/WS(S) origins to CSP.
+- **Freshness:** Realtime for speed, plus canonical re-fetch on reconnect, on tab focus/online, every 10 s while not live and every 30 s while live.
 
 ## Latest user instruction — community-first Block Ops
 

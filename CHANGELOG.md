@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-21 — B1: working shared community
+
+- Shared community on Supabase (anonymous Auth, Postgres RLS + SECURITY DEFINER writes, Realtime), run locally with the Supabase CLI and Docker: join with a display name, posts, one-level replies, own-post editing, moderator hide, live updates with reconnect/re-fetch, retry that never duplicates, preserved drafts.
+- The community feed is now the default view; the map and local campaigns moved to `#/map` unchanged. `server.mjs` serves browser-safe config and adds only the provider's exact origins to CSP.
+- Evidence: 13/13 real-backend integration tests, 51/51 independent-browser checks (desktop, 390/320 px, keyboard, offline, timeout-after-commit, Realtime stop/start), existing map/campaign browser driver still 75/75 and 65/65. No hosted project, deployment or real phone yet. Details in `docs/PHASE-STATUS.md` and `docs/COMMUNITY-SETUP.md`.
+
 ## 2026-10-21 — S1.1 review and context checkpoint
 
 - Independently checked S1.1: 87 tests passed; syntax and generated filing-date brief verified. Browser suite not rerun.

@@ -1,5 +1,7 @@
 # Block Ops — Sonnet's next batch
 
+> **B1 is complete (October 21, local Supabase stack).** Results and limits: [PHASE-STATUS.md](PHASE-STATUS.md), [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md). **The next assignment is B2 (S3.1–S3.3)**; write its prompt from the plan's S3 section when the user asks. The B1 text below is kept as the completed contract.
+
 Updated October 21, 2026. **S1.1 is complete and independently reviewed at `9f09667`. Do not redo it.** The user selected Sonnet 5.5 in Claude and now wants larger outcome-based assignments, not a pause after each small work order.
 
 Read [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [the ledger](PHASE-STATUS.md), [community scope](specs/community-missions.md), and relevant code. The [detailed plan](superpowers/plans/2026-10-21-community-missions.md) supplies implementation contracts/checklists. No broad research restart or automatic subagents. Every message ends with a super-simple **TL;DR**.

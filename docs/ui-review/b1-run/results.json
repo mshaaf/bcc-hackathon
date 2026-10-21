@@ -1,0 +1,263 @@
+{
+  "at": "2026-10-21T22:39:17.589Z",
+  "base": "http://127.0.0.1:8000/",
+  "passed": 51,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "default route opens the community section on the seeded demonstration community",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the demonstration community is labeled and the join panel is the first thing a visitor sees",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a visitor who has not joined has no account and no conversation text in the page",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A joins by keyboard (type the name, press Enter)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B joins in the other profile",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the two profiles hold different authenticated user IDs",
+      "ok": true,
+      "detail": "0351e02f vs 1ffcefc2"
+    },
+    {
+      "name": "A sees B appear in the member list without a reload, within 5 s",
+      "ok": true,
+      "detail": "187 ms"
+    },
+    {
+      "name": "member count shows 2 in both browsers",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "live connection is reported",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B's post (Ctrl+Enter) appears in A's browser within 5 s with the exact text",
+      "ok": true,
+      "detail": "456 ms"
+    },
+    {
+      "name": "the post shows B's name and a time",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the composer is empty and focused after posting",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Enter on Reply opens a focused reply field",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B sees A's reply grouped under the post within 5 s",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after a reload A is still a member (no join form) with the same user ID",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reload and rejoin did not grow the member count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the conversation is back after reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "markup in a post is shown as text, never interpreted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "an oversize post is refused with a message and the text stays",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "offline: the send fails with a clear message and keeps the draft",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "back online: Try again posts it and A sees it once",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the server saved the post but the browser saw a timeout: error shown, draft kept",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "retrying the same text does not duplicate the post (same operation id)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A has no Edit or Hide button on B's post",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B edits their own post and A sees the edited text and an 'edited' label",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a non-moderator sees no Hide button",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the moderator badge and Hide button appear for the moderator only after the backend grants it",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hiding removes the text for everyone: B sees the hidden notice and no original text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "while Realtime is down A reports reconnecting and has not seen the post",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after Realtime returns A reconnects and the canonical re-fetch shows the missed post",
+      "ok": true,
+      "detail": "6861 ms"
+    },
+    {
+      "name": "after the restart a new post reaches A within 40 s",
+      "ok": true,
+      "detail": "21405 ms"
+    },
+    {
+      "name": "B leaves: the conversation disappears and the join form returns",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A's member count drops without a reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: join page has no horizontal scroll and the name field is reachable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: join works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: posting works and the feed shows it",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: replying works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: no horizontal scroll with posts, replies, composer and sidebar",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: the composer is on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: join page has no horizontal scroll and the name field is reachable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: join works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: posting works and the feed shows it",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: replying works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: no horizontal scroll with posts, replies, composer and sidebar",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: the composer is on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the map section is reachable from the community nav and the community is hidden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the map container has a real size (Leaflet resized after being hidden)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the explore panel and campaign tabs are present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "returning to the community restores the member view",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a never-joined browser sees the preview but none of the conversation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no unexpected console errors or exceptions in any browser",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

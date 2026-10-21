@@ -1,10 +1,23 @@
 # Verification plan and evidence
 
-## Current review — October 21, S1.1 at 9f09667
+## B1 — shared community, October 21 (local Supabase stack)
+
+Commands and exact setup: [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md).
+
+| Check | Result |
+|---|---|
+| `node --test` | 110 tests: 97 pass, 0 fail, 13 skipped (the real-backend file without its flag; a skip is not proof) |
+| `RUN_COMMUNITY_INTEGRATION=1 … node --test test/community-access.integration.mjs` | 13/13 pass against real Auth, Postgres/RLS and Realtime (Realtime propagation 62–479 ms steady state; cold start after a reset needs a warm-up, documented) |
+| `node scripts/community-browser-check.mjs` | 51/51 pass: independent Chrome profiles, keyboard join/reply, live updates, reload, retry/timeout-after-commit, edit, moderator hide, Realtime stop/start, 390/320 px, map reachable, non-member isolation |
+| `node scripts/browser-check.mjs 1440` / `390` (map and campaigns, now via `#/map`) | 75/75 and 65/65 (one earlier 390 run failed 3 checks on DC GIS 503s; the rerun passed) |
+
+Not tested: a hosted Supabase project, a real phone on another network, venue Wi-Fi/shared-IP limits, anonymous-auth abuse protection, load, screen-reader behavior, Safari/Firefox. Timings come from localhost.
+
+## Earlier review — October 21, S1.1 at 9f09667
 
 Independent review: `node --test` passed **87/87**, zero failures/skips. Syntax checks passed for `public/app.mjs` and `scripts/browser-check.mjs`. A generated campaign brief using a later report filed before the earlier ticket closed counted the later filing, stated filing-date semantics and omitted the old closure claim. The relevant source/test diff was inspected.
 
-The browser driver and visual/mobile checks were not rerun; original failing-before-fix evidence remains Sonnet-reported. No shared backend/Auth/community tests exist yet. B1 must supply real provider integration, two independent browser sessions, backend authorization and mobile/keyboard evidence; skips/mocks do not count as that proof. See [checkpoint](CONTEXT-CHECKPOINT.md), [next assignment](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md) and [verification](workflow/verification.json).
+The browser driver and visual/mobile checks were not rerun; original failing-before-fix evidence remains Sonnet-reported. (B1 later supplied the shared backend/Auth/community tests listed above) skips/mocks do not count as that proof. See [checkpoint](CONTEXT-CHECKPOINT.md), [next assignment](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md) and [verification](workflow/verification.json).
 
 Everything below is dated historical evidence for its own build, not a current claim that maps/persistence are unbuilt or that shared features work.
 

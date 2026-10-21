@@ -81,7 +81,9 @@ const state = () => ev(`(() => { const q = s => document.querySelector(s); retur
   error: q('#error-notice').hidden ? '' : q('#error-notice').textContent } })()`);
 const briefText = () => ev(`document.getElementById('brief-paper').innerText`);
 const ready = () => waitFor(`document.querySelector('#freshness').textContent.includes('retrieved') || document.querySelector('#error-notice') && !document.querySelector('#error-notice').hidden`);
-const loadPage = async () => { await send("Page.navigate", { url: BASE }); await ready(); await sleep(1800); };
+// The map now lives under #/map (the community feed is the default view); open it after the page loads.
+const openMap = async () => { await waitFor(`document.readyState !== "loading"`); await ev(`location.hash = "#/map"`); };
+const loadPage = async () => { await send("Page.navigate", { url: BASE }); await openMap(); await ready(); await sleep(1800); };
 const today = () => ev(`document.getElementById('obs-date').value`);
 
 async function download(name) {
@@ -105,6 +107,7 @@ async function run(name, width, height, mobile) {
 
   // fresh start
   await send("Page.navigate", { url: BASE });
+  await openMap();
   await ready();
   await ev(`localStorage.clear()`);
   await loadPage();
@@ -279,6 +282,7 @@ async function run(name, width, height, mobile) {
 
   // practice case
   await send("Page.navigate", { url: BASE });
+  await openMap();
   await ready();
   await ev(`localStorage.clear()`);
   await loadPage();
@@ -314,6 +318,7 @@ const shortDayNode = value => new Intl.DateTimeFormat("en-US", { month: "short",
 
 async function resetPage() {
   await send("Page.navigate", { url: BASE });
+  await openMap();
   await ready();
   await ev(`localStorage.clear()`);
   await loadPage();
@@ -410,6 +415,7 @@ async function recordedFlow(P, name, mobile) {
   await send("Network.setCacheDisabled", { cacheDisabled: true });
   await send("Network.setBlockedURLs", { urls: ["*api/requests*", "*api/ward8*", "*MapServer/tile*"] });
   await send("Page.navigate", { url: BASE });
+  await openMap();
   await waitFor(`!document.getElementById('error-notice').hidden`, 20000);
   const down = await state();
   check(`${P}with the live service down the page says so and shows no substitute data`, /could not be reached/.test(down.error) && /No substitute data/.test(down.error) && down.rows === 0, down.error);

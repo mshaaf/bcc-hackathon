@@ -8,7 +8,7 @@ Read [AGENTS.md](AGENTS.md), [context checkpoint](docs/CONTEXT-CHECKPOINT.md), [
 
 - Block Ops / Track 3 is selected. The user wants a neighborhood community: join → discuss → organize a mission → claim work → post progress.
 - R1–R4 built a real DC map and browser-local campaigns. Shared community/identity/posts/commitments and public hosting are unbuilt.
-- **S1.1 complete at `9f09667`**, independently reviewed: 87 tests passed; export wording checked. **Next batch: B1 (S1.2–S2.2)**, shared provider/Auth, joining and working discussion across two independent browsers. Then B2 (S3 missions), B3 (S4 readiness), R5 release. The user explicitly wants substantial batches; do not stop after every small work order.
+- **S1.1 complete at `9f09667`**, independently reviewed: 87 tests passed; export wording checked. **B1 complete (local Supabase; see docs/PHASE-STATUS.md). Next batch: B2 (S3 shared missions)**, then B3 (S4 readiness) and R5 release. The user explicitly wants substantial batches; do not stop after every small work order.
 - The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. The current task reviews S1.1 and records the context/next assignment; the Sonnet B1 assignment authorizes its local implementation when executed in that session.
 - Supabase is recommended, not provisioned. Do not treat fakes, localStorage or skipped integration tests as shared-backend proof.
 - Preserve other assistants' work, historical source evidence and existing local campaigns. DIRECTION-REVIEW is historical context with qualifications; the social spec governs the current scope.
@@ -21,7 +21,9 @@ Node.js 20+, repository root:
 ```sh
 git status --short --branch
 node --test test/recurrence.test.mjs
-node server.mjs
+node server.mjs                      # map/campaigns only; community needs the env below
+npx supabase@2.121.0 start           # local shared backend (Docker); then see docs/COMMUNITY-SETUP.md
+node --env-file=.env server.mjs      # with COMMUNITY_SUPABASE_URL / _PUBLISHABLE_KEY set
 ```
 
 Current app: `http://127.0.0.1:8000`. Check an existing server before starting another. No baseline install/build or provider credentials required. Run `node --test` at relevant phase boundaries; no need to re-run the full browser/research suite for a documentation edit.

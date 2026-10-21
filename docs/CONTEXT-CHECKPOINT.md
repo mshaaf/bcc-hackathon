@@ -24,7 +24,7 @@ Dumping is the first proven data category: discarded rubbish, furniture or other
 |---|---|
 | R1–R4 | Built: Ward 8 dumping map, geographic selection, source inspection, reviewed exports, browser-local campaigns, local owner/task text, observations/follow-ups, recurrence display and dated recorded fallback. |
 | S1.1 | Complete in `9f09667`: recurrence copy now describes report filing dates. Independent checks below passed. |
-| Remaining S1 and S2 | Unbuilt: shared provider/Auth, community membership, posts/replies and live discussion. These form the next batch, B1. |
+| S1.2–S2.2 (B1) | **Built and verified on a local Supabase stack** (anonymous Auth, membership, posts/replies, moderation, Realtime). Two/four independent Chrome profiles, 13/13 backend integration, 51/51 community browser checks. No hosted project or real phone. See [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md) and the ledger. |
 | S3 | Unbuilt: shared missions, authenticated commitments, atomic task claims, mission updates and reviewed publication. |
 | S4 / R5 | Unbuilt: final recovery/access/real-phone proof, then release rehearsal and presentation package. |
 
@@ -50,7 +50,7 @@ The browser driver was **not rerun**, and visual/mobile behavior was not revalid
 
 ## Next action — one substantial Sonnet batch
 
-**B1: make one neighborhood community work across two independent browsers.** Scope: S1.2–S2.2 together. The ready-to-paste assignment and outcome checks are in [SONNET-HANDOFF.md](SONNET-HANDOFF.md). Do not redo S1.1.
+**B1 is done (local backend).** Next is **B2: S3.1–S3.3**, missions on top of the working community. Reuse `lib/community.mjs`, `public/community-api.mjs`, `public/community.mjs` and the migration style (SECURITY DEFINER writes, select-only RLS, operation ids). Do not redo S1.1 or B1. The original B1 contract is kept below for reference.
 
 The finished experience: open a community link, join with a display name, write a post, reply, and see it appear in the other independent browser without a manual reload. Reload preserves the session and persisted conversation. Show authors/times, own-post editing, basic moderator hiding, errors and retry. Make the community feed the default view and keep the existing map/local campaigns reachable. At 320/390 px and with a keyboard, the core flow remains usable.
 

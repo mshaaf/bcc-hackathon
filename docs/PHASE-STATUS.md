@@ -4,7 +4,7 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next batch:** B1 (S1.2–S2.2), a working shared community; first unchecked order S1.2 (real backend access unconfirmed). S1.1 is complete at `9f09667`; shared social features are not built. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B1 (S1.2–S2.2) is complete and verified against a local Supabase stack** (see the B1 entry below); **next batch: B2 (S3.1–S3.3)**, shared missions. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task reviews S1.1 and saves context/assignments; shared features/provider setup remain unbuilt.
 
@@ -13,10 +13,10 @@ The map/local-campaign revision R1–R4 is implemented. The user now explicitly 
 | Work order | Deliverable | Status |
 |---|---|---|
 | S1.1 | Report-date wording/regressions, no provider prerequisite | Complete |
-| S1.2 | Shared provider/SDK/Auth proof | Not started |
-| S1.3 | Community membership and access | Not started |
-| S2.1 | Posts/replies backend | Not started |
-| S2.2 | Community feed and cross-browser discussion | Not started |
+| S1.2 | Shared provider/SDK/Auth proof | Complete (local Supabase; hosted project not tried) |
+| S1.3 | Community membership and access | Complete |
+| S2.1 | Posts/replies backend | Complete |
+| S2.2 | Community feed and cross-browser discussion | Complete (two-profile and phone-width evidence; real phones not tested) |
 | S3.1 | Discussion-origin and reviewed-import mission creation | Not started |
 | S3.2 | Atomic mission joining/claiming/leaving | Not started |
 | S3.3 | Mission UI, links and shared export | Not started |
@@ -29,8 +29,8 @@ Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outc
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | In progress |
-| S2 | Community joining, feed, posts and replies across devices | Not started |
+| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | Complete locally |
+| S2 | Community joining, feed, posts and replies across devices | Complete locally (independent browser profiles on one machine) |
 | S3 | Shared missions, task commitments and follow-ups | Not started |
 | S4 | Recovery, permissions, real phones and authorized deployment proof | Not started |
 
@@ -75,6 +75,26 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — B1: working shared community (S1.2–S2.2)
+
+**Backend actually used:** a local Supabase stack (Supabase CLI 2.121.0 via `npx`, Docker Desktop; Postgres 17, GoTrue, PostgREST, Realtime), anonymous sign-ins enabled. No hosted project was available or created; no cost, no push, no deployment. SDK: `@supabase/supabase-js` 2.118.0 UMD, vendored with its MIT license. Setup and reproduction: [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md).
+
+**Built:** `supabase/migrations/20261021120000_community_posts.sql` + `supabase/seed.sql` (communities, members, posts, one-level replies, RLS select-only, SECURITY DEFINER write functions, idempotent `create_post`, rate limit, member cap, moderator hide with private original text, Realtime publication, join/leave activity bump); `lib/community.mjs` (pure rules, error mapping, threading); `public/community-api.mjs` (SDK wrapper); `public/community.mjs` + HTML/CSS (community feed is the default view, map and campaigns under `#/map`); `server.mjs` (`/api/community-config`, exact provider origins in CSP, refuses a secret key); `.env.example`; `test/community.test.mjs`, `test/community-access.integration.mjs`, extra `test/server.test.mjs` cases; `scripts/community-browser-check.mjs`; `scripts/browser-check.mjs` now opens `#/map`.
+
+**Evidence (all run on this machine, October 21):**
+- `node --test`: **110 tests, 97 pass, 0 fail, 13 skipped** (the 13 are the real-backend integration file, skipped without `RUN_COMMUNITY_INTEGRATION=1`; skips are not proof).
+- `RUN_COMMUNITY_INTEGRATION=1 … node --test test/community-access.integration.mjs`: **13/13 pass** against the real stack, three times in a row after one cold-start flake (below). Covers distinct anonymous identities and reload persistence, whitelisted preview with no account created, idempotent joins/count, name and body bounds, non-member denial (read, write, edit, hide), cross-community and nested replies, forged-author/role/foreign-membership REST writes denied, author-only edit, moderator-only hide with no hidden text served, DB rate limit, leave/rejoin, Realtime propagation (62–479 ms measured), Realtime isolation from non-members, and leave notification.
+- `node scripts/community-browser-check.mjs`: **51/51 pass** with four independent Chrome profiles (A, B, phone-width C, never-joined D): join by keyboard, different user IDs, member list and count update without reload (126 ms), B's post visible in A in 549 ms with exact text, reply grouping, reload keeps session and does not grow the count, markup shown as text, oversize refused with draft kept, offline failure keeps draft and Try again posts once, a send that committed but timed out is not duplicated on retry, own-post edit with label, no Edit/Hide for others, moderator hide removes text for everyone, Realtime container stopped/restarted: A shows "Reconnecting…" then re-fetches the missed post, leaving updates the count, 390 px and 320 px join/post/reply with no horizontal scroll, map section reachable and resized, non-member sees no conversation, no console errors. Screenshots and `results.json`: `docs/ui-review/b1-run/`.
+- Existing map/campaign browser driver, run with its entry updated to `#/map`: **75/75 at 1440, 65/65 at 390** (one earlier 390 run had 3 failures caused by DC GIS 503 responses on tiles and the live refresh; it passed on rerun).
+
+**Known limits and findings:**
+- Right after `supabase db reset`, or after the Realtime container restarts, Realtime can take roughly 15–20 s to begin streaming. The measured first post after a restart reached A in 21 s, via the client's 10 s/30 s canonical re-fetch, not a live event. The five-second target was measured only in steady state.
+- Realtime does not apply row security to DELETE events, so departures are announced by bumping `communities.activity_at` (found by a failing browser check, fixed).
+- A blank-looking post (newline/tab only) passed an early `btrim` check; caught by the integration test and fixed with a Unicode-aware trim (migration edited in place; no migration history existed elsewhere).
+- Moderator is assigned by an operator in SQL; there is no in-app way to become one (by design).
+- Not proven: hosted Supabase, venue/other-network latency, anonymous-auth abuse protection, real phones, simultaneous load. Missions, tasks and claims are not built (B2). Anonymous guests are accounts, not verified people.
+- The stale `node server.mjs` that was listening on port 8000 (started 15:25, pre-B1 code) was stopped and replaced by one with the community environment.
 
 ### 2026-10-21 — Independent S1.1 review and context checkpoint
 

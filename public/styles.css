@@ -310,6 +310,71 @@ input:hover,select:hover,textarea:hover { border-color:var(--plum) }
   .source-button { font-size:11px; padding:6px 8px }
 }
 
+/* B1: community section */
+.section-nav { display:flex; gap:4px }
+.section-nav a { padding:8px 12px; border-radius:6px; color:var(--ink); font-size:13px; font-weight:650; text-decoration:none; border-bottom:3px solid transparent }
+.section-nav a:hover { background:var(--soft) }
+.section-nav a[aria-current] { color:var(--plum); border-bottom-color:var(--plum) }
+body[data-section="community"] .status-strip,body[data-section="community"] .workspace,body[data-section="community"] .source-controls { display:none }
+body[data-section="map"] .community { display:none }
+.visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0 }
+.community { flex:1; padding:20px 16px 48px }
+.community-shell { max-width:1080px; margin:0 auto; outline:none }
+.community-state { margin:12px 0; color:var(--muted) }
+.community-card { padding:16px 18px; border:1px solid var(--line); border-radius:10px; background:var(--surface) }
+.community-head { margin:8px 0 16px }
+.community-head h1 { font-size:30px }
+.community-head .tag { display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; text-transform:none; letter-spacing:0; font-size:12px }
+.community-purpose { margin:8px 0 0; max-width:62ch; font-size:15px; color:var(--ink) }
+.connection { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted) }
+.connection .dot { width:9px; height:9px; border-radius:50%; background:#8c7a99 }
+.connection[data-state="live"] .dot { background:#2f7d4a }
+.connection[data-state="reconnecting"] .dot { background:#c4561b }
+.join-panel { max-width:520px }
+.join-panel h2,.side-card h2,.conversation h2 { text-transform:none; letter-spacing:0; font-size:17px }
+.join-panel form { display:grid; gap:10px; margin:12px 0 8px }
+.community-grid { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:24px; align-items:start }
+.feed,.replies { list-style:none; margin:0; padding:0 }
+.feed { display:grid; gap:12px; margin-top:10px }
+.post { padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--surface) }
+.post.reply { margin-top:8px; padding:8px 12px; border-radius:8px; background:var(--paper); border-color:transparent }
+.replies { margin:8px 0 0 12px; padding-left:12px; border-left:3px solid var(--soft) }
+.post-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px }
+.post-author { font-size:14px }
+.post-time,.post-edited { font-size:12px; color:var(--muted) }
+.post-body { margin:6px 0 0; white-space:pre-wrap; overflow-wrap:anywhere }
+.post-removed { margin:6px 0 0; color:var(--muted); font-style:italic }
+.post-actions { display:flex; flex-wrap:wrap; gap:0 4px; margin:4px 0 0 -8px }
+.post-actions .button { min-height:36px; font-size:12px }
+.post-form { display:grid; gap:6px; margin-top:8px }
+.post-form-meta { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px 12px }
+.char-count { font-size:12px; color:var(--muted) }
+.char-count.over { color:var(--error); font-weight:700 }
+.form-actions { display:flex; gap:6px; align-items:center }
+.composer { position:sticky; bottom:0; margin-top:16px; padding:12px 0 8px; background:linear-gradient(to bottom,rgba(244,241,247,0),var(--paper) 14px) }
+.composer .post-form { margin:0; padding:12px 14px; border:1px solid var(--plum); border-radius:10px; background:var(--surface) }
+.hide-confirm { margin-top:8px; padding:8px 10px; border-radius:8px; background:var(--error-bg) }
+.hide-confirm p { margin:0 0 6px; font-size:13px }
+.community-side { display:grid; gap:12px; position:sticky; top:12px }
+.side-card { padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--surface) }
+.side-card h2 { margin-bottom:6px }
+.member-list { list-style:none; margin:0; padding:0; max-height:240px; overflow:auto; display:grid; gap:4px; font-size:13px }
+.member-list li { display:flex; gap:6px; align-items:center; flex-wrap:wrap }
+.member-name { overflow-wrap:anywhere }
+.inline-form { display:flex; gap:6px }
+.inline-form input { flex:1 }
+.community-error { margin:10px 0 }
+@media (max-width:900px) {
+  .community { padding:12px 14px 32px }
+  .community-grid { grid-template-columns:1fr }
+  .community-side { position:static }
+  .community-head h1 { font-size:24px }
+  .composer { margin-left:-2px; margin-right:-2px }
+  .section-nav { order:3; width:100% }
+  .section-nav a { flex:1; text-align:center }
+}
+@media print { .community,.section-nav { display:none!important } }
+
 @media print {
   html { background:white!important }
   @page { size:A4; margin:16mm }

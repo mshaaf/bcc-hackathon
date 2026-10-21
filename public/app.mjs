@@ -796,6 +796,9 @@ byId("print-brief").addEventListener("click", () => {
   if (campaign && canExportCampaign(campaign)) window.print();
 });
 
+// The map is hidden while the community section is showing; Leaflet needs a nudge when it comes back.
+window.addEventListener("hashchange", () => { if (location.hash.startsWith("#/map")) requestAnimationFrame(() => map.resize()); });
+
 // ---------- start ----------
 
 const loaded = storage.load();

@@ -4,7 +4,7 @@
 
 **Built:** R1–R4 provide a real Ward 8 / dumping map, source review, browser-local saved campaigns, tasks/follow-ups, exports and a recorded backup. **Unbuilt:** shared membership, discussions, authenticated commitments and public phone access. Supabase is the recommended shared provider; project/access/hosting are unconfirmed.
 
-**Executor:** Sonnet 5.5 in the user's Claude session. **Next batch:** B1 (S1.2–S2.2): shared identity, joining, posts/replies and live discussion across independent browsers. S1.1 is complete at `9f09667`; real provider access still needs proof. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
+**Executor:** Sonnet 5.5 in the user's Claude session. **B1 is complete** (shared identity, joining, posts/replies, live discussion across independent browsers, verified on a local Supabase stack; see [setup](docs/COMMUNITY-SETUP.md)). **Next batch:** B2 (shared missions). S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 

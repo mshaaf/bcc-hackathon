@@ -1,6 +1,6 @@
 # Block Ops — community missions scope
 
-Date: October 21, 2026. Status: shared community features specified but unbuilt; S1.1 report-date repair complete at `9f09667`. Next batch is B1 (remaining S1 plus S2). The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
+Date: October 21, 2026. Status: S1.1 report-date repair complete at `9f09667`; B1 (shared community, membership, posts/replies, live discussion) built and verified on a local Supabase stack. Missions, tasks and claims (S3) are unbuilt; next batch is B2. The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
 
 ## Purpose and product picture
 

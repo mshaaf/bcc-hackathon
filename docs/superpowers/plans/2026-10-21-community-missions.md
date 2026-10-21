@@ -76,6 +76,8 @@ Before editing, inspect Git and the named callers/tests. Fix the shared root cau
 
 ### S1.2 — Prove the shared provider and identity
 
+**Status:** Complete (B1, local Supabase stack; hosted project not tried). SDK `@supabase/supabase-js` 2.118.0 UMD vendored; routes/CSP via `/api/community-config`. Evidence in the ledger and [COMMUNITY-SETUP.md](../../COMMUNITY-SETUP.md). Deviation: the test file lives at `test/community-access.integration.mjs` as planned; the migration also holds S1.3/S2.1 tables because they shipped together.
+
 **Files:** create `public/community-api.mjs`, `test/community-access.integration.mjs`, `docs/COMMUNITY-SETUP.md`; modify explicit asset/config routes and CSP in `server.mjs` only as needed; pin/local-bundle the SDK using the smallest suitable packaging. Configuration files contain placeholders only.
 
 **Interface:** `createCommunityClient(config).ensureSession() -> {userId}`. Configuration exposes only project URL/publishable key. No shared tables are required to establish two independent authenticated identities.
@@ -86,6 +88,8 @@ Before editing, inspect Git and the named callers/tests. Fix the shared root cau
 - [ ] Record results, unresolved access and local commit. Do not create shared tables for later features in this order.
 
 ### S1.3 — Shared community membership and access
+
+**Status:** Complete (B1). Join/leave as SQL functions (`join_community`, `leave_community`, `community_preview`) rather than the planned `getCommunity(id)` alone; `getCommunityPreview`/`getCommunity` exist in `public/community-api.mjs`.
 
 **Files:** create `lib/community.mjs`, `test/community.test.mjs`; extend `public/community-api.mjs` and `test/community-access.integration.mjs`; add community/membership migrations using the verified provider workflow. Do not invent applied migration history.
 
@@ -106,6 +110,8 @@ Before editing, inspect Git and the named callers/tests. Fix the shared root cau
 
 ### S2.1 — Posts and replies backend
 
+**Status:** Complete (B1). Implemented as `create_post`, `edit_post`, `hide_post` functions; `editOwnPost`, `hidePost`, `createPost`, `listPosts`, `subscribeCommunity` in the API wrapper.
+
 Create post/reply entities and their permissions in this order.
 
 - [ ] Add focused tests for bounded plain-text bodies, same-group replies, own-post edits, moderator hiding and idempotent post retries. Add backend tests that bypass UI controls and fail unauthorized actions.
@@ -113,6 +119,8 @@ Create post/reply entities and their permissions in this order.
 - [ ] Record the S2.1 checks and a focused local commit before moving to UI.
 
 ### S2.2 — Community UI and cross-browser discussion
+
+**Status:** Complete (B1) with `scripts/community-browser-check.mjs` (51/51) instead of extending `scripts/browser-check.mjs`, which only gained a `#/map` entry. Real phones are not tested.
 
 - [ ] Make the default screen the community feed: purpose, join action, members, chronological posts, replies, and active-mission area. Keep the existing map reachable as discovery. Label seeded/sample content accurately.
 - [ ] Implement immediate cross-device update using permitted Realtime subscriptions plus canonical re-fetch. Show sending/error/reconnect states and preserve unsent text. Clean up subscriptions when changing views.

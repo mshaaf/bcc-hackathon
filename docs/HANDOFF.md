@@ -6,7 +6,7 @@ Start with [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md) for a context reset, t
 
 - R1–R4 delivered the map, source/evidence workflow and browser-local campaigns. Social features are unbuilt.
 - The confirmed goal is a community where neighbors discuss concerns, start missions, commit to jobs and post progress.
-- S1.1 is complete at `9f09667`; independent checks passed 87 tests and inspected a counterexample brief. **Next batch: B1 (S1.2–S2.2)**, a complete shared community with joining, posts/replies and two-browser live updates. Work orders are internal checkpoints; the user wants fewer hand-backs. B2 covers S3 missions, B3 covers S4 readiness, then R5 release.
+- S1.1 is complete at `9f09667`; independent checks passed 87 tests and inspected a counterexample brief. **B1 is complete (local Supabase); next batch: B2 (S3)**. B1 delivered a shared community with joining, posts/replies and two-browser live updates. Work orders are internal checkpoints; the user wants fewer hand-backs. B2 covers S3 missions, B3 covers S4 readiness, then R5 release.
 - Supabase remains a proposed provider; project/access/hosting are unconfirmed. Never call a localStorage or mocked demo a shared deployment.
 - Historical local campaigns must survive; publication is an explicit reviewed copy.
 - Every assistant message ends with a very simple TL;DR.
