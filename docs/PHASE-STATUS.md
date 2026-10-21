@@ -2,7 +2,7 @@
 
 This is the canonical execution ledger for Claude/Luna batches. Current revision phases R1–R5 are defined in [HANDOFF.md](HANDOFF.md); baseline phases below preserve the old plan's history. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R2. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R3. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The user rejected the form/brief-centered baseline as the final experience. A map/campaign revision is proposed; no revised implementation is complete. The original numbered phases below remain history and are not the next execution instructions.
 
@@ -11,7 +11,7 @@ The user rejected the form/brief-centered baseline as the final experience. A ma
 | Phase | Deliverable | Status |
 |---|---|---|
 | R1 | Scenario, real geospatial data proof, reviewable layout, revised specification/plan | Complete |
-| R2 | Real map, source layers/filters, evidence review and chronology | Not started |
+| R2 | Real map, source layers/filters, evidence review and chronology | Complete |
 | R3 | Saved campaign, owner/date tasks, follow-up and current export | Not started |
 | R4 | Reliability, accessible interaction and stage layout | Not started |
 | R5 | Rehearsal and release/submission package | Not started |
@@ -45,6 +45,26 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — R2 complete; R3 next
+
+- **Deliverable:** the map workspace is now `/`: live DC 311 dots on the DC GIS basemap, area by click or busy-spot select, radius 100/150/250 m, date and status filters, oldest-first evidence list with keyboard include/exclude and a source drawer per record, outside-Ward-8 flags, unplaced-record list, three separate state tracks, plan and brief views. `public/prototype.*` deleted. Spec of what was built: [campaign-revision.md section 7](specs/campaign-revision.md).
+- **Files:** `lib/block-ops.mjs` (scope/filter/area/block-name/boundary helpers, brief scope + location notes), `server.mjs` (`/map.mjs`, `/api/ward8`; prototype routes removed), `public/index.html`, `public/app.mjs`, `public/map.mjs` (new), `public/styles.css` (rewritten), `scripts/prove-geo.mjs` (reuses lib), `scripts/browser-check.mjs` (new, DevTools-protocol driver), `test/geo.test.mjs` (new), `test/server.test.mjs`, docs.
+- **Checks run:**
+  - `node --test`: 41/41 passed (23 baseline, 5 from R1, 12 new in `test/geo.test.mjs`, 1 new ward-boundary server test). The 23 baseline checks are unchanged and pass; the 6 audited behaviors are still covered by them (`selectCandidateGroup` and its test are kept though the UI no longer uses street groups).
+  - `node scripts/prove-geo.mjs` at 2026-10-21T18:21Z after the refactor: 390 records, 390/390 mapped, 388 inside Ward 8, 2 outside (`26-00601266`, `26-00615737`), boundary check reported as checked; MPD query still 184 records. Saved as `research/evidence/r2-geo-proof-2026-10-21.json`.
+  - Real Chrome, DevTools device emulation (not window size): 1440x900 desktop and 390x844 mobile (device scale 3, touch emulated), against the restarted `node server.mjs` on port 8000. Driver: `scripts/browser-check.mjs`; raw results: `docs/ui-review/r2-browser-results.json`; screenshots `docs/ui-review/r2-*.png`.
+    - Load: 390 records, 390 markers, tiles loaded, freshness line shows 390 mapped / 0 missing / 0 invalid / 2 outside the boundary, title "1900 block of Naylor Rd SE", 21 reports.
+    - Judge actions (both viewports): clicking a different marker changed title, list, tallies; radius 100/150/250 changed rows (desktop 4/5/11 for one spot; mobile 8/11/23); the 30-day filter and unchecking Closed cut rows further (desktop 2 then 0; mobile 4 then 2); resetting restored them. Confirm then open Brief showed the scope line and N records; after changing radius the review check cleared and the brief changed (desktop 5 to 11, mobile 11 to 23).
+    - Outside flag: clicking the dashed marker selected "1000 block of New Jersey Ave SE", showed one record with the "Outside Ward 8 boundary" flag (both viewports).
+    - Keyboard without the map: Tab reached the first record checkbox in 6 stops, Space toggled it (desktop 11 to 10, mobile 16 to 15; review cleared), ArrowRight on the radius group moved 150 to 250 (mobile rows 16 to 25; on desktop that area had no more reports within 250 m, so rows stayed 11), the busy-spot select changed the area (arrow keys under mobile emulation; type-ahead on desktop, because the desktop native popup cannot be driven through the protocol).
+    - Failures: blocking `/api/requests` then clicking Live DC records kept the same area, selection and rows and showed "The data service could not be reached. Your current selection and notes are unchanged." Blocking tile requests left the page usable (21 records, 390 markers) and showed the basemap-outage note. A zoomed-out view with partial tile coverage correctly shows no note. Practice case: 5 fictional rows, 0 map markers, 0 official links in the brief, no outside flags.
+    - No console errors, exceptions or CSP violations were logged in any run; no horizontal overflow at 390 or 1440.
+- **Not verified:** a real finger/touch gesture on the map (clicks were dispatched under touch emulation); screen-reader announcement of the live region; the A4 print/PDF of the new brief (print CSS was adapted, not re-inspected); a Markdown download from the new UI (covered by unit tests only); behavior with more than 1,000 records (still rejected); performance on a slow device.
+- **Limits:** state is memory-only until R3; reload loses selections, review and notes. Points are block-level approximations; proximity is not proof of one incident. The objective text and tasks are placeholders. A basemap-outage note shows only when a whole view loads no tile. DC tile terms: see the spec (district data is CC0; no separate tile terms found).
+- **Cuts:** crime, streetlights, resizable radius beyond presets, per-category filters.
+- **Unresolved:** R3 persistence UX details (one campaign vs several, how a refreshed status change is shown), the final objective copy, what the judge does after reload.
+- **Local commit:** see `git log` (hash not recorded here).
 
 ### 2026-10-21 — R1 complete; R2 next
 

@@ -30,19 +30,41 @@ test("serves the app and fictional fixture from the explicit route list", async 
   });
 });
 
-test("serves the disposable prototype and vendored Leaflet explicitly, with only the DC GIS tile origin added", async () => {
+test("serves the map workspace and vendored Leaflet explicitly, with only the DC GIS tile origin added", async () => {
   const server = createAppServer();
   await withServer(server, async baseUrl => {
-    for (const path of ["/prototype", "/prototype.mjs", "/prototype.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
+    for (const path of ["/", "/app.mjs", "/map.mjs", "/styles.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
       assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, path);
     }
-    assert.equal((await fetch(`${baseUrl}/vendor/leaflet/LICENSE`)).status, 404);
-    assert.equal((await fetch(`${baseUrl}/vendor/../server.mjs`)).status, 404);
+    for (const path of ["/prototype", "/prototype.mjs", "/vendor/leaflet/LICENSE", "/vendor/../server.mjs"]) {
+      assert.equal((await fetch(`${baseUrl}${path}`)).status, 404, path);
+    }
 
     const csp = (await fetch(baseUrl)).headers.get("content-security-policy");
     assert.match(csp, /img-src 'self' data: https:\/\/maps2\.dcgis\.dc\.gov;/);
     assert.match(csp, /script-src 'self';/);
     assert.match(csp, /connect-src 'self';/);
+  });
+});
+
+test("serves only the fixed Ward 8 boundary, and reports a boundary outage", async () => {
+  let requestedUrl;
+  const ring = [[-76.99, 38.83], [-76.95, 38.83], [-76.95, 38.88], [-76.99, 38.88], [-76.99, 38.83]];
+  const server = createAppServer({ fetchImpl: async url => { requestedUrl = new URL(url); return { ok: true, json: async () => ({ features: [{ geometry: { rings: [ring] } }] }) }; } });
+  await withServer(server, async baseUrl => {
+    const response = await fetch(`${baseUrl}/api/ward8?where=1=1`);
+    const body = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(requestedUrl.searchParams.get("where"), "WARD=8");
+    assert.equal(body.rings.length, 1);
+    assert.equal((await fetch(`${baseUrl}/api/ward8`, { method: "POST" })).status, 405);
+  });
+
+  const failed = createAppServer({ fetchImpl: async () => { throw new Error("offline"); } });
+  await withServer(failed, async baseUrl => {
+    const response = await fetch(`${baseUrl}/api/ward8`);
+    assert.equal(response.status, 502);
+    assert.match((await response.json()).error, /boundary could not be loaded/i);
   });
 });
 

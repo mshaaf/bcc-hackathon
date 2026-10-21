@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { fetchArcGisSnapshot } from "./lib/block-ops.mjs";
+import { fetchArcGisSnapshot, fetchWardBoundary } from "./lib/block-ops.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const HOST = "127.0.0.1";
@@ -12,9 +12,7 @@ const ASSETS = new Map([
   ["/app.mjs", ["public/app.mjs", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["public/styles.css", "text/css; charset=utf-8"]],
   ["/lib/block-ops.mjs", ["lib/block-ops.mjs", "text/javascript; charset=utf-8"]],
-  ["/prototype", ["public/prototype.html", "text/html; charset=utf-8"]],
-  ["/prototype.mjs", ["public/prototype.mjs", "text/javascript; charset=utf-8"]],
-  ["/prototype.css", ["public/prototype.css", "text/css; charset=utf-8"]],
+  ["/map.mjs", ["public/map.mjs", "text/javascript; charset=utf-8"]],
   ["/vendor/leaflet/leaflet.js", ["public/vendor/leaflet/leaflet.js", "text/javascript; charset=utf-8"]],
   ["/vendor/leaflet/leaflet.css", ["public/vendor/leaflet/leaflet.css", "text/css; charset=utf-8"]],
   ["/api/demo", ["data/demo.json", "application/json; charset=utf-8"]]
@@ -48,6 +46,15 @@ export function createAppServer({ fetchImpl = globalThis.fetch } = {}) {
         sendJson(response, 200, await fetchArcGisSnapshot(fetchImpl));
       } catch {
         sendJson(response, 502, { error: "Live DC 311 data could not be refreshed. Your current draft remains available." });
+      }
+      return;
+    }
+
+    if (pathname === "/api/ward8") {
+      try {
+        sendJson(response, 200, await fetchWardBoundary(fetchImpl));
+      } catch {
+        sendJson(response, 502, { error: "The Ward 8 boundary could not be loaded, so boundary flags are unavailable." });
       }
       return;
     }

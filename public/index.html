@@ -2,68 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
-  <meta name="description" content="Turn a reviewed service history into a clear neighborhood brief and next-step plan.">
+  <meta name="description" content="Pick a place on the Ward 8 map, review the public 311 history, and prepare a brief your group can use.">
   <title>Block Ops — Your block. Your next move.</title>
-  <link rel="stylesheet" href="/styles.css"><script type="module" src="/app.mjs"></script>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css"><link rel="stylesheet" href="/styles.css">
+  <script src="/vendor/leaflet/leaflet.js"></script><script type="module" src="/app.mjs"></script>
 </head>
 <body>
-<a class="skip-link" href="#worktable">Skip to the worktable</a>
-<div class="page-shell">
-  <header class="masthead">
-    <a class="brand" href="/" aria-label="Block Ops home"><span class="brand-mark" aria-hidden="true">b.</span><span>block ops<span class="brand-period">.</span></span></a>
-    <span class="masthead-purpose">A little more organized.<br>A lot more together.</span>
-    <div class="scope-label"><span class="location-mark" aria-hidden="true"></span><span>Washington, DC<strong>Ward 8 · Illegal dumping</strong></span></div>
-  </header>
-  <main>
-    <section class="intro" aria-labelledby="page-title">
-      <div><h1 id="page-title">Your block. Your next move.</h1><p class="intro-description">Bring the reports together. Leave with a plan your group can use.</p></div>
-      <div class="source-controls" aria-label="Choose source data"><div class="button-row"><button class="source-button" id="load-demo" type="button" aria-pressed="true">Practice case</button><button class="source-button" id="load-live" type="button" aria-pressed="false">Live DC records</button></div><p class="source-status" id="snapshot-status" aria-live="polite">Loading the practice case…</p></div>
-    </section>
-    <div class="notice-row"><p class="sample-notice" id="sample-notice" hidden>Practice case · All sample reports and addresses are fictional.</p><span class="local-note">Your draft stays in this session</span></div>
-    <p class="error-notice" id="error-notice" role="status" aria-live="polite" hidden></p>
-    <section class="workspace" id="worktable" aria-label="Neighborhood worktable">
-      <nav class="step-nav" aria-label="Prepare your group brief" role="tablist">
-        <button class="step-button" id="review-tab" type="button" role="tab" aria-controls="review-panel" aria-selected="true" data-view="review"><span class="step-number">1</span><span>Review the history</span><span class="step-check" id="review-check" hidden>✓</span></button>
-        <button class="step-button" id="plan-tab" type="button" role="tab" aria-controls="plan-panel" aria-selected="false" data-view="plan"><span class="step-number">2</span><span>Plan the next move</span></button>
-        <button class="step-button" id="brief-tab" type="button" role="tab" aria-controls="brief-panel" aria-selected="false" data-view="brief"><span class="step-number">3</span><span>Our brief</span></button>
-      </nav>
-      <div class="workspace-grid" id="workspace-grid">
-        <div class="workspace-content">
-          <section class="source-panel" id="review-panel" role="tabpanel" aria-labelledby="review-tab">
-            <div class="section-heading"><div><span class="section-context">Candidate history</span><h2 id="case-title">A history worth checking.</h2></div><span class="count-badge" id="selected-count" aria-live="polite">0 selected</span></div>
-            <div class="group-control"><label class="field-label" for="group-select">Review a street</label><select id="group-select" aria-describedby="group-hint"></select></div><p class="group-hint" id="group-hint"></p>
-            <div class="record-list" id="record-list" aria-label="Source reports in this candidate history"></div>
-            <div class="review-action"><div><p class="review-label">Your group decides what belongs.</p><p id="review-status" aria-live="polite">Check the original records before confirming.</p></div><button class="button button-primary" id="confirm-review" type="button" disabled>Use these records <span aria-hidden="true">→</span></button></div>
-          </section>
-          <section class="plan-panel" id="plan-panel" role="tabpanel" aria-labelledby="plan-tab" hidden>
-            <div class="section-heading"><div><span class="section-context">From evidence to action</span><h2>What do we want to happen?</h2></div></div><p class="plan-note">A clear ask. Two people with a next step. Something to take into the room.</p>
-            <div class="observation-fields"><div class="field-block"><label class="field-label" for="observation">What did your group observe? <span class="optional">Optional</span></label><textarea id="observation" rows="3" placeholder="Your own account of the site. Leave blank if you haven't checked."></textarea></div><div class="field-block"><label class="field-label" for="observed-on">When?</label><input id="observed-on" type="date"><p class="field-hint">Kept separate from the city's record.</p></div></div>
-            <div class="field-block ask-field"><label class="field-label" for="ask">Our request</label><textarea id="ask" rows="2" required></textarea></div>
-            <fieldset class="task-set"><legend>Who takes it forward?</legend>
-              <div class="task-fields"><span class="task-index" aria-hidden="true">1</span><div class="field-block"><label class="field-label" for="task-one-role">Role</label><input id="task-one-role" type="text" required></div><div class="field-block"><label class="field-label" for="task-one-action">Next step</label><input id="task-one-action" type="text" required></div></div>
-              <div class="task-fields"><span class="task-index" aria-hidden="true">2</span><div class="field-block"><label class="field-label" for="task-two-role">Role</label><input id="task-two-role" type="text" required></div><div class="field-block"><label class="field-label" for="task-two-action">Next step</label><input id="task-two-action" type="text" required></div></div>
-            </fieldset>
-            <div class="plan-actions"><button class="button button-quiet" type="button" data-view="review">Back to the history</button><button class="button button-primary" type="button" data-view="brief">Open our brief <span aria-hidden="true">→</span></button></div>
-          </section>
-        </div>
-        <aside class="case-companion" aria-label="Current brief summary">
-          <div class="companion-header"><span class="mini-mark" aria-hidden="true">b.</span><span>Your group brief</span><span class="companion-status" id="companion-status">In review</span></div>
-          <div class="companion-body"><h2>The brief starts here.</h2>
-            <div class="selection-summary"><strong id="summary-count">0</strong><span>reports in<br>your history</span><div class="selection-ticks" id="selection-ticks" aria-hidden="true"></div></div>
-            <div class="companion-facts"><div><span>Official record status</span><p id="official-summary">No records selected</p></div><div><span>Current site conditions</span><p id="condition-summary">Not yet verified by the group</p></div></div>
-            <p class="brief-receipt">A ticket status and a resident observation are different accounts. Your brief keeps both visible.</p>
-            <button class="button companion-button" type="button" data-view="brief">See the draft brief <span aria-hidden="true">↗</span></button>
-          </div><p class="companion-footer">Prepared by your group. Nothing is sent.</p>
-        </aside>
-      </div>
-      <section class="brief-section" id="brief-panel" role="tabpanel" aria-labelledby="brief-tab" hidden>
-        <div class="brief-toolbar"><div><span class="section-context">Something to take into the room</span><h2>Your group's next move, on paper.</h2><p class="export-status" id="export-status" aria-live="polite"></p></div><div class="brief-actions"><button class="button button-secondary" id="download-brief" type="button" disabled>Download brief</button><button class="button button-primary" id="print-brief" type="button" disabled>Print / Save PDF <span aria-hidden="true">↗</span></button></div></div>
-        <article class="brief-paper" id="brief-paper" aria-label="Generated neighborhood brief"></article>
-        <div class="brief-return"><button class="button button-quiet" type="button" data-view="plan">Edit our plan</button><span>Review together before sharing.</span></div>
-      </section>
-    </section>
-  </main>
-  <footer class="page-footer"><span class="footer-brand">block ops.</span><p>The group owns the next move.<span>Preparation, not a city submission or confirmation of cleanup.</span></p><span class="footer-location">Made for the neighborhood.</span></footer>
+<a class="skip-link" href="#panel">Skip to the evidence panel</a>
+<header class="top">
+  <a class="brand" href="/" aria-label="Block Ops home"><span class="brand-mark" aria-hidden="true">b.</span><span>block ops<span class="brand-period">.</span></span></a>
+  <p class="scope-label">Washington, DC<strong>Ward 8 · Illegal dumping</strong></p>
+  <div class="source-controls" role="group" aria-label="Choose source data">
+    <button class="source-button" id="load-live" type="button" aria-pressed="false">Live DC records</button>
+    <button class="source-button" id="load-demo" type="button" aria-pressed="false">Practice case (fictional)</button>
+  </div>
+</header>
+<div class="status-strip">
+  <p class="freshness" id="freshness" aria-live="polite">Loading live DC 311 records…</p>
+  <p class="sample-notice" id="sample-notice" hidden>Practice case · All sample reports and addresses are fictional and have no map locations.</p>
+  <p class="error-notice" id="error-notice" role="status" aria-live="polite" hidden></p>
 </div>
+<main class="workspace" id="workspace" data-view="evidence" aria-label="Campaign workspace">
+  <section class="map-wrap" aria-label="Map of Ward 8 illegal dumping reports">
+    <div id="map"></div>
+    <ul class="legend" aria-label="Map legend">
+      <li><span class="sw open"></span>Open</li><li><span class="sw closed"></span>Closed</li><li><span class="sw other"></span>Duplicate / canceled / unknown</li><li><span class="sw picked"></span>In your evidence</li><li><span class="sw ring"></span>Selected area</li><li><span class="sw outside"></span>Outside Ward 8 boundary</li>
+    </ul>
+    <p class="hint">Click the map to choose an area, or use the controls and list. The list does everything the map does.</p>
+    <p class="map-note" id="map-note" role="status" hidden>Basemap tiles could not load. Reports are still plotted and the list still works.</p>
+  </section>
+  <aside class="panel" id="panel" aria-label="Evidence, plan and brief">
+    <nav class="tabs" role="tablist" aria-label="Prepare your group brief">
+      <button class="tab" id="evidence-tab" type="button" role="tab" aria-controls="evidence-panel" aria-selected="true" data-view="evidence">1 · Evidence<span class="tab-check" id="review-check" hidden> ✓</span></button>
+      <button class="tab" id="plan-tab" type="button" role="tab" aria-controls="plan-panel" aria-selected="false" data-view="plan">2 · Plan</button>
+      <button class="tab" id="brief-tab" type="button" role="tab" aria-controls="brief-panel" aria-selected="false" data-view="brief">3 · Brief</button>
+    </nav>
+
+    <section id="evidence-panel" role="tabpanel" aria-labelledby="evidence-tab">
+      <header class="campaign">
+        <p class="tag">Neighborhood campaign</p>
+        <h1 id="case-title">Choose an area</h1>
+        <p class="objective">Objective: <em>not set yet</em> <span>(placeholder; saved campaigns come next)</span></p>
+      </header>
+
+      <fieldset class="scope" id="scope-controls">
+        <legend>Area and filters</legend>
+        <div class="field-block span-all"><label class="field-label" for="busy-select">Jump to a busy spot</label><select id="busy-select"></select></div>
+        <fieldset class="radius-set"><legend class="field-label">Area radius</legend>
+          <label><input type="radio" name="radius" value="100"> 100 m</label>
+          <label><input type="radio" name="radius" value="150" checked> 150 m</label>
+          <label><input type="radio" name="radius" value="250"> 250 m</label>
+        </fieldset>
+        <div class="field-block"><label class="field-label" for="days-select">Report date</label>
+          <select id="days-select"><option value="">Full 90-day window</option><option value="60">Last 60 days</option><option value="30">Last 30 days</option></select></div>
+        <fieldset class="kind-set span-all"><legend class="field-label">Official status</legend>
+          <label><input type="checkbox" name="kind" value="open" checked> Open</label>
+          <label><input type="checkbox" name="kind" value="closed" checked> Closed</label>
+          <label><input type="checkbox" name="kind" value="other" checked> Duplicate / canceled / unknown</label>
+        </fieldset>
+      </fieldset>
+
+      <p class="scope-status" id="scope-status" aria-live="polite"></p>
+      <div class="list-head"><h2>Evidence</h2><span class="count-badge" id="selected-count">0 selected</span></div>
+      <p class="tally" id="tally"></p>
+      <div class="record-list" id="record-list" aria-label="Reports in this area, oldest first"></div>
+      <details class="unplaced" id="unplaced" hidden>
+        <summary id="unplaced-summary"></summary>
+        <p class="field-hint">These reports have no usable map point, so they are never inside a map area. Add any that belong.</p>
+        <div class="record-list" id="unplaced-list"></div>
+      </details>
+
+      <section aria-labelledby="h-state">
+        <h2 id="h-state">Where things stand</h2>
+        <dl class="tracks">
+          <div><dt>City ticket status</dt><dd id="t-city">No reports selected</dd></div>
+          <div><dt>Group progress</dt><dd id="t-group">Source list not confirmed yet</dd></div>
+          <div><dt>Resident check</dt><dd id="t-resident">No resident observation yet</dd></div>
+        </dl>
+      </section>
+      <div class="review-action"><p id="review-status" aria-live="polite">Inspect the original records, then confirm.</p><button class="button button-primary" id="confirm-review" type="button" disabled>Use these records <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section id="plan-panel" role="tabpanel" aria-labelledby="plan-tab" hidden>
+      <h2 class="panel-title">What do we want to happen?</h2>
+      <p class="plan-note">A clear ask. Two people with a next step. Something to take into the room.</p>
+      <div class="field-block"><label class="field-label" for="observation">What did your group observe? <span class="optional">Optional</span></label><textarea id="observation" rows="3" placeholder="Your own account of the site. Leave blank if you haven't checked."></textarea></div>
+      <div class="field-block"><label class="field-label" for="observed-on">When?</label><input id="observed-on" type="date"><p class="field-hint">Kept separate from the city's record.</p></div>
+      <div class="field-block"><label class="field-label" for="ask">Our request</label><textarea id="ask" rows="2" required></textarea></div>
+      <fieldset class="task-set"><legend>Who takes it forward?</legend>
+        <div class="task-fields"><span class="task-index" aria-hidden="true">1</span><div class="field-block"><label class="field-label" for="task-one-role">Role</label><input id="task-one-role" type="text" required></div><div class="field-block"><label class="field-label" for="task-one-action">Next step</label><input id="task-one-action" type="text" required></div></div>
+        <div class="task-fields"><span class="task-index" aria-hidden="true">2</span><div class="field-block"><label class="field-label" for="task-two-role">Role</label><input id="task-two-role" type="text" required></div><div class="field-block"><label class="field-label" for="task-two-action">Next step</label><input id="task-two-action" type="text" required></div></div>
+      </fieldset>
+      <div class="plan-actions"><button class="button button-quiet" type="button" data-view="evidence">Back to the evidence</button><button class="button button-primary" type="button" data-view="brief">Open our brief <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section class="brief-section" id="brief-panel" role="tabpanel" aria-labelledby="brief-tab" hidden>
+      <div class="brief-toolbar"><div><h2 class="panel-title">Your group's next move, on paper.</h2><p class="export-status" id="export-status" aria-live="polite"></p></div><div class="brief-actions"><button class="button button-secondary" id="download-brief" type="button" disabled>Download brief</button><button class="button button-primary" id="print-brief" type="button" disabled>Print / Save PDF <span aria-hidden="true">↗</span></button></div></div>
+      <article class="brief-paper" id="brief-paper" aria-label="Generated neighborhood brief"></article>
+      <div class="brief-return"><button class="button button-quiet" type="button" data-view="plan">Edit our plan</button><span>Review together before sharing. Nothing is sent.</span></div>
+    </section>
+  </aside>
+</main>
 </body>
 </html>

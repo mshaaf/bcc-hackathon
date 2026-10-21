@@ -10,7 +10,7 @@ Updated October 21, 2026. This is the next-session entry point. It supersedes th
 - **What the user welcomed:** a stronger map-centered product using real public data; asked about crime data and Flock, then challenged overlap with Citizen.
 - **Latest recommendation:** resident-led neighborhood improvement campaigns, with a map as the operating surface, service history and resident evidence, assigned follow-ups, and saved progress. Crime is optional context. This is the current planning proposal, not a claim that every feature or example was explicitly approved.
 - **This task's authorization:** inspect and update documentation; prepare a detailed handoff for Claude. Product code, dependencies, hosting, and publication were not changed.
-- **Next batch:** R2, below. R1 is complete: see [campaign-revision.md](specs/campaign-revision.md) for decisions, proofs, acceptance criteria and file plan. Do not automatically continue old Phase 4 polish or interpret baseline Phase 1–3 completion as map/campaign completion.
+- **Next batch:** R3, below. R1 and R2 are complete: see [campaign-revision.md](specs/campaign-revision.md) for decisions, proofs, acceptance criteria, file plan and section 7 (what R2 built). Do not automatically continue old Phase 4 polish or interpret baseline Phase 1–3 completion as map/campaign completion.
 
 The user mentioned approaching their account's five-hour usage window and plans to use Claude for further work. Exact remaining allowance/reset is unknown. This is a usage constraint, not a new five-hour project deadline. Keep reads bounded, avoid repeated research and unnecessary agents, and leave resumable increments.
 
@@ -42,7 +42,7 @@ Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `ma
 | Fixed DC 311 query | Built: Ward 8 / descriptions containing “Dump,” rolling 90-day window, up to 1,000 records, source IDs/dates/statuses retained. |
 | Same-street/category suggestions | Built: strips leading address number; this is not spatial matching or incident identification. |
 | Source review and brief | Built: include/exclude, original fields, source links, dated observation, ask, two role tasks, current-state Markdown and browser print. |
-| Revised three-step UI | Built: Review history → Plan next move → Our brief. It is the baseline; user did not accept this as the final presentation experience. |
+| Map workspace UI | R2: map-first page at `/` (Evidence → Plan → Brief tabs). Plan and tasks are still the baseline two-role form; no persistence. |
 | Offline sample | Built: five invented records, clearly labeled fictional. It is not a saved DC response or community research. |
 | Maps, spatial filtering, crime layer | R1: disposable `/prototype` map (Leaflet vendored, DC GIS basemap) plots live records; proximity helper exists. Not the product UI. Crime: Ward 8 MPD query proven in `scripts/prove-geo.mjs`, not consumed by the app. |
 | Saved campaigns, task owners/due dates, progress and follow-up evidence | Unbuilt. Current draft disappears on reload. Two role-text fields do not constitute campaign management. |
@@ -59,7 +59,7 @@ Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `ma
 |---|---|
 | `server.mjs` | Node HTTP server on loopback; explicit static-route map; GET-only `/api/requests` and `/api/demo`. Fixed upstream source, no arbitrary URL/SQL proxy. A new module or endpoint must be explicitly served. |
 | `lib/block-ops.mjs` | Query/window, source normalization, street suggestions, source URLs, draft review/reset rules, brief builders. Reuse source preservation and export behavior. Avoid forcing crime records into the 311-specific schema/link helper. |
-| `public/app.mjs` | Native browser state, source loading, review, view changes, brief rendering/download. No persistence. Source/group switch clears observation/date; failed refresh preserves the draft. |
+| `public/app.mjs`, `public/map.mjs` | Native browser state, source loading, scope controls, evidence list, brief rendering/download; `map.mjs` wraps vendored Leaflet. No persistence. A moved area or a new source clears observation/date; a failed refresh preserves the draft. |
 | `public/index.html`, `public/styles.css` | Current worktable and print styling. Reuse accessible controls and useful identity; the layout may change for the map/campaign workflow. |
 | `test/data.test.mjs` | Source filters, normalization, duplicate rejection, source-link fallbacks, date ordering and failure. |
 | `test/workflow.test.mjs` | Changed output, excluded evidence, context clearing, review/required fields, literal wording and unknowns. |

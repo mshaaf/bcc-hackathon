@@ -1,9 +1,8 @@
 // R1 proof: 311 geometry (via the app's own query) checked against the official Ward 8 polygon,
 // plus a separate filtered MPD crime query. Nothing here is wired into the app.
 import assert from "node:assert/strict";
-import { fetchArcGisSnapshot, DC_BOUNDS } from "../lib/block-ops.mjs";
+import { fetchArcGisSnapshot, fetchWardBoundary, applyWardBoundary, pointInRings, DC_BOUNDS } from "../lib/block-ops.mjs";
 
-const WARD_LAYER = "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Administrative_Other_Boundaries_WebMercator/MapServer/53";
 const MPD_LAYER = "https://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/MPD/FeatureServer/39";
 const SR_LAYER = "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer/21";
 
@@ -17,26 +16,12 @@ async function query(layer, params) {
   return body;
 }
 
-function inRings(rings, lon, lat) {
-  let inside = false; // even-odd rule handles holes
-  for (const ring of rings) {
-    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-      const [xi, yi] = ring[i];
-      const [xj, yj] = ring[j];
-      if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
-    }
-  }
-  return inside;
-}
-
 try {
-  const ward = await query(WARD_LAYER, { where: "WARD=8", outFields: "WARD", returnGeometry: "true", outSR: "4326" });
-  assert.equal(ward.features.length, 1, "Expected exactly one Ward 8 polygon.");
-  const rings = ward.features[0].geometry.rings;
-
-  const snapshot = await fetchArcGisSnapshot();
+  const { rings } = await fetchWardBoundary();
+  const flagged = applyWardBoundary(await fetchArcGisSnapshot(), { retrievedAt: new Date().toISOString(), rings });
+  const snapshot = flagged;
   const mapped = snapshot.records.filter(record => record.geo);
-  const outside = mapped.filter(record => !inRings(rings, record.geo.lon, record.geo.lat));
+  const outside = mapped.filter(record => !pointInRings(rings, record.geo.lon, record.geo.lat));
   const lons = mapped.map(record => record.geo.lon);
   const lats = mapped.map(record => record.geo.lat);
 
@@ -49,7 +34,7 @@ try {
 
   const crime = await query(MPD_LAYER, { where: "WARD='8'", outFields: "OFFENSE,BLOCK,WARD,REPORT_DAT,START_DATE,END_DATE", returnGeometry: "true", outSR: "4326", resultRecordCount: "2000" });
   const crimeMapped = crime.features.filter(feature => Number.isFinite(feature.geometry?.x) && Number.isFinite(feature.geometry?.y));
-  const crimeOutside = crimeMapped.filter(feature => !inRings(rings, feature.geometry.x, feature.geometry.y));
+  const crimeOutside = crimeMapped.filter(feature => !pointInRings(rings, feature.geometry.x, feature.geometry.y));
   const reported = crime.features.map(feature => feature.attributes.REPORT_DAT).filter(Number.isFinite);
 
   assert.ok(snapshot.records.length > 0 && mapped.length > 0, "311 returned no mappable records.");
@@ -61,6 +46,7 @@ try {
     dumping311: {
       records: snapshot.records.length,
       geometry: snapshot.geometry,
+      wardBoundaryCheck: snapshot.boundary,
       lonRange: [Math.min(...lons), Math.max(...lons)],
       latRange: [Math.min(...lats), Math.max(...lats)],
       insideDcBounds: mapped.length,
