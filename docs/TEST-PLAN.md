@@ -60,6 +60,14 @@ Use a small labeled fixture set rather than tests that merely mirror the impleme
 
 Phase 1 documentation finalized the source filter, field allowlist, review contract, state, output, and file-level tasks. Phases 2–3 results will be appended here only after the commands and interactions actually run.
 
+### 2026-10-21 — Phase 2 data proof
+
+- `node --test test/data.test.mjs`: passed 5/5 tests for the bounded query, source ID/date/status preservation, missing fields, transfer-limit rejection, same-street candidate suggestions, and a simulated source-fetch failure.
+- `node scripts/prove-data.mjs` (live request, retrieved `2026-10-21T16:44:09.372Z`): passed. The 90-day window was `2026-07-24` inclusive to `2026-10-22` exclusive; 389 records and 389 unique request IDs returned; 67 multi-record street/category suggestions; `exceededTransferLimit` was false. No raw addresses or full records were printed or saved.
+- The first filter trial used `WARD='8'` and returned zero rows. The source uses the string value `WARD='Ward 8'`; the corrected query returned the counts above. The earlier October 20 saved response remains historical evidence and was not substituted for this live run.
+- Offline failure behavior is unit-tested with a rejected fetch. The app-level preserve-draft behavior remains for Phase 3.
+- Limit: a truncated live response is rejected at the 1,000-row cap; paged retrieval is deferred to Phase 4. A candidate group is only a street/category suggestion, not an incident or recurrence finding.
+
 Measure actual counts and denominators. Do not report target accuracy as achieved accuracy. User testing may assess task completion or comprehension; it does not establish improved healthcare access, model fairness, or government responsiveness.
 
 ## Commands

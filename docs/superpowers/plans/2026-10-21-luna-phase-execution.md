@@ -87,10 +87,10 @@ Do not repeat Phase 0 as an implementation task.
 
 **Entry:** Phase 1 complete. **Files:** the exact spike, fixtures, configuration, and checks named in Phase 1, plus `docs/TEST-PLAN.md` and the ledger.
 
-- [ ] Run the project's proof below using real source access where essential and clearly labeled fictional inputs where appropriate.
-- [ ] Record input, output, source/run date, assumptions, and commands. Do not replace a failed test with a fabricated successful result.
-- [ ] Exercise the simplest missing/failure case and define the path Phase 3 can consume.
-- [ ] Reuse the proof's useful code in the product if appropriate; keep throwaway code labeled. Stop for evidence-based replanning if the core promise is not viable.
+- [x] Run the project's proof below using real source access where essential and clearly labeled fictional inputs where appropriate.
+- [x] Record input, output, source/run date, assumptions, and commands. Do not replace a failed test with a fabricated successful result.
+- [x] Exercise the simplest missing/failure case and define the path Phase 3 can consume.
+- [x] Reuse the proof's useful code in the product if appropriate; keep throwaway code labeled. Stop for evidence-based replanning if the core promise is not viable.
 
 | Project | Required proof |
 |---|---|
