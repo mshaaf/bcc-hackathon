@@ -1,5 +1,15 @@
 # Proposed architecture
 
+## Revision proposal versus running architecture
+
+Continue with [HANDOFF.md](HANDOFF.md), R1. The running architecture below is the baseline: one fixed 311 query, no geometry, GET-only server, in-memory draft. It does not implement maps, crime, saved campaigns, photos, or AI.
+
+The proposed extension adds a real geographic selection/map, separately normalized source layers, and a durable local campaign containing reviewed evidence, observations, objective, request, task owners/dates, and follow-up history. Preserve per-source IDs, dates, links, approximate location precision, and review freshness. Do not silently force MPD records into 311 link/schema logic. Persistence and map/provider choices are builder decisions to prove in R1; no database or model was selected by this handoff.
+
+New map assets/endpoints require explicit route and narrowly scoped CSP changes. The current 311 query must be extended to request valid geometry. MPD is a separately demonstrated public source, with block-level anonymization and reporting lag. Flock is not an available public camera source. No new routes, packages, or storage exist yet.
+
+## Built baseline
+
 **Status:** Block Ops is selected. Phase 1 chose a dependency-free Node.js 20+ server and native browser modules. The app runs locally on 127.0.0.1; no deployment is planned in this batch.
 
 ## Active Block Ops design

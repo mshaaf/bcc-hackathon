@@ -1,5 +1,7 @@
 # Block Ops worktable design
 
+**Baseline reference, not the final approved design.** The user questioned the product experience after the UI repair. Continue with [the handoff](docs/HANDOFF.md) and revision R1. Keep source fidelity and accessibility; the three-step layout below may change for map/campaign work. A new styling pass alone does not satisfy the scope concern.
+
 ## Direction
 
 An operating worktable for a group preparing its next move. Preserve the established plum/sunflower identity. Replace the long simultaneous form with a deliberate three-step task: review history, plan the next move, open the brief. This is an application surface, not a marketing landing page.

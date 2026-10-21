@@ -1,5 +1,7 @@
 # Conditional project specifications
 
+**Current continuation:** Block Ops remains selected. Its profile documents the built baseline; [the Claude / Luna handoff](../HANDOFF.md) records the proposed campaign revision and R1–R5 batches. Do not treat historical finalist profiles as additional active work.
+
 **Active profile: [Block Ops](block-ops.md), selected by the user October 21, 2026.** The other profiles are retained as research alternatives. Shared requirements, data/privacy constraints, source discipline, and performance/accessibility targets are in [the foundation specification](../SPECIFICATION.md).
 
 | Track | Project | Profile |

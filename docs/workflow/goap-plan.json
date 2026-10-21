@@ -58,5 +58,24 @@
   "remote_publication": "not performed",
   "current_state": 63,
   "status": "workspace goal achieved",
-  "product_execution": "Luna phases 1\u20133 complete; user-requested audit and UI repair contributed to phases 4\u20135; Phase 4 remains next"
+  "product_execution": "Baseline phases 1–3 complete; old phases 4–5 partially implemented. Documentation handoff prepared; revision R1 is next; no revised implementation.",
+  "scope_revision": {
+    "date": "2026-10-21",
+    "handoff": "docs/HANDOFF.md",
+    "current_baseline_commit": "687582a",
+    "request_scope": "documentation handoff only",
+    "planning_direction": "map-centered resident-led neighborhood improvement campaigns; optional crime context",
+    "direction_status": "campaign recommendation; final scenario and detailed contract unresolved in R1",
+    "implementation_status": "revision not started",
+    "next_batch": "R1",
+    "revision_phases": {
+      "R1": "Not started",
+      "R2": "Not started",
+      "R3": "Not started",
+      "R4": "Not started",
+      "R5": "Not started"
+    },
+    "legacy_next_phase": 4,
+    "account_usage": "user conserving five-hour account window; exact remaining allowance unknown"
+  }
 }

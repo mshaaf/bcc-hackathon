@@ -69,7 +69,7 @@
     "findings": [],
     "method": "local pattern check and context review; no Ruflo service called"
   },
-  "scope": "workspace and previews only; product not implemented",
+  "scope": "Top-level setup/preview fields are historical; later product evidence is in ui_repair and campaign_handoff",
   "import_verification": "all 26 destinations verified against recorded destination hashes; source-preserving changes recorded in import manifest",
   "git_checks": {
     "staged_whitespace": "passed",
@@ -125,5 +125,31 @@
     "phase_4": "in progress",
     "phase_5": "in progress",
     "push": "not performed"
+  },
+  "campaign_handoff": {
+    "checked_date": "2026-10-21",
+    "status": "passed",
+    "baseline_commit": "687582a",
+    "current_test_rerun": {
+      "command": "node --test",
+      "passed": 23,
+      "failed": 0
+    },
+    "application_changes": false,
+    "dependencies_added": false,
+    "map_or_campaign_implemented": false,
+    "next_revision_batch": "R1",
+    "prior_browser_evidence": "docs/ui-review/; not rerun in this documentation-only batch",
+    "source_aggregate_evidence": "research/evidence/campaign-feasibility-2026-10-21.json",
+    "publication_performed": false,
+    "markdown_files_checked": 50,
+    "relative_links_checked": 406,
+    "json_files_parsed": 12,
+    "broken_links": [],
+    "workstation_paths": [],
+    "application_source_diff": "none",
+    "credential_pattern_findings": [],
+    "revision_state_consistency": "passed; R1 is next",
+    "whitespace_check": "passed"
   }
 }

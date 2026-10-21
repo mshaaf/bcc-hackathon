@@ -2,7 +2,7 @@
 
 ## Objective
 
-**Selected project:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. The active [Block Ops profile](specs/block-ops.md) governs implementation; other finalists remain research history.
+**Selected project:** Block Ops, Track 3 — Community Development, explicitly chosen October 21, 2026. The user rejected the form/brief-centered implementation and welcomed a map-centered revision. Resident-led neighborhood improvement campaigns are the latest recommendation; R1 must settle the first scenario and revised contract. The [handoff](HANDOFF.md) governs continuation; the [Block Ops profile](specs/block-ops.md) preserves the built baseline. Other finalists remain research history.
 
 Build one memorable, functioning hackathon entry that fits a BCC track, serves a concrete need in Black communities, and can be finished by two strong generalist engineers in three days.
 
@@ -28,7 +28,7 @@ The full supplied framing and deeper problem research are retained in `research/
 
 ## Team and product constraints
 
-Two engineers; broad technical capability; no assumed healthcare, court, employer, or government system access. No production stack or budget has been selected. All six finalists must remain small enough to work without privileged integrations.
+Two engineers; broad technical capability; no assumed healthcare, court, employer, or government system access. The baseline uses Node.js 20+ and native browser modules. No map/model provider or paid-service budget has been selected for the revision. All six finalists must remain small enough to work without privileged integrations.
 
 One main workflow should accept input, let the user inspect and correct evidence, and produce an output they can use. The demo should expose the engineering by opening sources and changing the output, not depend on a narrated claim that work happened elsewhere.
 

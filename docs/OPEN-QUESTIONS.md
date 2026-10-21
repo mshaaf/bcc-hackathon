@@ -1,22 +1,23 @@
 # Open questions
 
-These are decision records, not requests for another approval round.
+Use [HANDOFF.md](HANDOFF.md) for complete current context. These are decision records, not an instruction to ask the user every question before making useful progress.
 
-## Before application implementation
+## R1 — material scope and feasibility
 
-**Resolved:** the user selected Block Ops / Community Development. The initial scope is Ward 8 / Illegal Dumping, and the judge rejects an unrelated candidate report before opening the changed brief. Do not ask for project selection again.
+1. **Which first campaign and service category?** A poorly lit walk to a community center is illustrative. The current app queries dumping. Prove the selected category and location with actual data before committing to the stage story. Block Ops / Track 3 is already selected.
+2. **What is the consequential judge action?** Choose relevant evidence or a next task, then show an actual campaign change, persistence, and follow-up. A map-only tour or checkbox/PDF reveal is insufficient.
+3. **What survives reload?** Define a single-operator local save for campaign metadata, reviewed evidence, observations, task owners/dates, and follow-up. Multi-device sharing is not assumed. Builder chooses the smallest suitable mechanism and recovery behavior.
+4. **Is AI or photo input necessary for this slice?** Neither is implemented or required by the current proposal. Only add when it improves the campaign and its provider/access/failure path is proven. No model key is assumed.
 
-1. **What exact technical plan implements the scope?** Luna resolves the familiar stack, files/interfaces, input limits, and commands in Phase 1. No paid service or model dependency is assumed.
-2. **Can the source path be reproduced?** Phase 2 verifies the bounded data load, original field preservation, explainable grouping, and labeled fallback.
-3. **Which final demo records will be used?** Keep real source evidence separate from clearly fictional resident observations. Select the stage fixture during implementation.
+Routine map-library, module, storage and CSP decisions belong to the builder. Record concrete choices and their costs/limits. Do not repeat the broad finalist research or wait for a new Citizen account to establish that maps/alerts/history already overlap.
 
 ## Before final presentation and submission
 
-- Confirm the published submission clock, presentation duration, and on-site schedule. The researched 3 p.m. schedule wording was inconsistent.
-- Verify any rules about pre-existing work, third-party services, AI assistance, and licensing against the actual event rules. No interpretation is assumed here.
-- If possible, get feedback from one relevant community member or practitioner. Do not imply interviews occurred if they did not.
-- Decide what measured result can honestly be claimed. A working packet is demonstrable; improved health, fairness, or city responsiveness has not been measured.
+- Recheck the official deadline, presentation duration, on-site schedule and rules for pre-existing work, AI assistance and third-party services. Prior date research remains dated evidence, not a fresh check.
+- Select real public source evidence and clearly label fictional stage observations, planned tasks, and any simulated follow-up. A ticket closure cannot stand in for a checked physical change.
+- Get actual community feedback if available and authorized; do not imply interviews or partnerships occurred.
+- Define what was demonstrated: accurate data linkage, coherent saved campaign, changed output, recovery, and readable stage interaction. Reduced crime or improved agency response has not been measured.
 
-## Before a wider launch
+## Beyond the hackathon
 
-Real-user data handling, retention, consent, professional review, support, and license need deliberate decisions. They are outside this hackathon planning package.
+Shared accounts/permissions, synchronization, real-user retention/consent, operations, support, and license need explicit decisions before a wider launch. No camera-data access or government write integration has been established.

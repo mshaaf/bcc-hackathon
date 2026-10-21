@@ -1,6 +1,6 @@
 # Specification: BCC hackathon project foundation
 
-**Phase:** SPARC specification. **Status:** foundation baseline complete; Block Ops selected by the user October 21, 2026. Its profile is active; the other five remain research alternatives. The Phase 1 plan, Phase 2 data proof, and Phase 3 MVP are complete; Phase 4 reliability work is next.
+**Phase:** SPARC specification. **Status:** foundation and Block Ops baseline phases 1–3 are complete. The user rejected the form/brief experience as the final product; a map/campaign revision is proposed. Read [HANDOFF.md](HANDOFF.md); R1 is next. The requirements below remain baseline constraints until the revised profile is written. No map, campaign persistence, crime integration, or model has been implemented. The other five projects remain historical alternatives.
 
 ## Requirements
 

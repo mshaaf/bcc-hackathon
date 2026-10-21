@@ -2,7 +2,17 @@
 
 This is a proposed three-minute format, not a verified event presentation limit. Recheck the actual format before final rehearsal.
 
-## Active presentation: Block Ops
+## Proposed revised presentation: Block Ops campaigns
+
+The user rejected the existing checkbox/form reveal as insufficient. The current presentation proposal is a neighborhood improvement campaign on a real map; R1 must settle a coherent, source-supported scenario. See [HANDOFF.md](HANDOFF.md). This presentation is not implemented or rehearsed.
+
+1. Establish a specific group objective and location. Show real dated service evidence and optional reported-crime context with accurate freshness/precision labels.
+2. Have the judge choose relevant evidence or a next task. The campaign's map/history and owner/date plan update from that actual choice.
+3. Save and reload the case, inspect the current request and sources, and demonstrate a clearly labeled follow-up observation. Distinguish group progress from an agency's ticket status or a verified physical change.
+
+A lighting walk to a community center is an illustrative scenario, not a verified case. Current app data is dumping; prove a lighting data path before using that example. Maps alone and AI alerts overlap Citizen. Demonstrate sustained resident-owned work. Keep the brief as a supporting artifact, rather than the main reveal.
+
+## Baseline presentation — historical
 
 **Opening:** “We have several ticket numbers and a meeting tomorrow. Help us make the history clear.”
 

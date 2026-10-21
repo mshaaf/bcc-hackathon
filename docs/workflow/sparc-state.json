@@ -17,7 +17,7 @@
   ],
   "acceptance_status": {
     "workspace": "passed checks recorded in docs/workflow/verification.json",
-    "application": "MVP implemented; 23 automated checks and browser/export checks passed; remaining phase acceptance open"
+    "application": "Baseline app: 23 tests passed; proposed map/campaign revision unbuilt and unvalidated"
   },
   "requested_methods": [
     "sparc-spec",
@@ -27,7 +27,7 @@
   "remote_memory_written": false,
   "primary_track": "Community Development",
   "active_profile": "docs/specs/block-ops.md",
-  "next_delivery_phase": 4,
+  "next_delivery_phase": "R1",
   "completed_delivery_phases": [
     0,
     1,
@@ -37,5 +37,24 @@
   "in_progress_delivery_phases": [
     4,
     5
-  ]
+  ],
+  "scope_revision": {
+    "date": "2026-10-21",
+    "handoff": "docs/HANDOFF.md",
+    "current_baseline_commit": "687582a",
+    "request_scope": "documentation handoff only",
+    "planning_direction": "map-centered resident-led neighborhood improvement campaigns; optional crime context",
+    "direction_status": "campaign recommendation; final scenario and detailed contract unresolved in R1",
+    "implementation_status": "revision not started",
+    "next_batch": "R1",
+    "revision_phases": {
+      "R1": "Not started",
+      "R2": "Not started",
+      "R3": "Not started",
+      "R4": "Not started",
+      "R5": "Not started"
+    },
+    "legacy_next_phase": 4,
+    "account_usage": "user conserving five-hour account window; exact remaining allowance unknown"
+  }
 }

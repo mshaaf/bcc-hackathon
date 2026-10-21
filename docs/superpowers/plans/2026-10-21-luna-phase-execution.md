@@ -1,16 +1,18 @@
 # Luna Phase Execution Implementation Plan
 
+**Baseline plan only.** Current continuation is [HANDOFF.md](../../HANDOFF.md), revision R1–R5. The user rejected the implemented form/brief experience after phases 1–3 and UI repair. Do not automatically resume old Phase 4 from this file. Preserve the historical checklists; the canonical current ledger is [PHASE-STATUS.md](../../PHASE-STATUS.md).
+
 > **For agentic workers:** Execute this plan in the user's Luna terminal. Use `superpowers:executing-plans` if available; the local phase protocol and checklists below remain sufficient when that skill is absent. Steps use checkbox syntax. Do not require an orchestration service or spawn other agents by default.
 
 **Goal:** Let the user request an exact range or number of phases and receive a verified, resumable increment of one hackathon product.
 
 **Architecture:** Use the existing documents as context and one phase ledger as the execution record. Phase 1 resolves the project-specific stack, files, interfaces, and commands; later phases implement that concrete plan in dependency order. Keep research, source evidence, review state, and export responsibilities distinct.
 
-**Tech Stack:** Not selected. Phase 1 chooses the team's familiar stack, records the decision, and defines real commands before product dependencies or scaffolding are introduced. This phase plan itself is Markdown and needs no runtime.
+**Baseline stack:** Phase 1 selected Node.js 20+ and native browser modules, with no package dependencies. The revision has not selected or installed a map library, storage mechanism, or model provider.
 
 **Spec:** [Foundation specification](../../SPECIFICATION.md), [conditional profiles](../../specs/README.md), and [current decisions](../../DECISIONS.md).
 
-**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Phases 1–3 are complete; Phase 4 is next.
+**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Baseline phases 1–3 are complete; revision R1 in the handoff is next.
 
 ## Global constraints
 

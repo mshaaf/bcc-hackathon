@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-21 — Claude handoff and campaign revision proposal
+
+- Added a detailed built-versus-proposed handoff, source/competitor findings, code map, reuse constraints, R1–R5 batches, acceptance checks, and copy/paste prompts.
+- Expanded CLAUDE.md and corrected stale instructions that would send another agent back to form/brief polish. Retained historical baseline phases and research.
+- Saved aggregate MPD feasibility evidence and Citizen/Flock limitations without raw incident records.
+- Reran the unchanged app baseline: 23/23 tests passed. Documentation-only work; no dependencies, map, campaign implementation, or publication added.
+
 ## 2026-10-21 — MVP audit and interface repair
 
 - Investigated Luna's completed phases and verified the 17-test baseline.

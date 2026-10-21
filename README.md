@@ -1,15 +1,15 @@
 # BCC Hackathon 2026
 
-Block Ops: a neighborhood worktable that turns reviewed service-request history and resident observations into a group brief and next-step plan.
+Block Ops — Track 3, Community Development. **Current planning direction:** a map-centered workspace for resident-led neighborhood improvement campaigns. The final scenario and detailed revised scope remain to be settled in R1.
 
-**Selected by the user: Block Ops, Track 3 — Community Development.** Phases 1–3 are complete. The current app has a three-step worktable, inspectable full addresses, a changing evidence summary, and a dedicated printable brief. Targeted reliability fixes and visual work are in progress under Phases 4–5; see the ledger. The six original concept previews remain historical reference material.
+**What actually runs:** a DC 311 review → plan → brief app, completed through baseline phases 1–3 with additional reliability/UI repairs. The user rejected that experience as the final hackathon presentation. Maps, crime integration, saved campaigns, and AI are not implemented. Start with the [Claude / Luna handoff](docs/HANDOFF.md); revision batch **R1** is next. The earlier concept previews are historical reference material.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Start here
 
-1. [Block Ops specification](docs/specs/block-ops.md): the active user, workflow, output, and acceptance criteria.
-2. [Luna phase plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase status](docs/PHASE-STATUS.md): phases 1–3 are complete; Phase 4 is next.
+1. [Detailed Claude / Luna handoff](docs/HANDOFF.md): actual code, scope proposal, source evidence, revision phases R1–R5, and copy/paste prompts. [CLAUDE.md](CLAUDE.md) is the concise entry point.
+2. [Phase status](docs/PHASE-STATUS.md): baseline phases 1–3 are complete; revision R1 is next. [Block Ops specification](docs/specs/block-ops.md) distinguishes the baseline contract from the revision proposal.
 3. [Decision log](docs/DECISIONS.md): confirmed choice, initial scope, and remaining technical decisions.
 4. [Project brief](docs/PROJECT-BRIEF.md): event, team, constraints, and success criteria.
 5. Run the current app with `node server.mjs` and open `http://127.0.0.1:8000`. The [six concept previews](previews/finalists.html) are the earlier comparison, not the implemented app.
@@ -27,7 +27,7 @@ Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Build handoff
 
-- **Start implementation here:** [Luna phase plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) and [current phase status](docs/PHASE-STATUS.md). Phase 0 is done; phases 1–6 cover selection through the release package. The plan includes copy/paste batch prompts.
+- **Start the next session here:** [detailed handoff](docs/HANDOFF.md) and [current phase status](docs/PHASE-STATUS.md). Revision phases R1–R5 replace automatic continuation of baseline phases 4–6. The [old Luna plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) is retained for baseline history.
 - [Specification](docs/SPECIFICATION.md) and [six conditional project specifications](docs/specs/README.md).
 - [Goal plan](docs/GOAL-PLAN.md), [three-day implementation plan](docs/IMPLEMENTATION-PLAN.md), and [proposed architecture](docs/ARCHITECTURE.md).
 - [Test plan and preview verification](docs/TEST-PLAN.md).
@@ -61,8 +61,8 @@ node server.mjs
 
 Open `http://127.0.0.1:8000`. **Practice case** uses clearly fictional offline data; **Live DC records** requests a bounded Ward 8 / Illegal Dumping snapshot from the official source. Review the history, use the selected records, plan the group's request and tasks, then open the brief. The app keeps drafts in memory and exports the current reviewed state as Markdown; use the print dialog to save a PDF.
 
-Current visual rules are in [DESIGN.md](DESIGN.md), with [product context](PRODUCT.md) and [review screenshots](docs/ui-review/README.md). Changing source or candidate street starts a fresh observation; a failed refresh preserves the current draft.
+Baseline visual rules are in [DESIGN.md](DESIGN.md), with [product context](PRODUCT.md) and [review screenshots](docs/ui-review/README.md). They document the current app; the user did not approve this as the final presentation experience. See the handoff for the proposed revision. Changing source or candidate street starts a fresh observation; a failed refresh preserves the current draft.
 
 Run the checks with `node --test`. Reproduce the live data proof with `node scripts/prove-data.mjs` (requires network access).
 
-See [the active Block Ops specification](docs/specs/block-ops.md), [architecture](docs/ARCHITECTURE.md), [implementation plan](docs/IMPLEMENTATION-PLAN.md), and [verification evidence](docs/TEST-PLAN.md). The app does not submit tickets or establish whether a reported condition remains present.
+See [the baseline Block Ops specification](docs/specs/block-ops.md), [architecture](docs/ARCHITECTURE.md), [implementation plan](docs/IMPLEMENTATION-PLAN.md), and [verification evidence](docs/TEST-PLAN.md). The app does not submit tickets or establish whether a reported condition remains present.

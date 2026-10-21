@@ -1,5 +1,13 @@
 # Decision log
 
+## Latest continuation — October 21
+
+The user rejected the current form/brief experience, welcomed real maps and public crime-data exploration, and challenged overlap with Citizen. The assistant recommended resident-led improvement campaigns with a map, source-linked evidence, owned follow-ups, and saved progress; crime would be optional context. This is the current proposal, not blanket approval of a final scenario, AI provider, library, or every feature.
+
+The latest user request authorizes **documentation and a detailed Claude handoff**, with account usage conservation. That handoff is complete in [HANDOFF.md](HANDOFF.md); **R1** is the next revision batch. No revised product code or dependency was added. Baseline phases 1–3 and the audited app at `687582a` remain valid history. Do not resume old Phase 4 polish as the next step.
+
+The decision table and confirmed scope below describe the original baseline unless explicitly stated otherwise. The project/track choice remains confirmed. New API access, crime-data caveats, Flock limitations, Citizen overlap, and pending builder decisions are documented in the handoff and [feasibility evidence](../research/evidence/campaign-feasibility-2026-10-21.json).
+
 Updated October 21, 2026. Use this file for current status when older reports disagree.
 
 | Decision | Status | Rationale |

@@ -33,7 +33,7 @@
       "note": "Observed in current setup; not a Ruflo service event."
     }
   ],
-  "product_work": "Phases 1\u20133 complete; targeted reliability and UI work recorded in docs/PHASE-STATUS.md",
+  "product_work": "Baseline app and UI-repair history retained; detailed Claude handoff prepared for a proposed map/campaign revision",
   "commit": "Initial local documentation commit; git log is authoritative",
   "push": "not performed",
   "setup_status": "complete",
@@ -43,7 +43,27 @@
     "date": "2026-10-21",
     "basis": "explicit user instruction",
     "next_delivery_phase": 1,
-    "product_implementation_started": false
+    "product_implementation_started": false,
+    "record_kind": "historical original-selection snapshot; current continuation is in scope_revision"
   },
-  "current_delivery_phase": 4
+  "current_delivery_phase": "R1",
+  "scope_revision": {
+    "date": "2026-10-21",
+    "handoff": "docs/HANDOFF.md",
+    "current_baseline_commit": "687582a",
+    "request_scope": "documentation handoff only",
+    "planning_direction": "map-centered resident-led neighborhood improvement campaigns; optional crime context",
+    "direction_status": "campaign recommendation; final scenario and detailed contract unresolved in R1",
+    "implementation_status": "revision not started",
+    "next_batch": "R1",
+    "revision_phases": {
+      "R1": "Not started",
+      "R2": "Not started",
+      "R3": "Not started",
+      "R4": "Not started",
+      "R5": "Not started"
+    },
+    "legacy_next_phase": 4,
+    "account_usage": "user conserving five-hour account window; exact remaining allowance unknown"
+  }
 }

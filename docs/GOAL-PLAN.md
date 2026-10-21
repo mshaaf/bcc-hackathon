@@ -1,5 +1,7 @@
 # Goal-oriented plan
 
+**Current continuation:** workspace setup is complete and the baseline app exists. The user now requested a documentation handoff for a proposed map/campaign revision while conserving account usage. Use [HANDOFF.md](HANDOFF.md) and R1–R5 in [PHASE-STATUS.md](PHASE-STATUS.md). The setup action graph and original milestones below remain historical; no revised implementation is complete.
+
 ## Goal and success state
 
 **Current objective:** turn the existing hackathon research into a portable, connected project workspace containing the full evidence, honest current decision, product specifications, and execution handoff.

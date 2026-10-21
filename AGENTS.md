@@ -4,16 +4,18 @@
 
 This is a two-person BCC hackathon workspace. The user selected **Block Ops, Track 3 — Community Development**, on October 21, 2026. Read `README.md`, `docs/DECISIONS.md`, and `docs/specs/block-ops.md` before implementing changes. Consult `docs/FINALISTS.md` for the earlier comparison and product picture. Do not reopen project selection without the user's direction.
 
-The user chose a Luna terminal for implementation in numbered phase batches. Phases 1–3 are complete. The user then requested investigation and a stronger UI; targeted Phase 4 fixes and Phase 5 interface work are recorded in the ledger. Block Ops is the active scope; the other finalist profiles are historical alternatives. Follow requested batch boundaries for subsequent work.
+The current continuation entry point is `docs/HANDOFF.md`, also linked from `CLAUDE.md`. Baseline phases 1–3 are complete; targeted Phase 4 fixes and Phase 5 visual work exist. The user subsequently rejected the form/brief experience as the final product and welcomed a map-centered direction. Resident-led improvement campaigns are the latest recommendation; the final scenario and detailed scope need R1. Do not treat the existing UI or every proposed feature as user-approved.
 
-For frontend work, read `PRODUCT.md` and `DESIGN.md`. Preserve the current review → plan → brief sequence and source fidelity; do not regress to displaying the entire editor and artifact at once.
+The latest task authorized a detailed documentation handoff for Claude while conserving account usage. No revised product implementation was requested in that batch. Claude and Luna can use revision phases R1–R5 in the handoff; R1 is next. The other finalists remain historical alternatives.
+
+For frontend work, read `PRODUCT.md` and `DESIGN.md` as baseline context. Preserve source fidelity, useful existing behavior, and accessibility. The map/campaign workflow may replace the three-step layout; that layout is no longer a permanent design requirement.
 
 ## Phased implementation
 
-- The user will execute work in a Luna terminal by numbered phase ranges or counts. Follow `docs/superpowers/plans/2026-10-21-luna-phase-execution.md` and use `docs/PHASE-STATUS.md` as the canonical execution ledger.
-- Phase 0 is completed research/setup. Product phases 1–6 are scope, technical proof, working MVP, reliability, polish, and presentation/release preparation.
-- Read only the selected profile and needed context; the archive is not required reading for every batch.
-- An instruction naming the project supplies the selection for Phase 1. Resolve routine stack and implementation details using judgment; record significant choices.
+- Follow the user's requested phase range or count. Use revision phases **R1–R5** in `docs/HANDOFF.md` and `docs/PHASE-STATUS.md` as the canonical current ledger. The earlier Luna phases 0–6 remain baseline history; do not silently resume old Phase 4.
+- Baseline phases 0–6 remain historical records. Revision phases R1–R5 cover rebaselining/proof, map/evidence, saved campaigns, reliability, and release preparation.
+- Read the handoff, current ledger, and only the relevant code/profile sections. Conserve the user's usage window; avoid repeated broad research, redundant checks, or default subagent dispatch.
+- Block Ops is already selected. Resolve routine implementation choices using judgment; record significant changes. R1 settles material revised-scope decisions and the first coherent campaign scenario.
 - Execute requested phases in order, repair issues within the phase, and continue within the authorized batch when checks pass. Do not ask for repeated approval after every phase.
 - Stop at the requested phase boundary or a genuine blocker. Keep blocked phases incomplete; do not skip them or invent passing results.
 - Update the ledger and actual verification evidence after each phase. Preserve unrelated work and use focused local commits. Publication and external submissions require authorization beyond the example local-only execution prompts.

@@ -1,5 +1,7 @@
 # Product
 
+**Continuation status:** this document describes the built baseline. The user rejected its form/brief-centered experience as the final hackathon product. The proposed next direction is a map-centered, resident-led improvement campaign; see [the handoff](docs/HANDOFF.md). Maps, crime context, saved campaigns, photo handling, and AI remain unbuilt. R1 settles the first scenario and revised contract.
+
 <!-- impeccable:product-schema 1 -->
 
 ## Platform

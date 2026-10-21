@@ -93,3 +93,12 @@ Measure actual counts and denominators. Do not report target accuracy as achieve
 ## Commands
 
 The concept preview can still be served separately with `python3 -m http.server 8000 --bind 127.0.0.1`; that command does not run the Block Ops app. Current app commands are listed above.
+
+## 2026-10-21 — Documentation handoff and proposed campaign revision
+
+- Re-inspected the current app/code, phase instructions, Git status and remote configuration. The working tree was clean before this batch; baseline commit was `687582a`.
+- Reran `node --test`: **23/23 passed**, zero failures. No application source, fixture, test, or dependency changed in the documentation handoff.
+- Prior browser screenshots, live loading, keyboard/mobile and sample PDF checks remain dated baseline evidence; they were not rerun in this batch.
+- Current continuation is revision R1 in [HANDOFF.md](HANDOFF.md) and [PHASE-STATUS.md](PHASE-STATUS.md). Baseline phases 1–3 are not evidence that maps, MPD integration, campaign persistence, photos, or AI work.
+- Read-only crime/competitor checks from the scope discussion are saved in [aggregate feasibility evidence](../research/evidence/campaign-feasibility-2026-10-21.json). The successful MPD aggregate query did not validate spatial matching, paged feature retrieval, map rendering, or a publication interval. No fresh external requests were needed for this documentation batch.
+- Documentation link/path/JSON and Git hygiene results are recorded in `docs/workflow/verification.json` under `campaign_handoff` after verification. Source research/preview imports remain historical and unchanged.

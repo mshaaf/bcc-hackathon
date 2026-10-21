@@ -1,5 +1,11 @@
 # BCC project selection — research synthesis
 
+## October 21 scope discussion update
+
+The implemented Block Ops baseline was rejected as the final presentation experience. The latest proposal is a map-centered resident improvement campaign, with service evidence, owned follow-ups and saved progress; crime is optional context. Continue from [HANDOFF.md](HANDOFF.md), R1. The recommendations below preserve earlier research reasoning and do not override this continuation.
+
+Read-only checks found public MPD crime metadata and a working aggregate query (2,112 rolling-feed records at that check; newest report October 20). Citizen's documented maps, history, organizational location monitoring and AI-assisted alerts mean maps + AI + team alerts are not evidence of differentiation. Flock camera searches require authorized access. Sources, limitations, and exact aggregate observations are in [feasibility evidence](../research/evidence/campaign-feasibility-2026-10-21.json). Feasibility of data access is demonstrated; campaign usefulness, competitive uniqueness, geospatial integration, and community demand remain unvalidated.
+
 ## Summary
 
 For two engineers with three build days and a preference for meaningful judge participation, **Block Ops was the strongest overall recommendation and is now the user's selected project** (October 21, 2026). **The Switch** and **Casebreaker** remain research alternatives. The six-finalist previews make the intended experience concrete, but do not validate demand, institutional outcomes, or winning odds.

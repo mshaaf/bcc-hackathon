@@ -1,8 +1,24 @@
 # Implementation phase ledger
 
-This is the canonical execution status for Luna batches. The [phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) defines deliverables and checks. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
+This is the canonical execution ledger for Claude/Luna batches. Current revision phases R1–R5 are defined in [HANDOFF.md](HANDOFF.md); baseline phases below preserve the old plan's history. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
 
-**Active project:** Block Ops — Track 3, Community Development; selected by the user October 21, 2026. **Next phase:** 4. **Executor:** Luna terminal.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R1. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+
+The user rejected the form/brief-centered baseline as the final experience. A map/campaign revision is proposed; no revised implementation is complete. The original numbered phases below remain history and are not the next execution instructions.
+
+## Revision ledger
+
+| Phase | Deliverable | Status |
+|---|---|---|
+| R1 | Scenario, real geospatial data proof, reviewable layout, revised specification/plan | Not started |
+| R2 | Real map, source layers/filters, evidence review and chronology | Not started |
+| R3 | Saved campaign, owner/date tasks, follow-up and current export | Not started |
+| R4 | Reliability, accessible interaction and stage layout | Not started |
+| R5 | Rehearsal and release/submission package | Not started |
+
+The documentation handoff is prepared. These R phases are proposed batch boundaries; detailed checks and prompts are in the handoff. Keep status evidence-based.
+
+## Baseline delivery history
 
 | Phase | Deliverable | Status | Evidence |
 |---|---|---|---|
@@ -14,7 +30,7 @@ This is the canonical execution status for Luna batches. The [phase plan](superp
 | 5 | Polished product and judge interaction | In progress | User requested an early UI correction: three-step worktable, full addresses, live summary, dedicated brief, and responsive/print checks delivered. Final stage rehearsal remains. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
 
-Use only **Not started**, **In progress**, **Blocked**, and **Complete**. A blocked phase remains the next unfinished phase until resolved; do not skip it or silently substitute another idea.
+Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; continuation is intentionally redirected to R1 by the scope discussion. For the active revision, do not skip an unfinished phase or silently substitute another idea.
 
 ## Update after every phase
 
@@ -27,6 +43,13 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — Claude documentation handoff and scope revision proposal
+
+- Inspected the current code, Git state, original phase plans, and stale continuation instructions. Existing app tests were rerun: 23/23 passed.
+- Added `docs/HANDOFF.md`, a concise `CLAUDE.md` entry point, R1–R5 batch boundaries, and dated aggregate source/competitor evidence. Updated current entry points and workflow state to distinguish the built baseline from the proposed map/campaign product.
+- The user authorized documentation only in this batch. No app code, dependencies, hosting, remote push, official submission, or outreach was changed. The account five-hour usage window was not treated as a project deadline or a known remaining allowance.
+- Next: R1 after the user directs the next work batch. No map/campaign implementation or new community validation is claimed.
 
 ### 2026-10-21 — User-requested UI investigation and repair
 

@@ -1,0 +1,44 @@
+{
+  "checked_date": "2026-10-21",
+  "scope": "Read-only source and competitor checks during the scope discussion; no product integration",
+  "crime": {
+    "rolling_layer": "https://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/MPD/FeatureServer/39",
+    "year_layer": "https://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/MPD/FeatureServer/41",
+    "dataset_documentation": "https://catalog.data.gov/dataset/crime-incidents-in-2026",
+    "aggregate_query": {
+      "layer": 39,
+      "where": "1=1",
+      "returnGeometry": false,
+      "outStatistics": [
+        {"statisticType": "count", "onStatisticField": "OBJECTID", "outStatisticFieldName": "record_count"},
+        {"statisticType": "max", "onStatisticField": "REPORT_DAT", "outStatisticFieldName": "latest_report"}
+      ],
+      "observed_result": {"RECORD_COUNT": 2112, "LATEST_REPORT": 1792537297000},
+      "latest_report_utc": "2026-10-20T23:01:37.000Z"
+    },
+    "limits": [
+      "Aggregate query covered the full rolling feed, not Ward 8",
+      "Locations anonymized to street blocks; some geometry may be unusable",
+      "No real-time publication guarantee or refresh cadence verified",
+      "No paged feature retrieval, map rendering, or app integration demonstrated"
+    ]
+  },
+  "citizen": {
+    "sources": [
+      "https://global.citizen.com/",
+      "https://support.citizen.com/hc/en-us/articles/30408014010007-What-is-Citizen-Premium",
+      "https://business.citizen.com/changelog"
+    ],
+    "documented_overlap": ["incident maps", "alerts", "live video", "historical incidents", "location monitoring", "incident prioritization", "AI-assisted organizational alerts"],
+    "method": "Public product/help documentation; paid app not independently exercised",
+    "interpretation": "Maps plus AI and team alerts are insufficient evidence of differentiation; resident campaign value remains a hypothesis"
+  },
+  "flock": {
+    "sources": ["https://www.flocksafety.com/products/license-plate-readers", "https://www.flocksafety.com/trust/data-privacy"],
+    "finding": "Vehicle-evidence searches require authorized access; no open camera-data integration established"
+  },
+  "product_code_changed": false,
+  "raw_incident_records_saved": false,
+  "camera_access_obtained": false,
+  "community_demand_validated": false
+}

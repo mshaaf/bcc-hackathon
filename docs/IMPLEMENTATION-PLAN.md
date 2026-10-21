@@ -1,5 +1,7 @@
 # Three-day implementation plan
 
+**Continuation notice:** this is the baseline implementation plan, retained as history. The user subsequently rejected its form/brief experience. Use [HANDOFF.md](HANDOFF.md), revision R1–R5, and [PHASE-STATUS.md](PHASE-STATUS.md) for the next batch. Baseline phases 1–3 are complete; their success is not map/campaign acceptance. No framework migration, map dependency, persistence, or crime layer has been implemented.
+
 **Status:** active for Block Ops, selected by the user October 21, 2026. Phase 1 finalized the concrete technical plan. Engineer A / Engineer B remain provisional work allocations, not named assignments.
 
 **Execution entry point:** use the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase ledger](PHASE-STATUS.md). The daily outline below remains the time budget, not a second competing phase system.
