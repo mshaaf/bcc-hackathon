@@ -1,5 +1,9 @@
 # Decision log
 
+## Latest clarification — application form factor
+
+The user explicitly confirmed that Block Ops should be an **application**, and that a refactor is not necessarily needed. Apply this to the current browser-based implementation: connected community, mission, map and task screens with consistent navigation and responsive phone/desktop interaction. Keep the existing Node/native browser/Leaflet/Supabase stack and make focused changes in place. This clarification does not select a new framework, require a native rewrite or expand the feature scope. The four open B1 review defects still need repair before treating the shared foundation as finished.
+
 ## Latest execution direction — larger Sonnet batches
 
 The user selected **Sonnet 5.5 in Claude** for implementation and now explicitly wants larger outcome-based assignments, not a hand-back after every small work order. The label records their preference, not a verified API identifier or benchmark. Implement inline, without automatic subagents.

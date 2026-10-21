@@ -1,6 +1,8 @@
 # Product
 
-**Current target:** a community-first product where neighbors join, discuss, organize missions, claim jobs and post progress. The map and source brief support the group. See [community scope](docs/specs/community-missions.md). R1–R4 are implemented locally; the shared social slice is planned, not built. Earlier baseline notes below describe history.
+**Confirmed application form factor:** Block Ops is a browser-based application using its current stack. Community discussion, missions, map discovery and task details belong to one connected experience with consistent navigation and responsive phone/desktop layouts. Improve the existing implementation in place; no framework rewrite or broad refactor is required by this direction.
+
+**Current target:** a community-first product where neighbors join, discuss, organize missions, claim jobs and post progress. The map and source brief support the group. See [community scope](docs/specs/community-missions.md). R1–R4 and local B1 community discussion are implemented; shared missions/task commitments are not built and B1 review repairs remain open. Earlier baseline notes below describe history.
 
 **Continuation status:** this document describes the built baseline. The user rejected its form/brief-centered experience as the final hackathon product. The proposed next direction is a map-centered, resident-led improvement campaign; see [the handoff](docs/HANDOFF.md). Maps, crime context, saved campaigns, photo handling, and AI remain unbuilt. R1 settles the first scenario and revised contract.
 

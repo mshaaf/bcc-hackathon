@@ -1,5 +1,7 @@
 # Block Ops worktable design
 
+**Confirmed form factor:** treat Block Ops as one application. Use a persistent navigation shell, focused community/feed and mission/task screens, clear primary actions, back navigation and layouts suited to phone and desktop use. Preserve the existing identity and stack; refine current components and interactions in place. This direction does not call for a framework rewrite or broad code refactor.
+
 **Community-first revision:** the proposed landing surface is the group's feed and active missions; the mission page combines people, discussion, schedule, available jobs and updates. The existing map remains a discovery/evidence view. Show participants' actual commitments and distinguish plans, reported progress and checked conditions. See [the scope](docs/specs/community-missions.md); this is design direction, not implemented UI or approval of a new color system.
 
 **Baseline reference, not the final approved design.** The user questioned the product experience after the UI repair. Continue with [the handoff](docs/HANDOFF.md) and revision R1. Keep source fidelity and accessibility; the three-step layout below may change for map/campaign work. A new styling pass alone does not satisfy the scope concern.
