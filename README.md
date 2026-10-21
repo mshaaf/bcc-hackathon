@@ -1,5 +1,7 @@
 # BCC Hackathon 2026
 
+**Latest scope:** the user wants a community where neighbors discuss local concerns, join shared missions, claim jobs and post follow-ups. The existing map/campaign app is reusable but browser-local. Shared social features are not implemented. Start with [community-missions.md](docs/specs/community-missions.md), the [S1–S4 execution plan](docs/superpowers/plans/2026-10-21-community-missions.md), and the [current ledger](docs/PHASE-STATUS.md). R5 release work waits for that social slice. Supabase is a proposed provider, not configured infrastructure.
+
 Block Ops — Track 3, Community Development. **Current planning direction:** a map-centered workspace for resident-led neighborhood improvement campaigns. The final scenario and detailed revised scope remain to be settled in R1.
 
 **What actually runs:** a DC 311 review → plan → brief app, completed through baseline phases 1–3 with additional reliability/UI repairs. The user rejected that experience as the final hackathon presentation. The map workspace with saved campaigns (R2–R3) is the main page; crime integration and AI are not implemented. Start with the [Claude / Luna handoff](docs/HANDOFF.md); revision batches **R1–R4** are done (see [campaign revision spec](docs/specs/campaign-revision.md)); **R5** (freeze and release package) is next; the draft pitch is [docs/PITCH.md](docs/PITCH.md). The earlier concept previews are historical reference material.

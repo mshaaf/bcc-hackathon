@@ -1,5 +1,7 @@
 # Block Ops — 3-minute pitch (draft, finalized in R5)
 
+**Scope changed; this R4 script is historical.** The user now wants a community that joins and carries out shared missions. The new demo should show a real phone join, discussion, task commitment and cross-device update; see [community scope](specs/community-missions.md). Shared features remain unbuilt. Also, `reReportedKeys` currently compares report creation dates, so this script's “after closure” statistic is unsupported until S1 corrects the wording or verifies/uses closure dates. Do not rehearse the old number as a closure outcome.
+
 Pitch line: **"Closed isn't fixed."**
 
 Status: R4 draft. Numbers below were true on the live data at 2026-10-21 19:17Z (and in the saved recording). **Say whatever the stat line on screen says at the time**; do not recite these from memory. Re-time the script out loud before use and change anything that does not sound like the presenter.

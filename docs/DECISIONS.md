@@ -1,5 +1,13 @@
 # Decision log
 
+## Latest user instruction — community-first Block Ops
+
+Confirmed in the current conversation: people should gather like a Facebook group or group chat, agree to fix a local concern, participate and follow up. The product's central loop is **join community → discuss → start/join mission → claim work → post progress**. The map and evidence brief support that loop.
+
+The user requested the scope and plan adjustment. It is recorded in [community scope](specs/community-missions.md) and the [S1–S4 plan](superpowers/plans/2026-10-21-community-missions.md). Product implementation and provider provisioning are not performed in this task. One demo group, guest sessions and Supabase are builder proposals, not separately prescribed by the user. R1–R4 remain valid implementation history; S1 is next and R5 release waits for S1–S4.
+
+The user also explicitly requested a very simple TL;DR at the end of every assistant message. This preference is now in both agent entry files. Earlier continuation sections below remain historical and do not override this instruction.
+
 ## Latest continuation — October 21
 
 The user rejected the current form/brief experience, welcomed real maps and public crime-data exploration, and challenged overlap with Citizen. The assistant recommended resident-led improvement campaigns with a map, source-linked evidence, owned follow-ups, and saved progress; crime would be optional context. This is the current proposal, not blanket approval of a final scenario, AI provider, library, or every feature.

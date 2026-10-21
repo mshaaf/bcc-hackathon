@@ -151,5 +151,20 @@
     "credential_pattern_findings": [],
     "revision_state_consistency": "passed; R1 is next",
     "whitespace_check": "passed"
+  },
+  "community_scope_plan": {
+    "date": "2026-10-21",
+    "status": "passed documentation checks",
+    "documentation_files_checked": 13,
+    "relative_links_checked": 81,
+    "broken_links": [],
+    "product_code_changed": false,
+    "community_backend_tested": false,
+    "builder_review": "complete; three material gaps resolved",
+    "next_phase": "S1",
+    "product_tests": "not rerun: documentation only",
+    "deployment": "not performed",
+    "provider_setup": "not performed",
+    "direction_review_document": "preserved; remains untracked"
   }
 }

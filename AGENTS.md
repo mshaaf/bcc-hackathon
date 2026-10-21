@@ -4,23 +4,25 @@
 
 This is a two-person BCC hackathon workspace. The user selected **Block Ops, Track 3 — Community Development**, on October 21, 2026. Read `README.md`, `docs/DECISIONS.md`, and `docs/specs/block-ops.md` before implementing changes. Consult `docs/FINALISTS.md` for the earlier comparison and product picture. Do not reopen project selection without the user's direction.
 
-The current continuation entry point is `docs/HANDOFF.md`, also linked from `CLAUDE.md`. Baseline phases 1–3 are complete; targeted Phase 4 fixes and Phase 5 visual work exist. The user subsequently rejected the form/brief experience as the final product and welcomed a map-centered direction. Resident-led improvement campaigns are the latest recommendation; the final scenario and detailed scope need R1. Do not treat the existing UI or every proposed feature as user-approved.
+The user now explicitly wants community participation like a Facebook group/group chat: neighbors gather, agree on a plan, claim jobs and post progress. The map/evidence/brief support that social workflow. Read `docs/specs/community-missions.md` and `docs/superpowers/plans/2026-10-21-community-missions.md` first. R1–R4 have been implemented; they are a single-operator map/local-campaign baseline. Shared community features are unbuilt.
 
-The latest task authorized a detailed documentation handoff for Claude while conserving account usage. No revised product implementation was requested in that batch. Claude and Luna can use revision phases R1–R5 in the handoff; R1 is next. The other finalists remain historical alternatives.
+The latest request is a scope/plan revision, not an instruction to provision services or implement product code. Next proposed build batch is S1; S1–S4 precede the earlier R5 release phase. Supabase is a builder recommendation, not a user-selected or configured provider. Preserve existing local campaigns and other assistants' work, including the untracked `docs/DIRECTION-REVIEW.md`. The other finalists remain historical alternatives.
 
 For frontend work, read `PRODUCT.md` and `DESIGN.md` as baseline context. Preserve source fidelity, useful existing behavior, and accessibility. The map/campaign workflow may replace the three-step layout; that layout is no longer a permanent design requirement.
 
 ## Phased implementation
 
-- Follow the user's requested phase range or count. Use revision phases **R1–R5** in `docs/HANDOFF.md` and `docs/PHASE-STATUS.md` as the canonical current ledger. The earlier Luna phases 0–6 remain baseline history; do not silently resume old Phase 4.
-- Baseline phases 0–6 remain historical records. Revision phases R1–R5 cover rebaselining/proof, map/evidence, saved campaigns, reliability, and release preparation.
+- Follow the user's requested phase range or count. Use social phases **S1–S4** in `docs/superpowers/plans/2026-10-21-community-missions.md` and `docs/PHASE-STATUS.md`, then R5 for release. Earlier baseline/R phases preserve history; do not redo them or silently proceed to R5 before shared participation works.
+- R1–R4 delivered the map/local campaigns and recorded-data/recurrence presentation work. S1–S4 add shared identity/storage, community discussions, mission participation, and real-device readiness. Public deployment and actual provider access remain unproven.
 - Read the handoff, current ledger, and only the relevant code/profile sections. Conserve the user's usage window; avoid repeated broad research, redundant checks, or default subagent dispatch.
-- Block Ops is already selected. Resolve routine implementation choices using judgment; record significant changes. R1 settles material revised-scope decisions and the first coherent campaign scenario.
+- Block Ops is already selected and the community-first intent is confirmed. Resolve routine choices using judgment and record them as builder decisions. One link-join demonstration community and guest names are proposed defaults; do not imply verified residents or adoption.
 - Execute requested phases in order, repair issues within the phase, and continue within the authorized batch when checks pass. Do not ask for repeated approval after every phase.
 - Stop at the requested phase boundary or a genuine blocker. Keep blocked phases incomplete; do not skip them or invent passing results.
 - Update the ledger and actual verification evidence after each phase. Preserve unrelated work and use focused local commits. Publication and external submissions require authorization beyond the example local-only execution prompts.
 
 ## Work style
+
+- End **every** commentary and final message with a TL;DR in super-simple language, as explicitly requested by the user.
 
 - Deliver the smallest complete workflow that two engineers can finish in three build days, October 21–23. One project, one core user, one meaningful judge action, one inspectable output.
 - Keep useful existing work. Before editing, inspect the relevant files and the Git working tree. Do not overwrite unrelated user changes.

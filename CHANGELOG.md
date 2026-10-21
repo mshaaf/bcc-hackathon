@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-21 — Community-first scope and social delivery plan
+
+- Recorded the user's explicit group/community intent: join, discuss, organize a mission, claim tasks and post progress across devices.
+- Added a bounded social specification and S1–S4 plan with proposed shared backend, access rules, local publication preview, concurrency/retry checks and phone demo requirements.
+- Redirected current agent entry points and ledger from R5 to S1; preserved completed R1–R4 history and existing local campaigns. Added the requested super-simple TL;DR preference.
+- Planning only. No SDK, schema, provider project, hosting or product code created. The recurrence-date mismatch is recorded for correction during S1.
+
 ## 2026-10-21 — R4: "Closed isn't fixed"
 
 - New `lib/recurrence.mjs`: a closed report is re-reported if another non-duplicate, non-canceled report follows within 30 days and 150 m. Real result: 210 of 350 closed reports (60%); 26 spots with 5+ reports hold 56% of reports. The stat line, busy-spot shading and worst-first spot list show it; the rule's sensitivity (44% at 100 m, 79% at 250 m) is documented.

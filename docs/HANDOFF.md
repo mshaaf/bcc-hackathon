@@ -1,5 +1,13 @@
 # Block Ops — Claude / Luna handoff
 
+## Latest continuation — community participation
+
+The user explicitly wants neighbors to come together like a Facebook group/group chat, agree on a plan, take jobs and post progress. [Community scope](specs/community-missions.md) and the [S1–S4 plan](superpowers/plans/2026-10-21-community-missions.md) supersede earlier single-operator continuation instructions in this file. R1–R4 are implemented; shared community, membership, posts and claims are not. S1 is the next proposed build batch; R5 waits until the social slice works.
+
+Reuse the map, source handling, local campaign model and exports. Do not silently upload or overwrite local campaigns. Supabase Auth/Postgres/Realtime is a recommended new shared backend, subject to real access/setup proof; no provider/project or public hosting was configured by this planning task. The current recurrence code measures report-date proximity, so its “after closure” claims must be corrected before presenting. Keep prior phase evidence as history and preserve other assistants' files.
+
+The new plan contains identity/permission rules, public-sharing preview, task-claim concurrency, failure/retry behavior, two-device acceptance and next-phase prompts. Every assistant message must end with a super-simple TL;DR.
+
 Updated October 21, 2026. This is the next-session entry point. It supersedes the old form-first plan as a continuation instruction, while preserving its implementation and verification history. No campaign/map implementation was performed in the handoff batch.
 
 ## 1. Read this first

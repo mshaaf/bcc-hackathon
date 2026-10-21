@@ -10,8 +10,9 @@ Read [docs/HANDOFF.md](docs/HANDOFF.md), then [docs/PHASE-STATUS.md](docs/PHASE-
 
 - Block Ops / Track 3 is selected. Two engineers, three build days. The user wants meaningful judge participation and a convincing product; the current form/brief UI was rejected as the final experience.
 - Baseline phases 1–3 are complete; audited baseline commit is `687582a`. The app is now a map workspace over live DC 311 records with an evidence/plan/brief flow; campaigns are saved in the browser's localStorage (one operator, no sync).
-- **R1–R4 are complete** (see [docs/specs/campaign-revision.md](docs/specs/campaign-revision.md), sections 7–10, and [docs/PITCH.md](docs/PITCH.md)); next is **R5**, freeze and release package. Pitch line: "Closed isn't fixed." A resident-led campaign is the recommended direction; final scenario and detailed implementation choices remain open. Do not silently resume old Phase 4 styling.
-- The last request authorized a detailed documentation handoff only. Follow the user's next implementation instruction and requested R-phase boundary.
+- **R1–R4 are built as the local-campaign baseline. Next is proposed S1**, not R5. The user explicitly wants neighbors to gather like a group/group chat, discuss plans, claim work and post progress. Read [community scope](docs/specs/community-missions.md), [S1–S4 plan](docs/superpowers/plans/2026-10-21-community-missions.md), and the ledger. The current app cannot share campaigns across people. The old closure-based pitch has a confirmed date mismatch; S1 must correct the claim or calculation before reuse.
+- The latest request authorized a scope/plan revision, not product implementation or provisioning. Supabase is the proposed backend; access/setup and hosting are not confirmed. Follow the next user-authorized S-phase batch.
+- End every assistant message with a very simple TL;DR. Preserve the untracked DIRECTION-REVIEW document and unrelated edits.
 - The user is conserving account usage and moving some work to Claude. Keep context reads and checks focused; do not create agents or orchestration infrastructure by default.
 
 ## Current commands

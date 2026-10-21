@@ -4,9 +4,20 @@ This is the canonical execution ledger for Claude/Luna batches. Current revision
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R5. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next proposed build batch:** S1. The community-first scope/plan revision is prepared; shared social implementation has not started. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
-The user rejected the form/brief-centered baseline as the final experience. A map/campaign revision is proposed; no revised implementation is complete. The original numbered phases below remain history and are not the next execution instructions.
+The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task writes the plan only; shared features/provider setup remain unbuilt.
+
+## Social delivery ledger
+
+| Phase | Deliverable | Status |
+|---|---|---|
+| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | Not started |
+| S2 | Community joining, feed, posts and replies across devices | Not started |
+| S3 | Shared missions, task commitments and follow-ups | Not started |
+| S4 | Recovery, permissions, real phones and authorized deployment proof | Not started |
+
+R5 release/rehearsal follows the social slice; do not skip directly to R5. The existing R phase rows and historical evidence below are preserved.
 
 ## Revision ledger
 
@@ -34,7 +45,7 @@ R1 evidence and the R2–R3 specification: [campaign-revision.md](specs/campaign
 | 5 | Polished product and judge interaction | In progress | User requested an early UI correction: three-step worktable, full addresses, live summary, dedicated brief, and responsive/print checks delivered. Final stage rehearsal remains. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
 
-Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; continuation is intentionally redirected to R1 by the scope discussion. For the active revision, do not skip an unfinished phase or silently substitute another idea.
+Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; current continuation is intentionally redirected to S1 by the community-first instruction. For the active revision, do not skip an unfinished phase or silently substitute another idea.
 
 ## Update after every phase
 
@@ -47,6 +58,14 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — Community-first scope and execution plan
+
+- User explicitly requested real group participation: neighbors discuss a concern, agree on a plan, join work and post progress.
+- Added the community-missions specification and S1–S4 execution plan, preserving R1–R4 implementation history and deferring R5 release packaging until shared participation works.
+- Proposed a single demo community and Supabase Auth/Postgres/Realtime; provider access, project setup, dependencies and hosting remain unconfirmed/unconfigured. No product code or database changed.
+- Carried forward the confirmed recurrence-date mismatch as an S1 acceptance item. The old “after closure” pitch cannot be reused as-is. Preserved local campaign data and the untracked DIRECTION-REVIEW document.
+- This is planning work. New backend/browser/social checks are specified, not claimed as passed. Documentation checks are recorded after validation.
 
 ### 2026-10-21 — R4 complete; R5 next
 

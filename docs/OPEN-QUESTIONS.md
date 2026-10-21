@@ -1,5 +1,7 @@
 # Open questions
 
+**Latest scope:** community participation is confirmed. Use [community scope](specs/community-missions.md) and the [S1–S4 plan](superpowers/plans/2026-10-21-community-missions.md). Remaining material implementation prerequisites are actual shared-backend access, eventual public hosting, and recovery/identity expectations beyond guest sessions. Proposed default is one link-join demonstration group. These do not block writing the plan or preparing a local proof. Earlier R1 questions below are historical; do not reopen selected-project research.
+
 Use [HANDOFF.md](HANDOFF.md) for complete current context. These are decision records, not an instruction to ask the user every question before making useful progress.
 
 ## R1 — material scope and feasibility
