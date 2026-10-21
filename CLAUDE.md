@@ -28,9 +28,9 @@ Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed 
 
 ## Architecture and traps
 
-- `server.mjs`: explicit same-origin assets and GET-only fixed-source routes. New files/endpoints must be added deliberately. CSP currently blocks external map tiles/scripts/API origins.
+- `server.mjs`: explicit same-origin assets and GET-only fixed-source routes. New files/endpoints must be added deliberately. CSP allows only same-origin scripts/styles/connects plus `img-src https://maps2.dcgis.dc.gov` for basemap tiles; Leaflet is vendored.
 - `lib/block-ops.mjs`: 311 query, normalization, source links, review state, brief builders. `public/app.mjs`: native browser UI/state; no persistence. No package manifest or frontend framework exists.
-- 311 filter uses `WARD='Ward 8'`; coordinates/geometry are excluded. Current street grouping is not spatial matching. Rejects truncation above the bounded response; no pagination.
+- 311 filter uses `WARD='Ward 8'`; geometry is requested as WGS84 (`outSR=4326`, `geo`/`geoStatus` per record). Street grouping is still not spatial; `recordsWithin` is the proximity helper. Rejects truncation above the bounded response; no pagination.
 - `data/demo.json` is entirely invented, not a cached public source. Never attach official record links to fictional DEMO IDs.
 - Preserve source IDs/dates/statuses, unknowns, rejected-evidence exclusion, context clearing, failed-refresh recovery, safe text rendering, and export fidelity. Tests are in `test/`.
 - Crime source access was checked separately. It has approximate block locations and reporting lag. The app has no crime layer, Flock access, AI, map, campaigns, or saved cases yet.
