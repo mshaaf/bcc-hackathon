@@ -27,6 +27,7 @@ Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Build handoff
 
+- **Start implementation here:** [Luna phase plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) and [current phase status](docs/PHASE-STATUS.md). Phase 0 is done; phases 1–6 cover selection through the release package. The plan includes copy/paste batch prompts.
 - [Specification](docs/SPECIFICATION.md) and [six conditional project specifications](docs/specs/README.md).
 - [Goal plan](docs/GOAL-PLAN.md), [three-day implementation plan](docs/IMPLEMENTATION-PLAN.md), and [proposed architecture](docs/ARCHITECTURE.md).
 - [Test plan and preview verification](docs/TEST-PLAN.md).

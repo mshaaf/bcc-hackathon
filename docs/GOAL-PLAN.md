@@ -40,6 +40,8 @@ The current task does not require a remote publication. Configuring and checking
 
 ## Product plan after selection
 
+The milestones below are a summary. Numbered delivery boundaries are defined by the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md), with completion recorded in [the phase ledger](PHASE-STATUS.md).
+
 1. **Dependency spike:** precondition = chosen idea; effect = demonstrated core data/experiment/parser or a scoped fallback; cost = up to the first few focused hours of day one.
 2. **Complete the loop:** precondition = viable core; effect = input → review → changed export; cost = remaining day one.
 3. **Reliability and evidence:** precondition = complete loop; effect = source inspection, corrections, missing-state handling, repeatable fixtures; cost = day two.

@@ -11,6 +11,7 @@ Updated October 21, 2026. Use this file for current status when older reports di
 | Familiar problem plus a specific moment | Agreed design direction | Avoid generic tools and ideas that take too long to explain. |
 | Show final product and presentation before building | Confirmed by user | Six interactive concepts and pitch storyboards were prepared. |
 | Create this workspace and configure supplied GitHub remote | Authorized October 21 | Preserve research and create a concrete handoff. |
+| Luna terminal executes numbered phase batches | Confirmed by user October 21 | Use the phase plan and ledger; continue through requested phases when checks pass. |
 | Select Block Ops | Recommended, not selected | Strong balance of public data, local relevance, meaningful interaction, and feasible output. |
 | Select The Switch | Alternative, not selected | Stronger AI-specific spectacle; requires early experimental validation. |
 | Select Casebreaker | Alternative, not selected | Clear document discrepancy and useful packet; track story needs care. |

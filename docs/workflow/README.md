@@ -6,6 +6,7 @@ The user requested the Ruflo SPARC specification, research-synthesis, and goal-p
 - `goap-plan.json`: action inventory, costs, dependency states, and computed A* sequence for workspace setup.
 - `trajectory.json`: observed setup steps and their verification state.
 - `verification.json`: actual workspace check results.
+- [Implementation phase ledger](../PHASE-STATUS.md): current numbered delivery phase and batch history for the Luna terminal. Delivery phases are separate from SPARC's internal method numbering.
 
 Canonical human-readable content lives in `docs/SPECIFICATION.md`, `docs/RESEARCH-SYNTHESIS.md`, and `docs/GOAL-PLAN.md`. These files substitute for local continuity; they are not evidence that remote Ruflo memory or tasks were created. Do not duplicate or claim remote records without actually using that service.
 

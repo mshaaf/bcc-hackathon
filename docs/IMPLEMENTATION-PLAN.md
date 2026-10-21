@@ -2,6 +2,14 @@
 
 **Status:** ready to activate after selection. This plan does not mean an app has been built. Engineer A / Engineer B are provisional work allocations, not named assignments.
 
+**Execution entry point:** use the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase ledger](PHASE-STATUS.md). Phase 1 turns this high-level outline into exact tasks/files/interfaces for the selected project. The daily outline below remains the time budget, not a second competing phase system.
+
+| Day | Numbered phases | Expected result |
+|---|---|---|
+| 1 | 1: scope; 2: technical proof; 3: complete loop | A runnable MVP with a changed output |
+| 2 | 4: reliability; begin 5: polish | Trustworthy core and a clear judge interaction |
+| 3 | Finish 5; 6: presentation and release package | Rehearsed demo and submission materials |
+
 ## Before coding
 
 Record the selected project and one-sentence promise in `DECISIONS.md`. Activate its profile under `specs/`. Pick the team's familiar stack, a single demo scenario, and the simplest export. Recheck the event rules that affect eligibility and pre-existing work.

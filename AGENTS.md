@@ -4,7 +4,17 @@
 
 This is a two-person BCC hackathon workspace. Read `README.md`, `docs/DECISIONS.md`, and `docs/FINALISTS.md` before proposing or implementing changes. Research was gathered October 20–21, 2026. The product choice is still open; Block Ops is a recommendation, not an accepted decision.
 
-The current authorized work is research organization, specification, planning, and Git setup. A later user instruction to select or build a named project authorizes that work. Do not interpret mockups or an archived recommendation as a user selection.
+The current authorized work is research organization, specification, planning, Git setup, and a phased Luna implementation handoff. A later user instruction to select or build a named project authorizes that work. Do not interpret mockups or an archived recommendation as a user selection.
+
+## Phased implementation
+
+- The user will execute work in a Luna terminal by numbered phase ranges or counts. Follow `docs/superpowers/plans/2026-10-21-luna-phase-execution.md` and use `docs/PHASE-STATUS.md` as the canonical execution ledger.
+- Phase 0 is completed research/setup. Product phases 1–6 are scope, technical proof, working MVP, reliability, polish, and presentation/release preparation.
+- Read only the selected profile and needed context; the archive is not required reading for every batch.
+- An instruction naming the project supplies the selection for Phase 1. Resolve routine stack and implementation details using judgment; record significant choices.
+- Execute requested phases in order, repair issues within the phase, and continue within the authorized batch when checks pass. Do not ask for repeated approval after every phase.
+- Stop at the requested phase boundary or a genuine blocker. Keep blocked phases incomplete; do not skip them or invent passing results.
+- Update the ledger and actual verification evidence after each phase. Preserve unrelated work and use focused local commits. Publication and external submissions require authorization beyond the example local-only execution prompts.
 
 ## Work style
 
