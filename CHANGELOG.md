@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-21 — S1.1 review and context checkpoint
+
+- Independently checked S1.1: 87 tests passed; syntax and generated filing-date brief verified. Browser suite not rerun.
+- Saved a context-reset checkpoint and bundled Sonnet's next assignment into B1 (remaining S1 plus S2), a working shared community rather than separate tiny stops. Updated current entry points, ledger and tracking; retained historical plans.
+- Corrected an unsupported universal claim in the historical pitch. No app code, shared provider or publication changed.
+
 ## 2026-10-21 — S1.1: recurrence wording uses filing dates
 
 - Recurrence copy, caveat, brief export, legend, spot list and pitch now say "followed by another report within 30 days of filing" and disclose that closure dates are not used. Calculation, radii, windows and data unchanged. Regression covers a report filed before the earlier one closed.

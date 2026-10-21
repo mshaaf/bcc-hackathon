@@ -1,6 +1,6 @@
 # Block Ops — community missions scope
 
-Date: October 21, 2026. Status: planning deliverable; not implemented. The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
+Date: October 21, 2026. Status: shared community features specified but unbuilt; S1.1 report-date repair complete at `9f09667`. Next batch is B1 (remaining S1 plus S2). The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
 
 ## Purpose and product picture
 
@@ -85,7 +85,7 @@ Mission progress: planning → scheduled → in progress → follow-up → archi
 
 Show actual participant sessions joined, tasks claimed/completed and follow-up entries. Label judging participants/demo entries accurately. Never turn judge signup counts into claimed neighborhood adoption, fabricated cleanups, verified residency, or reduced dumping. This slice demonstrates coordination; downstream social impact remains to be measured.
 
-The existing recurrence headline has a confirmed date mismatch: `reReportedKeys` compares report creation dates, while copy says “after closure.” S1.1 keeps the existing creation-date algorithm and relabels it consistently as a report-date observation, with a regression for a later report filed before the earlier ticket closed. The current “60% after closure” story must not be reused unchanged.
+S1.1 corrected the recurrence headline at `9f09667`: `reReportedKeys` compares report creation dates, and current copy now describes filing dates rather than “after closure.” The original algorithm remains, with a regression for a later report filed before the earlier ticket closed. The current “60% after closure” story must not be reused unchanged.
 
 ## Acceptance criteria
 

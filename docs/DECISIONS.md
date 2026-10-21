@@ -1,22 +1,26 @@
 # Decision log
 
-## Latest executor choice — Sonnet
+## Latest execution direction — larger Sonnet batches
 
-The user selected **Sonnet 5.5 in Claude** to edit the code and requested plan refactoring and commits. The model name is their preference, not a verified API identifier or benchmark. Implementation is inline in that session, using bounded work orders S1.1–S4.2. S1.1 is next; it corrects report-date claims without requiring backend access. Current instructions: [Sonnet handoff](SONNET-HANDOFF.md) and [the social plan](superpowers/plans/2026-10-21-community-missions.md). The social scope is unchanged; this task only refactors/commits documentation.
+The user selected **Sonnet 5.5 in Claude** for implementation and now explicitly wants larger outcome-based assignments, not a hand-back after every small work order. The label records their preference, not a verified API identifier or benchmark. Implement inline, without automatic subagents.
+
+S1.1 is complete at `9f09667` and independently reviewed: 87 tests passed; generated brief wording inspected. **B1 (S1.2–S2.2)** is the next assignment: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Backend access is unconfirmed, not an established blocker until inspected.
+
+Current context and execution contract: [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md), and [detailed plan](superpowers/plans/2026-10-21-community-missions.md). This review/checkpoint task changes documentation only; the prepared assignment is for Sonnet's implementation session.
 
 ## Latest user instruction — community-first Block Ops
 
 Confirmed in the current conversation: people should gather like a Facebook group or group chat, agree to fix a local concern, participate and follow up. The product's central loop is **join community → discuss → start/join mission → claim work → post progress**. The map and evidence brief support that loop.
 
-The user requested the scope and plan adjustment. It is recorded in [community scope](specs/community-missions.md) and the [S1–S4 plan](superpowers/plans/2026-10-21-community-missions.md). Product implementation and provider provisioning are not performed in this task. One demo group, guest sessions and Supabase are builder proposals, not separately prescribed by the user. R1–R4 remain valid implementation history; S1 is next and R5 release waits for S1–S4.
+The user requested the scope and plan adjustment. It is recorded in [community scope](specs/community-missions.md) and the [S1–S4 plan](superpowers/plans/2026-10-21-community-missions.md). The original scope-planning task did not implement shared features or provision a provider. One demo group, guest sessions and Supabase are builder proposals, not separately prescribed by the user. R1–R4 remain valid implementation history; S1 is in progress with S1.1 complete; R5 release waits for the shared workflow.
 
 The user also explicitly requested a very simple TL;DR at the end of every assistant message. This preference is now in both agent entry files. Earlier continuation sections below remain historical and do not override this instruction.
 
-## Latest continuation — October 21
+## Historical continuation — before the map/community implementation
 
-The user rejected the current form/brief experience, welcomed real maps and public crime-data exploration, and challenged overlap with Citizen. The assistant recommended resident-led improvement campaigns with a map, source-linked evidence, owned follow-ups, and saved progress; crime would be optional context. This is the current proposal, not blanket approval of a final scenario, AI provider, library, or every feature.
+The user rejected the current form/brief experience, welcomed real maps and public crime-data exploration, and challenged overlap with Citizen. The assistant recommended resident-led improvement campaigns with a map, source-linked evidence, owned follow-ups, and saved progress; crime would be optional context. This was the proposal then, not blanket approval of a final scenario, AI provider, library, or every feature.
 
-The latest user request authorizes **documentation and a detailed Claude handoff**, with account usage conservation. That handoff is complete in [HANDOFF.md](HANDOFF.md); **R1** is the next revision batch. No revised product code or dependency was added. Baseline phases 1–3 and the audited app at `687582a` remain valid history. Do not resume old Phase 4 polish as the next step.
+At that earlier point, the user request authorized **documentation and a detailed Claude handoff**, with account usage conservation. That handoff is complete in [HANDOFF.md](HANDOFF.md); **R1** is the next revision batch. No revised product code or dependency was added. Baseline phases 1–3 and the audited app at `687582a` remain valid history. Do not resume old Phase 4 polish as the next step.
 
 The decision table and confirmed scope below describe the original baseline unless explicitly stated otherwise. The project/track choice remains confirmed. New API access, crime-data caveats, Flock limitations, Citizen overlap, and pending builder decisions are documented in the handoff and [feasibility evidence](../research/evidence/campaign-feasibility-2026-10-21.json).
 

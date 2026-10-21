@@ -4,13 +4,13 @@
 
 **Built:** R1–R4 provide a real Ward 8 / dumping map, source review, browser-local saved campaigns, tasks/follow-ups, exports and a recorded backup. **Unbuilt:** shared membership, discussions, authenticated commitments and public phone access. Supabase is the recommended shared provider; project/access/hosting are unconfirmed.
 
-**Executor:** Sonnet 5.5 in the user's Claude session. **Next work order:** S1.2 (shared provider/Auth proof; needs real Supabase access). S1.1 report-date wording is done. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
+**Executor:** Sonnet 5.5 in the user's Claude session. **Next batch:** B1 (S1.2–S2.2): shared identity, joining, posts/replies and live discussion across independent browsers. S1.1 is complete at `9f09667`; real provider access still needs proof. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Start here
 
-1. [Sonnet handoff](docs/SONNET-HANDOFF.md): code map, constraints, exact first prompt and reporting protocol.
+1. [Context checkpoint](docs/CONTEXT-CHECKPOINT.md) for a fresh session; [Sonnet handoff](docs/SONNET-HANDOFF.md) for the complete B1 assignment and copyable prompt.
 2. [Community scope](docs/specs/community-missions.md) and [work-order plan](docs/superpowers/plans/2026-10-21-community-missions.md): named increments, interfaces and acceptance checks.
 3. [Phase/work-order ledger](docs/PHASE-STATUS.md): completed history and next work; [current decisions](docs/DECISIONS.md).
 4. [CLAUDE.md](CLAUDE.md) / [AGENTS.md](AGENTS.md): shared instructions, including a simple TL;DR after every message.
@@ -25,7 +25,7 @@ node server.mjs
 
 Open `http://127.0.0.1:8000`. Inspect an already-running process before starting a second server. Live and recorded DC data retain source references; the practice case is invented and clearly labeled. Campaigns currently save only in this browser, not across neighbors' devices.
 
-Focused recurrence checks: `node --test test/recurrence.test.mjs`. Full unit suite at a phase boundary: `node --test`. The latest R4 evidence reports 85 tests; that is historical, not a claim about future changes. [Test evidence](docs/TEST-PLAN.md).
+Focused recurrence checks: `node --test test/recurrence.test.mjs`. Full unit suite at a phase boundary: `node --test`. The independent S1.1 review passed 87 tests on October 21; browser checks were not rerun in that review. [Test evidence](docs/TEST-PLAN.md).
 
 **Recurrence claim:** the statistic uses report filing dates, not closure dates; S1.1 corrected the UI, export and [pitch](docs/PITCH.md) wording to say so. Measured numbers are unchanged historical results.
 

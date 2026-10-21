@@ -1,5 +1,13 @@
 # Verification plan and evidence
 
+## Current review — October 21, S1.1 at 9f09667
+
+Independent review: `node --test` passed **87/87**, zero failures/skips. Syntax checks passed for `public/app.mjs` and `scripts/browser-check.mjs`. A generated campaign brief using a later report filed before the earlier ticket closed counted the later filing, stated filing-date semantics and omitted the old closure claim. The relevant source/test diff was inspected.
+
+The browser driver and visual/mobile checks were not rerun; original failing-before-fix evidence remains Sonnet-reported. No shared backend/Auth/community tests exist yet. B1 must supply real provider integration, two independent browser sessions, backend authorization and mobile/keyboard evidence; skips/mocks do not count as that proof. See [checkpoint](CONTEXT-CHECKPOINT.md), [next assignment](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md) and [verification](workflow/verification.json).
+
+Everything below is dated historical evidence for its own build, not a current claim that maps/persistence are unbuilt or that shared features work.
+
 ## Completed concept checks
 
 The original combined preview was exercised in local desktop Chromium on October 21, 2026. The recorded checks covered:

@@ -2,14 +2,14 @@
 
 **Executor preference:** the user selected Sonnet 5.5 for implementation. Do not change models automatically or infer an API identifier. Implement inline; no automatic subagents.
 
-Read [AGENTS.md](AGENTS.md), [Sonnet handoff](docs/SONNET-HANDOFF.md), [community scope](docs/specs/community-missions.md), and the requested work order in [the plan](docs/superpowers/plans/2026-10-21-community-missions.md). Use [PHASE-STATUS.md](docs/PHASE-STATUS.md) as the execution ledger. Do not read the full archive by default.
+Read [AGENTS.md](AGENTS.md), [context checkpoint](docs/CONTEXT-CHECKPOINT.md), [Sonnet handoff](docs/SONNET-HANDOFF.md), [community scope](docs/specs/community-missions.md), and the requested work order in [the plan](docs/superpowers/plans/2026-10-21-community-missions.md). Use [PHASE-STATUS.md](docs/PHASE-STATUS.md) as the execution ledger. Do not read the full archive by default.
 
 ## Current state and next action
 
 - Block Ops / Track 3 is selected. The user wants a neighborhood community: join → discuss → organize a mission → claim work → post progress.
 - R1–R4 built a real DC map and browser-local campaigns. Shared community/identity/posts/commitments and public hosting are unbuilt.
-- **S1.1 done** (recurrence wording corrected to filing dates). **Next work order: S1.2.** S1.2–S1.3 establish shared provider/Auth and group membership; S2 discussion; S3 missions; S4 phone readiness; then R5 release.
-- The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. This task refactors documentation only; a later named implementation batch supplies authorization to edit that code.
+- **S1.1 complete at `9f09667`**, independently reviewed: 87 tests passed; export wording checked. **Next batch: B1 (S1.2–S2.2)**, shared provider/Auth, joining and working discussion across two independent browsers. Then B2 (S3 missions), B3 (S4 readiness), R5 release. The user explicitly wants substantial batches; do not stop after every small work order.
+- The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. The current task reviews S1.1 and records the context/next assignment; the Sonnet B1 assignment authorizes its local implementation when executed in that session.
 - Supabase is recommended, not provisioned. Do not treat fakes, localStorage or skipped integration tests as shared-backend proof.
 - Preserve other assistants' work, historical source evidence and existing local campaigns. DIRECTION-REVIEW is historical context with qualifications; the social spec governs the current scope.
 - End every commentary/final message with a **very simple TL;DR**.

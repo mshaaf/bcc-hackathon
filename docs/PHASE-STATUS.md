@@ -4,15 +4,15 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next work order:** S1.2 (needs real Supabase access). S1.1 is done; shared social features are not built. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next batch:** B1 (S1.2–S2.2), a working shared community; first unchecked order S1.2 (real backend access unconfirmed). S1.1 is complete at `9f09667`; shared social features are not built. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
-The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task writes the plan only; shared features/provider setup remain unbuilt.
+The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task reviews S1.1 and saves context/assignments; shared features/provider setup remain unbuilt.
 
 ## Work-order ledger
 
 | Work order | Deliverable | Status |
 |---|---|---|
-| S1.1 | Report-date wording/regressions, no provider prerequisite | Done 2026-10-21 (local commit) |
+| S1.1 | Report-date wording/regressions, no provider prerequisite | Complete |
 | S1.2 | Shared provider/SDK/Auth proof | Not started |
 | S1.3 | Community membership and access | Not started |
 | S2.1 | Posts/replies backend | Not started |
@@ -23,13 +23,13 @@ The map/local-campaign revision R1–R4 is implemented. The user now explicitly 
 | S4.1 | Access/recovery/accessible interaction | Not started |
 | S4.2 | Deployment prep and authorized real-phone proof | Not started |
 
-Phase rows summarize their child orders. A request for a whole phase includes its work orders; a request for one order stops there. Update actual checks and commit at completed boundaries. No child order is complete from this documentation refactor.
+Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outcome, B2 groups S3.1–S3.3, B3 groups S4.1–S4.2. The user now prefers substantial batches; continue within the authorized batch rather than handing back after every order. S1.1 is complete; no other order is complete from this review/documentation update.
 
 ## Social delivery ledger
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | Not started |
+| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | In progress |
 | S2 | Community joining, feed, posts and replies across devices | Not started |
 | S3 | Shared missions, task commitments and follow-ups | Not started |
 | S4 | Recovery, permissions, real phones and authorized deployment proof | Not started |
@@ -62,7 +62,7 @@ R1 evidence and the R2–R3 specification: [campaign-revision.md](specs/campaign
 | 5 | Polished product and judge interaction | In progress | User requested an early UI correction: three-step worktable, full addresses, live summary, dedicated brief, and responsive/print checks delivered. Final stage rehearsal remains. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
 
-Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; current continuation is intentionally redirected to S1 by the community-first instruction. For the active revision, do not skip an unfinished phase or silently substitute another idea.
+Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; current continuation is B1, starting with S1.2, after the completed S1.1 correction. For the active revision, do not skip an unfinished phase or silently substitute another idea.
 
 ## Update after every phase
 
@@ -75,6 +75,14 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — Independent S1.1 review and context checkpoint
+
+- Reviewed code commit `9f09667`, affected callers, UI strings and export. No blocking implementation issue found in the filing-date repair. Corrected the unsupported universal “DC closes every dumping ticket” opener in the historical pitch; a community-first rewrite remains future release work.
+- Fresh checks: `node --test` **87 passed, 0 failed, 0 skipped**; syntax checks for `public/app.mjs` and `scripts/browser-check.mjs` passed. Generated/inspected an A-filed-Oct-1/closed-Oct-10, B-filed-Oct-2 brief; asserted filing-date wording, explicit caveat and absence of the old closure claim. Browser driver/visual checks and original red-green run were not repeated.
+- Created CONTEXT-CHECKPOINT; refreshed Sonnet assignment, agent entry points, plan, decisions and local tracking. User now wants outcome batches: B1 is S1.2–S2.2 together. Work orders remain internal checklists, not hand-back points.
+- S1.1 Complete; aggregate S1 In progress. Shared backend/access is unconfirmed; S1.2–S4.2 are not implemented. No product code, provider setup, push or deployment in this review.
+- Documentation link/JSON/consistency and whitespace checks are recorded in `workflow/verification.json` under `s11_review_and_context_checkpoint` after validation.
 
 ### 2026-10-21 — S1.1 report-date wording
 

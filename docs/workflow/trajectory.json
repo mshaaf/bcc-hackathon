@@ -33,7 +33,7 @@
       "note": "Observed in current setup; not a Ruflo service event."
     }
   ],
-  "product_work": "Baseline app and UI-repair history retained; detailed Claude handoff prepared for a proposed map/campaign revision",
+  "product_work": "R1–R4 baseline built; S1.1 reviewed; checkpoint saved; next B1 shared community",
   "commit": "Initial local documentation commit; git log is authoritative",
   "push": "not performed",
   "setup_status": "complete",
@@ -64,27 +64,37 @@
       "R5": "Not started"
     },
     "legacy_next_phase": 4,
-    "account_usage": "user conserving five-hour account window; exact remaining allowance unknown"
+    "account_usage": "user conserving five-hour account window; exact remaining allowance unknown",
+    "record_kind": "historical pre-R1 snapshot; superseded by community_revision"
   },
   "community_revision": {
     "date": "2026-10-21",
     "intent": "confirmed by user: shared community discussion, missions, commitments and progress",
     "spec": "docs/specs/community-missions.md",
     "plan": "docs/superpowers/plans/2026-10-21-community-missions.md",
-    "next_batch": "S1",
-    "implementation_status": "not started",
+    "next_batch": "B1 (S1.2–S2.2)",
+    "implementation_status": "S1 in progress; S1.1 complete at 9f09667; shared features unbuilt",
     "provider": "Supabase recommended; project/access/hosting not confirmed",
     "message_preference": "End every message with a very simple TL;DR",
-    "next_work_order": "S1.1"
+    "next_work_order": "S1.2",
+    "context_checkpoint": "docs/CONTEXT-CHECKPOINT.md",
+    "completed_work_orders": [
+      "S1.1"
+    ],
+    "batching_preference": "Outcome batches; continue through internal work orders without repeated hand-backs"
   },
   "sonnet_execution": {
     "date": "2026-10-21",
     "executor_label": "Sonnet 5.5",
     "basis": "explicit user preference",
     "entry_point": "docs/SONNET-HANDOFF.md",
-    "next_work_order": "S1.1",
-    "implementation_status": "not started",
+    "next_work_order": "S1.2",
+    "implementation_status": "S1 in progress; S1.1 complete at 9f09667; shared features unbuilt",
     "model_settings_changed": false,
-    "scope_changed": false
+    "scope_changed": false,
+    "next_batch": "B1 (S1.2–S2.2)",
+    "completed_work_orders": [
+      "S1.1"
+    ]
   }
 }

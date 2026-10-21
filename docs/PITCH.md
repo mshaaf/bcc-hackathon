@@ -16,7 +16,7 @@ Status: R4 draft. Numbers below were true on the live data at 2026-10-21 19:17Z 
 
 **0:00 – The number (20 s).** Screen: the app already loaded on live data, purple stat line visible.
 
-> "DC closes every dumping ticket. So how often does a ticket that is now closed have another report filed right next to it soon after? In Ward 8 over the last 90 days: **[210 of 350 — 60%]** of closed reports had another report filed within 150 meters within 30 days of their own filing. **[26]** spots with five or more reports hold **[56%]** of everything reported. Closed isn't fixed."
+> "DC marks dumping tickets closed. So how often does a ticket that is now closed have another report filed right next to it soon after? In Ward 8 over the last 90 days: **[210 of 350 — 60%]** of closed reports had another report filed within 150 meters within 30 days of their own filing. **[26]** spots with five or more reports hold **[56%]** of everything reported. Closed isn't fixed."
 
 Say the caveat in one breath: "'Nearby' means within 150 meters, block-level locations. We compare filing dates, not closure dates, so the later report may have come before the ticket closed. It is not proof of the same pile, and we leave out duplicates and cancelled tickets."
 

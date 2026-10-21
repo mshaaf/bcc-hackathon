@@ -1,6 +1,6 @@
 # Community Missions Implementation Plan
 
-> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. No product implementation was authorized or performed by the planning task that created this file.
+> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. The original planning task did not implement product changes. S1.1 is now complete; current continuation is B1 below.
 
 **Goal:** neighbors join a community, discuss a local concern, commit to mission tasks, and share progress across their own devices.
 
@@ -9,6 +9,12 @@
 **Tech Stack:** existing Node.js 20+ ES modules and Leaflet; recommended Supabase Postgres/Auth/Realtime, subject to actual project access and dependency proof in S1. No project, SDK, migrations or hosting have been provisioned. Pin the chosen SDK version when implementing.
 
 **Spec:** [community-missions.md](../../specs/community-missions.md). The user's community-first intent is confirmed; named provider, one-group/guest defaults and detailed interfaces below are builder proposals to review against the user's next execution instruction.
+
+## Current outcome batches
+
+The user now wants larger batches and fewer hand-backs. **S1.1 is complete at `9f09667`**, independently reviewed with 87 tests passing. **Next: B1 (S1.2–S2.2)** — ship real shared community joining, posts/replies and live discussion across two independent browsers. Use [SONNET-HANDOFF.md](../../SONNET-HANDOFF.md) for its outcome checks and copyable assignment, and [CONTEXT-CHECKPOINT.md](../../CONTEXT-CHECKPOINT.md) after a context reset.
+
+B2 groups S3.1–S3.3 into working missions/commitments; B3 groups S4.1–S4.2 into recovery and phone readiness, with publication only when authorized. Then R5 release. Detailed work orders below are internal checklists, not instructions to stop between orders inside an authorized batch.
 
 ## Sonnet execution protocol
 
@@ -29,9 +35,9 @@ Read [SONNET-HANDOFF.md](../../SONNET-HANDOFF.md), the [spec](../../specs/commun
 | S4.1 | Cross-device recovery, permissions and accessible flow | S3.3 |
 | S4.2 | Deploy preparation and authorized real-phone proof | S4.1 |
 
-“Execute S1” includes S1.1–S1.3; “execute S1.1 only” stops after that work order; “next N work orders” starts at the first unfinished one. A phase is complete only when all its work orders and exit checks pass. Each order ends with focused checks, a ledger update and a local commit; do not turn every checkbox into a new approval gate. Continue through the authorized batch unless actual access or a failing prerequisite prevents it.
+“Execute S1” includes S1.1–S1.3; “execute S1.1 only” stops after that work order; “next N work orders” starts at the first unfinished one. A phase is complete only when all its work orders and exit checks pass. Use focused checks, ledger updates and local commits at meaningful completed increments; do not turn every checkbox into a new approval gate. Continue through the authorized batch unless actual access or a failing prerequisite prevents it.
 
-The current request refactors documentation only. A later user instruction to execute a named order authorizes its local implementation/checks; historical planning-only notes do not prohibit that work. Paid provisioning, publication and outreach remain outside a local-code batch unless specifically requested.
+The original request created documentation only. A user instruction to execute an outcome batch authorizes its local implementation/checks; historical planning-only notes do not prohibit that work. Paid provisioning, publication and outreach remain outside a local-code batch unless specifically requested.
 
 Before editing, inspect Git and the named callers/tests. Fix the shared root cause, retain existing contracts and run focused checks first. Run the broader existing suite at a meaningful phase boundary; repeat only after new changes/failures justify it. Distinguish real backend/browser evidence from fakes and skipped integration checks. Leave a short plain-language TL;DR every message.
 
@@ -56,13 +62,15 @@ Before editing, inspect Git and the named callers/tests. Fix the shared root cau
 
 ### S1.1 — Correct the report-date claims first
 
+**Status:** Complete at `9f09667`. Independent review passed 87 tests and inspected the generated counterexample brief; browser driver not rerun. Original failing-before-fix evidence is Sonnet-reported. See the ledger.
+
 **Files:** `lib/recurrence.mjs`, `public/app.mjs`, `test/recurrence.test.mjs`, `docs/PITCH.md`; inspect `lib/campaign.mjs` and other callers of `recurrenceHeadline` for affected export wording. Preserve historical numerical results as dated records, with their corrected interpretation.
 
 **Decision:** keep the existing report-creation-date algorithm. Relabel its result consistently: another report nearby within 30 days **after the earlier report was filed**, among records currently marked Closed. The mature subset is reports filed at least 30 days ago, not closures at least 30 days old. Do not invent a closure timestamp, change thresholds to improve the percentage, or require provider setup for this order.
 
-- [ ] Add the counterexample: A filed Oct 1, resolved Oct 10; B filed Oct 2 nearby. The algorithm can count a later filing; no headline/caveat/export may describe B as after A closed. Add assertions for the mature-subset labels and unknown dates. Run `node --test test/recurrence.test.mjs` and observe the new wording assertions fail before fixing them.
-- [ ] Correct misleading copy/comments across the actual callers and active pitch. Keep IDs, counts, radii, date windows and source links intact. Avoid a wholesale recurrence/model refactor.
-- [ ] Run the focused tests and relevant campaign/export checks; inspect the actual visible strings and one generated brief. Record commands/results and commit this increment locally. Update the work-order row only when the checks pass.
+- [x] Add the counterexample: A filed Oct 1, resolved Oct 10; B filed Oct 2 nearby. The algorithm can count a later filing; no headline/caveat/export may describe B as after A closed. Add assertions for the mature-subset labels and unknown dates. Run `node --test test/recurrence.test.mjs` and observe the new wording assertions fail before fixing them.
+- [x] Correct misleading copy/comments across the actual callers and active pitch. Keep IDs, counts, radii, date windows and source links intact. Avoid a wholesale recurrence/model refactor.
+- [x] Run the focused tests and relevant campaign/export checks; inspect the actual visible strings and one generated brief. Record commands/results and commit this increment locally. Update the work-order row only when the checks pass.
 
 **Exit:** supported report-date wording in UI, caveats, current pitch and export; regression prevents the closure inference. This order is not blocked by Supabase access.
 
@@ -160,21 +168,9 @@ Add mission/member/task entities here, with claims denied until the S3.2 operati
 
 ## Handoff protocol
 
-Execute only the user-requested S-phase range/count, starting at the next unfinished S phase. R1–R4 remain historical completed increments; R5 waits for this social workflow. Preserve unrelated edits. DIRECTION-REVIEW is a committed historical input with corrections, not the active execution plan. Keep every phase's command/results, current run instructions, cuts, and next step in the ledger. Ask only for material missing access or product decisions; continue routine authorized work within a batch.
+Execute the user-requested outcome batch, starting at its first unfinished order. **B1 (S1.2–S2.2) is next; S1.1 is complete.** R1–R4 remain historical completed increments; R5 waits for the shared workflow. Preserve unrelated edits. DIRECTION-REVIEW is a committed historical input with corrections, not the active execution plan.
 
-Copy/paste next prompt:
-
-```text
-Read CLAUDE.md, docs/specs/community-missions.md, and
-docs/superpowers/plans/2026-10-21-community-missions.md.
-Use Sonnet 5.5 in this Claude session. Execute S1.1 only.
-Preserve the app and local campaigns. Correct report-date claims,
-run the focused regressions and inspect the current brief.
-Record actual tests, update the work-order ledger, commit locally,
-then stop at S1.1. Do not begin provider setup.
-Do not deploy, push, contact anyone, or implement later phases.
-End each message with a very simple TL;DR.
-```
+Keep actual commands/results, current run instructions, cuts and next action in the ledger. Ask only for material missing access or product decisions; continue routine authorized work across internal orders. The single current copy/paste assignment lives in [SONNET-HANDOFF.md](../../SONNET-HANDOFF.md), avoiding a second stale prompt here.
 
 ## Planning review record
 
