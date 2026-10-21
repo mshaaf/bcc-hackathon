@@ -1,5 +1,9 @@
 # Decision log
 
+## Latest executor choice — Sonnet
+
+The user selected **Sonnet 5.5 in Claude** to edit the code and requested plan refactoring and commits. The model name is their preference, not a verified API identifier or benchmark. Implementation is inline in that session, using bounded work orders S1.1–S4.2. S1.1 is next; it corrects report-date claims without requiring backend access. Current instructions: [Sonnet handoff](SONNET-HANDOFF.md) and [the social plan](superpowers/plans/2026-10-21-community-missions.md). The social scope is unchanged; this task only refactors/commits documentation.
+
 ## Latest user instruction — community-first Block Ops
 
 Confirmed in the current conversation: people should gather like a Facebook group or group chat, agree to fix a local concern, participate and follow up. The product's central loop is **join community → discuss → start/join mission → claim work → post progress**. The map and evidence brief support that loop.

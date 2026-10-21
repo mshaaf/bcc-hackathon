@@ -54,7 +54,7 @@ Use publishable browser configuration only. Never expose service-role/secret key
 
 ### Data and ownership contract
 
-The following is the minimum shared model; actual SQL belongs to S1. Use UUID identifiers, timestamped rows, foreign keys and database uniqueness constraints. Enable RLS on exposed tables and test with real independent user sessions, not only an admin client.
+The following is the minimum shared model; actual SQL belongs to the owning work order (community/membership in S1.3, posts in S2.1, missions/tasks in S3.1–S3.2). Use UUID identifiers, timestamped rows, foreign keys and database uniqueness constraints. Enable RLS on exposed tables and test with real independent user sessions, not only an admin client.
 
 | Entity | Essential data / ownership |
 |---|---|
@@ -85,7 +85,7 @@ Mission progress: planning → scheduled → in progress → follow-up → archi
 
 Show actual participant sessions joined, tasks claimed/completed and follow-up entries. Label judging participants/demo entries accurately. Never turn judge signup counts into claimed neighborhood adoption, fabricated cleanups, verified residency, or reduced dumping. This slice demonstrates coordination; downstream social impact remains to be measured.
 
-The existing recurrence headline has a confirmed date mismatch: `reReportedKeys` compares report creation dates, while copy says “after closure.” S1 must relabel this to the supported report-date observation or verify and use a closure timestamp, with a regression for a later report filed before the earlier ticket closed. The current “60% after closure” story must not be reused unchanged.
+The existing recurrence headline has a confirmed date mismatch: `reReportedKeys` compares report creation dates, while copy says “after closure.” S1.1 keeps the existing creation-date algorithm and relabels it consistently as a report-date observation, with a regression for a later report filed before the earlier ticket closed. The current “60% after closure” story must not be reused unchanged.
 
 ## Acceptance criteria
 

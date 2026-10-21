@@ -74,6 +74,17 @@
     "next_batch": "S1",
     "implementation_status": "not started",
     "provider": "Supabase recommended; project/access/hosting not confirmed",
-    "message_preference": "End every message with a very simple TL;DR"
+    "message_preference": "End every message with a very simple TL;DR",
+    "next_work_order": "S1.1"
+  },
+  "sonnet_execution": {
+    "date": "2026-10-21",
+    "executor_label": "Sonnet 5.5",
+    "basis": "explicit user preference",
+    "entry_point": "docs/SONNET-HANDOFF.md",
+    "next_work_order": "S1.1",
+    "implementation_status": "not started",
+    "model_settings_changed": false,
+    "scope_changed": false
   }
 }

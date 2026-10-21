@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-21 — Sonnet work-order handoff
+
+- Recorded Sonnet 5.5 as the user's implementation executor; split social phases into ten bounded work orders, starting with the provider-independent recurrence wording correction.
+- Added a concise Sonnet handoff, removed stale R1/R5 entry instructions, and archived the earlier detailed handoff with portable links.
+- Included Claude's direction review as historical context, with the known recurrence/program-date/history qualifications. No product code or provider configuration changed.
+
 ## 2026-10-21 — Community-first scope and social delivery plan
 
 - Recorded the user's explicit group/community intent: join, discuss, organize a mission, claim tasks and post progress across devices.

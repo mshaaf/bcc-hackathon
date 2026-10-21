@@ -1,40 +1,33 @@
-# Shared project context
+# Block Ops — Claude context
 
-Read [AGENTS.md](AGENTS.md) for repository instructions and [README.md](README.md) for the document map. They are the shared source of project context for coding assistants.
+**Executor preference:** the user selected Sonnet 5.5 for implementation. Do not change models automatically or infer an API identifier. Implement inline; no automatic subagents.
 
-The current product choice and constraints live in [docs/DECISIONS.md](docs/DECISIONS.md). Do not treat a research recommendation as the team's selected project.
+Read [AGENTS.md](AGENTS.md), [Sonnet handoff](docs/SONNET-HANDOFF.md), [community scope](docs/specs/community-missions.md), and the requested work order in [the plan](docs/superpowers/plans/2026-10-21-community-missions.md). Use [PHASE-STATUS.md](docs/PHASE-STATUS.md) as the execution ledger. Do not read the full archive by default.
 
-## Start a fresh session here
+## Current state and next action
 
-Read [docs/HANDOFF.md](docs/HANDOFF.md), then [docs/PHASE-STATUS.md](docs/PHASE-STATUS.md). Do not read the full research archive by default.
+- Block Ops / Track 3 is selected. The user wants a neighborhood community: join → discuss → organize a mission → claim work → post progress.
+- R1–R4 built a real DC map and browser-local campaigns. Shared community/identity/posts/commitments and public hosting are unbuilt.
+- **Next work order: S1.1.** Correct recurrence wording based on report creation dates. This needs no backend. S1.2–S1.3 establish shared provider/Auth and group membership; S2 discussion; S3 missions; S4 phone readiness; then R5 release.
+- The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. This task refactors documentation only; a later named implementation batch supplies authorization to edit that code.
+- Supabase is recommended, not provisioned. Do not treat fakes, localStorage or skipped integration tests as shared-backend proof.
+- Preserve other assistants' work, historical source evidence and existing local campaigns. DIRECTION-REVIEW is historical context with qualifications; the social spec governs the current scope.
+- End every commentary/final message with a **very simple TL;DR**.
 
-- Block Ops / Track 3 is selected. Two engineers, three build days. The user wants meaningful judge participation and a convincing product; the current form/brief UI was rejected as the final experience.
-- Baseline phases 1–3 are complete; audited baseline commit is `687582a`. The app is now a map workspace over live DC 311 records with an evidence/plan/brief flow; campaigns are saved in the browser's localStorage (one operator, no sync).
-- **R1–R4 are built as the local-campaign baseline. Next is proposed S1**, not R5. The user explicitly wants neighbors to gather like a group/group chat, discuss plans, claim work and post progress. Read [community scope](docs/specs/community-missions.md), [S1–S4 plan](docs/superpowers/plans/2026-10-21-community-missions.md), and the ledger. The current app cannot share campaigns across people. The old closure-based pitch has a confirmed date mismatch; S1 must correct the claim or calculation before reuse.
-- The latest request authorized a scope/plan revision, not product implementation or provisioning. Supabase is the proposed backend; access/setup and hosting are not confirmed. Follow the next user-authorized S-phase batch.
-- End every assistant message with a very simple TL;DR. Preserve the untracked DIRECTION-REVIEW document and unrelated edits.
-- The user is conserving account usage and moving some work to Claude. Keep context reads and checks focused; do not create agents or orchestration infrastructure by default.
+## Commands and traps
 
-## Current commands
-
-From this repository root, using Node.js 20+:
+Node.js 20+, repository root:
 
 ```sh
 git status --short --branch
-node --test
+node --test test/recurrence.test.mjs
 node server.mjs
 ```
 
-Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed for the current app. Inspect an existing server before starting another on port 8000. `node scripts/prove-data.mjs` is the optional live 311 proof, not a crime/map test. Latest run: 85/85 tests passed. `node scripts/record-snapshot.mjs` refreshes the recorded snapshot (needs network). `node scripts/prove-geo.mjs` is the live geometry/crime proof; `scripts/browser-check.mjs` drives real Chrome with device emulation through the whole create-save-reload-follow-up-export flow.
+Current app: `http://127.0.0.1:8000`. Check an existing server before starting another. No baseline install/build or provider credentials required. Run `node --test` at relevant phase boundaries; no need to re-run the full browser/research suite for a documentation edit.
 
-## Architecture and traps
+`server.mjs` has explicit assets and GET-only source routes. `public/app.mjs`, `public/map.mjs`, `public/storage.mjs`, `lib/block-ops.mjs`, `lib/campaign.mjs` are the existing browser/data/campaign modules. `lib/recurrence.mjs` uses report dates while current copy wrongly says closure dates; fix shared helper and all callers in S1.1.
 
-- `server.mjs`: explicit same-origin assets and GET-only fixed-source routes. New files/endpoints must be added deliberately. CSP allows only same-origin scripts/styles/connects plus `img-src https://maps2.dcgis.dc.gov` for basemap tiles; Leaflet is vendored.
-- `lib/block-ops.mjs`: 311 query, normalization, source links, review state, brief builders. `public/app.mjs` + `public/map.mjs` + `public/storage.mjs` + `lib/campaign.mjs`: browser UI/state, Leaflet wrapper, localStorage wrapper, pure campaign model. No package manifest or frontend framework exists.
-- 311 filter uses `WARD='Ward 8'`; geometry is requested as WGS84 (`outSR=4326`, `geo`/`geoStatus` per record). Street grouping is still not spatial; `recordsWithin` is the proximity helper. Rejects truncation above the bounded response; no pagination.
-- `data/demo.json` is entirely invented, not a cached public source. Never attach official record links to fictional DEMO IDs.
-- Preserve source IDs/dates/statuses, unknowns, rejected-evidence exclusion, context clearing, failed-refresh recovery, safe text rendering, and export fidelity. Tests are in `test/`.
-- Crime source access was checked separately. It has approximate block locations and reporting lag. The app has no crime layer, Flock access, AI, map, campaigns, or saved cases yet.
-- Avoid a generic Citizen clone: map/AI/team alerts overlap existing products. Proposed value is sustained neighborhood improvement campaigns, which remains unvalidated.
+Preserve IDs/dates/statuses, unknowns, excluded evidence, source links, failed-refresh recovery and safe text rendering. Local campaigns publish only through a reviewed copy; typed owner names are not authenticated commitments. New shared writes need real backend permissions and claim concurrency checks. Never expose secret/service-role keys. Keep the existing stack unless a requirement warrants change.
 
-Keep the existing stack unless a concrete new requirement warrants change. Preserve unrelated edits. Update the ledger and actual evidence after a batch. Local commits are useful; no push, deployment, official submission, or outreach without the user's instruction (R1–R3 are already on the public `origin/main`; the user pushes later batches). No license has been selected.
+Commit focused completed increments locally; no push, deployment, official submission, outreach or license selection without the user's instruction. Keep the ledger honest; stop at the requested boundary or actual blocker, without repeated approval for routine choices.

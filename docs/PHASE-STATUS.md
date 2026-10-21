@@ -1,12 +1,29 @@
 # Implementation phase ledger
 
-This is the canonical execution ledger for Claude/Luna batches. Current revision phases R1–R5 are defined in [HANDOFF.md](HANDOFF.md); baseline phases below preserve the old plan's history. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
+This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in Claude. Current S1–S4 work orders are defined in [the social plan](superpowers/plans/2026-10-21-community-missions.md), with [Sonnet handoff](SONNET-HANDOFF.md). Earlier R/baseline phases preserve history; current scope is in [DECISIONS.md](DECISIONS.md).
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next proposed build batch:** S1. The community-first scope/plan revision is prepared; shared social implementation has not started. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next work order:** S1.1. The plan refactor is prepared; social implementation has not started. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task writes the plan only; shared features/provider setup remain unbuilt.
+
+## Work-order ledger
+
+| Work order | Deliverable | Status |
+|---|---|---|
+| S1.1 | Report-date wording/regressions, no provider prerequisite | Not started |
+| S1.2 | Shared provider/SDK/Auth proof | Not started |
+| S1.3 | Community membership and access | Not started |
+| S2.1 | Posts/replies backend | Not started |
+| S2.2 | Community feed and cross-browser discussion | Not started |
+| S3.1 | Discussion-origin and reviewed-import mission creation | Not started |
+| S3.2 | Atomic mission joining/claiming/leaving | Not started |
+| S3.3 | Mission UI, links and shared export | Not started |
+| S4.1 | Access/recovery/accessible interaction | Not started |
+| S4.2 | Deployment prep and authorized real-phone proof | Not started |
+
+Phase rows summarize their child orders. A request for a whole phase includes its work orders; a request for one order stops there. Update actual checks and commit at completed boundaries. No child order is complete from this documentation refactor.
 
 ## Social delivery ledger
 
@@ -58,6 +75,13 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — Sonnet execution plan refactor
+
+- User selected Sonnet 5.5 for code implementation and requested all scoped documentation committed. Recorded the preference without changing models or assuming an API identifier/performance result.
+- Split S1–S4 into ten bounded work orders. S1.1 fixes the confirmed creation-date/closure wording mismatch without waiting for backend access. Deferred schema pieces to their owning work orders.
+- Created SONNET-HANDOFF, replaced stale README/current-handoff prompts, and archived the older long handoff with rebased portable links. Retained Claude's formerly untracked DIRECTION-REVIEW as historical input with known factual qualifications.
+- Documentation only; no source code, provider setup, deployment or push. Work orders remain Not started. Validation is recorded after document checks.
 
 ### 2026-10-21 — Community-first scope and execution plan
 

@@ -1,6 +1,6 @@
 # Community Missions Implementation Plan
 
-> **For agentic workers:** Use superpowers:executing-plans for the user's Claude/Luna phase batches. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. No product implementation was authorized or performed by the planning task that created this file.
+> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. No product implementation was authorized or performed by the planning task that created this file.
 
 **Goal:** neighbors join a community, discuss a local concern, commit to mission tasks, and share progress across their own devices.
 
@@ -10,6 +10,31 @@
 
 **Spec:** [community-missions.md](../../specs/community-missions.md). The user's community-first intent is confirmed; named provider, one-group/guest defaults and detailed interfaces below are builder proposals to review against the user's next execution instruction.
 
+## Sonnet execution protocol
+
+**Executor preference:** Sonnet 5.5, as named by the user. This documents their choice; no model setting, availability check, speed comparison or API model identifier is implied.
+
+Read [SONNET-HANDOFF.md](../../SONNET-HANDOFF.md), the [spec](../../specs/community-missions.md), the current ledger, and only the requested work order/code. Do not reread all historical research. Implement inline in the user's Sonnet session; no automatic agents or full framework rewrite.
+
+| Work order | Small complete increment | Depends on |
+|---|---|---|
+| S1.1 | Correct report-date claims everywhere; no backend needed | Current R4 app |
+| S1.2 | Prove provider access, pinned SDK and two real Auth sessions | S1.1 |
+| S1.3 | Shared community membership and permissions | S1.2 |
+| S2.1 | Posts/replies API, constraints and authorization | S1.3 |
+| S2.2 | Community UI and cross-browser discussion | S2.1 |
+| S3.1 | Discussion-origin missions and reviewed local publication | S2.2 |
+| S3.2 | Atomic joining, claiming, leaving and progress | S3.1 |
+| S3.3 | Mission UI, deep links and current export | S3.2 |
+| S4.1 | Cross-device recovery, permissions and accessible flow | S3.3 |
+| S4.2 | Deploy preparation and authorized real-phone proof | S4.1 |
+
+“Execute S1” includes S1.1–S1.3; “execute S1.1 only” stops after that work order; “next N work orders” starts at the first unfinished one. A phase is complete only when all its work orders and exit checks pass. Each order ends with focused checks, a ledger update and a local commit; do not turn every checkbox into a new approval gate. Continue through the authorized batch unless actual access or a failing prerequisite prevents it.
+
+The current request refactors documentation only. A later user instruction to execute a named order authorizes its local implementation/checks; historical planning-only notes do not prohibit that work. Paid provisioning, publication and outreach remain outside a local-code batch unless specifically requested.
+
+Before editing, inspect Git and the named callers/tests. Fix the shared root cause, retain existing contracts and run focused checks first. Run the broader existing suite at a meaningful phase boundary; repeat only after new changes/failures justify it. Distinguish real backend/browser evidence from fakes and skipped integration checks. Leave a short plain-language TL;DR every message.
+
 ## Global constraints
 
 - One Ward 8 demonstration community and the proven dumping source first; no all-category or crime expansion before shared participation works.
@@ -17,7 +42,7 @@
 - One claimant per task; one membership per authenticated user per group/mission. Counts represent participant accounts, not verified humans or residents.
 - Retain local campaigns; publish only a reviewed copy. No automatic upload, migration, overwrite or deletion of browser data.
 - No service-role/secret browser key, client-only authorization, fake live activity, automatic agency submission, or unrequested public deployment.
-- Every assistant message ends in a super-simple TL;DR. Preserve unrelated work, including the untracked `docs/DIRECTION-REVIEW.md`.
+- Every assistant message ends in a super-simple TL;DR. Preserve unrelated work, including `docs/DIRECTION-REVIEW.md`, retained as a historical review with correction notes.
 
 ## Review focus
 
@@ -29,19 +54,41 @@
 
 ## S1 — Shared foundation and truthful evidence
 
-**Files:** modify `lib/recurrence.mjs`, `test/recurrence.test.mjs`, `docs/PITCH.md`, affected UI copy and `server.mjs`; create `public/community-api.mjs`, `lib/community.mjs`, `test/community.test.mjs`, `test/community-access.integration.mjs`, and setup instructions `docs/COMMUNITY-SETUP.md`. Add migration files using the selected Supabase workflow only after checking the current CLI/project. Do not invent a migration history or claim setup before applying/verifying it.
+### S1.1 — Correct the report-date claims first
 
-**Interfaces:** `createCommunityClient(config)` returns `ensureSession() -> {userId}`, `getCommunity(id)`, `joinCommunity(id, displayName)`, `leaveCommunity(id)`, and later methods named below. Client configuration contains only the project URL/publishable key. Database entities, bounds and authorization follow the spec. Pure domain validation lives in `lib/community.mjs`; database constraints/permissions remain authoritative.
+**Files:** `lib/recurrence.mjs`, `public/app.mjs`, `test/recurrence.test.mjs`, `docs/PITCH.md`; inspect `lib/campaign.mjs` and other callers of `recurrenceHeadline` for affected export wording. Preserve historical numerical results as dated records, with their corrected interpretation.
 
-- [ ] Add the recurrence counterexample: A created Oct 1, resolved Oct 10; B created Oct 2 at the same point. A closure-based count must not treat B as after closure. If retaining the creation-date algorithm, change every UI/pitch/export claim to that supported meaning and assert the wording. Never infer the closure timestamp from report date.
-- [ ] Run `node --test test/recurrence.test.mjs` and observe the regression fail under the selected contract; implement the minimal correction and rerun it. Keep unknown closure dates unknown.
-- [ ] Inspect actual Supabase/hosting access and current docs/changelog. Record prerequisite account access and actual costs/limits; do not claim a free or configured service. Retain the existing stack; add only the SDK packaging needed by this feature.
-- [ ] Implement/apply the minimum shared entities, foreign keys, uniqueness, RLS and bounded write validation from the spec. Configure anonymous Auth and seed one clearly labeled demo community with a controlled moderator identity. No user-editable authorization metadata.
-- [ ] Write/run access tests with independent sessions A and B plus unauthenticated requests: duplicate membership idempotent; forged creator/author rejected; cross-community read/write denied; secret keys absent from client responses. Use actual backend responses as evidence. Make backend tests opt-in for the default unit run; explicit invocation is `RUN_COMMUNITY_INTEGRATION=1 node --test test/community-access.integration.mjs` with the configured environment from COMMUNITY-SETUP. An explicit integration invocation must fail clearly if configuration is missing. Record skips as unverified, never as an access-control pass.
-- [ ] Verify session reload and identity limits, explicit asset/config routes and narrow HTTPS/WSS CSP. Record the exact reproducible integration-test command/configuration in COMMUNITY-SETUP; no credentials in Git or output.
-- [ ] Run the applicable unit and backend integration checks, record results/remaining prerequisites, update the ledger, and make a focused local commit. Stop if backend proof fails; do not substitute localStorage and call it shared.
+**Decision:** keep the existing report-creation-date algorithm. Relabel its result consistently: another report nearby within 30 days **after the earlier report was filed**, among records currently marked Closed. The mature subset is reports filed at least 30 days ago, not closures at least 30 days old. Do not invent a closure timestamp, change thresholds to improve the percentage, or require provider setup for this order.
 
-**Exit:** two independent sessions can access the permitted shared group; access tests pass; unsupported recurrence copy corrected. No feed or mission participation is claimed yet.
+- [ ] Add the counterexample: A filed Oct 1, resolved Oct 10; B filed Oct 2 nearby. The algorithm can count a later filing; no headline/caveat/export may describe B as after A closed. Add assertions for the mature-subset labels and unknown dates. Run `node --test test/recurrence.test.mjs` and observe the new wording assertions fail before fixing them.
+- [ ] Correct misleading copy/comments across the actual callers and active pitch. Keep IDs, counts, radii, date windows and source links intact. Avoid a wholesale recurrence/model refactor.
+- [ ] Run the focused tests and relevant campaign/export checks; inspect the actual visible strings and one generated brief. Record commands/results and commit this increment locally. Update the work-order row only when the checks pass.
+
+**Exit:** supported report-date wording in UI, caveats, current pitch and export; regression prevents the closure inference. This order is not blocked by Supabase access.
+
+### S1.2 — Prove the shared provider and identity
+
+**Files:** create `public/community-api.mjs`, `test/community-access.integration.mjs`, `docs/COMMUNITY-SETUP.md`; modify explicit asset/config routes and CSP in `server.mjs` only as needed; pin/local-bundle the SDK using the smallest suitable packaging. Configuration files contain placeholders only.
+
+**Interface:** `createCommunityClient(config).ensureSession() -> {userId}`. Configuration exposes only project URL/publishable key. No shared tables are required to establish two independent authenticated identities.
+
+- [ ] Inspect actual project/hosting access and current Supabase docs/changelog; record selected SDK/runtime and actual cost/access prerequisites. Do not assume a configured or free project. If credentials/access are missing, ask for that specific prerequisite and leave this order incomplete; do not redesign the backend to conceal a failed proof.
+- [ ] Implement pinned SDK/Auth setup with two isolated sessions and reload persistence. Verify IDs differ, secrets are absent from browser responses and guest identity limits are explained. Use provider-backed checks, not a fake sign-in object.
+- [ ] Document `RUN_COMMUNITY_INTEGRATION=1 node --test test/community-access.integration.mjs` and the required environment. Explicit integration invocation fails clearly if configuration is missing. Default unit runs may skip provider tests, but skips never count as backend proof. Verify narrow HTTPS/WSS CSP and actual explicit asset serving.
+- [ ] Record results, unresolved access and local commit. Do not create shared tables for later features in this order.
+
+### S1.3 — Shared community membership and access
+
+**Files:** create `lib/community.mjs`, `test/community.test.mjs`; extend `public/community-api.mjs` and `test/community-access.integration.mjs`; add community/membership migrations using the verified provider workflow. Do not invent applied migration history.
+
+**Interfaces:** `getCommunity(id)`, `joinCommunity(id, displayName)`, `leaveCommunity(id)` and `ensureSession` from S1.2. Group/member bounds and authorization follow the spec. Post/mission/task tables arrive in their owning orders, not in a premature all-feature schema.
+
+- [ ] Write meaningful domain/backend regressions for name bounds, unique/idempotent membership, self-owned membership changes, controlled moderator authority and cross-community isolation.
+- [ ] Implement/apply the community/member entities, uniqueness, RLS and write validation; seed one clearly labeled demonstration community. Public previews whitelist fields; private rows require current membership. Never authorize from user-editable display-name metadata.
+- [ ] Run access tests with sessions A/B and unauthenticated/direct API requests. Verify duplicate joins do not grow counts, role/creator forgery is denied and read permissions match the spec. Document how to reproduce the proof.
+- [ ] Run relevant unit/integration checks plus the existing suite at this phase boundary; record results, update ledger, commit locally.
+
+**S1 exit:** corrected claim and two genuine sessions joining the same permitted shared community. No feed or shared missions are claimed yet.
 
 ## S2 — Join the community and talk
 
@@ -49,8 +96,16 @@
 
 **Interfaces:** `listPosts(communityId) -> Post[]`, `createPost({communityId, missionId?, parentId?, body, operationId}) -> Post`, `editOwnPost(postId, body)`, `hidePost(postId)`, `subscribeCommunity(communityId, onChange) -> unsubscribe`. Posts are sorted by created time then ID; one-level replies remain in their parent's group/mission. Domain types/limits match the spec. A server-generated authenticated user ID supplies authorship; never accept a display name as authority.
 
+### S2.1 — Posts and replies backend
+
+Create post/reply entities and their permissions in this order.
+
 - [ ] Add focused tests for bounded plain-text bodies, same-group replies, own-post edits, moderator hiding and idempotent post retries. Add backend tests that bypass UI controls and fail unauthorized actions.
 - [ ] Implement the API methods and database enforcement; verify the tests against the real shared backend.
+- [ ] Record the S2.1 checks and a focused local commit before moving to UI.
+
+### S2.2 — Community UI and cross-browser discussion
+
 - [ ] Make the default screen the community feed: purpose, join action, members, chronological posts, replies, and active-mission area. Keep the existing map reachable as discovery. Label seeded/sample content accurately.
 - [ ] Implement immediate cross-device update using permitted Realtime subscriptions plus canonical re-fetch. Show sending/error/reconnect states and preserve unsent text. Clean up subscriptions when changing views.
 - [ ] Extend the browser driver to use two independent profiles: B joins and posts, A sees the exact text/count within five seconds on the tested healthy connection; reload keeps the session; retry does not duplicate. A can see no unauthorized/private fields. Check mobile and keyboard paths.
@@ -64,8 +119,21 @@
 
 **Interfaces:** `createMission({communityId, title, objective, location, sourcePostId?, operationId}) -> Mission` creates a discussion-origin mission with optional evidence added later; `publishMission({communityId, campaign, operationId}) -> Mission` publishes a reviewed local campaign copy; `getMission(id) -> {mission,members,tasks,posts}`, `joinMission(id)`, `leaveMission(id)`, `claimTask(taskId)`, `releaseTask(taskId)`, `setTaskDone(taskId, done)`, `updateMission({id, expectedVersion, changes})`, `subscribeMission(id, onChange) -> unsubscribe`. Mission discussion reuses S2 posts with `missionId`. Atomic task claims derive their mission from the stored task. Joining/retries use database uniqueness; metadata version conflicts show a recoverable conflict.
 
-- [ ] Add failing tests for a discussion-origin mission with zero official records and a same-group source-post link; deliberate local publication with original untouched; excluded evidence absent; imported task owners/done flags reset to unclaimed/not done; historical observations marked imported/original author unverified; fictional labels preserved; duplicate joins; concurrent claims with exactly one winner; cross-community writes denied; and leave/claim races with no orphan claim.
+### S3.1 — Create/publish missions with provenance
+
+Add mission/member/task entities here, with claims denied until the S3.2 operations and permissions exist.
+
+- [ ] Add failing tests for a discussion-origin mission with zero official records and a same-group source-post link; deliberate local publication with original untouched; excluded evidence absent; imported owners/done flags reset to unclaimed/not done; historical observations marked imported/original author unverified; fictional labels preserved; and cross-community creation denied.
+- [ ] Implement the two creation paths and ownership/version rules. Keep local originals and source fidelity. Run the focused publication/ownership checks and commit before expanding task operations.
+
+### S3.2 — Membership, claims and progress
+
+- [ ] Add direct-backend tests for idempotent joins; two simultaneous task claims with exactly one winner; own-task release/completion; another user's unauthorized edit; and leave/claim races with no orphan assignment.
 - [ ] Implement the shared mission model/permissions, both creation paths, and atomic claim/release/complete/leave operations. Leaving releases unfinished claims; the active organizer must archive before leaving; community departure removes all mission memberships/unfinished claims atomically. Serialize membership removal with claims. Reuse campaign builders for sourced missions; add an evidence-free shared plan export that clearly says “No official 311 records attached” without weakening existing local campaign export guards. Fetch current task/member/post state separately before export.
+- [ ] Run the focused backend/concurrency checks and commit S3.2.
+
+### S3.3 — Mission UI, sharing and export
+
 - [ ] Add a reviewed local-publication preview and a “Start a mission” action on a discussion. Use `/#/community/<uuid>/mission/<uuid>` deep links and one locally generated QR representation of the real reachable URL. QR generation may use one pinned small library; no external QR service gets participant data.
 - [ ] Build the mission page: objective/location/organizer/time, source evidence disclosure, join button, named jobs, member commitments, discussion and follow-up updates. Let members report their own job complete; organizer controls mission metadata/progress. Source status is unchanged by group progress.
 - [ ] Verify browser A publishes; B joins via the link, claims a task and posts an update; A sees both; after reload the same responsibility remains; downloaded brief reflects current persisted task state and omits excluded evidence.
@@ -77,8 +145,14 @@
 
 **Files:** modify the community/mission UI and backend rules only where checks expose issues; extend `scripts/browser-check.mjs`, `docs/COMMUNITY-SETUP.md`, `docs/PITCH.md`, `README.md`, `docs/HANDOFF.md`, and `docs/PHASE-STATUS.md`.
 
+### S4.1 — Hardening and accessible two-browser proof
+
 - [ ] Exercise real-backend abuse/ownership checks, anonymous-auth limits and the chosen protection, oversize text, escaped markup, duplicate sends, simultaneous claims, version conflicts and provider disconnect/reconnect. Don't relax permissions to pass the demo.
 - [ ] Verify readable desktop projection and 390/320-pixel join → post → claim → update; keyboard completion, focus and error states; inspect current download/print after shared-state changes. Reuse relevant old tests and add checks for new risks only.
+- [ ] Record S4.1 browser/backend results and commit before publishing work.
+
+### S4.2 — Deployment preparation and real phones
+
 - [ ] Prepare a deployable existing Node app: explicit host/PORT configuration, documented environment, browser-safe config and required routes/CSP. Choose the actual hosting target and record price/access prerequisites. No public deployment is implied by this planning request; deploy when the user explicitly directs it.
 - [ ] After authorized deployment, test one real phone on cellular and the organizer laptop through the public HTTPS URL. Verify QR opens the same mission and a claimed task/update appears across devices. Do not mark phone readiness complete from two local tabs alone.
 - [ ] Rehearse: map finds the place → organizer opens a mission → judge scans and commits to a job → laptop shows the commitment → a clearly labeled sample follow-up demonstrates return use. Keep an honest backup recording; never label a local/recorded interaction as a live phone session.
@@ -86,16 +160,18 @@
 
 ## Handoff protocol
 
-Execute only the user-requested S-phase range/count, starting at the next unfinished S phase. R1–R4 remain historical completed increments; R5 waits for this social workflow. Preserve unrelated edits and never stage `docs/DIRECTION-REVIEW.md` merely because it is untracked. Keep every phase's command/results, current run instructions, cuts, and next step in the ledger. Ask only for material missing access or product decisions; continue routine authorized work within a batch.
+Execute only the user-requested S-phase range/count, starting at the next unfinished S phase. R1–R4 remain historical completed increments; R5 waits for this social workflow. Preserve unrelated edits. DIRECTION-REVIEW is a committed historical input with corrections, not the active execution plan. Keep every phase's command/results, current run instructions, cuts, and next step in the ledger. Ask only for material missing access or product decisions; continue routine authorized work within a batch.
 
 Copy/paste next prompt:
 
 ```text
 Read CLAUDE.md, docs/specs/community-missions.md, and
 docs/superpowers/plans/2026-10-21-community-missions.md.
-Execute S1 only. Preserve the existing app and local campaigns.
-Prove the shared backend and fix the unsupported recurrence claim.
-Record actual tests and prerequisites, then stop at the phase boundary.
+Use Sonnet 5.5 in this Claude session. Execute S1.1 only.
+Preserve the app and local campaigns. Correct report-date claims,
+run the focused regressions and inspect the current brief.
+Record actual tests, update the work-order ledger, commit locally,
+then stop at S1.1. Do not begin provider setup.
 Do not deploy, push, contact anyone, or implement later phases.
 End each message with a very simple TL;DR.
 ```
