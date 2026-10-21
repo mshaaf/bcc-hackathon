@@ -2,7 +2,7 @@
 
 Block Ops: a neighborhood worktable that turns reviewed service-request history and resident observations into a group brief and next-step plan.
 
-**Selected by the user: Block Ops, Track 3 — Community Development.** Implementation will run in the user's Luna terminal. Phase 0 is complete; Phase 1 is next and will finalize the technical plan. No production application has been built. The research and six fictional concept previews remain available as reference.
+**Selected by the user: Block Ops, Track 3 — Community Development.** The technical plan is finalized: a dependency-free Node.js 20+ local web app with a fixed DC 311 data proxy, human-reviewed candidate records, and a downloadable brief. Phase 2 proves the source mechanism; Phase 3 builds the product loop. The six fictional concept previews remain reference material.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
@@ -51,4 +51,16 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 Then visit `http://127.0.0.1:8000/previews/finalists.html`. The preview has local interactions and may request web fonts; fallback fonts work without them. See [preview notes](previews/README.md).
 
-There is no app framework, package manifest, deployment, automated product test suite, or product license yet. Luna should resolve the technical plan in Phase 1 using the selected Block Ops scope.
+## Block Ops MVP (Phases 2–3)
+
+Requires Node.js 20 or newer. There are no package installs, API keys, or environment variables.
+
+```sh
+node server.mjs
+```
+
+Open `http://127.0.0.1:8000`. The fictional sample works offline; **Load live DC data** requests a bounded Ward 8 / Illegal Dumping snapshot from the official source. The app keeps drafts in memory and exports the current reviewed state as Markdown; use the browser print dialog to save a PDF.
+
+Run the checks with `node --test`. Reproduce the live data proof with `node scripts/prove-data.mjs` (requires network access).
+
+See [the active Block Ops specification](docs/specs/block-ops.md), [architecture](docs/ARCHITECTURE.md), [implementation plan](docs/IMPLEMENTATION-PLAN.md), and [verification evidence](docs/TEST-PLAN.md). The app does not submit tickets or establish whether a reported condition remains present.

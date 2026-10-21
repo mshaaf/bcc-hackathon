@@ -1,14 +1,16 @@
 # Proposed architecture
 
-**Status:** Block Ops is selected. Luna finalizes the stack, files, and interfaces in Phase 1. There is no application implementation or deployment yet.
+**Status:** Block Ops is selected. Phase 1 chose a dependency-free Node.js 20+ server and native browser modules. The app runs locally on 127.0.0.1; no deployment is planned in this batch.
 
 ## Active Block Ops design
 
-Bounded DC records → normalized source-preserving records → transparent candidate groups → human include/exclude review → attributed observation and chosen ask/tasks → printable brief and source appendix.
+Bounded DC records → validated source-preserving records → same-street candidate suggestions → human include/exclude review → attributed observation and chosen ask/tasks → current-state Markdown/print brief with source appendix.
 
-Start with Ward 8 / Illegal Dumping and the dated public-data evidence already saved. Phase 2 verifies the live query or accurately labeled cache path. Keep original ticket statuses distinct from resident observations, and preserve unknown present conditions. Grouping proposes relationships; the group confirms them. A model, login, and database are not required for this core loop.
+Query the DC 311 `FeatureServer/21` layer for Ward 8 and a service description containing “Dump,” over the trailing 90 days. Use the layer's America/New_York calendar, at most 1,000 records, and a fixed field allowlist: request/object IDs, category, dates, official status, ward, organization, and street address. Do not request geometry, details, or inspector names. Reject a response marked `exceededTransferLimit`; do not silently use a partial snapshot. Preserve the response fields and record the request window and retrieval time.
 
-The exact implementation modules and commands belong to Phase 1's concrete plan. The table of other candidates below is historical comparison, not additional scope.
+The grouping rule strips a leading street number and normalizes the remaining address text, then groups by street name and category. It is only a way to propose records for review. Exact address, dates, and official status remain visible in the source inspector; no group is described as a repeated incident. Use a bundled fictional sample when offline, with a persistent “Fictional demo data” label. It is not a saved DC response. Draft state remains in browser memory; failed refreshes leave the current draft intact.
+
+Exact modules, contracts, commands, and phase checks are in [IMPLEMENTATION-PLAN.md](IMPLEMENTATION-PLAN.md). The table of other candidates below is historical comparison, not additional scope.
 
 ## Common shape
 
@@ -40,9 +42,9 @@ An optional model can propose structured fields. It cannot approve its own claim
 
 ## Storage and network
 
-Default to local draft state and synthetic stage fixtures. Do not add a database for a single-user hackathon workflow without a demonstrated need. If persistence is selected, define retention and deletion and avoid storing sensitive records by default.
+Default to local in-memory draft state and the synthetic stage fixture. No database, account, local-storage persistence, or provider key is needed for this single-user workflow.
 
-Bound any public-data query and handle pagination or transfer-limit indicators. Record query and snapshot dates. Cache labels must remain visible. Never silently turn a saved response into a live-data claim.
+Bound the public-data query and check transfer-limit indicators. Record query and retrieval dates. Never silently turn a saved response into a live-data claim.
 
 Keep provider keys server-side. Validate file sizes and supported text formats before parsing. Treat source text as untrusted content. Use text-safe rendering for user content; do not interpolate untrusted values into raw HTML.
 

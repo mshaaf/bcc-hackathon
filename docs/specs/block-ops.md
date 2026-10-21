@@ -4,7 +4,7 @@
 
 **Promise:** turn reviewed public service history, attributed observations, and a chosen next step into a usable group brief.
 
-**Initial scope:** Ward 8 / Illegal Dumping, one bounded dated snapshot, group-reviewed records, one resident observation or explicit unknown, one concrete ask, two role-based tasks, and print/export with source references. Ward/category are implementation defaults from the existing research. Luna chooses the stack and exact file-level plan in Phase 1; no model, database, or login is required for the core promise.
+**Initial scope:** Ward 8 / Illegal Dumping, a rolling 90-day bounded query, group-reviewed records, one dated group observation or explicit unknown, one concrete ask, two role-based tasks, and a printable/downloadable brief with source references. Ward/category are implementation defaults from existing research. Phase 1 selected dependency-free Node.js 20+ and native browser modules; no model, database, or login is required.
 
 ## Functional requirements
 
@@ -24,11 +24,15 @@
 
 ## Data and integrations
 
-Read a bounded public query; create a local draft selection, attributed observation, request, tasks, and export. Source: [official DC service-request layer](https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer/21). Existing raw research is ignored under `data/local/`; public demo fixtures remain invented and separate.
+Read a bounded query from the [official DC service-request layer](https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer/21); request only IDs, category, dates, official status, ward, organization, and street address. A loopback Node proxy keeps browser access same-origin and permits only that fixed query. Create a local in-memory draft selection, attributed observation, request, tasks, and current-state Markdown/print export. The bundled offline fixture is fictional and visibly labeled, not a cached public response. Existing raw research remains ignored under `data/local/`.
 
 ## Edge cases and constraints
 
 Duplicate IDs, inconsistent address spelling, nearby different incidents, missing dates/statuses, changing status across snapshots, no observation, no selection, API timeout, or transfer truncation. A shared location or multiple records is insufficient to prove the same incident. Use an explainable rule and human review.
+
+## Implementation decisions and limits
+
+Same-street, same-category records are candidate suggestions only; exact source addresses and original fields stay available for human inspection. A shared street does not establish one incident or recurrence. Reject a transfer-limited response rather than treating it as complete. A failed refresh preserves the current draft. There is no persistence beyond the browser session.
 
 ## First gate, output, and cuts
 

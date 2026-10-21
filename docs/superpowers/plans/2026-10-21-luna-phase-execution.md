@@ -10,7 +10,7 @@
 
 **Spec:** [Foundation specification](../../SPECIFICATION.md), [conditional profiles](../../specs/README.md), and [current decisions](../../DECISIONS.md).
 
-**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Phase 1 is next and must finalize technical details without asking the user to choose again.
+**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Phase 1 finalized the stack and task plan; Phase 2 is next.
 
 ## Global constraints
 
@@ -72,12 +72,12 @@ Do not repeat Phase 0 as an implementation task.
 | Reclaim | `docs/specs/reclaim.md` |
 | People's Chamber | `docs/specs/peoples-chamber.md` |
 
-- [ ] Record the chosen track, user, one-sentence promise, demo scenario, judge action, output, and cut list.
-- [ ] Choose the smallest familiar stack, input limits, source dependency, export mechanism, and fallback. Explain material builder choices plainly.
-- [ ] Replace the high-level implementation outline with selected-project tasks grouped under Phases 2–6. For each code task, name exact files, functions/types or interfaces, and the behavior check that proves it.
-- [ ] Define actual development, build, and test commands the selected stack will support. Do not report them as passed before the commands exist and run.
-- [ ] Assign each shared requirement and selected-profile acceptance criterion to a task. Include the five review-focus cases above in the owning tasks.
-- [ ] Check consistency across the decision, profile, architecture, and plan. Record Phase 1 evidence in the ledger.
+- [x] Record the chosen track, user, one-sentence promise, demo scenario, judge action, output, and cut list.
+- [x] Choose the smallest familiar stack, input limits, source dependency, export mechanism, and fallback. Explain material builder choices plainly.
+- [x] Replace the high-level implementation outline with selected-project tasks grouped under Phases 2–6. For each code task, name exact files, functions/types or interfaces, and the behavior check that proves it.
+- [x] Define actual development, build, and test commands the selected stack will support. Do not report them as passed before the commands exist and run.
+- [x] Assign each shared requirement and selected-profile acceptance criterion to a task. Include the five review-focus cases above in the owning tasks.
+- [x] Check consistency across the decision, profile, architecture, and plan. Record Phase 1 evidence in the ledger.
 
 **Completion check:** an implementer can start Phase 2 without choosing the product, inventing a second architecture, or guessing the output contract. Open nonessential decisions are explicitly cut or delegated, not blockers.
 

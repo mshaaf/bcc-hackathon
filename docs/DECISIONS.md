@@ -15,7 +15,12 @@ Updated October 21, 2026. Use this file for current status when older reports di
 | Select Block Ops / Track 3 — Community Development | Confirmed by user October 21 | User: “we are going forth with Block Ops.” This is the active implementation scope. |
 | Select The Switch | Alternative, not selected | Stronger AI-specific spectacle; requires early experimental validation. |
 | Select Casebreaker | Alternative, not selected | Clear document discrepancy and useful packet; track story needs care. |
-| Product framework, model provider, hosting | Open | Choose after the core project and dependency test. |
+| Product stack | Builder decision, October 21, 2026 | Node.js 20+ built-ins, ES modules, and native browser HTML/CSS/JavaScript. No package dependencies or model provider. A small local Node server serves the app and proxies one fixed public-data query. |
+| Public-data query | Builder decision, October 21, 2026 | DC 311 FeatureServer/21; Ward 8, service description containing “Dump,” rolling 90-day window in the layer's America/New_York calendar, 1,000-row maximum. Request only IDs, category, dates, official status, ward, organization, address, and OBJECTID; exclude details, inspector names, coordinates, and geometry. Fail closed on a transfer-limit flag. |
+| Candidate grouping | Builder decision, October 21, 2026 | Group by normalized street name and category as a review suggestion. Show each original address in the source inspector; require a human to include/exclude every proposed record. Shared street is not evidence of one incident or recurrence. |
+| Local state and fallback | Builder decision, October 21, 2026 | Keep draft state in browser memory only. Bundle a clearly fictional sample for offline operation; it is not a cached public response. A failed refresh keeps the current draft and reports the failure. Bind the server to 127.0.0.1. |
+| Export | Builder decision, October 21, 2026 | Generate current-state Markdown for download and use browser print for PDF. Include selected source IDs, original dates/statuses, snapshot metadata, user wording, explicit unknowns, and the two tasks. Never export excluded records. |
+| Runtime and checks | Builder decision, October 21, 2026 | Node.js 20+; `node server.mjs`, `node --test`, and `node scripts/prove-data.mjs`. No install step or secrets. |
 | License | Open | Do not choose a legal license as a setup default. |
 
 ## Recommendation history
@@ -45,4 +50,4 @@ The latest six-finalist document also identified **Casebreaker** as the stronges
 
 **Cuts:** accounts, multiplayer, monitoring, automatic complaints/dispatch, neighborhood scoring, predictions of resolution, and privileged government integrations. Keep real public data separate from explicitly fictional stage observations.
 
-**Next:** Luna completes Phase 1's stack, files/interfaces, and executable task plan, then runs the requested phase batch. Selection alone does not mark Phase 1 complete. No product code, push, deployment, or submission occurred as part of this decision update.
+**Current implementation:** Phase 1 finalized the stack and file-level plan. Phases 2–3 prove the public-data path and build the working loop. No model, database, login, official ticket submission, push, deployment, or external submission is in scope.

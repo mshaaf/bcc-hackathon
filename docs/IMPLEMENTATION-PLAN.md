@@ -1,8 +1,28 @@
 # Three-day implementation plan
 
-**Status:** active for Block Ops, selected by the user October 21, 2026. Luna must finalize the concrete technical tasks in Phase 1. No app has been built. Engineer A / Engineer B are provisional work allocations, not named assignments.
+**Status:** active for Block Ops, selected by the user October 21, 2026. Phase 1 finalized the concrete technical plan. Engineer A / Engineer B remain provisional work allocations, not named assignments.
 
-**Execution entry point:** use the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase ledger](PHASE-STATUS.md). Phase 1 turns this high-level outline into exact tasks/files/interfaces for the selected project. The daily outline below remains the time budget, not a second competing phase system.
+**Execution entry point:** use the [Luna phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase ledger](PHASE-STATUS.md). The daily outline below remains the time budget, not a second competing phase system.
+
+## Phase 1 technical decisions
+
+- **Stack:** Node.js 20+ standard library, ES modules, and native browser HTML/CSS/JavaScript. No frontend framework, dependency install, build step, model, or credentials.
+- **Run path:** `node server.mjs` serves the app at `http://127.0.0.1:8000` and exposes one same-origin endpoint that calls the fixed DC 311 layer. Bind to loopback only; do not accept arbitrary URLs or client-supplied SQL.
+- **Source contract:** query `FeatureServer/21` for `WARD='Ward 8'`, `SERVICECODEDESCRIPTION LIKE '%Dump%'`, and the trailing 90 days in the layer's `America/New_York` calendar. Request at most 1,000 rows, ordered by `OBJECTID`, with `OBJECTID`, `SERVICEREQUESTID`, `SERVICECODE`, `SERVICECODEDESCRIPTION`, `ADDDATE`, `SERVICEDUEDATE`, `RESOLUTIONDATE`, `SERVICEORDERSTATUS`, `ORGANIZATIONACRONYM`, `WARD`, and `STREETADDRESS`. Exclude `DETAILS`, `INSPECTORNAME`, geometry, and coordinates. Preserve original field values and label the live retrieval time and date window. If the response reports truncation or has an invalid feature-set shape, show an error and do not present partial results.
+- **Grouping:** normalize away a leading street number and group by remaining street name plus service category. Explain that this is only a candidate list; show exact source addresses and require human include/exclude review. Do not assert a repeated incident.
+- **State/output:** keep the current source, selection, observation, ask, and tasks in memory only. A failed source refresh preserves them. The fictional offline fixture is explicitly labeled and separate from live records. Generate Markdown from current selection; print-to-PDF uses the browser. Excluded IDs never appear in the output. Changing evidence invalidates record-review confirmation; no selected records means no export.
+
+## Concrete tasks by delivery phase
+
+| Phase | Files and interfaces | Behavior check |
+|---|---|---|
+| 2 — source proof | `lib/block-ops.mjs`: `buildQueryWindow`, `buildArcGisUrl`, `normalizeFeatureSet`, `suggestStreetGroups`; `scripts/prove-data.mjs`; `test/data.test.mjs` | Unit tests prove bounded filters, preservation of ID/date/status, candidate explanation, missing fields, transfer-limit rejection, and network-error handling. Run the proof against the live API; report only returned counts/date window and inspect no raw addresses. |
+| 3 — working MVP | `server.mjs`: loopback static server and fixed `/api/requests` proxy; `data/demo.json`; `public/index.html`, `public/app.mjs`, `public/styles.css`; `lib/block-ops.mjs`: `buildBriefMarkdown`; `test/workflow.test.mjs` | Start with `node server.mjs`; inspect live and fictional labels; remove one candidate and verify preview/download change; change source evidence and verify confirmation clears; add an observation, ask, and two role tasks and inspect the generated brief; verify missing date/status stays unknown, empty selection blocks export, and failed refresh preserves the current draft. Test at keyboard and narrow viewport; manually open the downloaded artifact. |
+| 4 — reliability | `lib/block-ops.mjs`, `server.mjs`, `public/app.mjs`, `test/data.test.mjs`, `test/workflow.test.mjs` | Add deduplication/unresolved handling for duplicate IDs, stable paged retrieval or explicit bounded failure, timeout/recovery checks, stale-confirmation cases, and malformed/missing source fields. |
+| 5 — polish | `public/index.html`, `public/app.mjs`, `public/styles.css`, `data/demo.json`, `docs/DEMO-AND-PRESENTATION.md` | Check the full judge interaction, keyboard access, visible focus, legible light appearance, no horizontal clipping at 320 px, and print layout. |
+| 6 — local release package | `README.md`, `docs/DEMO-AND-PRESENTATION.md`, `docs/SUBMISSION-CHECKLIST.md`, `docs/TEST-PLAN.md` | Verify clean startup, source fallback labels, artifact opening, and rehearsal notes. No push, publish, or submission without separate authorization. |
+
+**Commands:** `node server.mjs` (run), `node --test` (automated checks), `node scripts/prove-data.mjs` (live source proof; requires network), and `git diff --check` (repository hygiene). Node.js 20 or newer is required; there is no package installation or build command.
 
 | Day | Numbered phases | Expected result |
 |---|---|---|

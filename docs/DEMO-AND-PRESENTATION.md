@@ -6,9 +6,9 @@ This is a proposed three-minute format, not a verified event presentation limit.
 
 **Opening:** “We have several ticket numbers and a meeting tomorrow. Help us make the history clear.”
 
-**Live interaction:** the judge acts as records keeper. They inspect a candidate report from another site and remove it. The timeline and source appendix update. The group adds its attributed observation or leaves conditions unknown, chooses its request, and reviews two role-based tasks.
+**Live interaction:** the judge acts as records keeper. Start with the clearly labeled fictional sample if the public API is unavailable; otherwise load the live Ward 8 / Illegal Dumping snapshot. They inspect a same-street candidate from another address and remove it. The selected history and source appendix update, and the review confirmation clears. The group adds its dated observation or leaves current conditions unknown, chooses its request, and reviews two role-based tasks.
 
-**Proof and finish:** open an original source record and the actual regenerated group brief. Show that the rejected report is absent and the chosen request is present. Use a separate real dated record to demonstrate source fidelity; label fictional stage observations explicitly. End with the usable brief and next-step plan. The product prepares the group; no city response or cleanup outcome is claimed.
+**Proof and finish:** reconfirm the edited source list, download the regenerated Markdown brief, and inspect that the excluded report is absent and the chosen request is present. Live data preserves original IDs, dates, and statuses; every source record remains inspectable. Label the sample and any stage observation as fictional. End with the usable brief and next-step plan. The product prepares the group; no city response or cleanup outcome is claimed.
 
 The six-candidate table below is retained for comparison. Block Ops is the only active presentation scope.
 

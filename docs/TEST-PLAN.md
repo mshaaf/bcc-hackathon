@@ -31,7 +31,7 @@ Final setup results are recorded in [workflow/verification.json](workflow/verifi
 
 ## Selected-product checks
 
-**Active project:** Block Ops. Use its profile and the Block Ops fixture row below for implementation phases; other rows are retained research context.
+**Active project:** Block Ops. Use its profile and the Block Ops fixture row below for implementation phases; other rows are retained research context. Phase 1 selected Node.js 20+, the built-in test runner, and a same-origin loopback proxy. No checks below are claimed passed until executed.
 
 Use a small labeled fixture set rather than tests that merely mirror the implementation. Exercise:
 
@@ -50,6 +50,15 @@ Use a small labeled fixture set rather than tests that merely mirror the impleme
 | The Room | Retry; skip; changed goal; supporter removed; original words retained; unanswered clinical question |
 | Reclaim | Missing date; swapped labels; unrelated specimens; unclear units; wrong person; modern result; already reviewed |
 | People's Chamber | Missing/expired logistics; amended source; timer idle until start; edited ask; no official submission |
+
+## Block Ops commands and current phase evidence
+
+- Run the app: `node server.mjs` (Node.js 20+; no install step).
+- Run automated behavior checks: `node --test`.
+- Reproduce the bounded public source proof: `node scripts/prove-data.mjs` (network required; prints counts and source window, not raw addresses).
+- Check tracked changes: `git diff --check`.
+
+Phase 1 documentation finalized the source filter, field allowlist, review contract, state, output, and file-level tasks. Phases 2–3 results will be appended here only after the commands and interactions actually run.
 
 Measure actual counts and denominators. Do not report target accuracy as achieved accuracy. User testing may assess task completion or comprehension; it does not establish improved healthcare access, model fairness, or government responsiveness.
 
