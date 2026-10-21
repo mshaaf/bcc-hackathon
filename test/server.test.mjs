@@ -33,7 +33,7 @@ test("serves the app and fictional fixture from the explicit route list", async 
 test("serves the map workspace and vendored Leaflet explicitly, with only the DC GIS tile origin added", async () => {
   const server = createAppServer();
   await withServer(server, async baseUrl => {
-    for (const path of ["/", "/app.mjs", "/map.mjs", "/styles.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
+    for (const path of ["/", "/app.mjs", "/map.mjs", "/storage.mjs", "/lib/campaign.mjs", "/lib/block-ops.mjs", "/styles.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
       assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, path);
     }
     for (const path of ["/prototype", "/prototype.mjs", "/vendor/leaflet/LICENSE", "/vendor/../server.mjs"]) {

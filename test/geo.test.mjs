@@ -143,11 +143,39 @@ test("changing radius or filters changes the evidence, invalidates review, and k
   assert.match(brief.scope, /within 250 m of the 1900 block of Naylor Rd SE/);
 });
 
-test("manual exclusion survives only until the scope changes", () => {
+test("a record the user excluded stays excluded across radius, date and status changes", () => {
   const scoped = updateScope(base, { center, radiusM: 250 });
   const excluded = setRecordIncluded(scoped, "request:B", false);
-  assert.ok(!buildBriefMarkdown(excluded).includes("1950 NAYLOR ROAD SE"));
-  assert.equal(updateScope(excluded, { radiusM: 250 }).selectedIds.has("request:B"), true, "a scope change re-derives the candidate selection");
+
+  const wider = updateScope(excluded, { radiusM: 150 });
+  assert.equal(wider.selectedIds.has("request:B"), false, "radius change");
+  assert.equal(updateScope(wider, { radiusM: 250 }).selectedIds.has("request:B"), false, "radius back");
+  assert.equal(updateScope(wider, { days: 60 }).selectedIds.has("request:B"), false, "date change");
+
+  const closedOnly = updateScope(wider, { kinds: ["closed"] }); // B is open, so it is filtered out here
+  const allKinds = updateScope(closedOnly, { kinds: ["open", "closed", "other"] });
+  assert.equal(allKinds.selectedIds.has("request:B"), false, "status filter off and on");
+  assert.ok(allKinds.selectedIds.has("request:A"), "other records are still re-selected");
+  assert.ok(!buildBriefMarkdown(allKinds).includes("1950 NAYLOR ROAD SE"));
+
+  const reincluded = setRecordIncluded(allKinds, "request:B", true);
+  assert.equal(updateScope(reincluded, { radiusM: 150 }).selectedIds.has("request:B"), true, "an explicit include is kept too");
+});
+
+test("exclusions are cleared when the area center moves or the source changes", async () => {
+  const excluded = setRecordIncluded(updateScope(base, { center, radiusM: 250 }), "request:B", false);
+  const moved = updateScope(excluded, { center: { lon: -76.9719, lat: 38.8478 } });
+  assert.equal(moved.selectedIds.has("request:B"), true, "moving the area starts a fresh selection");
+
+  const refreshed = await refreshWorkspace(excluded, async () => snapshot);
+  assert.equal(refreshed.excludedIds.size, 0);
+  assert.equal(refreshed.selectedIds.has("request:B"), true);
+});
+
+test("unplaced reports the user added survive scope changes while they still match the filters", () => {
+  const added = setRecordIncluded(updateScope(base, { center, radiusM: 250 }), "request:E", true);
+  assert.equal(updateScope(added, { radiusM: 100 }).selectedIds.has("request:E"), true);
+  assert.equal(updateScope(added, { kinds: ["closed"] }).selectedIds.has("request:E"), false, "E is open, so the filter hides it");
 });
 
 test("reports without a usable point stay reachable and are never dropped", () => {

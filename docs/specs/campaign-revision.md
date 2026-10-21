@@ -102,3 +102,23 @@ User decisions applied: dumping stays the stage story; radius presets 100 / 150 
 - **Brief:** adds a selection-scope line, a per-record location note for outside-boundary points, and an approximate-location caveat. Planning fields and tasks are unchanged from the baseline (R3 replaces them).
 - **Demo / practice case:** fictional records, no coordinates, no map points, no official links; filters work, area controls are disabled. It is only loaded on request. The page loads live data and shows an error, not sample data, when the source is down.
 - **Intentionally left for R3 or later:** persistence (state is memory only), task owners/dates, follow-ups, resizable radius beyond the presets, crime.
+
+## 8. R3 as built (October 21, 2026)
+
+User decisions applied: several saved campaigns in a simple list with one open at a time; "New campaign here" creates a campaign from the current area and selection with the objective prefilled ("Stop repeat dumping on the 1900 block of Naylor Rd SE") and editable; tasks have text, owner, due date and done; follow-up observations are dated and typed (resident / follow-up / agency response) and never change the city status; after a reload the campaign reopens intact, a follow-up and a done task change the brief, and any invented entry carries a "fictional" label.
+
+**Bug fixed first (failing tests written before the fix):** `updateScope` used to re-select every candidate on a radius or filter change, so an excluded report silently returned. The draft now remembers `excludedIds`; they survive radius, date and status changes (even while a filter hides the report) and are cleared only when the area centre moves or the source changes. Reports the user added from the unplaced list are kept while they still match the filters.
+
+**Files:** `lib/campaign.mjs` (pure model: create, objective, request, evidence removal, review, observations, tasks, reconcile, export rules, brief content and Markdown, store validation), `public/storage.mjs` (localStorage wrapper), `public/app.mjs`, `public/index.html`, `public/styles.css`, `server.mjs` (`/storage.mjs`, `/lib/campaign.mjs`), tests `test/campaign.test.mjs`, `test/storage.test.mjs`, and the driver `scripts/browser-check.mjs`.
+
+**Differences from the section 4 sketch:**
+
+- Evidence items store the source fields plus `objectId`, `reviewedStatus`, `previousStatus`, `changedSinceReview` and `inLatestSnapshot` instead of `reviewed`/`retrievedAt`. The campaign also stores `source` (mode, layer, retrieved time, window), the area, the filters, and the name.
+- The saved file may carry a `savedAt` field; the validator ignores unknown extras.
+- A second convenience key, `blockops.lastOpen`, remembers which campaign was open so a reload reopens it. It is optional and losing it only means returning to the list.
+- `request.confirmedAt` is "the group reviewed the evidence and the request". Editing the request, removing a report, or a refresh that changes a reviewed report's status withdraws it. Adding observations or tasks does not.
+- Reconcile only applies to live campaigns against live snapshots. A report that has left the rolling 90-day window keeps its last seen status and is labeled "not in the latest snapshot"; absence alone does not withdraw the review.
+
+**Storage rules (as tested):** writes go to `blockops.campaigns.v1.tmp`, are read back and compared, the previous valid value is copied to `.backup`, then the main key is written. A full or disabled store, or a failed read-back, shows an error and leaves the last valid save untouched. Corrupt JSON, an unknown version or a malformed campaign at load shows an error, turns saving off for the session, and never overwrites the stored value; the app keeps working in memory and can still export. There is no "reset" button on purpose: clearing site data or restoring the value by hand is the recovery path.
+
+**Cuts and limits:** one operator on one browser profile (a different origin such as `localhost` versus `127.0.0.1`, a private window, or cleared site data shows a different store); no sync or sharing; no editing of existing observations or evidence snapshots beyond remove; the radius of a saved campaign is fixed at creation; a practice (fictional) campaign can be created and is labeled everywhere; no photos, AI, or crime layer.

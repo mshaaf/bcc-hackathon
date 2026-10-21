@@ -46,7 +46,8 @@ export function createMap(container, { onPick, onTilesFailed }) {
         layer.on("click", event => { L.DomEvent.stopPropagation(event); onPick(record.geo); });
         return { record, layer };
       });
-      if (markers.length) map.fitBounds(L.latLngBounds(markers.map(({ record }) => [record.geo.lat, record.geo.lon])).pad(.05));
+      // no animation: Leaflet ignores a second zoom request while one is animating, which would drop the area pan
+      if (markers.length) map.fitBounds(L.latLngBounds(markers.map(({ record }) => [record.geo.lat, record.geo.lon])).pad(.05), { animate: false });
     },
     restyle({ selectedKeys, visibleKeys }) {
       for (const { record, layer } of markers) {
@@ -62,7 +63,7 @@ export function createMap(container, { onPick, onTilesFailed }) {
       ring = null;
       if (!center) return;
       ring = L.circle([center.lat, center.lon], { radius: radiusM, color: "#5b316b", weight: 2, dashArray: "6 5", fill: false, interactive: false }).addTo(map);
-      if (pan) map.fitBounds(ring.getBounds().pad(.6), { maxZoom: 17 });
+      if (pan) map.fitBounds(ring.getBounds().pad(.6), { maxZoom: 17, animate: false });
     },
     resize() { map.invalidateSize(); },
     container: map.getContainer()

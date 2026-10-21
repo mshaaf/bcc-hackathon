@@ -1,14 +1,9 @@
 import {
   DEFAULT_SCOPE,
-  KIND_LABELS,
   applyWardBoundary,
   areaBlockName,
   areaRecords,
-  buildBriefContent,
-  buildBriefMarkdown,
   candidateRecords,
-  canExportBrief,
-  confirmSourceReview,
   findBusySpots,
   formatSourceDate,
   normalizeFeatureSet,
@@ -21,37 +16,56 @@ import {
   updateScope,
   visibleRecords
 } from "/lib/block-ops.mjs";
+import {
+  OBSERVATION_KINDS,
+  addObservation,
+  addTask,
+  buildCampaignBriefContent,
+  buildCampaignMarkdown,
+  canExportCampaign,
+  confirmCampaign,
+  createCampaign,
+  exportBlocker,
+  reconcileStore,
+  removeEvidence,
+  removeObservation,
+  removeTask,
+  setObjective,
+  setRequestText,
+  updateTask
+} from "/lib/campaign.mjs";
+import { createCampaignStorage } from "/storage.mjs";
 import { createMap } from "/map.mjs";
 
 const byId = id => document.getElementById(id);
-const todayInDc = () => {
-  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  }).formatToParts(new Date()).map(part => [part.type, part.value]));
+const dcDay = date => {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" })
+    .formatToParts(date).map(part => [part.type, part.value]));
   return `${parts.year}-${parts.month}-${parts.day}`;
 };
+const todayInDc = () => dcDay(new Date());
+const when = iso => new Date(iso).toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short" });
 
+const storage = createCampaignStorage();
+const LAST_OPEN = "blockops.lastOpen";
 let loading = "";
+let view = "explore";
 let busySpots = [];
 let busyKey = "";
 let plottedSnapshot = null;
+let store = { version: 1, campaigns: [] };
+let openId = null;
+let deleteArmed = false;
 let state = {
   snapshot: null,
   groups: [],
   activeGroupKey: null,
   selectedIds: new Set(),
+  excludedIds: new Set(),
   reviewConfirmed: false,
   refreshError: "",
   observation: "",
-  observedOn: todayInDc(),
-  ask: "Please share a dated update for the reports the group reviewed.",
-  tasks: [
-    { role: "Meeting lead", task: "Bring the reviewed brief to the next group meeting." },
-    { role: "Records keeper", task: "Check the public source again on the agreed follow-up date." }
-  ],
+  observedOn: "",
   area: { ...DEFAULT_SCOPE.area },
   filters: { ...DEFAULT_SCOPE.filters, kinds: new Set(DEFAULT_SCOPE.filters.kinds) }
 };
@@ -62,49 +76,95 @@ function element(tag, className, text) {
   if (text !== undefined && text !== null) node.textContent = String(text);
   return node;
 }
-
-function sourceText(value) {
-  return value === null || value === undefined || value === "" ? "Unavailable" : String(value);
-}
-
-function displayAddress(value) {
-  return sourceText(value).toLocaleLowerCase("en-US")
-    .replace(/\b[a-z]/g, letter => letter.toUpperCase())
-    .replace(/\b(?:se|sw|ne|nw)\b/gi, direction => direction.toUpperCase());
-}
-
-const hasLocations = () => Boolean(state.snapshot?.records.some(record => record.geo));
+const sourceText = value => (value === null || value === undefined || value === "" ? "Unavailable" : String(value));
+const displayAddress = value => sourceText(value).toLocaleLowerCase("en-US")
+  .replace(/\b[a-z]/g, letter => letter.toUpperCase())
+  .replace(/\b(?:se|sw|ne|nw)\b/gi, direction => direction.toUpperCase());
 const plural = (count, word) => `${count} ${word}${count === 1 ? "" : "s"}`;
+const hasLocations = () => Boolean(state.snapshot?.records.some(record => record.geo));
+const openCampaign = () => store.campaigns.find(campaign => campaign.id === openId) ?? null;
+
+function dateBlock(value) {
+  const date = element("div", "record-date");
+  if (formatSourceDate(value) === "Date unavailable") {
+    date.append(element("span", "", "Date"), element("strong", "", "—"));
+  } else {
+    const parsed = new Date(value);
+    date.append(element("strong", "", new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(parsed)));
+    date.append(element("span", "", new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "America/New_York" }).format(parsed)));
+  }
+  return date;
+}
+
+function rememberOpen(id) {
+  try { if (id) localStorage.setItem(LAST_OPEN, id); else localStorage.removeItem(LAST_OPEN); } catch { /* a convenience only */ }
+}
+function recallOpen() {
+  try { return localStorage.getItem(LAST_OPEN); } catch { return null; }
+}
+
+// ---------- map ----------
 
 const map = createMap(byId("map"), {
   onPick: center => {
-    if (loading || !hasLocations()) return;
+    if (loading || !hasLocations() || view !== "explore") return;
     state = updateScope(state, { center });
-    syncObservationInputs();
     renderScope();
   },
   onTilesFailed: failed => { byId("map-note").hidden = !failed; }
 });
 
-function showView(view, focus = false) {
-  if (!["evidence", "plan", "brief"].includes(view)) return;
-  const wasBrief = byId("workspace").dataset.view === "brief";
-  byId("workspace").dataset.view = view;
-  for (const name of ["evidence", "plan", "brief"]) {
-    byId(`${name}-panel`).hidden = name !== view;
-    byId(`${name}-tab`).setAttribute("aria-selected", String(name === view));
+function renderMap(pan = false) {
+  if (view === "brief") return;
+  if (plottedSnapshot !== state.snapshot) {
+    plottedSnapshot = state.snapshot;
+    map.setRecords(state.snapshot?.records ?? []);
+    pan = true; // plotting fits the whole ward; go back to the area that matters
   }
-  if (wasBrief && view !== "brief") requestAnimationFrame(() => map.resize());
+  const campaign = view === "campaign" ? openCampaign() : null;
+  if (campaign) {
+    map.setArea(campaign.area.center, campaign.area.radiusM, { pan });
+    map.restyle({ selectedKeys: new Set(campaign.evidence.map(item => item.key)), visibleKeys: new Set((state.snapshot?.records ?? []).map(record => record.key)) });
+  } else {
+    map.setArea(state.area.center, state.area.radiusM, { pan });
+    map.restyle({ selectedKeys: state.selectedIds, visibleKeys: new Set(visibleRecords(state).map(record => record.key)) });
+  }
+}
+
+// ---------- views ----------
+
+function showView(next, focus = false) {
+  if (!["explore", "campaign", "brief"].includes(next)) return;
+  const wasBrief = view === "brief";
+  view = next;
+  byId("workspace").dataset.view = next;
+  for (const name of ["explore", "campaign", "brief"]) {
+    byId(`${name}-panel`).hidden = name !== next;
+    byId(`${name}-tab`).setAttribute("aria-selected", String(name === next));
+  }
+  if (next === "brief") renderBrief();
+  else if (wasBrief) requestAnimationFrame(() => { map.resize(); renderMap(true); });
+  else renderMap(true);
   if (focus) {
-    byId(`${view}-tab`).focus({ preventScroll: true });
+    byId(`${next}-tab`).focus({ preventScroll: true });
     byId("panel").scrollIntoView({ block: "start", behavior: "instant" });
   }
 }
 
-function syncObservationInputs() {
-  byId("observation").value = state.observation;
-  byId("observed-on").value = state.observedOn;
+// ---------- saving ----------
+
+function setSaveStatus(text, isError) {
+  byId("save-status").textContent = text;
+  byId("save-status").classList.toggle("save-error", isError);
 }
+function persist() {
+  const result = storage.save(store);
+  if (result.ok) setSaveStatus(`Saved in this browser · ${when(result.savedAt)}`, false);
+  else setSaveStatus(result.message, true);
+  return result;
+}
+
+// ---------- explore ----------
 
 function renderFreshness() {
   const snapshot = state.snapshot;
@@ -112,7 +172,7 @@ function renderFreshness() {
   byId("sample-notice").hidden = !demo;
   byId("error-notice").hidden = !state.refreshError;
   byId("error-notice").textContent = state.refreshError
-    ? `${state.refreshError} ${snapshot ? "Your current selection and notes are unchanged." : "No substitute data is shown."}`
+    ? `${state.refreshError} ${snapshot ? "Your current selection and saved campaigns are unchanged." : "No substitute data is shown."}`
     : "";
 
   let text;
@@ -125,8 +185,7 @@ function renderFreshness() {
     const boundaryText = boundary?.status === "checked"
       ? `${boundary.outside} outside the Ward 8 boundary${boundary.unchecked ? ` · ${boundary.unchecked} not checked (no location)` : ""}`
       : "Ward 8 boundary check unavailable";
-    const retrieved = new Date(snapshot.retrievedAt).toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short" });
-    text = `DC 311 · retrieved ${retrieved} ET · ${snapshot.window.start} to ${snapshot.window.endExclusive} (end exclusive) · ${plural(snapshot.records.length, "record")} · ${geometry.mapped} mapped, ${geometry.missing} missing, ${geometry.invalid} invalid location · ${boundaryText}`;
+    text = `DC 311 · retrieved ${when(snapshot.retrievedAt)} ET · ${snapshot.window.start} to ${snapshot.window.endExclusive} (end exclusive) · ${plural(snapshot.records.length, "record")} · ${geometry.mapped} mapped, ${geometry.missing} missing, ${geometry.invalid} invalid location · ${boundaryText}`;
   } else text = "No source records loaded.";
   byId("freshness").textContent = text;
 
@@ -170,18 +229,34 @@ function appendSourceField(list, label, value) {
   list.append(element("dt", "", label), element("dd", "", sourceText(value)));
 }
 
+function sourceDrawer(record, mode) {
+  const details = element("details", "record-details");
+  details.append(element("summary", "", "Show original record"));
+  const fields = element("dl", "source-fields");
+  for (const [label, value] of [
+    ["Service request ID", record.attributes?.SERVICEREQUESTID ?? record.id], ["Object ID", record.attributes?.OBJECTID ?? record.objectId],
+    ["Add date (source)", record.attributes?.ADDDATE ?? record.date], ["Service due date", record.attributes?.SERVICEDUEDATE],
+    ["Resolution date", record.attributes?.RESOLUTIONDATE], ["Official status", record.attributes?.SERVICEORDERSTATUS ?? record.status],
+    ["Service code", record.attributes?.SERVICECODE], ["Service description", record.attributes?.SERVICECODEDESCRIPTION ?? record.category],
+    ["Organization", record.attributes?.ORGANIZATIONACRONYM ?? record.agency], ["Ward label (source)", record.attributes?.WARD ?? record.ward],
+    ["Street address", record.attributes?.STREETADDRESS ?? record.address]
+  ]) appendSourceField(fields, label, value);
+  appendSourceField(fields, "Map point", record.geo ? `${record.geo.lat.toFixed(5)}, ${record.geo.lon.toFixed(5)} (approximate)` : record.geoStatus === "invalid" ? "Source point invalid; not mapped" : "No map point in the source");
+  details.append(fields);
+  const recordUrl = sourceRecordUrl(record, mode);
+  if (recordUrl) {
+    const link = element("a", "source-link", "Open this record at DC 311");
+    link.href = recordUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    details.append(link);
+  }
+  return details;
+}
+
 function recordRow(record, id) {
   const row = element("div", "record-choice");
-  const date = element("div", "record-date");
-  if (formatSourceDate(record.date) === "Date unavailable") {
-    date.append(element("span", "", "Date"), element("strong", "", "—"));
-  } else {
-    const parsed = new Date(record.date);
-    date.append(element("strong", "", new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(parsed)));
-    date.append(element("span", "", new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "America/New_York" }).format(parsed)));
-  }
-  row.append(date);
-
+  row.append(dateBlock(record.date));
   const checkbox = element("input");
   checkbox.id = id;
   checkbox.type = "checkbox";
@@ -198,37 +273,12 @@ function recordRow(record, id) {
   const head = element("div", "record-head");
   const address = element("label", "record-address", displayAddress(record.address || "Address unavailable"));
   address.htmlFor = id;
-  head.append(address);
-  const status = element("span", `status-pill status-${statusKind(record.status)}`, record.status || "Status unavailable");
-  head.append(status);
+  head.append(address, element("span", `status-pill status-${statusKind(record.status)}`, record.status || "Status unavailable"));
   content.append(head);
   const meta = element("div", "record-meta");
   meta.append(element("span", "record-id", `Request ${sourceText(record.id)}`));
   if (record.outsideWard === true) meta.append(element("span", "flag", "Outside Ward 8 boundary"));
-  content.append(meta);
-
-  const details = element("details", "record-details");
-  details.append(element("summary", "", "Show original record"));
-  const fields = element("dl", "source-fields");
-  for (const [label, value] of [
-    ["Service request ID", record.attributes.SERVICEREQUESTID], ["Object ID", record.attributes.OBJECTID],
-    ["Add date (source)", record.attributes.ADDDATE], ["Service due date", record.attributes.SERVICEDUEDATE],
-    ["Resolution date", record.attributes.RESOLUTIONDATE], ["Official status", record.attributes.SERVICEORDERSTATUS],
-    ["Service code", record.attributes.SERVICECODE], ["Service description", record.attributes.SERVICECODEDESCRIPTION],
-    ["Organization", record.attributes.ORGANIZATIONACRONYM], ["Ward label (source)", record.attributes.WARD],
-    ["Street address", record.attributes.STREETADDRESS]
-  ]) appendSourceField(fields, label, value);
-  appendSourceField(fields, "Map point", record.geo ? `${record.geo.lat.toFixed(5)}, ${record.geo.lon.toFixed(5)} (approximate)` : record.geoStatus === "invalid" ? "Source point invalid; not mapped" : "No map point in the source");
-  details.append(fields);
-  const recordUrl = sourceRecordUrl(record, state.snapshot?.mode);
-  if (recordUrl) {
-    const link = element("a", "source-link", "Open this record at DC 311");
-    link.href = recordUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    details.append(link);
-  }
-  content.append(details);
+  content.append(meta, sourceDrawer(record, state.snapshot?.mode));
   row.append(content);
   return row;
 }
@@ -236,8 +286,7 @@ function recordRow(record, id) {
 function renderScope() {
   renderScopeControls();
   const candidates = candidateRecords(state);
-  const inScope = areaRecords(state);
-  const hidden = inScope.length - candidates.length;
+  const hidden = areaRecords(state).length - candidates.length;
   const demo = state.snapshot?.mode === "demo";
   const block = areaBlockName(state);
 
@@ -265,75 +314,223 @@ function renderScope() {
   byId("unplaced").hidden = !unplaced.length;
   byId("unplaced-summary").textContent = `${plural(unplaced.length, "report")} without a usable map point`;
   byId("unplaced-list").replaceChildren(...unplaced.map((record, index) => recordRow(record, `unplaced-${index}`)));
-
-  if (plottedSnapshot !== state.snapshot) {
-    plottedSnapshot = state.snapshot;
-    map.setRecords(state.snapshot?.records ?? []);
-  }
-  map.setArea(state.area.center, state.area.radiusM, { pan: !loading });
-  renderSelection();
+  renderSelection(true);
 }
 
-function renderSelection() {
-  const selected = state.snapshot?.records.filter(record => state.selectedIds.has(record.key)) ?? [];
+function renderSelection(pan = false) {
   byId("selected-count").textContent = `${state.selectedIds.size} selected`;
-  byId("confirm-review").disabled = state.selectedIds.size === 0 || Boolean(loading);
-  byId("review-check").hidden = !state.reviewConfirmed;
-  byId("review-status").textContent = state.selectedIds.size === 0
-    ? "Select at least one report before confirming."
-    : state.reviewConfirmed
-      ? "Source list confirmed. Any change to the evidence clears this confirmation."
-      : "Inspect the source fields, then confirm the records for this draft.";
-
-  const statuses = new Map();
-  for (const record of selected) statuses.set(record.status || "Status unknown", (statuses.get(record.status || "Status unknown") || 0) + 1);
-  byId("t-city").textContent = selected.length ? `${[...statuses].map(([status, count]) => `${count} ${status}`).join(" · ")} (as published)` : "No reports selected";
-  byId("t-group").textContent = state.reviewConfirmed ? `Source list confirmed · ${plural(selected.length, "report")}` : "Source list not confirmed yet";
-  byId("t-resident").textContent = state.observation.trim()
-    ? (state.observedOn ? `Group observation · ${state.observedOn}` : "Group observation · date needed")
-    : "No resident observation yet";
-
+  byId("new-campaign").disabled = state.selectedIds.size === 0 || Boolean(loading);
+  byId("new-status").textContent = state.selectedIds.size === 0
+    ? "Select at least one report to start a campaign."
+    : `Starts a saved campaign from ${plural(state.selectedIds.size, "selected report")} in this area.`;
   for (const box of document.querySelectorAll("#record-list input[type=checkbox], #unplaced-list input[type=checkbox]")) box.checked = state.selectedIds.has(box.dataset.key);
-  map.restyle({
-    selectedKeys: state.selectedIds,
-    visibleKeys: new Set(visibleRecords(state).map(record => record.key))
-  });
-  renderBrief();
+  renderMap(pan);
 }
 
-function appendBriefSection(paper, title, content) {
-  paper.append(element("h5", "", title));
-  paper.append(element("p", "paper-block", content));
+// ---------- campaigns ----------
+
+function mutate(change) {
+  const campaign = openCampaign();
+  if (!campaign) return "";
+  let next;
+  try { next = change(campaign); } catch (error) { return error.message; }
+  store = { ...store, campaigns: store.campaigns.map(item => item.id === campaign.id ? next : item) };
+  persist();
+  return "";
 }
+
+function renderCampaignList() {
+  const list = byId("campaign-list");
+  const sorted = [...store.campaigns].sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+  byId("campaign-count").textContent = store.campaigns.length ? ` (${store.campaigns.length})` : "";
+  byId("campaign-empty").hidden = sorted.length > 0;
+  list.replaceChildren(...sorted.map(campaign => {
+    const item = element("li", "campaign-card");
+    const head = element("div", "card-head");
+    head.append(element("strong", "", campaign.name));
+    if (campaign.source.mode === "demo") head.append(element("span", "badge badge-demo", "Practice (fictional)"));
+    if (campaign.evidence.some(entry => entry.changedSinceReview)) head.append(element("span", "badge badge-warn", "Status changed since review"));
+    else if (!campaign.request.confirmedAt) head.append(element("span", "badge", "Not reviewed"));
+    const done = campaign.tasks.filter(task => task.done).length;
+    item.append(head, element("p", "card-objective", campaign.objective || "No objective set"),
+      element("p", "card-meta", `${plural(campaign.evidence.length, "report")} · ${plural(campaign.observations.length, "observation")} · tasks ${done} of ${campaign.tasks.length} done · updated ${when(campaign.updatedAt)}`));
+    const open = element("button", "button button-secondary", "Open");
+    open.type = "button";
+    open.setAttribute("aria-label", `Open campaign ${campaign.name}`);
+    open.addEventListener("click", () => openCampaignById(campaign.id));
+    item.append(open);
+    return item;
+  }));
+}
+
+function openCampaignById(id) {
+  openId = id;
+  rememberOpen(id);
+  deleteArmed = false;
+  const campaign = openCampaign();
+  byId("c-objective").value = campaign.objective;
+  byId("c-request").value = campaign.request.text;
+  byId("obs-date").value = todayInDc();
+  byId("obs-kind").value = campaign.observations.length ? "followup" : "resident";
+  byId("obs-fictional").checked = campaign.source.mode === "demo";
+  renderCampaign();
+  showView("campaign", true);
+}
+
+function renderCampaign() {
+  renderCampaignList();
+  const campaign = openCampaign();
+  byId("campaign-list-view").hidden = Boolean(campaign);
+  byId("campaign-detail-view").hidden = !campaign;
+  if (!campaign) { renderBrief(); return; }
+
+  byId("c-tag").textContent = campaign.source.mode === "demo" ? "Practice campaign · fictional" : "Neighborhood campaign";
+  byId("c-name").textContent = campaign.name;
+  byId("delete-campaign").textContent = deleteArmed ? "Confirm delete" : "Delete campaign";
+  renderTracks();
+  renderCampaignEvidence();
+  renderObservations();
+  renderTasks();
+  renderReviewState();
+  renderBrief();
+  if (view === "campaign") renderMap(false);
+}
+
+function renderTracks() {
+  const campaign = openCampaign();
+  if (!campaign) return;
+  const counts = new Map();
+  for (const item of campaign.evidence) counts.set(item.status || "Status unknown", (counts.get(item.status || "Status unknown") || 0) + 1);
+  const changed = campaign.evidence.filter(item => item.changedSinceReview).length;
+  byId("t-city").textContent = campaign.evidence.length
+    ? `${[...counts].map(([status, count]) => `${count} ${status}`).join(" · ")} (as published${campaign.source.retrievedAt ? `, checked ${when(campaign.source.retrievedAt)}` : ""})${changed ? ` · ${plural(changed, "status")} changed since review` : ""}`
+    : "No reports in this campaign";
+  const done = campaign.tasks.filter(task => task.done).length;
+  byId("t-group").textContent = `${campaign.request.confirmedAt ? `Reviewed ${when(campaign.request.confirmedAt)}` : "Not reviewed yet"} · tasks ${done} of ${campaign.tasks.length} done`;
+  const latest = [...campaign.observations].filter(item => item.kind !== "agency").sort((left, right) => left.date.localeCompare(right.date)).at(-1);
+  byId("t-resident").textContent = latest
+    ? `${OBSERVATION_KINDS[latest.kind]} · ${latest.date}${latest.fictional ? " (fictional)" : ""}`
+    : "No resident observation yet";
+}
+
+function renderCampaignEvidence() {
+  const campaign = openCampaign();
+  byId("c-evidence-count").textContent = `· ${campaign.evidence.length}`;
+  byId("c-evidence").replaceChildren(...campaign.evidence.map(item => {
+    const row = element("div", "record-choice evidence-row");
+    row.append(dateBlock(item.date), element("span"));
+    const content = element("div", "record-content");
+    const head = element("div", "record-head");
+    head.append(element("span", "record-address", displayAddress(item.address || "Address unavailable")), element("span", `status-pill status-${statusKind(item.status)}`, item.status || "Status unavailable"));
+    const meta = element("div", "record-meta");
+    meta.append(element("span", "record-id", `Request ${sourceText(item.id)}`));
+    if (item.outsideWard === true) meta.append(element("span", "flag", "Outside Ward 8 boundary"));
+    if (item.changedSinceReview) meta.append(element("span", "flag flag-warn", `Status changed since review: was ${item.previousStatus ?? "unavailable"}`));
+    if (item.inLatestSnapshot === false) meta.append(element("span", "flag", "Not in the latest 90-day snapshot"));
+    const remove = element("button", "button button-quiet small", "Remove from campaign");
+    remove.type = "button";
+    remove.setAttribute("aria-label", `Remove service request ${sourceText(item.id)} from this campaign`);
+    remove.addEventListener("click", () => {
+      mutate(current => removeEvidence(current, item.key));
+      renderCampaign();
+    });
+    content.append(head, meta, sourceDrawer(item, campaign.source.mode), remove);
+    row.append(content);
+    return row;
+  }));
+}
+
+function renderObservations() {
+  const campaign = openCampaign();
+  const sorted = [...campaign.observations].sort((left, right) => left.date.localeCompare(right.date));
+  byId("c-observations").replaceChildren(...sorted.map(item => {
+    const li = element("li", "obs-item");
+    const head = element("div", "obs-head");
+    head.append(element("strong", "", OBSERVATION_KINDS[item.kind]), element("span", "", item.date));
+    if (item.fictional) head.append(element("span", "badge badge-demo", "Fictional"));
+    const remove = element("button", "button button-quiet small", "Remove");
+    remove.type = "button";
+    remove.setAttribute("aria-label", `Remove ${OBSERVATION_KINDS[item.kind]} dated ${item.date}`);
+    remove.addEventListener("click", () => { mutate(current => removeObservation(current, item.id)); renderCampaign(); });
+    li.append(head, element("p", "", item.text), remove);
+    return li;
+  }));
+}
+
+function renderTasks() {
+  const campaign = openCampaign();
+  byId("c-tasks").replaceChildren(...campaign.tasks.map((task, index) => {
+    const li = element("li", "task-row");
+    const done = element("input");
+    done.type = "checkbox";
+    done.checked = task.done;
+    done.id = `task-done-${index}`;
+    done.addEventListener("change", () => { mutate(current => updateTask(current, task.id, { done: done.checked })); renderTracks(); renderReviewState(); renderBrief(); li.classList.toggle("is-done", done.checked); });
+    const label = element("label", "task-text", task.text);
+    label.htmlFor = done.id;
+    const owner = element("input");
+    owner.type = "text";
+    owner.value = task.owner;
+    owner.placeholder = "Owner";
+    owner.setAttribute("aria-label", `Owner of task: ${task.text}`);
+    owner.addEventListener("change", () => { mutate(current => updateTask(current, task.id, { owner: owner.value })); renderBrief(); });
+    const due = element("input");
+    due.type = "date";
+    due.value = task.due;
+    due.setAttribute("aria-label", `Due date of task: ${task.text}`);
+    due.addEventListener("change", () => { mutate(current => updateTask(current, task.id, { due: due.value })); renderBrief(); });
+    const remove = element("button", "button button-quiet small", "Remove");
+    remove.type = "button";
+    remove.setAttribute("aria-label", `Remove task: ${task.text}`);
+    remove.addEventListener("click", () => { mutate(current => removeTask(current, task.id)); renderCampaign(); });
+    li.classList.toggle("is-done", task.done);
+    li.append(done, label, owner, due, remove);
+    return li;
+  }));
+}
+
+function renderReviewState() {
+  const campaign = openCampaign();
+  if (!campaign) return;
+  byId("review-status").textContent = campaign.request.confirmedAt
+    ? `Reviewed ${when(campaign.request.confirmedAt)}. Changing the request or removing a report withdraws this.`
+    : (exportBlocker(campaign) || "Check the evidence and request, then mark the campaign reviewed.");
+  byId("mark-reviewed").disabled = !campaign.evidence.length || Boolean(campaign.request.confirmedAt);
+  byId("mark-reviewed").textContent = campaign.request.confirmedAt ? "Reviewed ✓" : "Mark reviewed";
+}
+
+// ---------- brief ----------
 
 function renderBrief() {
   const paper = byId("brief-paper");
   paper.replaceChildren();
-  const hasSelected = Boolean(state.snapshot && state.selectedIds.size);
-  byId("download-brief").disabled = !canExportBrief(state) || Boolean(loading);
-  byId("print-brief").disabled = !canExportBrief(state) || Boolean(loading);
-
-  if (!hasSelected) {
-    paper.append(element("p", "empty-message", "Select at least one source report to prepare a brief."));
-    byId("export-status").textContent = "A brief needs at least one selected source record.";
+  const campaign = openCampaign();
+  const ok = Boolean(campaign) && canExportCampaign(campaign) && !loading;
+  byId("download-brief").disabled = !ok;
+  byId("print-brief").disabled = !ok;
+  if (!campaign) {
+    paper.append(element("p", "empty-message", "Open a saved campaign to see its brief."));
+    byId("export-status").textContent = "A brief belongs to a campaign. Create or open one first.";
     return;
   }
 
-  const content = buildBriefContent(state);
+  const content = buildCampaignBriefContent(campaign);
+  const section = (title, ...nodes) => { paper.append(element("h5", "", title), ...nodes); };
   const brand = element("div", "paper-brand");
   brand.append(element("strong", "", "block ops."), element("span", "", "Neighborhood brief"));
   paper.append(brand);
-  paper.append(element("h4", "", state.area.center ? (areaBlockName(state) ?? "Our neighborhood brief") : "Our neighborhood brief"));
-  const metadata = [content.sourceLabel, content.reviewLabel];
-  if (content.retrievedAt) metadata.push(`Retrieved ${content.retrievedAt}`);
+  if (content.fictional) paper.append(element("p", "paper-fictional", "FICTIONAL PRACTICE CASE · not city records"));
+  paper.append(element("h4", "", content.title), element("p", "paper-block", `Objective: ${content.objective || "Not set"}`));
+  const metadata = [content.sourceLabel];
+  if (content.retrievedAt) metadata.push(`Last checked ${content.retrievedAt}`);
   if (content.window) metadata.push(`${content.window.start} through ${content.window.endExclusive} (end exclusive)`);
-  paper.append(element("p", "paper-meta", metadata.join(" · ")));
-  if (content.scope) paper.append(element("p", "paper-meta", `Selection scope: ${content.scope}`));
+  paper.append(element("p", "paper-meta", metadata.join(" · ")), element("p", "paper-meta", `Selection scope: ${content.scope}`));
 
-  paper.append(element("h5", "", `Selected service requests (${content.records.length})`));
-  const recordList = element("ul", "paper-list");
+  const records = element("ul", "paper-list");
   for (const record of content.records) {
     const item = element("li", "", `${record.address} · ${record.id} · ${record.date} · Official status: ${record.status}`);
+    if (record.previousStatus) item.append(document.createElement("br"), element("em", "", `Changed since review; was ${record.previousStatus}`));
+    if (record.notInLatestSnapshot) item.append(document.createElement("br"), element("em", "", "Not in the latest 90-day snapshot; status as last seen"));
     if (record.locationNote) item.append(document.createElement("br"), element("em", "", record.locationNote));
     if (record.sourceUrl) {
       const link = element("a", "source-link", "Original source record");
@@ -342,34 +539,29 @@ function renderBrief() {
       link.rel = "noopener noreferrer";
       item.append(document.createElement("br"), link);
     }
-    recordList.append(item);
+    records.append(item);
   }
-  paper.append(recordList);
-  appendBriefSection(paper, "Group observation", content.observation
-    ? `Group-provided observation (${content.observation.date}): ${content.observation.text}`
-    : "No group observation provided; current conditions are unverified.");
-  appendBriefSection(paper, "Request", content.request);
-  paper.append(element("h5", "", "Next-step tasks"));
-  for (const task of content.tasks) paper.append(element("p", "paper-task", `${task.role}: ${task.task}`));
-  appendBriefSection(paper, "Source appendix", content.sourceUrl
+  section(`City ticket status, as published (${content.records.length})`, element("p", "paper-block", content.cityStatus || "No reports"), records);
+  section("Group progress", element("p", "paper-block", `${content.group.reviewedAt ? `Reviewed ${content.group.reviewedAt}` : "Not yet reviewed"} · tasks done ${content.group.tasksDone} of ${content.group.tasksTotal}`));
+
+  const observations = content.observations.length
+    ? content.observations.map(item => element("p", "paper-task", `${item.kindLabel} (${item.date})${item.fictional ? " [FICTIONAL practice entry]" : ""}: ${item.text}`))
+    : [element("p", "paper-block", "No group observation provided; current conditions are unverified.")];
+  section("Resident verification and follow-ups", ...observations);
+  section("Request", element("p", "paper-block", content.request));
+  section("Tasks", ...(content.tasks.length
+    ? content.tasks.map(task => element("p", "paper-task", `${task.done ? "[done]" : "[open]"} ${task.text} — owner: ${task.owner}; due: ${task.due}`))
+    : [element("p", "paper-block", "No tasks assigned yet.")]));
+  section("Source appendix", element("p", "paper-block", content.sourceUrl
     ? `DC 311 FeatureServer/21. Original service request IDs are listed above. ${content.sourceUrl}`
-    : "Fictional demonstration records only; no official source record is represented.");
+    : "Fictional demonstration records only; no official source record is represented."));
   if (content.locationCaveat) paper.append(element("p", "paper-note", content.locationCaveat));
   paper.append(element("p", "paper-note", content.caveat));
 
-  byId("export-status").textContent = canExportBrief(state)
-    ? "Ready. The download includes the current selected records and plan."
-    : state.selectedIds.size && !state.reviewConfirmed
-      ? "Confirm the source list before downloading or printing."
-      : state.observation.trim() && !state.observedOn
-        ? "Add the observation date, or leave the observation blank if it is unknown."
-        : "Complete the request and both role-based tasks to export.";
+  byId("export-status").textContent = canExportCampaign(campaign) ? "Ready. The download includes the current evidence, follow-ups and tasks." : exportBlocker(campaign);
 }
 
-function render() {
-  renderFreshness();
-  renderScope();
-}
+// ---------- loading ----------
 
 async function readJson(url) {
   let response;
@@ -396,21 +588,20 @@ async function loadDemoSnapshot() {
 async function load(mode) {
   loading = mode;
   renderFreshness();
-  byId("confirm-review").disabled = true;
+  byId("new-campaign").disabled = true;
   state = await refreshWorkspace(state, mode === "live" ? loadLiveSnapshot : loadDemoSnapshot);
-  syncObservationInputs();
   loading = "";
-  render();
-  if (!state.refreshError) showView("evidence");
+  renderFreshness();
+  if (!state.refreshError && mode === "live") {
+    // A refresh only updates evidence status in saved campaigns; areas, observations and tasks are never touched.
+    const next = reconcileStore(store, state.snapshot);
+    if (JSON.stringify(next) !== JSON.stringify(store)) { store = next; persist(); }
+  }
+  renderScope();
+  renderCampaign();
 }
 
-byId("observed-on").value = state.observedOn;
-byId("observation").value = state.observation;
-byId("ask").value = state.ask;
-byId("task-one-role").value = state.tasks[0].role;
-byId("task-one-action").value = state.tasks[0].task;
-byId("task-two-role").value = state.tasks[1].role;
-byId("task-two-action").value = state.tasks[1].task;
+// ---------- events ----------
 
 byId("load-live").addEventListener("click", () => load("live"));
 byId("load-demo").addEventListener("click", () => load("demo"));
@@ -432,14 +623,68 @@ byId("busy-select").addEventListener("change", event => {
   const spot = busySpots[Number(event.target.value)];
   if (!spot) return;
   state = updateScope(state, { center: spot.center });
-  syncObservationInputs();
   renderScope();
 });
 
-byId("confirm-review").addEventListener("click", () => {
-  state = confirmSourceReview(state);
-  renderSelection();
-  if (state.reviewConfirmed) showView("plan", true);
+byId("new-campaign").addEventListener("click", () => {
+  let campaign;
+  try { campaign = createCampaign(state); } catch (error) { byId("new-status").textContent = error.message; return; }
+  store = { ...store, campaigns: [...store.campaigns, campaign] };
+  persist();
+  openCampaignById(campaign.id);
+});
+
+byId("back-to-list").addEventListener("click", () => { openId = null; rememberOpen(null); deleteArmed = false; renderCampaign(); renderMap(true); });
+byId("delete-campaign").addEventListener("click", () => {
+  if (!deleteArmed) {
+    deleteArmed = true;
+    byId("delete-campaign").textContent = "Confirm delete";
+    window.setTimeout(() => { if (deleteArmed) { deleteArmed = false; byId("delete-campaign").textContent = "Delete campaign"; } }, 5000);
+    return;
+  }
+  store = { ...store, campaigns: store.campaigns.filter(campaign => campaign.id !== openId) };
+  persist();
+  openId = null;
+  rememberOpen(null);
+  deleteArmed = false;
+  renderCampaign();
+  renderMap(true);
+});
+
+byId("c-objective").addEventListener("input", () => { mutate(campaign => setObjective(campaign, byId("c-objective").value)); renderCampaignList(); renderBrief(); });
+byId("c-request").addEventListener("input", () => {
+  mutate(campaign => setRequestText(campaign, byId("c-request").value));
+  renderReviewState();
+  renderTracks();
+  renderBrief();
+});
+byId("mark-reviewed").addEventListener("click", () => {
+  const message = mutate(campaign => confirmCampaign(campaign));
+  byId("review-error").hidden = !message;
+  byId("review-error").textContent = message;
+  renderCampaign();
+});
+
+byId("obs-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const message = mutate(campaign => addObservation(campaign, {
+    kind: byId("obs-kind").value, date: byId("obs-date").value, text: byId("obs-text").value, fictional: byId("obs-fictional").checked
+  }));
+  byId("obs-error").hidden = !message;
+  byId("obs-error").textContent = message;
+  if (message) return;
+  byId("obs-text").value = "";
+  byId("obs-kind").value = "followup";
+  renderCampaign();
+});
+byId("task-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const message = mutate(campaign => addTask(campaign, { text: byId("task-text").value, owner: byId("task-owner").value, due: byId("task-due").value }));
+  byId("task-error").hidden = !message;
+  byId("task-error").textContent = message;
+  if (message) return;
+  for (const field of ["task-text", "task-owner", "task-due"]) byId(field).value = "";
+  renderCampaign();
 });
 
 document.querySelectorAll("[data-view]").forEach(button => {
@@ -457,34 +702,33 @@ tabs.forEach((tab, index) => tab.addEventListener("keydown", event => {
   showView(tabs[next].dataset.view, true);
 }));
 
-const updateObservation = () => {
-  state.observation = byId("observation").value;
-  state.observedOn = byId("observed-on").value;
-  renderSelection();
-};
-byId("observation").addEventListener("input", updateObservation);
-byId("observed-on").addEventListener("input", updateObservation);
-byId("ask").addEventListener("input", () => { state.ask = byId("ask").value; renderBrief(); });
-byId("task-one-role").addEventListener("input", () => { state.tasks[0].role = byId("task-one-role").value; renderBrief(); });
-byId("task-one-action").addEventListener("input", () => { state.tasks[0].task = byId("task-one-action").value; renderBrief(); });
-byId("task-two-role").addEventListener("input", () => { state.tasks[1].role = byId("task-two-role").value; renderBrief(); });
-byId("task-two-action").addEventListener("input", () => { state.tasks[1].task = byId("task-two-action").value; renderBrief(); });
-
 byId("download-brief").addEventListener("click", () => {
-  if (!canExportBrief(state)) return;
-  const blob = new Blob([buildBriefMarkdown(state)], { type: "text/markdown;charset=utf-8" });
+  const campaign = openCampaign();
+  if (!campaign || !canExportCampaign(campaign)) return;
+  const blob = new Blob([buildCampaignMarkdown(campaign)], { type: "text/markdown;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = element("a");
   link.href = url;
-  link.download = "block-ops-brief.md";
+  link.download = `block-ops-${campaign.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "campaign"}.md`;
   document.body.append(link);
   link.click();
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 byId("print-brief").addEventListener("click", () => {
-  if (canExportBrief(state)) window.print();
+  const campaign = openCampaign();
+  if (campaign && canExportCampaign(campaign)) window.print();
 });
 
-render();
+// ---------- start ----------
+
+const loaded = storage.load();
+store = loaded.store;
+if (loaded.status === "error") setSaveStatus(loaded.message, true);
+else if (loaded.status === "ok") setSaveStatus(`${plural(store.campaigns.length, "saved campaign")} loaded from this browser.`, false);
+byId("obs-date").value = todayInDc();
+renderScope();
+renderCampaign();
+const last = recallOpen();
+if (last && store.campaigns.some(campaign => campaign.id === last)) openCampaignById(last);
 load("live");

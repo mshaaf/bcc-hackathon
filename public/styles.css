@@ -197,11 +197,53 @@ input:hover,select:hover,textarea:hover { border-color:var(--plum) }
   .button,.tab { transition:background-color 160ms ease-out,color 160ms ease-out }
 }
 
+/* R3: saved campaigns */
+.save-status { margin:0 0 10px; padding:6px 10px; border-radius:6px; background:var(--paper); color:var(--muted); font-size:12px }
+.save-status.save-error { background:var(--error-bg); color:var(--error); font-weight:600 }
+.campaign-list { list-style:none; margin:10px 0 0; padding:0; display:grid; gap:10px }
+.campaign-card { padding:12px 14px; border:1px solid var(--line); border-radius:10px; display:grid; gap:4px; justify-items:start }
+.card-head { display:flex; flex-wrap:wrap; gap:6px 8px; align-items:center }
+.card-objective { margin:0; font-size:13px }
+.card-meta { margin:0 0 6px; font-size:12px; color:var(--muted) }
+.badge { padding:1px 8px; border-radius:99px; background:var(--soft); color:var(--ink); font-size:11px; font-weight:600 }
+.badge-demo { background:var(--signal); color:var(--signal-ink) }
+.badge-warn { background:var(--error-bg); color:var(--error) }
+.obj-label { margin-top:12px }
+#c-objective,#c-request { background:var(--paper) }
+#campaign-detail-view section { margin-top:20px }
+.evidence-list { max-height:none }
+.evidence-row .record-content { display:block }
+.small { min-height:32px; padding:4px 8px; font-size:12px }
+.flag-warn { border:1px solid var(--error); color:var(--error); background:var(--error-bg) }
+.obs-list { list-style:none; margin:8px 0 0; padding:0; display:grid; gap:8px }
+.obs-item { padding:8px 10px; border:1px solid var(--line); border-radius:8px }
+.obs-item p { margin:4px 0; font-size:13px; overflow-wrap:anywhere }
+.obs-head { display:flex; flex-wrap:wrap; gap:4px 10px; align-items:center; font-size:12px }
+.mini-form { margin-top:12px; padding:10px 12px; border:1px dashed var(--line); border-radius:10px; display:grid; gap:10px }
+.mini-form .field-block { margin:0 }
+.form-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px }
+.check-line { display:flex; gap:8px; align-items:flex-start; font-size:12px; color:var(--muted) }
+.check-line input { width:18px; height:18px; min-height:0; flex:none; accent-color:var(--plum) }
+.form-error { margin:6px 0 0; padding:6px 10px; border-radius:6px; background:var(--error-bg); color:var(--error); font-size:12px }
+.task-list { list-style:none; margin:8px 0 0; padding:0; display:grid; gap:8px }
+.task-row { display:grid; grid-template-columns:22px minmax(0,1fr) minmax(0,.7fr) 140px auto; gap:6px 8px; align-items:center; padding:8px 10px; border:1px solid var(--line); border-radius:8px }
+.task-row>input[type=checkbox] { width:20px; height:20px; min-height:0; accent-color:var(--plum) }
+.task-row .task-text { font-size:13px; overflow-wrap:anywhere }
+.task-row.is-done .task-text { text-decoration:line-through; color:var(--muted) }
+.task-row input[type=text],.task-row input[type=date] { min-height:34px; font-size:12px }
+.paper-fictional { display:inline-block; margin:0 0 10px; padding:2px 10px; background:var(--signal); color:var(--signal-ink); font-size:11px; font-weight:700; letter-spacing:.04em }
+#campaign-detail-view .plan-actions { margin-top:24px }
+@media (max-width:560px) {
+  .task-row { grid-template-columns:22px minmax(0,1fr) auto }
+  .task-row input[type=text],.task-row input[type=date] { grid-column:2 / -1 }
+  .form-row { grid-template-columns:1fr }
+}
+
 @media print {
   html { background:white!important }
   @page { size:A4; margin:16mm }
   body { min-width:0; background:white; color:#201a24; font-size:11pt; display:block }
-  .skip-link,.top,.status-strip,.map-wrap,.tabs,#evidence-panel,#plan-panel,.brief-toolbar,.brief-return { display:none!important }
+  .skip-link,.top,.status-strip,.map-wrap,.tabs,.save-status,#explore-panel,#campaign-panel,.brief-toolbar,.brief-return { display:none!important }
   .workspace { display:block }
   .panel { max-height:none; overflow:visible; border:0; padding:0; background:none }
   #brief-panel[hidden],.brief-section { display:block!important; padding:0; background:none }

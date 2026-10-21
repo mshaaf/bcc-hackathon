@@ -9,7 +9,7 @@
   <script src="/vendor/leaflet/leaflet.js"></script><script type="module" src="/app.mjs"></script>
 </head>
 <body>
-<a class="skip-link" href="#panel">Skip to the evidence panel</a>
+<a class="skip-link" href="#panel">Skip to the panel</a>
 <header class="top">
   <a class="brand" href="/" aria-label="Block Ops home"><span class="brand-mark" aria-hidden="true">b.</span><span>block ops<span class="brand-period">.</span></span></a>
   <p class="scope-label">Washington, DC<strong>Ward 8 · Illegal dumping</strong></p>
@@ -23,27 +23,28 @@
   <p class="sample-notice" id="sample-notice" hidden>Practice case · All sample reports and addresses are fictional and have no map locations.</p>
   <p class="error-notice" id="error-notice" role="status" aria-live="polite" hidden></p>
 </div>
-<main class="workspace" id="workspace" data-view="evidence" aria-label="Campaign workspace">
+<main class="workspace" id="workspace" data-view="explore" aria-label="Campaign workspace">
   <section class="map-wrap" aria-label="Map of Ward 8 illegal dumping reports">
     <div id="map"></div>
     <ul class="legend" aria-label="Map legend">
-      <li><span class="sw open"></span>Open</li><li><span class="sw closed"></span>Closed</li><li><span class="sw other"></span>Duplicate / canceled / unknown</li><li><span class="sw picked"></span>In your evidence</li><li><span class="sw ring"></span>Selected area</li><li><span class="sw outside"></span>Outside Ward 8 boundary</li>
+      <li><span class="sw open"></span>Open</li><li><span class="sw closed"></span>Closed</li><li><span class="sw other"></span>Duplicate / canceled / unknown</li><li><span class="sw picked"></span>In your selection / campaign</li><li><span class="sw ring"></span>Selected area</li><li><span class="sw outside"></span>Outside Ward 8 boundary</li>
     </ul>
     <p class="hint">Click the map to choose an area, or use the controls and list. The list does everything the map does.</p>
     <p class="map-note" id="map-note" role="status" hidden>Basemap tiles could not load. Reports are still plotted and the list still works.</p>
   </section>
-  <aside class="panel" id="panel" aria-label="Evidence, plan and brief">
-    <nav class="tabs" role="tablist" aria-label="Prepare your group brief">
-      <button class="tab" id="evidence-tab" type="button" role="tab" aria-controls="evidence-panel" aria-selected="true" data-view="evidence">1 · Evidence<span class="tab-check" id="review-check" hidden> ✓</span></button>
-      <button class="tab" id="plan-tab" type="button" role="tab" aria-controls="plan-panel" aria-selected="false" data-view="plan">2 · Plan</button>
+  <aside class="panel" id="panel" aria-label="Explore, campaign and brief">
+    <nav class="tabs" role="tablist" aria-label="Block Ops steps">
+      <button class="tab" id="explore-tab" type="button" role="tab" aria-controls="explore-panel" aria-selected="true" data-view="explore">1 · Explore</button>
+      <button class="tab" id="campaign-tab" type="button" role="tab" aria-controls="campaign-panel" aria-selected="false" data-view="campaign">2 · Campaign<span id="campaign-count"></span></button>
       <button class="tab" id="brief-tab" type="button" role="tab" aria-controls="brief-panel" aria-selected="false" data-view="brief">3 · Brief</button>
     </nav>
+    <p class="save-status" id="save-status" role="status" aria-live="polite">Campaigns are saved in this browser only.</p>
 
-    <section id="evidence-panel" role="tabpanel" aria-labelledby="evidence-tab">
+    <section id="explore-panel" role="tabpanel" aria-labelledby="explore-tab">
       <header class="campaign">
-        <p class="tag">Neighborhood campaign</p>
+        <p class="tag">Explore</p>
         <h1 id="case-title">Choose an area</h1>
-        <p class="objective">Objective: <em>not set yet</em> <span>(placeholder; saved campaigns come next)</span></p>
+        <p class="objective">Pick an area and the reports that belong, then start a campaign from it.</p>
       </header>
 
       <fieldset class="scope" id="scope-controls">
@@ -64,7 +65,7 @@
       </fieldset>
 
       <p class="scope-status" id="scope-status" aria-live="polite"></p>
-      <div class="list-head"><h2>Evidence</h2><span class="count-badge" id="selected-count">0 selected</span></div>
+      <div class="list-head"><h2>Reports</h2><span class="count-badge" id="selected-count">0 selected</span></div>
       <p class="tally" id="tally"></p>
       <div class="record-list" id="record-list" aria-label="Reports in this area, oldest first"></div>
       <details class="unplaced" id="unplaced" hidden>
@@ -72,35 +73,74 @@
         <p class="field-hint">These reports have no usable map point, so they are never inside a map area. Add any that belong.</p>
         <div class="record-list" id="unplaced-list"></div>
       </details>
-
-      <section aria-labelledby="h-state">
-        <h2 id="h-state">Where things stand</h2>
-        <dl class="tracks">
-          <div><dt>City ticket status</dt><dd id="t-city">No reports selected</dd></div>
-          <div><dt>Group progress</dt><dd id="t-group">Source list not confirmed yet</dd></div>
-          <div><dt>Resident check</dt><dd id="t-resident">No resident observation yet</dd></div>
-        </dl>
-      </section>
-      <div class="review-action"><p id="review-status" aria-live="polite">Inspect the original records, then confirm.</p><button class="button button-primary" id="confirm-review" type="button" disabled>Use these records <span aria-hidden="true">→</span></button></div>
+      <div class="review-action"><p id="new-status">Select at least one report to start a campaign.</p><button class="button button-primary" id="new-campaign" type="button" disabled>New campaign here <span aria-hidden="true">→</span></button></div>
     </section>
 
-    <section id="plan-panel" role="tabpanel" aria-labelledby="plan-tab" hidden>
-      <h2 class="panel-title">What do we want to happen?</h2>
-      <p class="plan-note">A clear ask. Two people with a next step. Something to take into the room.</p>
-      <div class="field-block"><label class="field-label" for="observation">What did your group observe? <span class="optional">Optional</span></label><textarea id="observation" rows="3" placeholder="Your own account of the site. Leave blank if you haven't checked."></textarea></div>
-      <div class="field-block"><label class="field-label" for="observed-on">When?</label><input id="observed-on" type="date"><p class="field-hint">Kept separate from the city's record.</p></div>
-      <div class="field-block"><label class="field-label" for="ask">Our request</label><textarea id="ask" rows="2" required></textarea></div>
-      <fieldset class="task-set"><legend>Who takes it forward?</legend>
-        <div class="task-fields"><span class="task-index" aria-hidden="true">1</span><div class="field-block"><label class="field-label" for="task-one-role">Role</label><input id="task-one-role" type="text" required></div><div class="field-block"><label class="field-label" for="task-one-action">Next step</label><input id="task-one-action" type="text" required></div></div>
-        <div class="task-fields"><span class="task-index" aria-hidden="true">2</span><div class="field-block"><label class="field-label" for="task-two-role">Role</label><input id="task-two-role" type="text" required></div><div class="field-block"><label class="field-label" for="task-two-action">Next step</label><input id="task-two-action" type="text" required></div></div>
-      </fieldset>
-      <div class="plan-actions"><button class="button button-quiet" type="button" data-view="evidence">Back to the evidence</button><button class="button button-primary" type="button" data-view="brief">Open our brief <span aria-hidden="true">→</span></button></div>
+    <section id="campaign-panel" role="tabpanel" aria-labelledby="campaign-tab" hidden>
+      <div id="campaign-list-view">
+        <h2 class="panel-title">Saved campaigns</h2>
+        <ul class="campaign-list" id="campaign-list"></ul>
+        <p class="empty-message" id="campaign-empty">No saved campaigns yet. Choose an area in Explore, then press “New campaign here”.</p>
+      </div>
+      <div id="campaign-detail-view" hidden>
+        <button class="button button-quiet" id="back-to-list" type="button">← All campaigns</button>
+        <header class="campaign">
+          <p class="tag" id="c-tag">Campaign</p>
+          <h1 id="c-name"></h1>
+          <label class="field-label obj-label" for="c-objective">Objective</label>
+          <textarea id="c-objective" rows="2"></textarea>
+        </header>
+        <section aria-labelledby="h-state">
+          <h2 id="h-state">Where things stand</h2>
+          <dl class="tracks">
+            <div><dt>City ticket status</dt><dd id="t-city"></dd></div>
+            <div><dt>Group progress</dt><dd id="t-group"></dd></div>
+            <div><dt>Resident verification</dt><dd id="t-resident"></dd></div>
+          </dl>
+        </section>
+        <section aria-labelledby="h-evidence">
+          <h2 id="h-evidence">Evidence <span class="count-badge" id="c-evidence-count"></span></h2>
+          <div class="record-list evidence-list" id="c-evidence" aria-label="Reports in this campaign"></div>
+        </section>
+        <section aria-labelledby="h-obs">
+          <h2 id="h-obs">Observations and follow-ups</h2>
+          <p class="field-hint">Dated notes from residents or agencies. They never change the city's ticket status.</p>
+          <ol class="obs-list" id="c-observations"></ol>
+          <form class="mini-form" id="obs-form" novalidate>
+            <div class="form-row"><div class="field-block"><label class="field-label" for="obs-kind">Type</label><select id="obs-kind"><option value="resident">Resident observation</option><option value="followup">Follow-up observation</option><option value="agency">Agency response</option></select></div>
+            <div class="field-block"><label class="field-label" for="obs-date">Date</label><input id="obs-date" type="date"></div></div>
+            <div class="field-block"><label class="field-label" for="obs-text">What was seen or said</label><textarea id="obs-text" rows="2"></textarea></div>
+            <label class="check-line"><input type="checkbox" id="obs-fictional"> This is a fictional practice entry (labeled as such everywhere)</label>
+            <p class="form-error" id="obs-error" role="alert" hidden></p>
+            <button class="button button-secondary" type="submit">Add to campaign</button>
+          </form>
+        </section>
+        <section aria-labelledby="h-tasks">
+          <h2 id="h-tasks">Tasks</h2>
+          <ul class="task-list" id="c-tasks"></ul>
+          <form class="mini-form" id="task-form" novalidate>
+            <div class="field-block"><label class="field-label" for="task-text">New task</label><input id="task-text" type="text"></div>
+            <div class="form-row"><div class="field-block"><label class="field-label" for="task-owner">Owner</label><input id="task-owner" type="text"></div>
+            <div class="field-block"><label class="field-label" for="task-due">Due</label><input id="task-due" type="date"></div></div>
+            <p class="form-error" id="task-error" role="alert" hidden></p>
+            <button class="button button-secondary" type="submit">Add task</button>
+          </form>
+        </section>
+        <section aria-labelledby="h-request">
+          <h2 id="h-request">Request</h2>
+          <label class="field-label" for="c-request">What we ask the city to do or tell us</label>
+          <textarea id="c-request" rows="3"></textarea>
+          <div class="review-action"><p id="review-status" aria-live="polite"></p><button class="button button-primary" id="mark-reviewed" type="button">Mark reviewed</button></div>
+          <p class="form-error" id="review-error" role="alert" hidden></p>
+        </section>
+        <div class="plan-actions"><button class="button button-quiet" id="delete-campaign" type="button">Delete campaign</button><button class="button button-primary" type="button" data-view="brief">Open the brief <span aria-hidden="true">→</span></button></div>
+      </div>
     </section>
 
     <section class="brief-section" id="brief-panel" role="tabpanel" aria-labelledby="brief-tab" hidden>
       <div class="brief-toolbar"><div><h2 class="panel-title">Your group's next move, on paper.</h2><p class="export-status" id="export-status" aria-live="polite"></p></div><div class="brief-actions"><button class="button button-secondary" id="download-brief" type="button" disabled>Download brief</button><button class="button button-primary" id="print-brief" type="button" disabled>Print / Save PDF <span aria-hidden="true">↗</span></button></div></div>
       <article class="brief-paper" id="brief-paper" aria-label="Generated neighborhood brief"></article>
-      <div class="brief-return"><button class="button button-quiet" type="button" data-view="plan">Edit our plan</button><span>Review together before sharing. Nothing is sent.</span></div>
+      <div class="brief-return"><button class="button button-quiet" type="button" data-view="campaign">Back to the campaign</button><span>Review together before sharing. Nothing is sent.</span></div>
     </section>
   </aside>
 </main>

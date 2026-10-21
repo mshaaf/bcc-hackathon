@@ -1,0 +1,850 @@
+{
+ "checks": [
+  {
+   "name": "d1440: starts with no saved campaigns",
+   "ok": true,
+   "detail": "Campaigns are saved in this browser only."
+  },
+  {
+   "name": "d1440: an excluded report stays excluded after radius and date changes",
+   "ok": true,
+   "detail": "20 selected -> 20 selected"
+  },
+  {
+   "name": "d1440: New campaign here opens a saved campaign named for the block",
+   "ok": true,
+   "detail": "1900 block of Naylor Rd SE"
+  },
+  {
+   "name": "d1440: objective is prefilled",
+   "ok": true,
+   "detail": "Stop repeat dumping on the 1900 block of Naylor Rd SE"
+  },
+  {
+   "name": "d1440: campaign holds the selected evidence only (20)",
+   "ok": true,
+   "detail": "20"
+  },
+  {
+   "name": "d1440: create saved to the browser",
+   "ok": true,
+   "detail": "Saved in this browser · Oct 21, 2026, 2:49 PM"
+  },
+  {
+   "name": "d1440: stored store is version 1 with the campaign",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: observation, two tasks and review recorded",
+   "ok": true,
+   "detail": "1 obs, 2 tasks, Reviewed ✓"
+  },
+  {
+   "name": "d1440: three tracks stay separate",
+   "ok": true,
+   "detail": "20 Closed (as published, checked Oct 21, 2026, 2:49 PM) | Reviewed Oct 21, 2026, 2:49 PM · tasks 0 of 2 done | Resident observation · 2026-10-21 (fictional)"
+  },
+  {
+   "name": "d1440: after reload the campaign reopens intact",
+   "ok": true,
+   "detail": "1900 block of Naylor Rd SE; 20 reports"
+  },
+  {
+   "name": "d1440: review state and area survive reload",
+   "ok": true,
+   "detail": "ring paths: 1"
+  },
+  {
+   "name": "d1440: status line says it loaded from this browser",
+   "ok": true,
+   "detail": "Saved in this browser · Oct 21, 2026, 2:50 PM"
+  },
+  {
+   "name": "d1440: follow-up added and task marked done",
+   "ok": true,
+   "detail": "2 obs; Reviewed Oct 21, 2026, 2:49 PM · tasks 1 of 2 done"
+  },
+  {
+   "name": "d1440: a follow-up does not withdraw the review",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: brief includes the follow-up, labeled fictional, and the done task",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: brief keeps city status, group progress and resident verification apart",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: downloaded Markdown carries follow-up, task state, source links and the fictional label",
+   "ok": true,
+   "detail": "block-ops-1900-block-of-naylor-rd-se.md"
+  },
+  {
+   "name": "d1440: removing evidence withdraws the review and blocks export",
+   "ok": true,
+   "detail": "Mark the campaign reviewed before downloading or printing."
+  },
+  {
+   "name": "d1440: removed report is gone from the saved store",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: re-review restores export",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: refresh flags the changed status and withdraws the review",
+   "ok": true,
+   "detail": "Status changed since review: was Closed"
+  },
+  {
+   "name": "d1440: refresh never moves the area or deletes observations",
+   "ok": true,
+   "detail": "2 observations"
+  },
+  {
+   "name": "d1440: failed refresh keeps the open campaign and shows an error",
+   "ok": true,
+   "detail": "The data service could not be reached. Your current selection and saved campaigns are unchanged."
+  },
+  {
+   "name": "d1440: corrupt saved data shows an error and turns saving off",
+   "ok": true,
+   "detail": "The saved data is not valid JSON. Saving is turned off so the stored data is not overwritten."
+  },
+  {
+   "name": "d1440: corrupt: a new campaign works in memory but the stored value is untouched",
+   "ok": true,
+   "detail": "stored unchanged: true"
+  },
+  {
+   "name": "d1440: wrong version saved data shows an error and turns saving off",
+   "ok": true,
+   "detail": "The saved data is version 2; this app reads version 1. Saving is turned off so the stored data is not overwritten."
+  },
+  {
+   "name": "d1440: wrong version: a new campaign works in memory but the stored value is untouched",
+   "ok": true,
+   "detail": "stored unchanged: true"
+  },
+  {
+   "name": "d1440: restoring the last valid save brings the campaign back",
+   "ok": true,
+   "detail": "1900 block of Naylor Rd SE"
+  },
+  {
+   "name": "d1440: full storage shows an error and the last valid save is untouched",
+   "ok": true,
+   "detail": "Not saved: this browser's storage is full. Your last saved version is unchanged; download the brief to keep this work."
+  },
+  {
+   "name": "d1440: full storage: the new task still appears in the page and brief",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: disabled storage is reported without breaking the page",
+   "ok": true,
+   "detail": "Browser storage is unavailable here, so campaigns cannot be saved. Your work stays in this page until you close it."
+  },
+  {
+   "name": "d1440: disabled storage: the campaign still works and exports in memory",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: practice campaign is labeled fictional with no official links",
+   "ok": true,
+   "detail": "0 links; name=Practice case (fictional); brief=block ops. | Neighborhood brief |  | FICTIONAL PRACTICE CASE · not city records |  | Practice case (fictional) |  | Objective: Practic"
+  },
+  {
+   "name": "d1440: no horizontal overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "d1440: no console errors, exceptions or CSP violations",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: starts with no saved campaigns",
+   "ok": true,
+   "detail": "Campaigns are saved in this browser only."
+  },
+  {
+   "name": "m390: an excluded report stays excluded after radius and date changes",
+   "ok": true,
+   "detail": "20 selected -> 20 selected"
+  },
+  {
+   "name": "m390: New campaign here opens a saved campaign named for the block",
+   "ok": true,
+   "detail": "1900 block of Naylor Rd SE"
+  },
+  {
+   "name": "m390: objective is prefilled",
+   "ok": true,
+   "detail": "Stop repeat dumping on the 1900 block of Naylor Rd SE"
+  },
+  {
+   "name": "m390: campaign holds the selected evidence only (20)",
+   "ok": true,
+   "detail": "20"
+  },
+  {
+   "name": "m390: create saved to the browser",
+   "ok": true,
+   "detail": "Saved in this browser · Oct 21, 2026, 2:50 PM"
+  },
+  {
+   "name": "m390: stored store is version 1 with the campaign",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: observation, two tasks and review recorded",
+   "ok": true,
+   "detail": "1 obs, 2 tasks, Reviewed ✓"
+  },
+  {
+   "name": "m390: three tracks stay separate",
+   "ok": true,
+   "detail": "20 Closed (as published, checked Oct 21, 2026, 2:50 PM) | Reviewed Oct 21, 2026, 2:50 PM · tasks 0 of 2 done | Resident observation · 2026-10-21 (fictional)"
+  },
+  {
+   "name": "m390: after reload the campaign reopens intact",
+   "ok": true,
+   "detail": "1900 block of Naylor Rd SE; 20 reports"
+  },
+  {
+   "name": "m390: review state and area survive reload",
+   "ok": true,
+   "detail": "ring paths: 1"
+  },
+  {
+   "name": "m390: status line says it loaded from this browser",
+   "ok": true,
+   "detail": "Saved in this browser · Oct 21, 2026, 2:50 PM"
+  },
+  {
+   "name": "m390: follow-up added and task marked done",
+   "ok": true,
+   "detail": "2 obs; Reviewed Oct 21, 2026, 2:50 PM · tasks 1 of 2 done"
+  },
+  {
+   "name": "m390: a follow-up does not withdraw the review",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: brief includes the follow-up, labeled fictional, and the done task",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: brief keeps city status, group progress and resident verification apart",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: downloaded Markdown carries follow-up, task state, source links and the fictional label",
+   "ok": true,
+   "detail": "block-ops-1900-block-of-naylor-rd-se.md"
+  },
+  {
+   "name": "m390: removing evidence withdraws the review and blocks export",
+   "ok": true,
+   "detail": "Mark the campaign reviewed before downloading or printing."
+  },
+  {
+   "name": "m390: removed report is gone from the saved store",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: re-review restores export",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: refresh flags the changed status and withdraws the review",
+   "ok": true,
+   "detail": "Status changed since review: was Closed"
+  },
+  {
+   "name": "m390: refresh never moves the area or deletes observations",
+   "ok": true,
+   "detail": "2 observations"
+  },
+  {
+   "name": "m390: failed refresh keeps the open campaign and shows an error",
+   "ok": true,
+   "detail": "The data service could not be reached. Your current selection and saved campaigns are unchanged."
+  },
+  {
+   "name": "m390: corrupt saved data shows an error and turns saving off",
+   "ok": true,
+   "detail": "The saved data is not valid JSON. Saving is turned off so the stored data is not overwritten."
+  },
+  {
+   "name": "m390: corrupt: a new campaign works in memory but the stored value is untouched",
+   "ok": true,
+   "detail": "stored unchanged: true"
+  },
+  {
+   "name": "m390: wrong version saved data shows an error and turns saving off",
+   "ok": true,
+   "detail": "The saved data is version 2; this app reads version 1. Saving is turned off so the stored data is not overwritten."
+  },
+  {
+   "name": "m390: wrong version: a new campaign works in memory but the stored value is untouched",
+   "ok": true,
+   "detail": "stored unchanged: true"
+  },
+  {
+   "name": "m390: restoring the last valid save brings the campaign back",
+   "ok": true,
+   "detail": "1900 block of Naylor Rd SE"
+  },
+  {
+   "name": "m390: full storage shows an error and the last valid save is untouched",
+   "ok": true,
+   "detail": "Not saved: this browser's storage is full. Your last saved version is unchanged; download the brief to keep this work."
+  },
+  {
+   "name": "m390: full storage: the new task still appears in the page and brief",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: disabled storage is reported without breaking the page",
+   "ok": true,
+   "detail": "Browser storage is unavailable here, so campaigns cannot be saved. Your work stays in this page until you close it."
+  },
+  {
+   "name": "m390: disabled storage: the campaign still works and exports in memory",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: practice campaign is labeled fictional with no official links",
+   "ok": true,
+   "detail": "0 links; name=Practice case (fictional); brief=block ops. | Neighborhood brief |  | FICTIONAL PRACTICE CASE · not city records |  | Practice case (fictional) |  | Objective: Practic"
+  },
+  {
+   "name": "m390: no horizontal overflow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "m390: no console errors, exceptions or CSP violations",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "results": {
+  "d1440": {
+   "start": {
+    "view": "explore",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:49 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Campaigns are saved in this browser only.",
+    "saveError": false,
+    "tabCount": "",
+    "listCards": 0,
+    "detailOpen": false,
+    "name": "",
+    "objective": "",
+    "request": "",
+    "evidence": 0,
+    "observations": 0,
+    "tasks": 0,
+    "tasksDone": 0,
+    "city": "",
+    "group": "",
+    "resident": "",
+    "reviewStatus": "",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "A brief belongs to a campaign. Create or open one first.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "created": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:49 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:49 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on the 1900 block of Naylor Rd SE",
+    "request": "Please share a dated update for the reports the group reviewed.",
+    "evidence": 20,
+    "observations": 0,
+    "tasks": 0,
+    "tasksDone": 0,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:49 PM)",
+    "group": "Not reviewed yet · tasks 0 of 0 done",
+    "resident": "No resident observation yet",
+    "reviewStatus": "Mark the campaign reviewed before downloading or printing.",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "Mark the campaign reviewed before downloading or printing.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "20 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "edited": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:49 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:49 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 20,
+    "observations": 1,
+    "tasks": 2,
+    "tasksDone": 0,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:49 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:49 PM · tasks 0 of 2 done",
+    "resident": "Resident observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:49 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "20 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "reloaded": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:49 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 20,
+    "observations": 1,
+    "tasks": 2,
+    "tasksDone": 0,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:49 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:49 PM · tasks 0 of 2 done",
+    "resident": "Resident observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:49 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "followUp": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:49 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 20,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:49 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:49 PM · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:49 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "briefText": "block ops.\nNeighborhood brief\n1900 block of Naylor Rd SE\n\nObjective: Stop repeat dumping on this block and get the lot fenced\n\nLive DC 311 snapshot · Last checked 2026-10-21T18:49:59.577Z · 2026-07-24 through 2026-10-22 (end exclusive)\n\nSelection scope: reports within 150 m of the 1900 block of Naylor Rd SE; full query window; status: Open, Closed, Duplicate / canceled / unknown\n\nCity ticket status, as published (20)\n\n20 Closed\n\n1815 P STREET SE · 26-00444970 · 2026-07-27 · Official status: Closed\nOriginal source record\n2114 YOUNG STREET SE · 26-00449721 · 2026-07-29 · Official status: Closed\nOriginal source record\n1524 19TH STREET SE · 26-00462129 · 2026-08-04 · Official status: Closed\nOriginal source record\n1956 NAYLOR ROAD SE · 26-00473568 · 2026-08-10 · Official status: Closed\nOriginal source record\n1433 19TH STREET SE · 26-00473612 · 2026-08-10 · Official status: Closed\nOriginal source record\n1924 NAYLOR ROAD SE · 26-00478400 · 2026-08-12 · Official status: Closed\nOriginal source record\n2114 YOUNG STREET SE · 26-00490808 · 2026-08-18 · Official status: Closed\nOriginal source record\nNAYLOR ROAD SE AND 19TH STREET SE · 26-00499342 · 2026-08-21 · Official status: Closed\nOriginal source record\n1924 NAYLOR ROAD SE · 26-00507691 · 2026-08-25 · Official status: Closed\nOriginal source record\n1924 NAYLOR ROAD SE · 26-00510716 · 2026-08-26 · Official status: Closed\nOriginal source record\n2114 YOUNG STREET SE · 26-00513464 · 2026-08-27 · Official status: Closed\nOriginal source record\n1524 19TH STREET SE · 26-00534585 · 2026-09-04 · Official status: Closed\nOriginal source record\n1509 19TH STREET SE · 26-00536317 · 2026-09-05 · Official status: Closed\nOriginal source record\n2118 YOUNG STREET SE · 26-00555165 · 2026-09-14 · Official status: Closed\nOriginal source record\n1524 19TH STREET SE · 26-00566333 · 2026-09-18 · Official status: Closed\nOriginal source record\n1921 P STREET SE · 26-00575837 · 2026-09-23 · Official status: Closed\nOriginal source record\n1915 NAYLOR ROAD SE · 26-00585667 · 2026-09-28 · Official status: Closed\nOriginal source record\n1415 YOUNG STREET SE · 26-00588531 · 2026-09-29 · Official status: Closed\nOriginal source record\n1941 NAYLOR ROAD SE · 26-00593491 · 2026-09-30 · Official status: Closed\nOriginal source record\n1942 NAYLOR ROAD SE · 26-00616171 · 2026-10-12 · Official status: Closed\nOriginal source record\nGroup progress\n\nReviewed 2026-10-21T18:49:59.075Z · tasks done 1 of 2\n\nResident verification and follow-ups\n\nResident observation (2026-10-21) [FICTIONAL practice entry]: FICTIONAL first visit: mattress and bags at the curb.\n\nFollow-up observation (2026-10-21) [FICTIONAL practice entry]: FICTIONAL follow-up: group re-checked on Thursday, the pile is gone.\n\nRequest\n\nPlease clear the dumping and tell us when it is done.\n\nTasks\n\n[done] Photograph the spot — owner: Dana; due: 2026-10-28\n\n[open] Send the request to DPW — owner: Sam; due: No due date\n\nSource appendix\n\nDC 311 FeatureServer/21. Original service request IDs are listed above. https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer/21\n\nMap locations are approximate block-level or intersection points, not exact sites.\n\nThis brief prepares a group conversation. It does not report current conditions, confirm cleanup, or submit a request.",
+   "removed": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:49 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 19,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "19 Closed (as published, checked Oct 21, 2026, 2:49 PM)",
+    "group": "Not reviewed yet · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Mark the campaign reviewed before downloading or printing.",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "Mark the campaign reviewed before downloading or printing.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "refreshed": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 19,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "1 Open · 18 Closed (as published, checked Oct 21, 2026, 2:50 PM) · 1 status changed since review",
+    "group": "Not reviewed yet · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "A report's city status changed since your review. Review the changes, then mark the campaign reviewed.",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "A report's city status changed since your review. Review the changes, then mark the campaign reviewed.",
+    "flags": [
+     "Status changed since review: was Closed"
+    ],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "outage": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 19,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "1 Open · 18 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:50 PM · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:50 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": "The data service could not be reached. Your current selection and saved campaigns are unchanged."
+   },
+   "overflowX": false,
+   "logs": []
+  },
+  "m390": {
+   "start": {
+    "view": "explore",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Campaigns are saved in this browser only.",
+    "saveError": false,
+    "tabCount": "",
+    "listCards": 0,
+    "detailOpen": false,
+    "name": "",
+    "objective": "",
+    "request": "",
+    "evidence": 0,
+    "observations": 0,
+    "tasks": 0,
+    "tasksDone": 0,
+    "city": "",
+    "group": "",
+    "resident": "",
+    "reviewStatus": "",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "A brief belongs to a campaign. Create or open one first.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "created": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on the 1900 block of Naylor Rd SE",
+    "request": "Please share a dated update for the reports the group reviewed.",
+    "evidence": 20,
+    "observations": 0,
+    "tasks": 0,
+    "tasksDone": 0,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Not reviewed yet · tasks 0 of 0 done",
+    "resident": "No resident observation yet",
+    "reviewStatus": "Mark the campaign reviewed before downloading or printing.",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "Mark the campaign reviewed before downloading or printing.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "20 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "edited": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 20,
+    "observations": 1,
+    "tasks": 2,
+    "tasksDone": 0,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:50 PM · tasks 0 of 2 done",
+    "resident": "Resident observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:50 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "20 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "reloaded": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 20,
+    "observations": 1,
+    "tasks": 2,
+    "tasksDone": 0,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:50 PM · tasks 0 of 2 done",
+    "resident": "Resident observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:50 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "followUp": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 20,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "20 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:50 PM · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:50 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "briefText": "block ops.\nNeighborhood brief\n1900 block of Naylor Rd SE\n\nObjective: Stop repeat dumping on this block and get the lot fenced\n\nLive DC 311 snapshot · Last checked 2026-10-21T18:50:33.006Z · 2026-07-24 through 2026-10-22 (end exclusive)\n\nSelection scope: reports within 150 m of the 1900 block of Naylor Rd SE; full query window; status: Open, Closed, Duplicate / canceled / unknown\n\nCity ticket status, as published (20)\n\n20 Closed\n\n1815 P STREET SE · 26-00444970 · 2026-07-27 · Official status: Closed\nOriginal source record\n2114 YOUNG STREET SE · 26-00449721 · 2026-07-29 · Official status: Closed\nOriginal source record\n1524 19TH STREET SE · 26-00462129 · 2026-08-04 · Official status: Closed\nOriginal source record\n1956 NAYLOR ROAD SE · 26-00473568 · 2026-08-10 · Official status: Closed\nOriginal source record\n1433 19TH STREET SE · 26-00473612 · 2026-08-10 · Official status: Closed\nOriginal source record\n1924 NAYLOR ROAD SE · 26-00478400 · 2026-08-12 · Official status: Closed\nOriginal source record\n2114 YOUNG STREET SE · 26-00490808 · 2026-08-18 · Official status: Closed\nOriginal source record\nNAYLOR ROAD SE AND 19TH STREET SE · 26-00499342 · 2026-08-21 · Official status: Closed\nOriginal source record\n1924 NAYLOR ROAD SE · 26-00507691 · 2026-08-25 · Official status: Closed\nOriginal source record\n1924 NAYLOR ROAD SE · 26-00510716 · 2026-08-26 · Official status: Closed\nOriginal source record\n2114 YOUNG STREET SE · 26-00513464 · 2026-08-27 · Official status: Closed\nOriginal source record\n1524 19TH STREET SE · 26-00534585 · 2026-09-04 · Official status: Closed\nOriginal source record\n1509 19TH STREET SE · 26-00536317 · 2026-09-05 · Official status: Closed\nOriginal source record\n2118 YOUNG STREET SE · 26-00555165 · 2026-09-14 · Official status: Closed\nOriginal source record\n1524 19TH STREET SE · 26-00566333 · 2026-09-18 · Official status: Closed\nOriginal source record\n1921 P STREET SE · 26-00575837 · 2026-09-23 · Official status: Closed\nOriginal source record\n1915 NAYLOR ROAD SE · 26-00585667 · 2026-09-28 · Official status: Closed\nOriginal source record\n1415 YOUNG STREET SE · 26-00588531 · 2026-09-29 · Official status: Closed\nOriginal source record\n1941 NAYLOR ROAD SE · 26-00593491 · 2026-09-30 · Official status: Closed\nOriginal source record\n1942 NAYLOR ROAD SE · 26-00616171 · 2026-10-12 · Official status: Closed\nOriginal source record\nGroup progress\n\nReviewed 2026-10-21T18:50:31.877Z · tasks done 1 of 2\n\nResident verification and follow-ups\n\nResident observation (2026-10-21) [FICTIONAL practice entry]: FICTIONAL first visit: mattress and bags at the curb.\n\nFollow-up observation (2026-10-21) [FICTIONAL practice entry]: FICTIONAL follow-up: group re-checked on Thursday, the pile is gone.\n\nRequest\n\nPlease clear the dumping and tell us when it is done.\n\nTasks\n\n[done] Photograph the spot — owner: Dana; due: 2026-10-28\n\n[open] Send the request to DPW — owner: Sam; due: No due date\n\nSource appendix\n\nDC 311 FeatureServer/21. Original service request IDs are listed above. https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer/21\n\nMap locations are approximate block-level or intersection points, not exact sites.\n\nThis brief prepares a group conversation. It does not report current conditions, confirm cleanup, or submit a request.",
+   "removed": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 19,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "19 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Not reviewed yet · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Mark the campaign reviewed before downloading or printing.",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "Mark the campaign reviewed before downloading or printing.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "refreshed": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 19,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "1 Open · 18 Closed (as published, checked Oct 21, 2026, 2:50 PM) · 1 status changed since review",
+    "group": "Not reviewed yet · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "A report's city status changed since your review. Review the changes, then mark the campaign reviewed.",
+    "reviewBtn": "Mark reviewed",
+    "exportOk": false,
+    "exportStatus": "A report's city status changed since your review. Review the changes, then mark the campaign reviewed.",
+    "flags": [
+     "Status changed since review: was Closed"
+    ],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": ""
+   },
+   "outage": {
+    "view": "campaign",
+    "freshness": "DC 311 · retrieved Oct 21, 2026, 2:50 PM ET · 2026-07-24 to 2026-10-22 (end exclusive) · 390 records · 390 mapped, 0 missing, 0 invalid location · 2 outside the Ward 8 boundary",
+    "save": "Saved in this browser · Oct 21, 2026, 2:50 PM",
+    "saveError": false,
+    "tabCount": " (1)",
+    "listCards": 1,
+    "detailOpen": true,
+    "name": "1900 block of Naylor Rd SE",
+    "objective": "Stop repeat dumping on this block and get the lot fenced",
+    "request": "Please clear the dumping and tell us when it is done.",
+    "evidence": 19,
+    "observations": 2,
+    "tasks": 2,
+    "tasksDone": 1,
+    "city": "1 Open · 18 Closed (as published, checked Oct 21, 2026, 2:50 PM)",
+    "group": "Reviewed Oct 21, 2026, 2:50 PM · tasks 1 of 2 done",
+    "resident": "Follow-up observation · 2026-10-21 (fictional)",
+    "reviewStatus": "Reviewed Oct 21, 2026, 2:50 PM. Changing the request or removing a report withdraws this.",
+    "reviewBtn": "Reviewed ✓",
+    "exportOk": true,
+    "exportStatus": "Ready. The download includes the current evidence, follow-ups and tasks.",
+    "flags": [],
+    "newDisabled": false,
+    "selected": "21 selected",
+    "rows": 21,
+    "ring": 1,
+    "overflowX": false,
+    "error": "The data service could not be reached. Your current selection and saved campaigns are unchanged."
+   },
+   "overflowX": false,
+   "logs": []
+  }
+ }
+}

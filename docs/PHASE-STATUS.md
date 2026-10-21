@@ -2,7 +2,7 @@
 
 This is the canonical execution ledger for Claude/Luna batches. Current revision phases R1–R5 are defined in [HANDOFF.md](HANDOFF.md); baseline phases below preserve the old plan's history. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R3. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R4. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The user rejected the form/brief-centered baseline as the final experience. A map/campaign revision is proposed; no revised implementation is complete. The original numbered phases below remain history and are not the next execution instructions.
 
@@ -12,7 +12,7 @@ The user rejected the form/brief-centered baseline as the final experience. A ma
 |---|---|---|
 | R1 | Scenario, real geospatial data proof, reviewable layout, revised specification/plan | Complete |
 | R2 | Real map, source layers/filters, evidence review and chronology | Complete |
-| R3 | Saved campaign, owner/date tasks, follow-up and current export | Not started |
+| R3 | Saved campaign, owner/date tasks, follow-up and current export | Complete |
 | R4 | Reliability, accessible interaction and stage layout | Not started |
 | R5 | Rehearsal and release/submission package | Not started |
 
@@ -45,6 +45,26 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — R3 complete; R4 next
+
+- **Fixes first (failing tests written and seen failing before the code):** `updateScope` no longer re-selects a report the user excluded; exclusions persist across radius, date and status changes and clear only when the area centre moves or the source changes. A refresh never moves a saved campaign's area or deletes observations; reviewed reports whose city status changed are flagged "changed since review" and the request confirmation is withdrawn.
+- **Deliverable:** saved campaigns (several, listed, one open at a time) from "New campaign here" with the prefilled editable objective; owned tasks with due date and done; typed, dated follow-ups (resident / follow-up / agency) with a fictional label; three separate state tracks; per-campaign brief and Markdown export; localStorage persistence with schema version, temp-write-then-promote, backup, and refusal to overwrite unreadable data. Spec of what was built and the differences from the section 4 sketch: [campaign-revision.md section 8](specs/campaign-revision.md).
+- **Files:** `lib/campaign.mjs` (new), `lib/block-ops.mjs` (exclusions, two exports), `public/storage.mjs` (new), `public/app.mjs`, `public/index.html`, `public/styles.css`, `public/map.mjs` (no-animation fits), `server.mjs` (two routes), `scripts/browser-check.mjs` (rewritten for R3; the R2 driver is in commit `b182e9e`), `test/geo.test.mjs`, `test/campaign.test.mjs` (new), `test/storage.test.mjs` (new), `test/server.test.mjs`, `docs/ui-review/r3-run/*`, docs.
+- **Checks run:**
+  - `node --test`: 66/66 passed (R2's 41 + 25: 2 net new exclusion tests, 15 campaign, 8 storage). The 23 baseline tests are unchanged and pass. The old "manual exclusion survives only until the scope changes" test asserted the bug and was replaced by the three exclusion tests.
+  - `node scripts/browser-check.mjs` against the restarted `node server.mjs` on port 8000, real Chrome with DevTools device emulation at 1440x900 and 390x844 (device scale 3, touch emulated), live DC data: **70/70 checks passed (35 per viewport)**, no console errors, exceptions or CSP violations, no horizontal overflow. Raw results `docs/ui-review/r3-run/results.json`; screenshots and an exported brief in the same folder.
+    - Flow checked at both sizes: exclude a report, change radius and date, it stays excluded (20 selected before and after) → New campaign here (named "1900 block of Naylor Rd SE", objective "Stop repeat dumping on the 1900 block of Naylor Rd SE", 20 reports, saved) → edit objective, add a fictional resident observation, two tasks with owner and due date, request, mark reviewed → full page reload: campaign reopens with objective, 20 reports, observation, tasks, reviewed state and the area ring on the map → add a fictional follow-up and mark a task done: the review stays, the brief gains the follow-up with "FICTIONAL practice entry" and "[done] Photograph the spot" → downloaded Markdown file contains the follow-up, `- [x]` task, the fictional label and DC 311 source links.
+    - Removing a report withdrew the review, blocked export, and removed it from the saved store; re-review restored export.
+    - Refresh with a status changed in transit (request intercepted and edited): the row shows "Status changed since review: was Closed", review withdrawn, export blocked, the saved area unchanged, both observations kept. A blocked refresh left the open campaign intact with an error banner.
+    - Storage: corrupt JSON and an unknown version each showed an error and turned saving off, a new in-memory campaign worked, and the stored value stayed byte-for-byte unchanged; restoring the last valid value brought the campaign back. A simulated full store (setItem throws QuotaExceededError) showed "storage is full", left the saved value untouched, and the new task still appeared in the page. Disabled storage (localStorage getter throws) was reported, the campaign still worked and exported in memory.
+    - Practice case: the campaign is labeled fictional, the brief shows "FICTIONAL PRACTICE CASE", with zero official links.
+  - `node scripts/prove-geo.mjs` was not rerun in R3 (R2 run stands; no change to the data path).
+- **Not verified:** a real finger/touch gesture; screen-reader behavior; the A4 print/PDF of the campaign brief (print CSS only retargeted); more than one browser tab editing the same store (last write wins); a store near the real localStorage quota (only a simulated error); campaigns created in the practice case after a later live refresh (reconcile intentionally skips them); the busy-spot select by arrow keys on desktop (covered in R2 by type-ahead).
+- **Limits:** one operator, one browser profile; `localhost` and `127.0.0.1` have separate stores; clearing site data deletes the campaigns; no sharing or sync; no way to edit an observation or the radius of an existing campaign; unreadable saved data has no in-app reset by design. A judge-facing fictional follow-up depends on ticking the "fictional practice entry" box (it is on by default only for practice campaigns).
+- **Cuts:** deleting is a two-step button, not an undo; no export of the raw store.
+- **Unresolved:** R4 scope: stable pagination beyond 1,000 records, projector layout, print/PDF inspection, an optional crime layer, and whether the follow-up fictional flag should default on in demos.
+- **Local commit:** see `git log` (hash not recorded here).
 
 ### 2026-10-21 — R2 complete; R3 next
 
