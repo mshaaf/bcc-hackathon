@@ -12,6 +12,11 @@ const ASSETS = new Map([
   ["/app.mjs", ["public/app.mjs", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["public/styles.css", "text/css; charset=utf-8"]],
   ["/lib/block-ops.mjs", ["lib/block-ops.mjs", "text/javascript; charset=utf-8"]],
+  ["/prototype", ["public/prototype.html", "text/html; charset=utf-8"]],
+  ["/prototype.mjs", ["public/prototype.mjs", "text/javascript; charset=utf-8"]],
+  ["/prototype.css", ["public/prototype.css", "text/css; charset=utf-8"]],
+  ["/vendor/leaflet/leaflet.js", ["public/vendor/leaflet/leaflet.js", "text/javascript; charset=utf-8"]],
+  ["/vendor/leaflet/leaflet.css", ["public/vendor/leaflet/leaflet.css", "text/css; charset=utf-8"]],
   ["/api/demo", ["data/demo.json", "application/json; charset=utf-8"]]
 ]);
 
@@ -20,7 +25,7 @@ function setHeaders(response) {
   response.setHeader("Referrer-Policy", "no-referrer");
   response.setHeader("X-Frame-Options", "DENY");
   response.setHeader("Cache-Control", "no-store");
-  response.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
+  response.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://maps2.dcgis.dc.gov; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
 }
 
 function sendJson(response, status, value) {

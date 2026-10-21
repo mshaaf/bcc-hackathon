@@ -2,9 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildArcGisUrl,
+  distanceMeters,
   fetchArcGisSnapshot,
   normalizeFeatureSet,
+  normalizeGeometry,
+  recordsWithin,
   sourceRecordUrl,
+  summarizeGeometry,
   suggestStreetGroups
 } from "../lib/block-ops.mjs";
 
@@ -29,7 +33,8 @@ test("builds a bounded Ward 8 query with an explicit field allowlist", () => {
   assert.match(where, /ADDDATE < TIMESTAMP '2026-10-22 00:00:00'/);
   assert.equal(url.searchParams.get("resultRecordCount"), "1000");
   assert.equal(url.searchParams.get("orderByFields"), "OBJECTID");
-  assert.equal(url.searchParams.get("returnGeometry"), "false");
+  assert.equal(url.searchParams.get("returnGeometry"), "true");
+  assert.equal(url.searchParams.get("outSR"), "4326");
   assert.ok(fields.includes("SERVICEREQUESTID"));
   assert.ok(fields.includes("ADDDATE"));
   assert.ok(fields.includes("SERVICEORDERSTATUS"));
@@ -111,4 +116,52 @@ test("reports source fetch failure for the caller to recover from", async () => 
     fetchArcGisSnapshot(async () => { throw new Error("offline"); }, new Date("2026-10-21T16:00:00.000Z")),
     /DC 311 request failed/i
   );
+});
+
+test("keeps valid WGS84 points as lon/lat and counts missing and invalid geometry", () => {
+  const withGeometry = geometries => normalizeFeatureSet({
+    spatialReference: { wkid: 4326 },
+    features: geometries.map((geometry, index) => ({ attributes: { OBJECTID: index + 1, SERVICEREQUESTID: `G-${index}` }, geometry }))
+  });
+  const records = withGeometry([
+    { x: -76.9719, y: 38.8478 },
+    undefined,
+    { x: 38.8478, y: -76.9719 },
+    { x: 402438.66, y: 131109.08 },
+    { x: 0, y: 0 },
+    { x: "NaN", y: "NaN" }
+  ]);
+
+  assert.deepEqual(records[0].geo, { lon: -76.9719, lat: 38.8478 });
+  assert.deepEqual(records.slice(1).map(record => record.geoStatus), ["missing", "invalid", "invalid", "invalid", "invalid"]);
+  assert.ok(records.slice(1).every(record => record.geo === null));
+  assert.deepEqual(summarizeGeometry(records), { total: 6, mapped: 1, missing: 1, invalid: 4 });
+  assert.equal(records.length, 6, "records without usable geometry stay in the list");
+  assert.equal(normalizeGeometry({ x: -77.2, y: 38.9 }).geoStatus, "invalid");
+});
+
+test("rejects coordinates that are not WGS84 instead of plotting them", () => {
+  assert.throws(() => normalizeFeatureSet({ spatialReference: { wkid: 3857 }, features: [] }), /not WGS84/i);
+});
+
+test("live snapshot reports geometry counts alongside the records", async () => {
+  const fetchImpl = async () => ({ ok: true, json: async () => ({
+    spatialReference: { wkid: 4326 },
+    features: [
+      { attributes: { OBJECTID: 1, SERVICEREQUESTID: "A" }, geometry: { x: -76.97, y: 38.85 } },
+      { attributes: { OBJECTID: 2, SERVICEREQUESTID: "B" } }
+    ]
+  }) });
+  const snapshot = await fetchArcGisSnapshot(fetchImpl, new Date("2026-10-21T16:00:00.000Z"));
+  assert.deepEqual(snapshot.geometry, { total: 2, mapped: 1, missing: 1, invalid: 0 });
+});
+
+test("proximity selection uses real distance and skips records without a usable point", () => {
+  const center = { lon: -76.9719, lat: 38.8478 };
+  const near = { key: "near", geo: { lon: -76.9725, lat: 38.8478 } }; // ~52 m west
+  const far = { key: "far", geo: { lon: -76.9650, lat: 38.8478 } }; // ~600 m east
+  const unmapped = { key: "none", geo: null };
+
+  assert.ok(Math.abs(distanceMeters(center, near.geo) - 52) < 3);
+  assert.deepEqual(recordsWithin([near, far, unmapped], center, 150).map(record => record.key), ["near"]);
 });

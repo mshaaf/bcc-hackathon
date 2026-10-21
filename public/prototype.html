@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
+  <title>Block Ops — R1 layout prototype (disposable)</title>
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css"><link rel="stylesheet" href="/prototype.css">
+  <script src="/vendor/leaflet/leaflet.js"></script><script type="module" src="/prototype.mjs"></script>
+</head>
+<body>
+<p class="banner"><strong>Disposable R1 layout prototype.</strong> Real DC 311 records and a real map. Campaign objective, progress and tasks are mock text; nothing is saved.</p>
+<header class="top">
+  <a class="brand" href="/prototype"><span class="brand-mark" aria-hidden="true">b.</span>block ops<span class="dot">.</span></a>
+  <p class="fresh" id="fresh" aria-live="polite">Loading live DC 311 records…</p>
+</header>
+<main class="proto">
+  <section class="map-wrap" aria-label="Map of Ward 8 illegal dumping reports">
+    <div id="map"></div>
+    <ul class="legend" aria-label="Map legend">
+      <li><span class="sw open"></span>Open</li><li><span class="sw closed"></span>Closed</li><li><span class="sw other"></span>Duplicate / canceled</li><li><span class="sw ring"></span>Selected 150 m area</li>
+    </ul>
+    <p class="hint">Click the map to choose a 150 m area. Each dot is one 311 report at its block-level point.</p>
+  </section>
+  <aside class="panel" aria-label="Campaign">
+    <p class="error" id="error" role="status" hidden></p>
+    <header class="campaign">
+      <p class="tag">Sample campaign · objective is mock text</p>
+      <h1>Stop the repeat dumping near <span id="place">…</span></h1>
+      <p class="sub" id="span">Select an area on the map.</p>
+    </header>
+    <section aria-labelledby="h-evidence">
+      <h2 id="h-evidence">Evidence <span class="count" id="count"></span></h2>
+      <p class="tally" id="tally"></p>
+      <ol class="chrono" id="chrono"></ol>
+    </section>
+    <section aria-labelledby="h-state">
+      <h2 id="h-state">Where things stand</h2>
+      <dl class="tracks">
+        <div><dt>City ticket status</dt><dd id="t-city">—</dd></div>
+        <div><dt>Group progress</dt><dd>Evidence reviewed 0 of <span id="t-n">0</span> · <em>mock</em></dd></div>
+        <div><dt>Resident check</dt><dd>No resident observation yet · <em>mock</em></dd></div>
+      </dl>
+    </section>
+    <section aria-labelledby="h-next">
+      <h2 id="h-next">Next steps <em class="mock">layout only</em></h2>
+      <ul class="tasks">
+        <li><span>Photograph the spot and note what is there</span><small>Owner: unassigned · Due: —</small></li>
+        <li><span>Send the reviewed request to 311 / DPW</span><small>Owner: unassigned · Due: —</small></li>
+        <li><span>Re-check the spot and record what we saw</span><small>Owner: unassigned · Due: —</small></li>
+      </ul>
+    </section>
+  </aside>
+</main>
+</body>
+</html>

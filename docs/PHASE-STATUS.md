@@ -2,7 +2,7 @@
 
 This is the canonical execution ledger for Claude/Luna batches. Current revision phases R1–R5 are defined in [HANDOFF.md](HANDOFF.md); baseline phases below preserve the old plan's history. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R1. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R2. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The user rejected the form/brief-centered baseline as the final experience. A map/campaign revision is proposed; no revised implementation is complete. The original numbered phases below remain history and are not the next execution instructions.
 
@@ -10,13 +10,15 @@ The user rejected the form/brief-centered baseline as the final experience. A ma
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| R1 | Scenario, real geospatial data proof, reviewable layout, revised specification/plan | Not started |
+| R1 | Scenario, real geospatial data proof, reviewable layout, revised specification/plan | Complete |
 | R2 | Real map, source layers/filters, evidence review and chronology | Not started |
 | R3 | Saved campaign, owner/date tasks, follow-up and current export | Not started |
 | R4 | Reliability, accessible interaction and stage layout | Not started |
 | R5 | Rehearsal and release/submission package | Not started |
 
 The documentation handoff is prepared. These R phases are proposed batch boundaries; detailed checks and prompts are in the handoff. Keep status evidence-based.
+
+R1 evidence and the R2–R3 specification: [campaign-revision.md](specs/campaign-revision.md).
 
 ## Baseline delivery history
 
@@ -43,6 +45,21 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — R1 complete; R2 next
+
+- **Deliverables:** 311 query now returns WGS84 geometry with per-record `geo`/`geoStatus` and snapshot geometry counts; proximity helper; vendored Leaflet 1.9.4; disposable map/campaign page at `/prototype`; separate Ward 8 MPD crime query proof; revised spec, acceptance criteria and file plan in [campaign-revision.md](specs/campaign-revision.md). Files: `lib/block-ops.mjs`, `server.mjs`, `public/prototype.{html,css,mjs}`, `public/vendor/leaflet/{leaflet.js,leaflet.css,LICENSE}`, `scripts/prove-geo.mjs`, `test/data.test.mjs`, `test/server.test.mjs`, `research/evidence/r1-geo-proof-2026-10-21.json`, `docs/ui-review/r1-prototype-1440.png`, README/HANDOFF/this ledger.
+- **Checks run:**
+  - `node --test`: 28/28 passed (23 baseline + 4 geometry/proximity + 1 server route/CSP). Baseline tests were not weakened; one assertion changed deliberately (`returnGeometry` false to true, plus `outSR=4326`).
+  - `node scripts/prove-geo.mjs` at 2026-10-21T17:59Z: 390 dumping records, 390/390 with points (0 missing, 0 invalid), lon -77.0166 to -76.9637, lat 38.8208 to 38.8803 (lon negative, so order is correct); 388/390 inside the official Ward 8 polygon, 2 outside (`26-00601266`, `26-00615737`; source ward label vs point disagree). No transfer limit. Streetlights: 118 "Streetlight Repair Investigation" + 1 "DGS - External Lighting" in Ward 8, last 90 days (counts only, not plotted).
+  - MPD layer 39, `WARD='8'`, `outSR=4326`: 184 records, no transfer limit, 184 with points, 1 outside the Ward 8 polygon, report dates 2026-09-21 to 2026-10-21. Not integrated.
+  - DC GIS light-gray tile cache fetched at zoom 12/15/17/19 (HTTP 200, 24 h cache header). OSM tile policy read; OSM rejected (Referer requirement vs this app's `no-referrer`).
+  - Headless Chrome 1440x900 on `/prototype` served by the current code on port 8001: map, tiles, 390 markers, 150 m area (21 reports), chronology and panel rendered; no CSP/console errors printed. Screenshot: `docs/ui-review/r1-prototype-1440.png`.
+- **Not verified:** the prototype at 390 px (headless window was not a true mobile viewport; screenshot discarded); keyboard use of the map; DC GIS written terms for tile reuse; the old baseline UI (`/`) in a browser after the geometry change (its tests pass, and payload gained geometry only); a fresh load from port 8000 (see limits).
+- **Limits:** a stale `node server.mjs` (PID started 13:16, old code) still held port 8000 and was not killed; restart it to see `/prototype`. The prototype's objective, tasks and group/resident tracks are mock. Points are block-level. Proximity is not proof of one incident. Pagination still absent. No push, deploy, submission or outreach.
+- **Cuts:** crime integration, AI, accounts, sync, photos, notifications.
+- **Unresolved choices:** listed in section 6 of the revision spec (dumping vs streetlight stage story, radius, flagging boundary mismatches, tile terms, crime yes/no, judge action, objective copy).
+- **Local commit:** see `git log` (hash not recorded here).
 
 ### 2026-10-21 — Claude documentation handoff and scope revision proposal
 

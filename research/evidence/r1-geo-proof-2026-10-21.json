@@ -1,0 +1,104 @@
+{
+  "retrievedAt": "2026-10-21T17:59:04.348Z",
+  "window": {
+    "start": "2026-07-24",
+    "endExclusive": "2026-10-22"
+  },
+  "dumping311": {
+    "records": 390,
+    "geometry": {
+      "total": 390,
+      "mapped": 390,
+      "missing": 0,
+      "invalid": 0
+    },
+    "lonRange": [
+      -77.01659643868618,
+      -76.96371331625637
+    ],
+    "latRange": [
+      38.82078109848937,
+      38.88028537177096
+    ],
+    "insideDcBounds": 390,
+    "insideWard8Polygon": 388,
+    "outsideWard8Polygon": [
+      {
+        "id": "26-00601266",
+        "address": "1000 - 1099 BLOCK OF NEW JERSEY AVENUE SE",
+        "geo": {
+          "lon": -77.0047022135191,
+          "lat": 38.87797516071635
+        }
+      },
+      {
+        "id": "26-00615737",
+        "address": "25TH STREET SE AND MINNESOTA AVENUE SE",
+        "geo": {
+          "lon": -76.97096820197575,
+          "lat": 38.87331170168532
+        }
+      }
+    ]
+  },
+  "lighting311Last90Days": [
+    {
+      "SERVICECODEDESCRIPTION": "Streetlight Repair Investigation",
+      "N": 118
+    },
+    {
+      "SERVICECODEDESCRIPTION": "DGS - External Lighting",
+      "N": 1
+    }
+  ],
+  "mpdLayer39Ward8": {
+    "exceededTransferLimit": false,
+    "records": 184,
+    "withPoint": 184,
+    "withoutUsablePoint": 0,
+    "outsideWard8Polygon": 1,
+    "latestReportDate": "2026-10-21T02:47:11.000Z",
+    "oldestReportDate": "2026-09-21T14:20:50.000Z",
+    "offenseCounts": [
+      [
+        "THEFT/OTHER",
+        57
+      ],
+      [
+        "THEFT F/AUTO",
+        38
+      ],
+      [
+        "MOTOR VEHICLE THEFT",
+        32
+      ],
+      [
+        "ASSAULT W/DANGEROUS WEAPON",
+        24
+      ],
+      [
+        "ROBBERY",
+        18
+      ],
+      [
+        "BURGLARY",
+        12
+      ],
+      [
+        "SEX ABUSE",
+        2
+      ],
+      [
+        "HOMICIDE",
+        1
+      ]
+    ],
+    "note": "Block-level approximate locations; report date is not occurrence date. Not integrated into the app."
+  },
+  "dcBoundsUsed": {
+    "west": -77.12,
+    "east": -76.9,
+    "south": 38.78,
+    "north": 39
+  }
+}

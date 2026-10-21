@@ -10,7 +10,7 @@ Read [docs/HANDOFF.md](docs/HANDOFF.md), then [docs/PHASE-STATUS.md](docs/PHASE-
 
 - Block Ops / Track 3 is selected. Two engineers, three build days. The user wants meaningful judge participation and a convincing product; the current form/brief UI was rejected as the final experience.
 - Baseline phases 1–3 are complete; audited baseline commit is `687582a`. The app is a DC 311 record-review/brief builder, not a live map or saved campaign product.
-- Next planning batch is **R1** for the map/campaign revision. A resident-led campaign is the recommended direction; final scenario and detailed implementation choices remain open. Do not silently resume old Phase 4 styling.
+- **R1 is complete** (see [docs/specs/campaign-revision.md](docs/specs/campaign-revision.md)); next is **R2**, map and evidence. A resident-led campaign is the recommended direction; final scenario and detailed implementation choices remain open. Do not silently resume old Phase 4 styling.
 - The last request authorized a detailed documentation handoff only. Follow the user's next implementation instruction and requested R-phase boundary.
 - The user is conserving account usage and moving some work to Claude. Keep context reads and checks focused; do not create agents or orchestration infrastructure by default.
 
@@ -24,7 +24,7 @@ node --test
 node server.mjs
 ```
 
-Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed for the current app. Inspect an existing server before starting another on port 8000. `node scripts/prove-data.mjs` is the optional live 311 proof, not a crime/map test. Latest handoff rerun: 23/23 tests passed.
+Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed for the current app. Inspect an existing server before starting another on port 8000. `node scripts/prove-data.mjs` is the optional live 311 proof, not a crime/map test. Latest run: 28/28 tests passed. The disposable map layout is at `/prototype`; `node scripts/prove-geo.mjs` is the live geometry/crime proof.
 
 ## Architecture and traps
 

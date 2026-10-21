@@ -10,7 +10,7 @@ Updated October 21, 2026. This is the next-session entry point. It supersedes th
 - **What the user welcomed:** a stronger map-centered product using real public data; asked about crime data and Flock, then challenged overlap with Citizen.
 - **Latest recommendation:** resident-led neighborhood improvement campaigns, with a map as the operating surface, service history and resident evidence, assigned follow-ups, and saved progress. Crime is optional context. This is the current planning proposal, not a claim that every feature or example was explicitly approved.
 - **This task's authorization:** inspect and update documentation; prepare a detailed handoff for Claude. Product code, dependencies, hosting, and publication were not changed.
-- **Next batch:** R1, below. Do not automatically continue old Phase 4 polish or interpret baseline Phase 1–3 completion as map/campaign completion.
+- **Next batch:** R2, below. R1 is complete: see [campaign-revision.md](specs/campaign-revision.md) for decisions, proofs, acceptance criteria and file plan. Do not automatically continue old Phase 4 polish or interpret baseline Phase 1–3 completion as map/campaign completion.
 
 The user mentioned approaching their account's five-hour usage window and plans to use Claude for further work. Exact remaining allowance/reset is unknown. This is a usage constraint, not a new five-hour project deadline. Keep reads bounded, avoid repeated research and unnecessary agents, and leave resumable increments.
 
@@ -44,7 +44,7 @@ Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `ma
 | Source review and brief | Built: include/exclude, original fields, source links, dated observation, ask, two role tasks, current-state Markdown and browser print. |
 | Revised three-step UI | Built: Review history → Plan next move → Our brief. It is the baseline; user did not accept this as the final presentation experience. |
 | Offline sample | Built: five invented records, clearly labeled fictional. It is not a saved DC response or community research. |
-| Maps, spatial filtering, crime layer | Unbuilt. Crime API metadata and an aggregate query were checked separately; the app does not consume them. |
+| Maps, spatial filtering, crime layer | R1: disposable `/prototype` map (Leaflet vendored, DC GIS basemap) plots live records; proximity helper exists. Not the product UI. Crime: Ward 8 MPD query proven in `scripts/prove-geo.mjs`, not consumed by the app. |
 | Saved campaigns, task owners/due dates, progress and follow-up evidence | Unbuilt. Current draft disappears on reload. Two role-text fields do not constitute campaign management. |
 | Photos, AI summary/drafting, agency routing | Unbuilt. No model/provider credentials or verified routing catalog selected. |
 | Shared accounts, mobile synchronization, notifications, camera feeds | Unbuilt and outside the recommended first revision. |
@@ -117,7 +117,7 @@ AI summary/request drafting and photo observations are possible additions, not m
 ### DC 311: implemented
 
 - Layer: `https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/ServiceRequests/FeatureServer/21`.
-- Current filter uses `WARD='Ward 8'`, not `'8'`. Current query explicitly sets `returnGeometry=false` and excludes coordinates. It cannot place records on a map until revised.
+- Current filter uses `WARD='Ward 8'`, not `'8'`. As of R1 the query sets `returnGeometry=true&outSR=4326`; each record has `geo` (`{lon,lat}`) and `geoStatus`, and the snapshot has geometry counts. Source-link queries still use `returnGeometry=false`.
 - October 21 app/source proof returned 389 unique records in `2026-07-24` inclusive to `2026-10-22` exclusive. These are dated results; not current guaranteed counts.
 - A transfer-limited response is rejected. Pagination is not implemented. Preserve that error until a complete bounded retrieval is verified.
 

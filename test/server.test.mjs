@@ -30,6 +30,22 @@ test("serves the app and fictional fixture from the explicit route list", async 
   });
 });
 
+test("serves the disposable prototype and vendored Leaflet explicitly, with only the DC GIS tile origin added", async () => {
+  const server = createAppServer();
+  await withServer(server, async baseUrl => {
+    for (const path of ["/prototype", "/prototype.mjs", "/prototype.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
+      assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, path);
+    }
+    assert.equal((await fetch(`${baseUrl}/vendor/leaflet/LICENSE`)).status, 404);
+    assert.equal((await fetch(`${baseUrl}/vendor/../server.mjs`)).status, 404);
+
+    const csp = (await fetch(baseUrl)).headers.get("content-security-policy");
+    assert.match(csp, /img-src 'self' data: https:\/\/maps2\.dcgis\.dc\.gov;/);
+    assert.match(csp, /script-src 'self';/);
+    assert.match(csp, /connect-src 'self';/);
+  });
+});
+
 test("proxies only the fixed public query and rejects source outages", async () => {
   let requestedUrl;
   const server = createAppServer({
