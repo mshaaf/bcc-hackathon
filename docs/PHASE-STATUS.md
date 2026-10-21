@@ -10,8 +10,8 @@ This is the canonical execution status for Luna batches. The [phase plan](superp
 | 1 | Selected scope and concrete build plan | Complete | Node.js stack, API contract, files/interfaces, checks, and phase tasks recorded across the decision, README, architecture, implementation plan, Block Ops profile, demo, and test plan. |
 | 2 | Reproducible proof of the core mechanism | Complete | `node --test test/data.test.mjs`: 5/5 passed. Live API proof on October 21: 389 records, 389 unique IDs, 67 multi-record street/category candidates, no transfer-limit flag. See [test evidence](TEST-PLAN.md#2026-10-21--phase-2-data-proof). |
 | 3 | Complete working MVP and changed output | Complete | Runnable local app, live/fictional inputs, source review, changed brief, and automated/manual checks; see [Phase 3 evidence](TEST-PLAN.md#2026-10-21--phase-3-working-mvp). |
-| 4 | Reliable sources, uncertainty, and recovery | Not started | Depends on Phase 3. |
-| 5 | Polished product and judge interaction | Not started | Depends on Phase 4. |
+| 4 | Reliable sources, uncertainty, and recovery | In progress | Audit fixes and regression/browser checks below; finish the remaining reliability acceptance criteria. |
+| 5 | Polished product and judge interaction | In progress | User requested an early UI correction: three-step worktable, full addresses, live summary, dedicated brief, and responsive/print checks delivered. Final stage rehearsal remains. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
 
 Use only **Not started**, **In progress**, **Blocked**, and **Complete**. A blocked phase remains the next unfinished phase until resolved; do not skip it or silently substitute another idea.
@@ -27,6 +27,15 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — User-requested UI investigation and repair
+
+- Re-ran the Phase 3 baseline: 17/17 tests passed. The existing UI displayed the source review, all planning fields, and final artifact together, with no clear presentation sequence; full addresses were hidden from the collapsed list. The user requested investigation and a stronger interface, authorizing this targeted reliability and visual work ahead of the earlier batch order.
+- Rebuilt the current UI into review → plan → brief, preserving the existing palette and working source/data contracts. Full addresses and original disclosures are visible; the count and status summary reflect the selected evidence; the brief has a distinct paper view and exports.
+- Fixed wrong official links for missing object IDs, cross-source/group observation carryover, duplicate-key selection/export disagreement, loading-time edit races, and missing addresses/direct source references in exports. A new source/group clears its observation and date; a failed refresh preserves the reviewed draft.
+- Current automated checks: `node --test` passed 23/23. Chromium browser checks exercised changed output, downloaded Markdown, a simulated failed refresh, real live load (389 public records), cleared context, missing observation date, arrow-key tabs, and all three views at 1440, 1024, 768, 390, and 320 pixels. No browser errors or measured horizontal overflow were observed. The fictional sample's A4 PDF was visually inspected.
+- An independent visual review found two mobile issues, both fixed and re-inspected: wordmark wrapping at 320 pixels and overlong candidate options at 390 pixels. The mechanical design detector returned no findings. Screenshots and detailed evidence are in [the UI review](ui-review/README.md) and [test plan](TEST-PLAN.md).
+- Phases 4 and 5 remain in progress rather than being declared fully complete. Keep the implemented design and finish remaining reliability/acceptance and stage checks in subsequent requested batches. No push, deployment, or official submission occurred.
 
 ### 2026-10-21 — Phase execution handoff prepared
 

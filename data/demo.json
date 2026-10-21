@@ -44,7 +44,7 @@
         "SERVICEORDERSTATUS": "Closed (Duplicate)",
         "ORGANIZATIONACRONYM": "Demo agency",
         "WARD": "Ward 8",
-        "STREETADDRESS": "300 SAMPLE AVE SE"
+        "STREETADDRESS": "100 SAMPLE AVE SE"
       }
     },
     {
@@ -59,7 +59,7 @@
         "SERVICEORDERSTATUS": null,
         "ORGANIZATIONACRONYM": "Demo agency",
         "WARD": "Ward 8",
-        "STREETADDRESS": "400 SAMPLE AVE SE"
+        "STREETADDRESS": "100 SAMPLE AVE SE"
       }
     },
     {

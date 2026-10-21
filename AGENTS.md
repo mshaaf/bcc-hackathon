@@ -4,7 +4,9 @@
 
 This is a two-person BCC hackathon workspace. The user selected **Block Ops, Track 3 — Community Development**, on October 21, 2026. Read `README.md`, `docs/DECISIONS.md`, and `docs/specs/block-ops.md` before implementing changes. Consult `docs/FINALISTS.md` for the earlier comparison and product picture. Do not reopen project selection without the user's direction.
 
-The user chose a Luna terminal for implementation in numbered phase batches. Block Ops is the active scope; the other finalist profiles are historical alternatives. Product implementation has not started. Follow the requested batch boundaries when execution begins.
+The user chose a Luna terminal for implementation in numbered phase batches. Phases 1–3 are complete. The user then requested investigation and a stronger UI; targeted Phase 4 fixes and Phase 5 interface work are recorded in the ledger. Block Ops is the active scope; the other finalist profiles are historical alternatives. Follow requested batch boundaries for subsequent work.
+
+For frontend work, read `PRODUCT.md` and `DESIGN.md`. Preserve the current review → plan → brief sequence and source fidelity; do not regress to displaying the entire editor and artifact at once.
 
 ## Phased implementation
 

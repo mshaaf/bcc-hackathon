@@ -33,7 +33,7 @@
       "note": "Observed in current setup; not a Ruflo service event."
     }
   ],
-  "product_work": "not started",
+  "product_work": "Phases 1\u20133 complete; targeted reliability and UI work recorded in docs/PHASE-STATUS.md",
   "commit": "Initial local documentation commit; git log is authoritative",
   "push": "not performed",
   "setup_status": "complete",
@@ -44,5 +44,6 @@
     "basis": "explicit user instruction",
     "next_delivery_phase": 1,
     "product_implementation_started": false
-  }
+  },
+  "current_delivery_phase": 4
 }

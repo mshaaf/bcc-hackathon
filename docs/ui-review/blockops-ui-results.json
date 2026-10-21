@@ -1,0 +1,113 @@
+{
+  "browser": "155.0.8059.85",
+  "browserErrors": [],
+  "download": "passed; inspected current Markdown",
+  "print": "passed: final four-record fictional A4 brief visually inspected; one page; larger live-history pagination not inspected",
+  "live": {
+    "loaded": true,
+    "status": "389 public records \u00b7 retrieved 2026-10-21. Query window: 2026-07-24 to 2026-10-22 (end exclusive)."
+  },
+  "failedRefresh": "preserved reviewed state and observation",
+  "loading": "workspace inert during refresh",
+  "contextSwitch": "old observation/date cleared in state and controls",
+  "missingObservationDate": "export disabled with specific guidance",
+  "keyboardTabs": "arrow navigation passed",
+  "layouts": [
+    {
+      "width": 1440,
+      "view": "review",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "width": 1440,
+      "view": "plan",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "width": 1440,
+      "view": "brief",
+      "viewport": 1440,
+      "scroll": 1440
+    },
+    {
+      "width": 1024,
+      "view": "review",
+      "viewport": 1024,
+      "scroll": 1024
+    },
+    {
+      "width": 1024,
+      "view": "plan",
+      "viewport": 1024,
+      "scroll": 1024
+    },
+    {
+      "width": 1024,
+      "view": "brief",
+      "viewport": 1024,
+      "scroll": 1024
+    },
+    {
+      "width": 768,
+      "view": "review",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "width": 768,
+      "view": "plan",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "width": 768,
+      "view": "brief",
+      "viewport": 768,
+      "scroll": 768
+    },
+    {
+      "width": 390,
+      "view": "review",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "width": 390,
+      "view": "plan",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "width": 390,
+      "view": "brief",
+      "viewport": 390,
+      "scroll": 390
+    },
+    {
+      "width": 320,
+      "view": "review",
+      "viewport": 320,
+      "scroll": 320
+    },
+    {
+      "width": 320,
+      "view": "plan",
+      "viewport": 320,
+      "scroll": 320
+    },
+    {
+      "width": 320,
+      "view": "brief",
+      "viewport": 320,
+      "scroll": 320
+    }
+  ],
+  "mobileFollowup": {
+    "320px_wordmark": "fixed and visually re-inspected",
+    "390px_candidate_select": "street/count shortened and visually re-inspected",
+    "browserErrors": [],
+    "horizontalOverflow": false
+  }
+}

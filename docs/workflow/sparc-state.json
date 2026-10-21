@@ -5,7 +5,7 @@
   "phase_name": "specification",
   "documentation_status": "complete",
   "product_selection": "Block Ops",
-  "implementation_started": false,
+  "implementation_started": true,
   "requirements_artifact": "docs/SPECIFICATION.md",
   "conditional_profiles": [
     "docs/specs/block-ops.md",
@@ -17,7 +17,7 @@
   ],
   "acceptance_status": {
     "workspace": "passed checks recorded in docs/workflow/verification.json",
-    "application": "not implemented"
+    "application": "MVP implemented; 23 automated checks and browser/export checks passed; remaining phase acceptance open"
   },
   "requested_methods": [
     "sparc-spec",
@@ -27,5 +27,15 @@
   "remote_memory_written": false,
   "primary_track": "Community Development",
   "active_profile": "docs/specs/block-ops.md",
-  "next_delivery_phase": 1
+  "next_delivery_phase": 4,
+  "completed_delivery_phases": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "in_progress_delivery_phases": [
+    4,
+    5
+  ]
 }

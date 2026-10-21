@@ -113,5 +113,17 @@
     "import_hashes": "passed",
     "research_and_previews": "unchanged except dated finalist selection banner",
     "product_tests": "not applicable: selection/documentation only"
+  },
+  "ui_repair": {
+    "checked_utc": "2026-10-21T17:32:09.819441+00:00",
+    "unit_tests": "23/23 passed",
+    "browser_checks": "docs/ui-review/blockops-ui-results.json",
+    "mechanical_design_findings": [],
+    "independent_review": "material improvement; two mobile findings fixed and re-inspected",
+    "sample_print": "one-page A4 inspected",
+    "markdown_links_checked": 375,
+    "phase_4": "in progress",
+    "phase_5": "in progress",
+    "push": "not performed"
   }
 }

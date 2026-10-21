@@ -4,6 +4,7 @@ import {
   buildArcGisUrl,
   fetchArcGisSnapshot,
   normalizeFeatureSet,
+  sourceRecordUrl,
   suggestStreetGroups
 } from "../lib/block-ops.mjs";
 
@@ -38,6 +39,26 @@ test("builds a bounded Ward 8 query with an explicit field allowlist", () => {
   assert.ok(!fields.includes("LATITUDE"));
 });
 
+test("source links fall back to the quoted request ID when object ID is absent", () => {
+  for (const objectId of [null, undefined, "", "   "]) {
+    const url = new URL(sourceRecordUrl({ objectId, id: "REQ-'17" }, "live"));
+    assert.equal(url.searchParams.get("where"), "SERVICEREQUESTID='REQ-''17'");
+    assert.equal(url.hostname, "maps2.dcgis.dc.gov");
+  }
+});
+
+test("source links prefer a positive integer object ID", () => {
+  const url = new URL(sourceRecordUrl({ objectId: 123, id: "REQ-1" }, "live"));
+  assert.equal(url.searchParams.get("where"), "OBJECTID=123");
+  assert.equal(url.searchParams.get("returnGeometry"), "false");
+  assert.ok(url.searchParams.get("outFields").split(",").includes("SERVICEREQUESTID"));
+});
+
+test("fictional records and missing identities do not receive official source links", () => {
+  assert.equal(sourceRecordUrl({ objectId: 123, id: "DEMO-1" }, "demo"), null);
+  assert.equal(sourceRecordUrl({ objectId: null, id: " " }, "live"), null);
+});
+
 test("preserves source IDs, dates, statuses, and missing values", () => {
   const records = normalizeFeatureSet(featureSet);
 
@@ -53,6 +74,18 @@ test("preserves source IDs, dates, statuses, and missing values", () => {
 test("rejects truncated and malformed feature sets", () => {
   assert.throws(() => normalizeFeatureSet({ ...featureSet, exceededTransferLimit: true }), /transfer limit/i);
   assert.throws(() => normalizeFeatureSet({ features: null }), /feature list/i);
+});
+
+test("rejects duplicate record identities instead of hiding rows behind one selection key", () => {
+  assert.throws(() => normalizeFeatureSet({ features: [
+    featureSet.features[0],
+    { attributes: { ...featureSet.features[1].attributes, SERVICEREQUESTID: "REQ-1" } }
+  ] }), /duplicate record identifiers/i);
+
+  assert.throws(() => normalizeFeatureSet({ features: [
+    { attributes: { ...featureSet.features[0].attributes, SERVICEREQUESTID: null } },
+    { attributes: { ...featureSet.features[1].attributes, SERVICEREQUESTID: null, OBJECTID: 1 } }
+  ] }), /duplicate record identifiers/i);
 });
 
 test("suggests same-street records for review without grouping missing addresses", () => {

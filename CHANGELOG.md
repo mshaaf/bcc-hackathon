@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-10-21 — MVP audit and interface repair
+
+- Investigated Luna's completed phases and verified the 17-test baseline.
+- Rebuilt the current interface as review → plan → brief, with visible addresses, a current-evidence summary, and a distinct printable artifact.
+- Fixed source-link fallback, cross-context observation carryover, duplicate record identities, loading-time edit races, and missing address/direct-source details in exports.
+- Added regressions; 23 tests pass. Checked live loading, failure preservation, export content, keyboard navigation, responsive views, and a sample A4 PDF.
+- Recorded current product/design guidance and evidence for Luna's remaining phases. No external publication occurred.
+
 ## 2026-10-21 — Block Ops selected
 
 - Recorded the user's explicit Block Ops choice for Track 3 — Community Development.

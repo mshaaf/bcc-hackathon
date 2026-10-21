@@ -2,7 +2,7 @@
 
 Block Ops: a neighborhood worktable that turns reviewed service-request history and resident observations into a group brief and next-step plan.
 
-**Selected by the user: Block Ops, Track 3 — Community Development.** Phases 1–3 are complete: the dependency-free Node.js 20+ app loads a bounded DC 311 snapshot or clearly fictional sample, supports human review, and exports a group brief. Phase 4 is next. The six fictional concept previews remain reference material.
+**Selected by the user: Block Ops, Track 3 — Community Development.** Phases 1–3 are complete. The current app has a three-step worktable, inspectable full addresses, a changing evidence summary, and a dedicated printable brief. Targeted reliability fixes and visual work are in progress under Phases 4–5; see the ledger. The six original concept previews remain historical reference material.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
@@ -12,7 +12,7 @@ Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 2. [Luna phase plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase status](docs/PHASE-STATUS.md): phases 1–3 are complete; Phase 4 is next.
 3. [Decision log](docs/DECISIONS.md): confirmed choice, initial scope, and remaining technical decisions.
 4. [Project brief](docs/PROJECT-BRIEF.md): event, team, constraints, and success criteria.
-5. Open [the interactive product and presentation previews](previews/finalists.html) and select Block Ops. All six concepts remain available for historical comparison.
+5. Run the current app with `node server.mjs` and open `http://127.0.0.1:8000`. The [six concept previews](previews/finalists.html) are the earlier comparison, not the implemented app.
 
 ## Research shortlist — reference
 
@@ -59,7 +59,9 @@ Requires Node.js 20 or newer. There are no package installs, API keys, or enviro
 node server.mjs
 ```
 
-Open `http://127.0.0.1:8000`. The fictional sample works offline; **Load live DC data** requests a bounded Ward 8 / Illegal Dumping snapshot from the official source. The app keeps drafts in memory and exports the current reviewed state as Markdown; use the browser print dialog to save a PDF.
+Open `http://127.0.0.1:8000`. **Practice case** uses clearly fictional offline data; **Live DC records** requests a bounded Ward 8 / Illegal Dumping snapshot from the official source. Review the history, use the selected records, plan the group's request and tasks, then open the brief. The app keeps drafts in memory and exports the current reviewed state as Markdown; use the print dialog to save a PDF.
+
+Current visual rules are in [DESIGN.md](DESIGN.md), with [product context](PRODUCT.md) and [review screenshots](docs/ui-review/README.md). Changing source or candidate street starts a fresh observation; a failed refresh preserves the current draft.
 
 Run the checks with `node --test`. Reproduce the live data proof with `node scripts/prove-data.mjs` (requires network access).
 
