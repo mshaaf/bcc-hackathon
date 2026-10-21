@@ -2,14 +2,14 @@
 
 This is the canonical execution status for Luna batches. The [phase plan](superpowers/plans/2026-10-21-luna-phase-execution.md) defines deliverables and checks. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
 
-**Active project:** Block Ops — Track 3, Community Development; selected by the user October 21, 2026. **Next phase:** 3. **Executor:** Luna terminal.
+**Active project:** Block Ops — Track 3, Community Development; selected by the user October 21, 2026. **Next phase:** 4. **Executor:** Luna terminal.
 
 | Phase | Deliverable | Status | Evidence |
 |---|---|---|---|
 | 0 | Research, concepts, and workspace setup | Complete | Initial local commit `92a6cda`; [setup verification](workflow/verification.json). |
 | 1 | Selected scope and concrete build plan | Complete | Node.js stack, API contract, files/interfaces, checks, and phase tasks recorded across the decision, README, architecture, implementation plan, Block Ops profile, demo, and test plan. |
 | 2 | Reproducible proof of the core mechanism | Complete | `node --test test/data.test.mjs`: 5/5 passed. Live API proof on October 21: 389 records, 389 unique IDs, 67 multi-record street/category candidates, no transfer-limit flag. See [test evidence](TEST-PLAN.md#2026-10-21--phase-2-data-proof). |
-| 3 | Complete working MVP and changed output | In progress | Data proof is integrated; build and exercise the complete review-to-brief flow. |
+| 3 | Complete working MVP and changed output | Complete | Runnable local app, live/fictional inputs, source review, changed brief, and automated/manual checks; see [Phase 3 evidence](TEST-PLAN.md#2026-10-21--phase-3-working-mvp). |
 | 4 | Reliable sources, uncertainty, and recovery | Not started | Depends on Phase 3. |
 | 5 | Polished product and judge interaction | Not started | Depends on Phase 4. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
@@ -49,3 +49,10 @@ The user explicitly chose Block Ops for Track 3. Its profile is active, the init
 - **Checks:** test-first run initially failed because `lib/block-ops.mjs` did not exist; then `node --test test/data.test.mjs` passed 5/5. `node scripts/prove-data.mjs` passed against the live API at `2026-10-21T16:44:09.372Z`: 389 records, 389 unique request IDs, 67 multi-record candidate groups, transfer limit false, query window `2026-07-24`–`2026-10-22` (end exclusive). The default sandbox blocked network access; the same proof passed with approved network access. See [test evidence](TEST-PLAN.md#2026-10-21--phase-2-data-proof).
 - **Limits:** source outages fail explicitly; app-level draft preservation is unimplemented until Phase 3. Pagination is not implemented; any transfer-limit response is rejected. Candidate grouping is not evidence of one incident or recurrence.
 - **Local commit:** recorded in the Phase 3 entry after commit.
+
+### 2026-10-21 — Phase 3 complete; Phase 4 next
+
+- **Phase 3 deliverable:** runnable local worktable with the fixed DC 311 proxy, fictional offline sample, expandable original source fields, record selection and confirmation, resident observation, editable request and two role-based tasks, live preview, Markdown download, and browser print action. Changed selection invalidates review; the current brief omits excluded records. Files: `server.mjs`, `data/demo.json`, `public/index.html`, `public/app.mjs`, `public/styles.css`, `lib/block-ops.mjs`, `test/data.test.mjs`, `test/server.test.mjs`, and `test/workflow.test.mjs`.
+- **Checks:** `node --test` passed 17/17 (6 data, 4 server, 7 workflow). `node --check` passed for the server, shared module, and browser module. Manual Chrome checks exercised the fictional sample, excluded `DEMO-102`, saw the brief change from four records to three and confirmation clear, confirmed the revised selection, edited the observation/request/tasks, and opened the downloaded Markdown to verify it matched. Missing date/status stayed unavailable; keyboard Tab/Space selection worked. At a 320-pixel emulated viewport, the stacked interface was visually inspected. The actual UI also loaded live DC data through the proxy on October 21 at `16:55:14.964Z`: 389 records; the largest displayed candidate group had 16 records.
+- **Limits:** exact record details require expansion and are not included in the brief. The sample is invented. Drafts are memory-only; pagination is deferred and capped/truncated responses are rejected. Same-street/category matches are candidates, not established incidents or recurrence. A Markdown artifact was inspected; PDF rendering, broader accessibility, and user testing were not performed. No city submission occurs.
+- **Local commit:** `bd40645` (`feat: build Block Ops working MVP`).

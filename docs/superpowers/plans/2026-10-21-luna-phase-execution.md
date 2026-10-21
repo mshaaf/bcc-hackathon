@@ -10,7 +10,7 @@
 
 **Spec:** [Foundation specification](../../SPECIFICATION.md), [conditional profiles](../../specs/README.md), and [current decisions](../../DECISIONS.md).
 
-**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Phase 1 finalized the stack and task plan; Phase 2 is next.
+**Current selection:** Block Ops, Track 3 — Community Development, explicitly chosen by the user October 21, 2026. Read `docs/specs/block-ops.md`; the selection prerequisite is satisfied. Phases 1–3 are complete; Phase 4 is next.
 
 ## Global constraints
 
@@ -109,11 +109,11 @@ Do not repeat Phase 0 as an implementation task.
 
 **Entry:** Phase 2 complete. **Files:** the application, fixtures, behavior checks, export, and configuration named in the concrete plan.
 
-- [ ] Integrate the proved mechanism into the smallest usable interface. Make the judge's consequential choice work on actual state.
-- [ ] Implement source access, human correction/confirmation, and a readable print/download output.
-- [ ] Prove that changing or removing evidence changes the actual output and invalidates affected review state.
-- [ ] Prove one incomplete or ambiguous input remains unresolved. Verify the clean end-to-end path and current run command.
-- [ ] Open the exported artifact and compare it with current reviewed state. Record actual checks and remaining limitations.
+- [x] Integrate the proved mechanism into the smallest usable interface. Make the judge's consequential choice work on actual state.
+- [x] Implement source access, human correction/confirmation, and a readable print/download output.
+- [x] Prove that changing or removing evidence changes the actual output and invalidates affected review state.
+- [x] Prove one incomplete or ambiguous input remains unresolved. Verify the clean end-to-end path and current run command.
+- [x] Open the exported artifact and compare it with current reviewed state. Record actual checks and remaining limitations.
 
 **Completion check:** another person can run the MVP, complete its one main scenario, change a relevant input, and inspect the corresponding output. It is more than a static replica of the concept preview.
 

@@ -1,6 +1,6 @@
 # Specification: BCC hackathon project foundation
 
-**Phase:** SPARC specification. **Status:** documentation baseline complete; Block Ops selected by the user October 21, 2026. Its profile is active; the other five remain research alternatives. Luna's Phase 1 will finalize the selected technical plan. No application implementation has started.
+**Phase:** SPARC specification. **Status:** foundation baseline complete; Block Ops selected by the user October 21, 2026. Its profile is active; the other five remain research alternatives. The Phase 1 plan, Phase 2 data proof, and Phase 3 MVP are complete; Phase 4 reliability work is next.
 
 ## Requirements
 
@@ -72,4 +72,4 @@ Create only the minimum draft and export data needed. Do not assume server persi
 
 ## Phase handoff
 
-The specification baseline is saved in `docs/workflow/`. Block Ops is selected. Luna should finalize its technical plan in Phase 1, prove its data mechanism in Phase 2, and complete the product loop in Phase 3. Ruflo `/sparc advance` is an optional workflow command if its runtime becomes available; it is not a confirmation requirement imposed on the user here.
+The specification baseline is saved in `docs/workflow/`. Block Ops is selected. The technical plan, bounded data proof, and complete product loop are recorded in `docs/PHASE-STATUS.md` and `docs/TEST-PLAN.md`. Ruflo `/sparc advance` is an optional workflow command if its runtime becomes available; it is not a confirmation requirement imposed on the user here.

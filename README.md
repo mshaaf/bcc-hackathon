@@ -2,14 +2,14 @@
 
 Block Ops: a neighborhood worktable that turns reviewed service-request history and resident observations into a group brief and next-step plan.
 
-**Selected by the user: Block Ops, Track 3 — Community Development.** The technical plan is finalized: a dependency-free Node.js 20+ local web app with a fixed DC 311 data proxy, human-reviewed candidate records, and a downloadable brief. Phase 2 proves the source mechanism; Phase 3 builds the product loop. The six fictional concept previews remain reference material.
+**Selected by the user: Block Ops, Track 3 — Community Development.** Phases 1–3 are complete: the dependency-free Node.js 20+ app loads a bounded DC 311 snapshot or clearly fictional sample, supports human review, and exports a group brief. Phase 4 is next. The six fictional concept previews remain reference material.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Start here
 
 1. [Block Ops specification](docs/specs/block-ops.md): the active user, workflow, output, and acceptance criteria.
-2. [Luna phase plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase status](docs/PHASE-STATUS.md): execute phases 1–3 first.
+2. [Luna phase plan](docs/superpowers/plans/2026-10-21-luna-phase-execution.md) and [phase status](docs/PHASE-STATUS.md): phases 1–3 are complete; Phase 4 is next.
 3. [Decision log](docs/DECISIONS.md): confirmed choice, initial scope, and remaining technical decisions.
 4. [Project brief](docs/PROJECT-BRIEF.md): event, team, constraints, and success criteria.
 5. Open [the interactive product and presentation previews](previews/finalists.html) and select Block Ops. All six concepts remain available for historical comparison.

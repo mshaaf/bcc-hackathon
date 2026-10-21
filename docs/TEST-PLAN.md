@@ -31,7 +31,7 @@ Final setup results are recorded in [workflow/verification.json](workflow/verifi
 
 ## Selected-product checks
 
-**Active project:** Block Ops. Use its profile and the Block Ops fixture row below for implementation phases; other rows are retained research context. Phase 1 selected Node.js 20+, the built-in test runner, and a same-origin loopback proxy. No checks below are claimed passed until executed.
+**Active project:** Block Ops. Use its profile and the Block Ops fixture row below for implementation phases; other rows are retained research context. Phase 1 selected Node.js 20+, the built-in test runner, and a same-origin loopback proxy. Phase 3 results are recorded below; Phase 4 reliability checks remain open.
 
 Use a small labeled fixture set rather than tests that merely mirror the implementation. Exercise:
 
@@ -58,18 +58,27 @@ Use a small labeled fixture set rather than tests that merely mirror the impleme
 - Reproduce the bounded public source proof: `node scripts/prove-data.mjs` (network required; prints counts and source window, not raw addresses).
 - Check tracked changes: `git diff --check`.
 
-Phase 1 documentation finalized the source filter, field allowlist, review contract, state, output, and file-level tasks. Phases 2–3 results will be appended here only after the commands and interactions actually run.
+Phase 1 documentation finalized the source filter, field allowlist, review contract, state, output, and file-level tasks. Phase 2 and Phase 3 evidence follows.
 
 ### 2026-10-21 — Phase 2 data proof
 
 - `node --test test/data.test.mjs`: passed 5/5 tests for the bounded query, source ID/date/status preservation, missing fields, transfer-limit rejection, same-street candidate suggestions, and a simulated source-fetch failure.
 - `node scripts/prove-data.mjs` (live request, retrieved `2026-10-21T16:44:09.372Z`): passed. The 90-day window was `2026-07-24` inclusive to `2026-10-22` exclusive; 389 records and 389 unique request IDs returned; 67 multi-record street/category suggestions; `exceededTransferLimit` was false. No raw addresses or full records were printed or saved.
 - The first filter trial used `WARD='8'` and returned zero rows. The source uses the string value `WARD='Ward 8'`; the corrected query returned the counts above. The earlier October 20 saved response remains historical evidence and was not substituted for this live run.
-- Offline failure behavior is unit-tested with a rejected fetch. The app-level preserve-draft behavior remains for Phase 3.
+- Offline failure behavior is unit-tested with a rejected fetch. App-level refresh preservation is tested in Phase 3; no outage was forced in the browser during manual checks.
 - Limit: a truncated live response is rejected at the 1,000-row cap; paged retrieval is deferred to Phase 4. A candidate group is only a street/category suggestion, not an incident or recurrence finding.
+
+### 2026-10-21 — Phase 3 working MVP
+
+- Runtime: Node.js `v24.0` was available (the app requires Node.js 20+). `node server.mjs` started at `http://127.0.0.1:8000`; the app is dependency-free.
+- `node --test`: passed 17/17 (6 source/data, 4 server, and 7 workflow tests). Coverage includes bounded queries and field preservation, malformed/truncated source rejection, fixed-host proxy behavior, read-only routes, source failure, draft preservation after failed refresh, successful refresh reset, excluded-record removal and stale confirmation, missing date/status/current conditions, empty-selection export guard, and literal user wording in Markdown.
+- `node --check server.mjs`, `node --check lib/block-ops.mjs`, and `node --check public/app.mjs`: all passed. `git diff --check` passed after the final code and documentation updates.
+- Chrome interaction: loaded the labeled fictional sample; unchecked `DEMO-102`; the preview changed from four selected records to three, excluded ID disappeared, and source confirmation cleared. After reconfirming, edits to the group observation, request, and tasks appeared in the preview. Downloaded and opened the Markdown artifact; it contained `DEMO-101`, `DEMO-103`, and `DEMO-104`, omitted `DEMO-102`, and preserved unavailable date/status labels. Keyboard Tab/Space changed selection and updated the preview. A 320-pixel responsive viewport showed the stacked layout without visible horizontal clipping.
+- Live UI check: loaded the official DC data through the local proxy at `2026-10-21T16:55:14.964Z`: 389 records in the displayed bounded window; the largest candidate group shown had 16 records. Original values are inspectable on expansion. Exact street addresses are not shown in collapsed summaries or exported briefs.
+- Limits: live data is a dated snapshot; user drafts are memory-only. Results are not paged beyond 1,000 and a transfer-limit response is rejected. Same-street/category candidates are not proven relationships. Markdown download was opened and compared; browser print/PDF output, broader screen-reader/accessibility coverage, and user testing remain unverified. Failures are covered by automated tests, not an induced browser outage. Nothing is sent to DC.
 
 Measure actual counts and denominators. Do not report target accuracy as achieved accuracy. User testing may assess task completion or comprehension; it does not establish improved healthcare access, model fairness, or government responsiveness.
 
 ## Commands
 
-At setup there is no product package or product test runner. Use `python3 -m http.server 8000 --bind 127.0.0.1` for preview serving, `git diff --check` for staged or tracked text changes, and the documented local result records for completed checks. Add real application commands when a stack is chosen.
+The concept preview can still be served separately with `python3 -m http.server 8000 --bind 127.0.0.1`; that command does not run the Block Ops app. Current app commands are listed above.
