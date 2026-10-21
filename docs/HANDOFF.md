@@ -10,7 +10,7 @@ Updated October 21, 2026. This is the next-session entry point. It supersedes th
 - **What the user welcomed:** a stronger map-centered product using real public data; asked about crime data and Flock, then challenged overlap with Citizen.
 - **Latest recommendation:** resident-led neighborhood improvement campaigns, with a map as the operating surface, service history and resident evidence, assigned follow-ups, and saved progress. Crime is optional context. This is the current planning proposal, not a claim that every feature or example was explicitly approved.
 - **This task's authorization:** inspect and update documentation; prepare a detailed handoff for Claude. Product code, dependencies, hosting, and publication were not changed.
-- **Next batch:** R4, below. R1–R3 are complete: see [campaign-revision.md](specs/campaign-revision.md) for decisions, proofs, acceptance criteria, file plan, section 7 (R2 as built) and section 8 (R3 as built). Do not automatically continue old Phase 4 polish or interpret baseline Phase 1–3 completion as map/campaign completion.
+- **Next batch:** R5, below. R1–R4 are complete (R4 added the "Closed isn't fixed" recurrence insight, the escalation brief, a recorded snapshot and stage checks; see [PITCH.md](PITCH.md) and the revision spec sections 9–10). R1–R3 are complete: see [campaign-revision.md](specs/campaign-revision.md) for decisions, proofs, acceptance criteria, file plan, section 7 (R2 as built), section 8 (R3 as built), section 9 (does DC already publish hotspots?) and section 10 (R4 as built). Do not automatically continue old Phase 4 polish or interpret baseline Phase 1–3 completion as map/campaign completion.
 
 The user mentioned approaching their account's five-hour usage window and plans to use Claude for further work. Exact remaining allowance/reset is unknown. This is a usage constraint, not a new five-hour project deadline. Keep reads bounded, avoid repeated research and unnecessary agents, and leave resumable increments.
 
@@ -33,7 +33,7 @@ Optional existing source proof, only when source behavior is changing or needs a
 node scripts/prove-data.mjs
 ```
 
-Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `main`. Commits are local. No push, deployment, official submission, or outreach has been performed in this work. Inspect current Git state because another assistant may have worked since this note.
+Git remote is `https://github.com/mshaaf/bcc-hackathon.git` (a public repository). R1–R3 and their documentation have been pushed to `origin/main` at the user's instruction; this means the history, including `docs/`, `research/` and `data/demo.json`, is public. Nothing has been deployed, submitted, or sent to anyone. Push only when the user asks; agents commit locally. Inspect current Git state because another assistant may have worked since this note.
 
 ## 3. Built, demonstrated, and unbuilt
 
@@ -46,6 +46,7 @@ Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `ma
 | Offline sample | Built: five invented records, clearly labeled fictional. It is not a saved DC response or community research. |
 | Maps, spatial filtering, crime layer | Built in R2: Leaflet (vendored) over the DC GIS basemap plots live records with area, radius, date and status controls (the R1 `/prototype` page is deleted). Crime: Ward 8 MPD query proven in `scripts/prove-geo.mjs`, not consumed by the app. |
 | Saved campaigns, task owners/due dates, progress and follow-up evidence | R3: built, single operator, `localStorage` (`blockops.campaigns.v1`). No sharing or sync. |
+| Recurrence insight, escalation brief, recorded snapshot | R4: built. `lib/recurrence.mjs` (re-report rule), stat line, busy-spot shading, recipient + lasting-fix ask, `data/recorded-snapshot.json` behind a third source button. |
 | Photos, AI summary/drafting, agency routing | Unbuilt. No model/provider credentials or verified routing catalog selected. |
 | Shared accounts, mobile synchronization, notifications, camera feeds | Unbuilt and outside the recommended first revision. |
 
@@ -64,7 +65,7 @@ Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `ma
 | `test/data.test.mjs` | Source filters, normalization, duplicate rejection, source-link fallbacks, date ordering and failure. |
 | `test/workflow.test.mjs` | Changed output, excluded evidence, context clearing, review/required fields, literal wording and unknowns. |
 | `test/server.test.mjs` | Explicit assets, fixed proxy, source failure, GET-only baseline and startup. Update expectations deliberately if adding new routes. |
-| `scripts/prove-data.mjs` | Existing reproducible 311 proof; not a crime or map proof. |
+| `scripts/prove-data.mjs`, `scripts/prove-geo.mjs`, `scripts/record-snapshot.mjs`, `scripts/browser-check.mjs` | 311 proof; geometry/boundary/crime proof; saves the recorded snapshot; real-Chrome check of the whole flow at 1920, 1280, 1440 and 390 px. |
 | `docs/ui-review/` | Actual baseline screenshots/browser evidence. Documents a repair, not user approval of the final design. |
 | `previews/`, `research/track-notes/` | Historical concepts/research. Read only when needed; do not build another finalist. |
 

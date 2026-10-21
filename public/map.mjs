@@ -9,6 +9,13 @@ const BASE = {
 };
 const SELECTED = { color: "#5b316b", fillColor: "#f5cd55", fillOpacity: 1, weight: 3 };
 const HIDDEN = { fillOpacity: .12, opacity: .25 };
+// Busy-spot shading by closed reports that another report followed nearby (darker = more).
+const TIERS = [
+  { min: 10, color: "#8f2d56", opacity: .44 },
+  { min: 6, color: "#c4561b", opacity: .36 },
+  { min: 3, color: "#e08a1e", opacity: .28 },
+  { min: 1, color: "#f5cd55", opacity: .26 }
+];
 
 function tooltipNode(record) {
   const node = document.createElement("div");
@@ -33,8 +40,10 @@ export function createMap(container, { onPick, onTilesFailed }) {
   tiles.on("tileerror", () => { failed += 1; });
   tiles.on("load", () => onTilesFailed(loaded === 0 && failed > 0));
 
+  map.createPane("spots").style.zIndex = 350; // under the dots
   let markers = [];
   let ring = null;
+  let spotLayers = [];
   map.on("click", event => onPick({ lat: event.latlng.lat, lon: event.latlng.lng }));
 
   return {
@@ -42,6 +51,9 @@ export function createMap(container, { onPick, onTilesFailed }) {
       markers.forEach(({ layer }) => layer.remove());
       markers = records.filter(record => record.geo).map(record => {
         const layer = L.circleMarker([record.geo.lat, record.geo.lon], BASE[statusKind(record.status)]).addTo(map);
+        // Leaflet makes each dot a tab stop; 390 of them would trap keyboard users before the panel. The list is the keyboard path.
+        layer.getElement()?.setAttribute("tabindex", "-1");
+        layer.getElement()?.setAttribute("focusable", "false");
         layer.bindTooltip(() => tooltipNode(record));
         layer.on("click", event => { L.DomEvent.stopPropagation(event); onPick(record.geo); });
         return { record, layer };
@@ -57,6 +69,13 @@ export function createMap(container, { onPick, onTilesFailed }) {
         layer.setStyle({ opacity: 1, ...style });
         if (selectedKeys.has(record.key)) layer.bringToFront();
       }
+    },
+    setSpots(spots, meters) {
+      spotLayers.forEach(layer => layer.remove());
+      spotLayers = spots.flatMap(spot => {
+        const tier = TIERS.find(candidate => spot.reReported >= candidate.min);
+        return tier ? [L.circle([spot.center.lat, spot.center.lon], { pane: "spots", radius: meters, stroke: false, fillColor: tier.color, fillOpacity: tier.opacity, interactive: false }).addTo(map)] : [];
+      });
     },
     setArea(center, radiusM, { pan = false } = {}) {
       ring?.remove();

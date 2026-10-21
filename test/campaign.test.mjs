@@ -4,7 +4,7 @@ import { DEFAULT_SCOPE, setRecordIncluded, sourceRecordUrl, updateScope } from "
 import {
   addObservation, addTask, buildCampaignBriefContent, buildCampaignMarkdown, canExportCampaign, confirmCampaign, createCampaign,
   defaultObjective, emptyStore, exportBlocker, reconcileCampaign, reconcileStore, removeEvidence, removeObservation, removeTask,
-  setObjective, setRequestText, updateTask, validateStore
+  setObjective, setRequestText, setEscalation, normalizeStore, LASTING_FIXES, updateTask, validateStore
 } from "../lib/campaign.mjs";
 
 const NOW = new Date("2026-10-21T18:00:00.000Z");
@@ -235,4 +235,63 @@ test("validation rejects stores that would break reload", () => {
     mutate(copy.campaigns[0]);
     assert.equal(validateStore(copy).ok, false);
   }
+});
+
+test("the escalation ask has a free-text recipient and a listed lasting fix, and changing it withdraws the review", () => {
+  assert.deepEqual(Object.keys(LASTING_FIXES), ["camera", "signage", "bulk", "lighting", "cleanup", "other"]);
+  const confirmed = confirmCampaign(fresh(), NOW);
+  const asked = setEscalation(confirmed, { recipient: "ANC commissioner", fix: "camera" }, NOW);
+  assert.equal(asked.request.confirmedAt, null);
+  assert.deepEqual(asked.escalation, { recipient: "ANC commissioner", fix: "camera", fixOther: "" });
+  assert.throws(() => setEscalation(confirmed, { fix: "death-ray" }, NOW), /listed lasting fixes/i);
+  assert.equal(buildCampaignBriefContent(asked).ask.fix, "Enforcement camera");
+  const other = buildCampaignBriefContent(setEscalation(asked, { fix: "other", fixOther: "Fence the lot" }, NOW));
+  assert.equal(other.ask.fix, "Other: Fence the lot");
+  const none = buildCampaignBriefContent(fresh());
+  assert.deepEqual(none.ask, { recipient: "Not chosen yet", fix: "Not chosen yet" }, "no names or contacts are invented");
+});
+
+test("the brief leads with recurrence evidence, then the ask, tasks and follow-up history, and sends nothing", () => {
+  let campaign = fresh();
+  campaign = setEscalation(campaign, { recipient: "Ward 8 Councilmember office", fix: "cleanup" }, NOW);
+  campaign = addTask(campaign, { text: "Photograph it", owner: "Dana" }, { now: NOW, id: "t" });
+  campaign = addObservation(campaign, { kind: "followup", date: "2026-10-22", text: "Checked again.", fictional: true }, { now: NOW, id: "o" });
+  campaign = confirmCampaign(campaign, NOW);
+  const markdown = buildCampaignMarkdown(campaign);
+  const at = heading => markdown.indexOf(heading);
+  assert.ok(at("## Recurrence evidence") > 0);
+  assert.ok(at("## Recurrence evidence") < at("## The ask"));
+  assert.ok(at("## The ask") < at("## Tasks"));
+  assert.ok(at("## Tasks") < at("## Resident verification and follow-ups"));
+  assert.match(markdown, /\*\*To:\*\* Ward 8 Councilmember office/);
+  assert.match(markdown, /\*\*Requested lasting fix:\*\* Scheduled cleanup \\\+ check-in/);
+  assert.match(markdown, /Nothing has been sent/);
+  assert.match(markdown, /re-reported within 30 days of a closure/);
+  assert.match(markdown, /another report nearby/);
+  const content = buildCampaignBriefContent(campaign);
+  assert.equal(content.recurrence.stat.reports, 3);
+  assert.equal(content.recurrence.stat.reReported, 0, "A closed 40 days before B, C is the latest: nothing follows within 30 days");
+});
+
+test("a recorded real snapshot is labeled recorded, keeps official links, and is never reconciled as live", () => {
+  const recordedSnapshot = { ...snapshot, mode: "recorded" };
+  const recordedDraft = updateScope({ ...base, snapshot: recordedSnapshot }, { center: { lon: -76.9720, lat: 38.8478 }, radiusM: 250 });
+  const campaign = confirmCampaign(createCampaign(recordedDraft, { now: NOW, id: "rec" }), NOW);
+  assert.equal(campaign.source.mode, "recorded");
+  const markdown = buildCampaignMarkdown(campaign);
+  assert.match(markdown, /Recorded DC 311 snapshot \(real city data, retrieved 2026-10-21/);
+  assert.match(markdown, /this is not live data/);
+  assert.doesNotMatch(markdown, /\*\*Source:\*\* Live DC 311 snapshot/);
+  assert.ok(markdown.includes(sourceRecordUrl(records[0], "live")), "official links still work");
+  assert.equal(reconcileCampaign(campaign, { ...snapshot, records: records.map(record => ({ ...record, status: "Open" })) }, LATER), campaign);
+  assert.equal(validateStore({ ...emptyStore(), campaigns: [campaign] }).ok, true);
+});
+
+test("campaigns saved before the escalation fields existed still load and get empty defaults", () => {
+  const { escalation, ...old } = fresh();
+  const stored = { ...emptyStore(), campaigns: [old] };
+  assert.equal(validateStore(stored).ok, true);
+  assert.deepEqual(normalizeStore(stored).campaigns[0].escalation, { recipient: "", fix: "", fixOther: "" });
+  assert.equal(validateStore({ ...emptyStore(), campaigns: [{ ...fresh(), escalation: { recipient: 4, fix: "", fixOther: "" } }] }).ok, false);
+  assert.equal(validateStore({ ...emptyStore(), campaigns: [{ ...fresh(), escalation: { recipient: "", fix: "nope", fixOther: "" } }] }).ok, false);
 });

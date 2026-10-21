@@ -4,11 +4,11 @@ import {
   areaBlockName,
   areaRecords,
   candidateRecords,
-  findBusySpots,
   formatSourceDate,
   normalizeFeatureSet,
   refreshWorkspace,
   setRecordIncluded,
+  snapshotFromRecording,
   sourceRecordUrl,
   statusKind,
   summarizeGeometry,
@@ -30,10 +30,13 @@ import {
   removeEvidence,
   removeObservation,
   removeTask,
+  normalizeStore,
+  setEscalation,
   setObjective,
   setRequestText,
   updateTask
 } from "/lib/campaign.mjs";
+import { RECURRENCE_RULE, areaRecurrence, recurrenceHeadline, recurrenceSpots, recurrenceSummary } from "/lib/recurrence.mjs";
 import { createCampaignStorage } from "/storage.mjs";
 import { createMap } from "/map.mjs";
 
@@ -53,6 +56,7 @@ let view = "explore";
 let busySpots = [];
 let busyKey = "";
 let plottedSnapshot = null;
+let recordedFile = null;
 let store = { version: 1, campaigns: [] };
 let openId = null;
 let deleteArmed = false;
@@ -119,6 +123,7 @@ function renderMap(pan = false) {
   if (plottedSnapshot !== state.snapshot) {
     plottedSnapshot = state.snapshot;
     map.setRecords(state.snapshot?.records ?? []);
+    map.setSpots(state.snapshot?.mode === "demo" ? [] : recurrenceSpots(state.snapshot?.records ?? []), RECURRENCE_RULE.meters);
     pan = true; // plotting fits the whole ward; go back to the area that matters
   }
   const campaign = view === "campaign" ? openCampaign() : null;
@@ -166,17 +171,42 @@ function persist() {
 
 // ---------- explore ----------
 
+const shortDate = iso => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }).format(new Date(iso));
+const shortDay = value => shortDate(value);
+
+function renderStatLine() {
+  const snapshot = state.snapshot;
+  const line = byId("stat-line");
+  if (!snapshot || snapshot.mode === "demo") { line.hidden = true; return; }
+  const summary = recurrenceSummary(snapshot.records, { asOf: Date.parse(snapshot.retrievedAt) });
+  line.replaceChildren();
+  if (!summary.closedLocated) { line.hidden = true; return; }
+  line.hidden = false;
+  const lead = element("strong", "", "Closed isn't fixed. ");
+  const main = `${summary.reReported} of ${summary.closedLocated} closed reports (${summary.pct}%) had another report nearby within ${RECURRENCE_RULE.days} days · ${summary.spots.count} spots with ${RECURRENCE_RULE.minSpotReports}+ reports hold ${Math.round(summary.spots.share * 100)}% of reports. `;
+  const mature = summary.matureClosed ? `Counting only closures at least ${RECURRENCE_RULE.days} days old: ${summary.matureReReported} of ${summary.matureClosed} (${summary.maturePct}%). ` : "";
+  const window = `${shortDate(`${snapshot.window.start}T12:00:00-04:00`)}–${shortDate(Date.parse(snapshot.retrievedAt))}${snapshot.mode === "recorded" ? ", recorded" : ""}. `;
+  line.append(lead, `${main}${mature}`, element("span", "stat-caveat", `${window}“Nearby” means within ${RECURRENCE_RULE.meters} m (block-level locations); it is not necessarily the same pile, and duplicates and canceled reports are left out.`));
+}
+
 function renderFreshness() {
   const snapshot = state.snapshot;
   const demo = snapshot?.mode === "demo";
-  byId("sample-notice").hidden = !demo;
+  const recorded = snapshot?.mode === "recorded";
+  const notice = byId("sample-notice");
+  notice.hidden = !demo && !recorded;
+  notice.classList.toggle("recorded-notice", recorded);
+  notice.textContent = demo
+    ? "Practice case · All sample reports and addresses are fictional and have no map locations."
+    : recorded ? `RECORDED SNAPSHOT · real DC 311 data retrieved ${when(snapshot.retrievedAt)} ET, shown from a saved file. It is not live. Press “Live DC records” to refresh.` : "";
   byId("error-notice").hidden = !state.refreshError;
   byId("error-notice").textContent = state.refreshError
     ? `${state.refreshError} ${snapshot ? "Your current selection and saved campaigns are unchanged." : "No substitute data is shown."}`
     : "";
 
   let text;
-  if (loading === "live") text = "Requesting the bounded DC 311 snapshot…";
+  if (loading === "live") text = "Requesting the bounded DC 311 snapshot… Saved campaigns stay editable meanwhile.";
+  else if (loading === "recorded") text = "Loading the recorded snapshot…";
   else if (loading === "demo") text = "Loading the fictional sample…";
   else if (demo) text = `Fictional practice case · ${plural(snapshot.records.length, "report")} · no map locations`;
   else if (snapshot) {
@@ -185,15 +215,17 @@ function renderFreshness() {
     const boundaryText = boundary?.status === "checked"
       ? `${boundary.outside} outside the Ward 8 boundary${boundary.unchecked ? ` · ${boundary.unchecked} not checked (no location)` : ""}`
       : "Ward 8 boundary check unavailable";
-    text = `DC 311 · retrieved ${when(snapshot.retrievedAt)} ET · ${snapshot.window.start} to ${snapshot.window.endExclusive} (end exclusive) · ${plural(snapshot.records.length, "record")} · ${geometry.mapped} mapped, ${geometry.missing} missing, ${geometry.invalid} invalid location · ${boundaryText}`;
+    text = `${recorded ? "RECORDED (not live) · " : ""}DC 311 · retrieved ${when(snapshot.retrievedAt)} ET · ${snapshot.window.start} to ${snapshot.window.endExclusive} (end exclusive) · ${plural(snapshot.records.length, "record")} · ${geometry.mapped} mapped, ${geometry.missing} missing, ${geometry.invalid} invalid location · ${boundaryText}`;
   } else text = "No source records loaded.";
   byId("freshness").textContent = text;
+  renderStatLine();
 
-  byId("load-live").disabled = Boolean(loading);
-  byId("load-demo").disabled = Boolean(loading);
-  byId("load-live").setAttribute("aria-pressed", String(snapshot?.mode === "live"));
-  byId("load-demo").setAttribute("aria-pressed", String(demo));
-  byId("panel").inert = Boolean(loading);
+  for (const [id, mode] of [["load-live", "live"], ["load-recorded", "recorded"], ["load-demo", "demo"]]) {
+    byId(id).disabled = Boolean(loading) || (mode === "recorded" && !recordedFile);
+    byId(id).setAttribute("aria-pressed", String(snapshot?.mode === mode));
+  }
+  // Only the explore draft is locked while a refresh is in flight; saved campaigns and the brief stay usable.
+  byId("explore-panel").inert = Boolean(loading);
   byId("panel").setAttribute("aria-busy", String(Boolean(loading)));
 }
 
@@ -207,17 +239,19 @@ function renderScopeControls() {
   for (const box of document.querySelectorAll('input[name="kind"]')) box.checked = state.filters.kinds.has(box.value);
 
   const select = byId("busy-select");
-  const key = `${state.snapshot?.retrievedAt}|${state.snapshot?.records.length}|${state.area.radiusM}`;
+  const key = `${state.snapshot?.mode}|${state.snapshot?.retrievedAt}|${state.snapshot?.records.length}`;
   if (key !== busyKey) {
     busyKey = key;
-    busySpots = placed ? findBusySpots(state.snapshot.records, state.area.radiusM, 8) : [];
+    busySpots = placed && state.snapshot.mode !== "demo"
+      ? recurrenceSpots(state.snapshot.records).slice(0, 10).map(spot => ({ center: spot.center, count: spot.reports, reReported: spot.reReported }))
+      : [];
   }
   const center = state.area.center;
   const matching = busySpots.findIndex(spot => center && spot.center.lat === center.lat && spot.center.lon === center.lon);
-  const placeholder = element("option", "", center && matching < 0 ? "Custom area from the map" : "Choose a spot…");
+  const placeholder = element("option", "", center && matching < 0 ? "Custom area from the map" : "Choose a spot (worst first)…");
   placeholder.value = "";
   select.replaceChildren(placeholder, ...busySpots.map((spot, index) => {
-    const option = element("option", "", `${areaBlockName({ ...state, area: { center: spot.center, radiusM: state.area.radiusM } })} · ${plural(spot.count, "report")}`);
+    const option = element("option", "", `${areaBlockName({ ...state, area: { center: spot.center, radiusM: state.area.radiusM } })} · ${plural(spot.count, "report")} · ${spot.reReported} re-reported`);
     option.value = String(index);
     return option;
   }));
@@ -302,6 +336,7 @@ function renderScope() {
     if (hidden > 0) status += ` ${plural(hidden, "more report")} in this scope ${hidden === 1 ? "is" : "are"} hidden by the date or status filters.`;
   }
   byId("scope-status").textContent = status;
+  byId("area-headline").textContent = candidates.length && !demo ? recurrenceHeadline(areaRecurrence(candidates), shortDay) : "";
 
   const counts = { open: 0, closed: 0, other: 0 };
   for (const record of candidates) counts[statusKind(record.status)] += 1;
@@ -339,6 +374,9 @@ function mutate(change) {
   return "";
 }
 
+// Re-rendering replaces nodes, which would drop keyboard focus to the top of the page; put it somewhere sensible.
+const focusSoon = id => requestAnimationFrame(() => byId(id)?.focus({ preventScroll: false }));
+
 function renderCampaignList() {
   const list = byId("campaign-list");
   const sorted = [...store.campaigns].sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
@@ -370,9 +408,12 @@ function openCampaignById(id) {
   const campaign = openCampaign();
   byId("c-objective").value = campaign.objective;
   byId("c-request").value = campaign.request.text;
+  byId("ask-recipient").value = campaign.escalation.recipient;
+  byId("ask-fix").value = campaign.escalation.fix;
+  byId("ask-other").value = campaign.escalation.fixOther;
   byId("obs-date").value = todayInDc();
   byId("obs-kind").value = campaign.observations.length ? "followup" : "resident";
-  byId("obs-fictional").checked = campaign.source.mode === "demo";
+  byId("obs-fictional").checked = true; // a fictional entry is the default; unchecking is a deliberate act
   renderCampaign();
   showView("campaign", true);
 }
@@ -384,8 +425,10 @@ function renderCampaign() {
   byId("campaign-detail-view").hidden = !campaign;
   if (!campaign) { renderBrief(); return; }
 
-  byId("c-tag").textContent = campaign.source.mode === "demo" ? "Practice campaign · fictional" : "Neighborhood campaign";
+  byId("c-tag").textContent = campaign.source.mode === "demo" ? "Practice campaign · fictional" : campaign.source.mode === "recorded" ? "Neighborhood campaign · recorded snapshot" : "Neighborhood campaign";
   byId("c-name").textContent = campaign.name;
+  byId("c-headline").textContent = recurrenceHeadline(areaRecurrence(campaign.evidence), shortDay);
+  byId("c-caveat").textContent = recurrenceHeadline.caveat;
   byId("delete-campaign").textContent = deleteArmed ? "Confirm delete" : "Delete campaign";
   renderTracks();
   renderCampaignEvidence();
@@ -433,6 +476,7 @@ function renderCampaignEvidence() {
     remove.addEventListener("click", () => {
       mutate(current => removeEvidence(current, item.key));
       renderCampaign();
+      focusSoon("h-evidence");
     });
     content.append(head, meta, sourceDrawer(item, campaign.source.mode), remove);
     row.append(content);
@@ -451,7 +495,7 @@ function renderObservations() {
     const remove = element("button", "button button-quiet small", "Remove");
     remove.type = "button";
     remove.setAttribute("aria-label", `Remove ${OBSERVATION_KINDS[item.kind]} dated ${item.date}`);
-    remove.addEventListener("click", () => { mutate(current => removeObservation(current, item.id)); renderCampaign(); });
+    remove.addEventListener("click", () => { mutate(current => removeObservation(current, item.id)); renderCampaign(); focusSoon("h-obs"); });
     li.append(head, element("p", "", item.text), remove);
     return li;
   }));
@@ -482,7 +526,7 @@ function renderTasks() {
     const remove = element("button", "button button-quiet small", "Remove");
     remove.type = "button";
     remove.setAttribute("aria-label", `Remove task: ${task.text}`);
-    remove.addEventListener("click", () => { mutate(current => removeTask(current, task.id)); renderCampaign(); });
+    remove.addEventListener("click", () => { mutate(current => removeTask(current, task.id)); renderCampaign(); focusSoon("h-tasks"); });
     li.classList.toggle("is-done", task.done);
     li.append(done, label, owner, due, remove);
     return li;
@@ -505,7 +549,7 @@ function renderBrief() {
   const paper = byId("brief-paper");
   paper.replaceChildren();
   const campaign = openCampaign();
-  const ok = Boolean(campaign) && canExportCampaign(campaign) && !loading;
+  const ok = Boolean(campaign) && canExportCampaign(campaign);
   byId("download-brief").disabled = !ok;
   byId("print-brief").disabled = !ok;
   if (!campaign) {
@@ -517,15 +561,28 @@ function renderBrief() {
   const content = buildCampaignBriefContent(campaign);
   const section = (title, ...nodes) => { paper.append(element("h5", "", title), ...nodes); };
   const brand = element("div", "paper-brand");
-  brand.append(element("strong", "", "block ops."), element("span", "", "Neighborhood brief"));
+  brand.append(element("strong", "", "block ops."), element("span", "", "Neighborhood brief · escalation"));
   paper.append(brand);
   if (content.fictional) paper.append(element("p", "paper-fictional", "FICTIONAL PRACTICE CASE · not city records"));
+  if (content.recorded) paper.append(element("p", "paper-fictional paper-recorded", "RECORDED SNAPSHOT · real city data, not live"));
   paper.append(element("h4", "", content.title), element("p", "paper-block", `Objective: ${content.objective || "Not set"}`));
   const metadata = [content.sourceLabel];
-  if (content.retrievedAt) metadata.push(`Last checked ${content.retrievedAt}`);
+  if (content.retrievedAt) metadata.push(`${content.recorded ? "Retrieved" : "Last checked"} ${content.retrievedAt}`);
   if (content.window) metadata.push(`${content.window.start} through ${content.window.endExclusive} (end exclusive)`);
   paper.append(element("p", "paper-meta", metadata.join(" · ")), element("p", "paper-meta", `Selection scope: ${content.scope}`));
 
+  section("Recurrence evidence", element("p", "paper-lead", content.recurrence.headline), element("p", "paper-note paper-note-first", content.recurrence.caveat), element("p", "paper-block", `City status as published: ${content.cityStatus || "No reports"}. The reports are listed after the follow-up history.`));
+
+  section("The ask", element("p", "paper-block", `To: ${content.ask.recipient}\nRequested lasting fix: ${content.ask.fix}`), element("p", "paper-block paper-request", content.request), element("p", "paper-note paper-note-first", "Prepared for the group to send. Nothing has been sent."));
+  section("Tasks", ...(content.tasks.length
+    ? content.tasks.map(task => element("p", "paper-task", `${task.done ? "[done]" : "[open]"} ${task.text} — owner: ${task.owner}; due: ${task.due}`))
+    : [element("p", "paper-block", "No tasks assigned yet.")]));
+  section("Group progress", element("p", "paper-block", `${content.group.reviewedAt ? `Reviewed ${content.group.reviewedAt}` : "Not yet reviewed"} · tasks done ${content.group.tasksDone} of ${content.group.tasksTotal}`));
+
+  const observations = content.observations.length
+    ? content.observations.map(item => element("p", "paper-task", `${item.kindLabel} (${item.date})${item.fictional ? " [FICTIONAL practice entry]" : ""}: ${item.text}`))
+    : [element("p", "paper-block", "No group observation provided; current conditions are unverified.")];
+  section("Resident verification and follow-ups", ...observations);
   const records = element("ul", "paper-list");
   for (const record of content.records) {
     const item = element("li", "", `${record.address} · ${record.id} · ${record.date} · Official status: ${record.status}`);
@@ -542,23 +599,13 @@ function renderBrief() {
     records.append(item);
   }
   section(`City ticket status, as published (${content.records.length})`, element("p", "paper-block", content.cityStatus || "No reports"), records);
-  section("Group progress", element("p", "paper-block", `${content.group.reviewedAt ? `Reviewed ${content.group.reviewedAt}` : "Not yet reviewed"} · tasks done ${content.group.tasksDone} of ${content.group.tasksTotal}`));
-
-  const observations = content.observations.length
-    ? content.observations.map(item => element("p", "paper-task", `${item.kindLabel} (${item.date})${item.fictional ? " [FICTIONAL practice entry]" : ""}: ${item.text}`))
-    : [element("p", "paper-block", "No group observation provided; current conditions are unverified.")];
-  section("Resident verification and follow-ups", ...observations);
-  section("Request", element("p", "paper-block", content.request));
-  section("Tasks", ...(content.tasks.length
-    ? content.tasks.map(task => element("p", "paper-task", `${task.done ? "[done]" : "[open]"} ${task.text} — owner: ${task.owner}; due: ${task.due}`))
-    : [element("p", "paper-block", "No tasks assigned yet.")]));
   section("Source appendix", element("p", "paper-block", content.sourceUrl
     ? `DC 311 FeatureServer/21. Original service request IDs are listed above. ${content.sourceUrl}`
     : "Fictional demonstration records only; no official source record is represented."));
   if (content.locationCaveat) paper.append(element("p", "paper-note", content.locationCaveat));
   paper.append(element("p", "paper-note", content.caveat));
 
-  byId("export-status").textContent = canExportCampaign(campaign) ? "Ready. The download includes the current evidence, follow-ups and tasks." : exportBlocker(campaign);
+  byId("export-status").textContent = canExportCampaign(campaign) ? "Ready. The download includes the recurrence evidence, the ask, tasks and follow-ups." : exportBlocker(campaign);
 }
 
 // ---------- loading ----------
@@ -585,11 +632,26 @@ async function loadDemoSnapshot() {
   return { mode: "demo", sourceUrl: null, retrievedAt: null, window: null, geometry: summarizeGeometry(records), boundary: { status: "unavailable", inside: 0, outside: 0, unchecked: records.length }, records };
 }
 
+async function fetchRecording() {
+  const file = await readJson("/api/recorded");
+  snapshotFromRecording(file); // refuse a malformed recording before offering it
+  return file;
+}
+
+async function loadRecordedSnapshot() {
+  recordedFile = recordedFile ?? await fetchRecording();
+  return snapshotFromRecording(recordedFile);
+}
+
+// Start on the worst repeat-report spot: the real data's most telling place.
+const worstSpotCenter = records => recurrenceSpots(records)[0]?.center ?? null;
+
 async function load(mode) {
   loading = mode;
   renderFreshness();
   byId("new-campaign").disabled = true;
-  state = await refreshWorkspace(state, mode === "live" ? loadLiveSnapshot : loadDemoSnapshot);
+  const loader = { live: loadLiveSnapshot, recorded: loadRecordedSnapshot, demo: loadDemoSnapshot }[mode];
+  state = await refreshWorkspace(state, loader, { pickCenter: worstSpotCenter });
   loading = "";
   renderFreshness();
   if (!state.refreshError && mode === "live") {
@@ -604,6 +666,7 @@ async function load(mode) {
 // ---------- events ----------
 
 byId("load-live").addEventListener("click", () => load("live"));
+byId("load-recorded").addEventListener("click", () => load("recorded"));
 byId("load-demo").addEventListener("click", () => load("demo"));
 
 for (const radio of document.querySelectorAll('input[name="radius"]')) {
@@ -634,7 +697,7 @@ byId("new-campaign").addEventListener("click", () => {
   openCampaignById(campaign.id);
 });
 
-byId("back-to-list").addEventListener("click", () => { openId = null; rememberOpen(null); deleteArmed = false; renderCampaign(); renderMap(true); });
+byId("back-to-list").addEventListener("click", () => { openId = null; rememberOpen(null); deleteArmed = false; renderCampaign(); renderMap(true); focusSoon("campaign-tab"); });
 byId("delete-campaign").addEventListener("click", () => {
   if (!deleteArmed) {
     deleteArmed = true;
@@ -649,6 +712,7 @@ byId("delete-campaign").addEventListener("click", () => {
   deleteArmed = false;
   renderCampaign();
   renderMap(true);
+  focusSoon("campaign-tab");
 });
 
 byId("c-objective").addEventListener("input", () => { mutate(campaign => setObjective(campaign, byId("c-objective").value)); renderCampaignList(); renderBrief(); });
@@ -658,6 +722,15 @@ byId("c-request").addEventListener("input", () => {
   renderTracks();
   renderBrief();
 });
+const askChanged = () => {
+  const message = mutate(campaign => setEscalation(campaign, { recipient: byId("ask-recipient").value, fix: byId("ask-fix").value, fixOther: byId("ask-other").value }));
+  byId("review-error").hidden = !message;
+  byId("review-error").textContent = message;
+  renderReviewState();
+  renderTracks();
+  renderBrief();
+};
+for (const id of ["ask-recipient", "ask-fix", "ask-other"]) byId(id).addEventListener(id === "ask-fix" ? "change" : "input", askChanged);
 byId("mark-reviewed").addEventListener("click", () => {
   const message = mutate(campaign => confirmCampaign(campaign));
   byId("review-error").hidden = !message;
@@ -675,7 +748,9 @@ byId("obs-form").addEventListener("submit", event => {
   if (message) return;
   byId("obs-text").value = "";
   byId("obs-kind").value = "followup";
+  byId("obs-fictional").checked = true;
   renderCampaign();
+  focusSoon("obs-text");
 });
 byId("task-form").addEventListener("submit", event => {
   event.preventDefault();
@@ -685,6 +760,7 @@ byId("task-form").addEventListener("submit", event => {
   if (message) return;
   for (const field of ["task-text", "task-owner", "task-due"]) byId(field).value = "";
   renderCampaign();
+  focusSoon("task-text");
 });
 
 document.querySelectorAll("[data-view]").forEach(button => {
@@ -723,7 +799,7 @@ byId("print-brief").addEventListener("click", () => {
 // ---------- start ----------
 
 const loaded = storage.load();
-store = loaded.store;
+store = normalizeStore(loaded.store);
 if (loaded.status === "error") setSaveStatus(loaded.message, true);
 else if (loaded.status === "ok") setSaveStatus(`${plural(store.campaigns.length, "saved campaign")} loaded from this browser.`, false);
 byId("obs-date").value = todayInDc();
@@ -731,4 +807,10 @@ renderScope();
 renderCampaign();
 const last = recallOpen();
 if (last && store.campaigns.some(campaign => campaign.id === last)) openCampaignById(last);
+// The recorded snapshot is offered only if its file loads and validates; its date goes on the button.
+fetchRecording().then(file => {
+  recordedFile = file;
+  byId("load-recorded").textContent = `Recorded DC 311 snapshot (${shortDate(file.retrievedAt)})`;
+  renderFreshness();
+}).catch(() => { byId("load-recorded").textContent = "Recorded snapshot unavailable"; });
 load("live");

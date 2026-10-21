@@ -122,3 +122,44 @@ User decisions applied: several saved campaigns in a simple list with one open a
 **Storage rules (as tested):** writes go to `blockops.campaigns.v1.tmp`, are read back and compared, the previous valid value is copied to `.backup`, then the main key is written. A full or disabled store, or a failed read-back, shows an error and leaves the last valid save untouched. Corrupt JSON, an unknown version or a malformed campaign at load shows an error, turns saving off for the session, and never overwrites the stored value; the app keeps working in memory and can still export. There is no "reset" button on purpose: clearing site data or restoring the value by hand is the recovery path.
 
 **Cuts and limits:** one operator on one browser profile (a different origin such as `localhost` versus `127.0.0.1`, a private window, or cleared site data shows a different store); no sync or sharing; no editing of existing observations or evidence snapshots beyond remove; the radius of a saved campaign is fixed at creation; a practice (fictional) campaign can be created and is labeled everywhere; no photos, AI, or crime layer.
+
+## 9. Need check: does DC already publish dumping hotspots? (R4, October 21, 2026)
+
+Method: five web searches plus fetching the DC Open Data hub records and the DumpBusters page. DPW's own pages (`dpw.dc.gov/...`) returned HTTP 403 to my fetch, and the DPW Cards app is script-rendered, so those were read through search summaries and the hub's item description, not in a browser. Absence of evidence is not proof; this is a desk check, not a conversation with DPW.
+
+What exists:
+
+- **DPW Cards** ([dpwcards.dc.gov](https://dpwcards.dc.gov), hub record [opendata.dc.gov/content/9cfe53f4d4d84fde8a28ccdfdbbf3c7d](https://opendata.dc.gov/content/9cfe53f4d4d84fde8a28ccdfdbbf3c7d), last modified 2025-11-21). The hub description: users "explore and download data about the agency's top ten service requests. The app includes summary statistics by service request type, a date range search, a city heat map of requests and a SLA Report by service request." So DC publishes counts, a citywide density map, and response-time reporting.
+- **"Illegal Dumping in Last 30 Days"** ([hub record](https://adoptablock.dc.gov/datasets/DCGIS::illegal-dumping-in-last-30-days/about); feature service [SR_30days_Open/MapServer/4](https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_APPS/SR_30days_Open/MapServer/4), modified 2025-04-28). A rolling 30-day map layer of the same 311 dumping requests.
+- **DumpBusters** ([doee.dc.gov/service/dumpbusters](https://doee.dc.gov/service/dumpbusters)). An interagency DOEE, MPD and DPW program (water-quality focus) with a "three pronged intervention": cleanups, community outreach and signage, and enforcement. The page lists no map, hotspot list or repeat-location data; residents report through 311 or 311.dc.gov.
+- **DPW enforcement.** The [Illegal Dumping Investigation page](https://dpw.dc.gov/service/illegal-dumping-investigation) (read via a search summary) says SWEEP inspectors patrol assigned areas daily and residents report by calling 311. A DPW post on X, seen only in a search result (not fetched), says: ["Illegal dumping, especially in repeat locations, is taken seriously by DPW. SWEEP investigators are actively working to identify violators..."](https://x.com/DCDPW/status/2029255837043015727); the same result describes Office of Clean City work removing material from a recurring Ward 8 hotspot. Treat both as secondhand.
+- **Cameras.** A trade article about DC using portable motion-sensor cameras against dumpers dates from the early 2000s ([securityinfowatch](https://www.securityinfowatch.com/video-surveillance/news/10592395/cctv-cameras-monitor-illegal-dumping-in-dc)); I found no current DC camera program.
+
+What I did not find: any DC publication that shows, per block or area, whether a closed dumping ticket is followed by another report nearby, any public hotspot ranking, or any tool that helps residents turn such a pattern into a request for a lasting fix (camera, signage, scheduled cleanup).
+
+**How the pitch changes.** Do not say "nobody tracks it": DPW publicly says repeat locations matter, and it may well track them internally; we do not know. Say instead: "The city publishes every ticket and a citywide heat map of counts. It does not show residents that a closed spot keeps coming back, and nothing helps a neighborhood group ask for a lasting fix." The claim is "residents can't see or act on it", not "the city is ignoring it". If a judge from DC government says DPW already has an internal repeat-location list, the answer is that this app is the resident-facing side of it, and we would want to compare.
+
+## 10. R4 as built (October 21, 2026)
+
+**The re-report rule** (`lib/recurrence.mjs`, tested in `test/recurrence.test.mjs`): a report with status exactly "Closed", a usable date and a map point is *re-reported* if another report with a point and a date is dated strictly after it, at most 30 days later and at most 150 m away. Any status containing "Duplicate" or "Cancel" is excluded on both sides, and so are reports missing a date or point. Wording in the app is always "another report nearby within 30 days"; the caveat says this does not mean the same pile, a failed cleanup, or anyone's fault, and that locations are block-level.
+
+**Ward-wide result on the real data** (live snapshot retrieved 2026-10-21 19:17Z; the saved recording retrieved 19:19Z gives identical numbers):
+
+| Measure | Value |
+|---|---|
+| Closed reports (exact "Closed", with date and point) | 350 |
+| Followed by another report within 30 days and 150 m | **210, 60%** |
+| Only closures at least 30 days old (a full window to be followed) | 151 of 235, 64% |
+| Countable located reports (duplicates and canceled left out) | 374 of 390 |
+| Spots with 5+ reports (greedy 150 m clusters, densest first) | **26 spots holding 210 of 374 reports, 56%** |
+| Worst spot | 21 reports, 21 closed, 20 followed by another report (about the 1900 block of Naylor Rd SE / 1800 block of P St SE) |
+
+Your earlier rough check (duplicates included) gave 62% (217/350), 28 spots, 57%; the stricter rule gives 60%, 26 and 56%. **Sensitivity matters and should be said out loud:** with the same data, a 100 m radius gives 44% (155/350), 250 m gives 79% (278/350), and a 14-day window at 150 m gives 45% (158/350). The headline number is a property of the stated rule, not a law of nature. The window also starts 90 days ago, so reports before it are invisible, and the busiest blocks can include large buildings with many units.
+
+**What the screens show:** a purple stat line under the header ("Closed isn't fixed. 210 of 350 closed reports (60%) had another report nearby within 30 days ..."); busy-spot shading on the map (spots with 5+ reports, shaded by how many closed reports were followed by another, four tiers, legend explains); the "busy spot" list ranked worst first with re-report counts (the keyboard alternative); an area headline in Explore and a campaign headline ("21 reports since Jul 27 · 21 closed · 20 re-reported within 30 days of a closure · median gap 3.5 days") with the caveat beneath it.
+
+**Escalation brief:** each campaign has a free-text recipient and a lasting-fix choice (enforcement camera, signage, bulk pickup outreach, lighting, scheduled cleanup + check-in, other with text). No names or contacts are suggested. The brief order is: recurrence evidence, the city ticket list, the ask (to, requested fix, request wording, "Nothing has been sent"), tasks, group progress, follow-up history, appendix. Changing the ask withdraws the review.
+
+**Recorded snapshot:** `node scripts/record-snapshot.mjs` writes `data/recorded-snapshot.json` (real live records plus the ward polygon, with their retrieval time). `GET /api/recorded` serves it; a third source button "Recorded DC 311 snapshot (Oct 21)" loads it through the same normalization and boundary check as live data. It is always labeled RECORDED, never live; official record links still work; campaigns made from it are marked recorded; it is never reconciled as live data. The fictional practice case is separate. Without internet the basemap tiles do not load, but the dots, the shading and the whole panel do.
+
+**Other changes:** the fictional-practice-entry box is checked by default for every campaign (unchecking is deliberate); only the Explore panel is locked while a refresh runs, so an open campaign stays editable (a slow API no longer freezes it); keyboard focus returns to the form or heading after adding or removing items; stage sizes (a 1600 px+ scale-up and a short-screen layout for 1280x720).

@@ -10,7 +10,7 @@ Read [docs/HANDOFF.md](docs/HANDOFF.md), then [docs/PHASE-STATUS.md](docs/PHASE-
 
 - Block Ops / Track 3 is selected. Two engineers, three build days. The user wants meaningful judge participation and a convincing product; the current form/brief UI was rejected as the final experience.
 - Baseline phases 1–3 are complete; audited baseline commit is `687582a`. The app is now a map workspace over live DC 311 records with an evidence/plan/brief flow; campaigns are saved in the browser's localStorage (one operator, no sync).
-- **R1–R3 are complete** (see [docs/specs/campaign-revision.md](docs/specs/campaign-revision.md), sections 7–8); next is **R4**, reliability and presentation. A resident-led campaign is the recommended direction; final scenario and detailed implementation choices remain open. Do not silently resume old Phase 4 styling.
+- **R1–R4 are complete** (see [docs/specs/campaign-revision.md](docs/specs/campaign-revision.md), sections 7–10, and [docs/PITCH.md](docs/PITCH.md)); next is **R5**, freeze and release package. Pitch line: "Closed isn't fixed." A resident-led campaign is the recommended direction; final scenario and detailed implementation choices remain open. Do not silently resume old Phase 4 styling.
 - The last request authorized a detailed documentation handoff only. Follow the user's next implementation instruction and requested R-phase boundary.
 - The user is conserving account usage and moving some work to Claude. Keep context reads and checks focused; do not create agents or orchestration infrastructure by default.
 
@@ -24,7 +24,7 @@ node --test
 node server.mjs
 ```
 
-Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed for the current app. Inspect an existing server before starting another on port 8000. `node scripts/prove-data.mjs` is the optional live 311 proof, not a crime/map test. Latest run: 66/66 tests passed. `node scripts/prove-geo.mjs` is the live geometry/crime proof; `scripts/browser-check.mjs` drives real Chrome with device emulation through the whole create-save-reload-follow-up-export flow.
+Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed for the current app. Inspect an existing server before starting another on port 8000. `node scripts/prove-data.mjs` is the optional live 311 proof, not a crime/map test. Latest run: 85/85 tests passed. `node scripts/record-snapshot.mjs` refreshes the recorded snapshot (needs network). `node scripts/prove-geo.mjs` is the live geometry/crime proof; `scripts/browser-check.mjs` drives real Chrome with device emulation through the whole create-save-reload-follow-up-export flow.
 
 ## Architecture and traps
 
@@ -36,4 +36,4 @@ Open `http://127.0.0.1:8000`. No install, build step, or credentials are needed 
 - Crime source access was checked separately. It has approximate block locations and reporting lag. The app has no crime layer, Flock access, AI, map, campaigns, or saved cases yet.
 - Avoid a generic Citizen clone: map/AI/team alerts overlap existing products. Proposed value is sustained neighborhood improvement campaigns, which remains unvalidated.
 
-Keep the existing stack unless a concrete new requirement warrants change. Preserve unrelated edits. Update the ledger and actual evidence after a batch. Local commits are useful; no push, deployment, official submission, or outreach without the user's instruction. No license has been selected.
+Keep the existing stack unless a concrete new requirement warrants change. Preserve unrelated edits. Update the ledger and actual evidence after a batch. Local commits are useful; no push, deployment, official submission, or outreach without the user's instruction (R1–R3 are already on the public `origin/main`; the user pushes later batches). No license has been selected.

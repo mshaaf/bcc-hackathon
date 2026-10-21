@@ -13,10 +13,12 @@ const ASSETS = new Map([
   ["/styles.css", ["public/styles.css", "text/css; charset=utf-8"]],
   ["/lib/block-ops.mjs", ["lib/block-ops.mjs", "text/javascript; charset=utf-8"]],
   ["/storage.mjs", ["public/storage.mjs", "text/javascript; charset=utf-8"]],
+  ["/lib/recurrence.mjs", ["lib/recurrence.mjs", "text/javascript; charset=utf-8"]],
   ["/lib/campaign.mjs", ["lib/campaign.mjs", "text/javascript; charset=utf-8"]],
   ["/map.mjs", ["public/map.mjs", "text/javascript; charset=utf-8"]],
   ["/vendor/leaflet/leaflet.js", ["public/vendor/leaflet/leaflet.js", "text/javascript; charset=utf-8"]],
   ["/vendor/leaflet/leaflet.css", ["public/vendor/leaflet/leaflet.css", "text/css; charset=utf-8"]],
+  ["/api/recorded", ["data/recorded-snapshot.json", "application/json; charset=utf-8"]],
   ["/api/demo", ["data/demo.json", "application/json; charset=utf-8"]]
 ]);
 

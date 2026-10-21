@@ -2,7 +2,7 @@
 
 Block Ops — Track 3, Community Development. **Current planning direction:** a map-centered workspace for resident-led neighborhood improvement campaigns. The final scenario and detailed revised scope remain to be settled in R1.
 
-**What actually runs:** a DC 311 review → plan → brief app, completed through baseline phases 1–3 with additional reliability/UI repairs. The user rejected that experience as the final hackathon presentation. The map workspace with saved campaigns (R2–R3) is the main page; crime integration and AI are not implemented. Start with the [Claude / Luna handoff](docs/HANDOFF.md); revision batches **R1–R3** are done (see [campaign revision spec](docs/specs/campaign-revision.md)); **R4** (reliability and presentation) is next. The earlier concept previews are historical reference material.
+**What actually runs:** a DC 311 review → plan → brief app, completed through baseline phases 1–3 with additional reliability/UI repairs. The user rejected that experience as the final hackathon presentation. The map workspace with saved campaigns (R2–R3) is the main page; crime integration and AI are not implemented. Start with the [Claude / Luna handoff](docs/HANDOFF.md); revision batches **R1–R4** are done (see [campaign revision spec](docs/specs/campaign-revision.md)); **R5** (freeze and release package) is next; the draft pitch is [docs/PITCH.md](docs/PITCH.md). The earlier concept previews are historical reference material.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 

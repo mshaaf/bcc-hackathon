@@ -33,7 +33,7 @@ test("serves the app and fictional fixture from the explicit route list", async 
 test("serves the map workspace and vendored Leaflet explicitly, with only the DC GIS tile origin added", async () => {
   const server = createAppServer();
   await withServer(server, async baseUrl => {
-    for (const path of ["/", "/app.mjs", "/map.mjs", "/storage.mjs", "/lib/campaign.mjs", "/lib/block-ops.mjs", "/styles.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
+    for (const path of ["/", "/app.mjs", "/map.mjs", "/storage.mjs", "/lib/campaign.mjs", "/lib/recurrence.mjs", "/lib/block-ops.mjs", "/styles.css", "/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css"]) {
       assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, path);
     }
     for (const path of ["/prototype", "/prototype.mjs", "/vendor/leaflet/LICENSE", "/vendor/../server.mjs"]) {
@@ -65,6 +65,18 @@ test("serves only the fixed Ward 8 boundary, and reports a boundary outage", asy
     const response = await fetch(`${baseUrl}/api/ward8`);
     assert.equal(response.status, 502);
     assert.match((await response.json()).error, /boundary could not be loaded/i);
+  });
+});
+
+test("serves the recorded snapshot from a fixed GET route", async () => {
+  const server = createAppServer();
+  await withServer(server, async baseUrl => {
+    const response = await fetch(`${baseUrl}/api/recorded?file=../server.mjs`);
+    const body = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(body.format, 1);
+    assert.ok(Array.isArray(body.features) && body.features.length > 0);
+    assert.equal((await fetch(`${baseUrl}/api/recorded`, { method: "POST" })).status, 405);
   });
 });
 

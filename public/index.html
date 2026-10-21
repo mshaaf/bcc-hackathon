@@ -15,19 +15,21 @@
   <p class="scope-label">Washington, DC<strong>Ward 8 · Illegal dumping</strong></p>
   <div class="source-controls" role="group" aria-label="Choose source data">
     <button class="source-button" id="load-live" type="button" aria-pressed="false">Live DC records</button>
+    <button class="source-button" id="load-recorded" type="button" aria-pressed="false" disabled>Recorded DC 311 snapshot</button>
     <button class="source-button" id="load-demo" type="button" aria-pressed="false">Practice case (fictional)</button>
   </div>
 </header>
 <div class="status-strip">
+  <p class="stat-line" id="stat-line" aria-live="polite" hidden></p>
   <p class="freshness" id="freshness" aria-live="polite">Loading live DC 311 records…</p>
-  <p class="sample-notice" id="sample-notice" hidden>Practice case · All sample reports and addresses are fictional and have no map locations.</p>
+  <p class="sample-notice" id="sample-notice" hidden></p>
   <p class="error-notice" id="error-notice" role="status" aria-live="polite" hidden></p>
 </div>
 <main class="workspace" id="workspace" data-view="explore" aria-label="Campaign workspace">
   <section class="map-wrap" aria-label="Map of Ward 8 illegal dumping reports">
     <div id="map"></div>
     <ul class="legend" aria-label="Map legend">
-      <li><span class="sw open"></span>Open</li><li><span class="sw closed"></span>Closed</li><li><span class="sw other"></span>Duplicate / canceled / unknown</li><li><span class="sw picked"></span>In your selection / campaign</li><li><span class="sw ring"></span>Selected area</li><li><span class="sw outside"></span>Outside Ward 8 boundary</li>
+      <li><span class="sw open"></span>Open</li><li><span class="sw closed"></span>Closed</li><li><span class="sw other"></span>Duplicate / canceled / unknown</li><li><span class="sw picked"></span>In your selection / campaign</li><li><span class="sw ring"></span>Selected area</li><li><span class="sw spot"></span>Shading: closed reports followed by another nearby (darker = more)</li><li><span class="sw outside"></span>Outside Ward 8 boundary</li>
     </ul>
     <p class="hint">Click the map to choose an area, or use the controls and list. The list does everything the map does.</p>
     <p class="map-note" id="map-note" role="status" hidden>Basemap tiles could not load. Reports are still plotted and the list still works.</p>
@@ -65,6 +67,7 @@
       </fieldset>
 
       <p class="scope-status" id="scope-status" aria-live="polite"></p>
+      <p class="headline" id="area-headline"></p>
       <div class="list-head"><h2>Reports</h2><span class="count-badge" id="selected-count">0 selected</span></div>
       <p class="tally" id="tally"></p>
       <div class="record-list" id="record-list" aria-label="Reports in this area, oldest first"></div>
@@ -90,6 +93,8 @@
           <label class="field-label obj-label" for="c-objective">Objective</label>
           <textarea id="c-objective" rows="2"></textarea>
         </header>
+        <p class="headline" id="c-headline"></p>
+        <p class="caveat" id="c-caveat"></p>
         <section aria-labelledby="h-state">
           <h2 id="h-state">Where things stand</h2>
           <dl class="tracks">
@@ -99,24 +104,24 @@
           </dl>
         </section>
         <section aria-labelledby="h-evidence">
-          <h2 id="h-evidence">Evidence <span class="count-badge" id="c-evidence-count"></span></h2>
+          <h2 id="h-evidence" tabindex="-1">Evidence <span class="count-badge" id="c-evidence-count"></span></h2>
           <div class="record-list evidence-list" id="c-evidence" aria-label="Reports in this campaign"></div>
         </section>
         <section aria-labelledby="h-obs">
-          <h2 id="h-obs">Observations and follow-ups</h2>
+          <h2 id="h-obs" tabindex="-1">Observations and follow-ups</h2>
           <p class="field-hint">Dated notes from residents or agencies. They never change the city's ticket status.</p>
           <ol class="obs-list" id="c-observations"></ol>
           <form class="mini-form" id="obs-form" novalidate>
             <div class="form-row"><div class="field-block"><label class="field-label" for="obs-kind">Type</label><select id="obs-kind"><option value="resident">Resident observation</option><option value="followup">Follow-up observation</option><option value="agency">Agency response</option></select></div>
             <div class="field-block"><label class="field-label" for="obs-date">Date</label><input id="obs-date" type="date"></div></div>
             <div class="field-block"><label class="field-label" for="obs-text">What was seen or said</label><textarea id="obs-text" rows="2"></textarea></div>
-            <label class="check-line"><input type="checkbox" id="obs-fictional"> This is a fictional practice entry (labeled as such everywhere)</label>
+            <label class="check-line check-fictional"><input type="checkbox" id="obs-fictional" checked> <span><strong>Fictional practice entry</strong> · labeled FICTIONAL in the campaign and the brief. Uncheck only for a real observation by your group.</span></label>
             <p class="form-error" id="obs-error" role="alert" hidden></p>
             <button class="button button-secondary" type="submit">Add to campaign</button>
           </form>
         </section>
         <section aria-labelledby="h-tasks">
-          <h2 id="h-tasks">Tasks</h2>
+          <h2 id="h-tasks" tabindex="-1">Tasks</h2>
           <ul class="task-list" id="c-tasks"></ul>
           <form class="mini-form" id="task-form" novalidate>
             <div class="field-block"><label class="field-label" for="task-text">New task</label><input id="task-text" type="text"></div>
@@ -126,9 +131,17 @@
             <button class="button button-secondary" type="submit">Add task</button>
           </form>
         </section>
+        <section aria-labelledby="h-ask">
+          <h2 id="h-ask">The ask</h2>
+          <p class="field-hint">Who should act, and what lasting fix to request. Nothing is sent from this app.</p>
+          <div class="field-block"><label class="field-label" for="ask-recipient">Send to <span class="optional">free text, e.g. ANC commissioner, Ward 8 Councilmember office, DPW</span></label><input id="ask-recipient" type="text" autocomplete="off"></div>
+          <div class="form-row"><div class="field-block"><label class="field-label" for="ask-fix">Requested lasting fix</label>
+            <select id="ask-fix"><option value="">Choose…</option><option value="camera">Enforcement camera</option><option value="signage">Signage</option><option value="bulk">Bulk pickup outreach</option><option value="lighting">Lighting</option><option value="cleanup">Scheduled cleanup + check-in</option><option value="other">Other (describe)</option></select></div>
+          <div class="field-block"><label class="field-label" for="ask-other">Details <span class="optional">required for Other</span></label><input id="ask-other" type="text" autocomplete="off"></div></div>
+        </section>
         <section aria-labelledby="h-request">
-          <h2 id="h-request">Request</h2>
-          <label class="field-label" for="c-request">What we ask the city to do or tell us</label>
+          <h2 id="h-request">Request wording</h2>
+          <label class="field-label" for="c-request">What we ask them to do or tell us</label>
           <textarea id="c-request" rows="3"></textarea>
           <div class="review-action"><p id="review-status" aria-live="polite"></p><button class="button button-primary" id="mark-reviewed" type="button">Mark reviewed</button></div>
           <p class="form-error" id="review-error" role="alert" hidden></p>

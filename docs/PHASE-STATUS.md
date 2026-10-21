@@ -2,7 +2,9 @@
 
 This is the canonical execution ledger for Claude/Luna batches. Current revision phases R1–R5 are defined in [HANDOFF.md](HANDOFF.md); baseline phases below preserve the old plan's history. Product selection remains recorded in [DECISIONS.md](DECISIONS.md).
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R4. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
+
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next revision batch:** R5. **Executor:** Claude or Luna, as requested by the user. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The user rejected the form/brief-centered baseline as the final experience. A map/campaign revision is proposed; no revised implementation is complete. The original numbered phases below remain history and are not the next execution instructions.
 
@@ -13,7 +15,7 @@ The user rejected the form/brief-centered baseline as the final experience. A ma
 | R1 | Scenario, real geospatial data proof, reviewable layout, revised specification/plan | Complete |
 | R2 | Real map, source layers/filters, evidence review and chronology | Complete |
 | R3 | Saved campaign, owner/date tasks, follow-up and current export | Complete |
-| R4 | Reliability, accessible interaction and stage layout | Not started |
+| R4 | Recurrence insight ("Closed isn't fixed"), escalation brief, recorded snapshot, stage layout | Complete (local commit; not pushed) |
 | R5 | Rehearsal and release/submission package | Not started |
 
 The documentation handoff is prepared. These R phases are proposed batch boundaries; detailed checks and prompts are in the handoff. Keep status evidence-based.
@@ -45,6 +47,29 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — R4 complete; R5 next
+
+- **Fixes first:** (1) the follow-up "Fictional practice entry" box is checked by default for every campaign with a visible strong label; unchecking is deliberate and a real entry carries no fictional label (browser check enters one real-labelled entry on purpose). (2) Every "no push" statement now says R1–R3 are on the public `origin/main`; R4 is a local commit only.
+- **A. Recurrence (`lib/recurrence.mjs`, tests written first and seen failing):** a record with exact status "Closed" and a point is re-reported if another non-duplicate, non-canceled record with a point is dated after it within 30 days and 150 m. Duplicate/canceled excluded on both sides. Spots = greedy 150 m clusters, densest first. Per-area stats: reports, closed, re-reported, first/latest date, median gap days.
+- **Ward-wide stat (live, 2026-10-21T19:17Z; the saved recording from 19:19Z gives the same numbers):** 390 records, 374 countable located; **210 of 350 closed reports (60%) re-reported within 30 days and 150 m**; counting only closures at least 30 days old: 151 of 235 (64%); **26 spots with 5+ reports hold 210 of 374 reports (56%)**. Worst spot: 21 reports, 21 closed, 20 re-reported, median gap 3.5 days. These differ slightly from the rough check in the prompt (62%, 28 spots, 57%) because the rule here excludes duplicates/canceled and requires a point on both sides. Sensitivity on the same data: 100 m → 44% (155/350); 250 m → 79% (278/350); 14-day window at 150 m → 45% (158/350). The pitch says the rule out loud.
+- **B. On screen:** header stat line with caveat; busy spots shaded by re-report count (4 tiers, legend entry, keyboard list alternative: the "Jump to a busy spot" select, worst first); campaign headline "21 reports since Jul 27 · 21 closed · 20 re-reported within 30 days of a closure · median gap 3.5 days" plus the "does not mean the same pile / failed cleanup / anyone's fault; block-level" caveat.
+- **C. Escalation brief:** campaign fields recipient (free text, no invented contacts) and requested lasting fix (camera, signage, bulk pickup outreach, lighting, scheduled cleanup + check-in, other + text). Brief order: recurrence evidence, the ask, tasks, group progress, follow-ups, city status records, source appendix, caveats. Says "Prepared for the group to send. Nothing has been sent." Old R3 campaigns load with defaults.
+- **D. Need check:** findings with source links in [campaign-revision.md section 9](specs/campaign-revision.md). DC already publishes the tickets, a rolling 30-day dumping layer, DPW Cards (heat map, response times) and DumpBusters describes cleanups, signage and enforcement; nothing found that shows a block's closed-then-reported-again pattern or helps residents ask for a lasting fix. Pitch now claims "residents can't see or act on it", not "nobody tracks it".
+- **E. Recorded snapshot:** `node scripts/record-snapshot.mjs` writes `data/recorded-snapshot.json` (real Ward 8 records and ward polygon, retrieved 2026-10-21T19:19:19Z, ~307 KB, public data only). Third source button "Recorded DC 311 snapshot (Oct 21)" loads it through a fixed GET-only route; it is labeled RECORDED (not live) everywhere including the brief; official links work; no live reconcile; the fictional practice case stays separate.
+- **F. Stage and reliability:** layout checked at 1920x1080 and 1280x720 (stat 17 px / 14 px, title 32 / 20 px, "New campaign here" visible without scrolling after a sticky action bar). Only the Explore panel locks during a refresh, so an open campaign stays editable during a slow API. Tile, API, boundary and 6 s slow-API failures leave the open campaign usable and labeled. Keyboard-only run of the demo path with zero mouse clicks; map dots are no longer tab stops (Leaflet had made 390 of them); focus returns to a sensible control after add/remove; area and save status are `aria-live`.
+- **G. `docs/PITCH.md`:** 3-minute script, opens with the stat, judge action, honest Q&A (including "we have not interviewed residents yet"), backup plan.
+- **Files:** `lib/recurrence.mjs`, `test/recurrence.test.mjs`, `test/recorded.test.mjs`, `scripts/record-snapshot.mjs`, `data/recorded-snapshot.json`, `lib/block-ops.mjs`, `lib/campaign.mjs`, `public/app.mjs`, `public/index.html`, `public/map.mjs`, `public/styles.css`, `server.mjs`, `scripts/browser-check.mjs`, `test/campaign.test.mjs`, `test/server.test.mjs`, `docs/PITCH.md`, `docs/specs/campaign-revision.md`, `docs/ui-review/r4-run/*`, docs.
+- **Checks run:**
+  - `node --test`: 85/85 passed (66 prior + 10 recurrence + 4 recorded + 4 campaign + 1 server).
+  - `node scripts/browser-check.mjs` against a restarted `node server.mjs`, real Chrome with DevTools device emulation at 1920x1080, 1280x720 (stage checks) and full flows at 1440 and 390 (touch, scale 3), live DC data: **152/152 checks passed**, no console errors, exceptions or CSP violations, no horizontal overflow. Raw results `docs/ui-review/r4-run/results.json`.
+  - A4 PDF of the escalation brief (`Page.printToPDF`) inspected by eye: legible, recurrence evidence, recipient, requested fix and "Nothing has been sent" all on page 1.
+  - Venue-offline simulation (tiles blocked): recorded snapshot still loads and plots, dots/shading/panel work, map note says tiles failed.
+- **Not verified:** real finger/touch; screen reader; the desktop select popup (native, not drivable from CDP; keyboard path uses the select's value change); DPW pages read only through search summaries (dpw.dc.gov returned 403); PDF page size checked by eye, not by an automated MediaBox read; a store near the real localStorage quota.
+- **Limits:** the headline depends on the rule (44%–79% across 100–250 m); locations are block-level; a large building or busy street can produce repeat reports that are not a dumping pattern; recurrence does not mean the same pile, a failed cleanup, or anyone's fault; the recorded snapshot is a point-in-time copy (tiles still need internet); one operator, one browser profile; no residents interviewed yet.
+- **Cuts (as instructed):** crime layer, pagination, sync, accounts, AI, auto-submission.
+- **Unresolved for R5:** freeze, rehearse the pitch out loud, re-record the snapshot on the day, decide README/release wording, license.
+- **Local commit:** see `git log`. Not pushed.
 
 ### 2026-10-21 — R3 complete; R4 next
 
@@ -96,7 +121,7 @@ Change the status row and next phase. Add a short entry below with:
   - DC GIS light-gray tile cache fetched at zoom 12/15/17/19 (HTTP 200, 24 h cache header). OSM tile policy read; OSM rejected (Referer requirement vs this app's `no-referrer`).
   - Headless Chrome 1440x900 on `/prototype` served by the current code on port 8001: map, tiles, 390 markers, 150 m area (21 reports), chronology and panel rendered; no CSP/console errors printed. Screenshot: `docs/ui-review/r1-prototype-1440.png`.
 - **Not verified:** the prototype at 390 px (headless window was not a true mobile viewport; screenshot discarded); keyboard use of the map; DC GIS written terms for tile reuse; the old baseline UI (`/`) in a browser after the geometry change (its tests pass, and payload gained geometry only); a fresh load from port 8000 (see limits).
-- **Limits:** a stale `node server.mjs` (PID started 13:16, old code) still held port 8000 and was not killed; restart it to see `/prototype`. The prototype's objective, tasks and group/resident tracks are mock. Points are block-level. Proximity is not proof of one incident. Pagination still absent. No push, deploy, submission or outreach.
+- **Limits:** a stale `node server.mjs` (PID started 13:16, old code) still held port 8000 and was not killed; restart it to see `/prototype`. The prototype's objective, tasks and group/resident tracks are mock. Points are block-level. Proximity is not proof of one incident. Pagination still absent. (At the time of this batch nothing was pushed; R1–R3 were pushed to the public `origin/main` afterwards, at the user's instruction.)
 - **Cuts:** crime integration, AI, accounts, sync, photos, notifications.
 - **Unresolved choices:** listed in section 6 of the revision spec (dumping vs streetlight stage story, radius, flagging boundary mismatches, tile terms, crime yes/no, judge action, objective copy).
 - **Local commit:** see `git log` (hash not recorded here).
@@ -105,7 +130,7 @@ Change the status row and next phase. Add a short entry below with:
 
 - Inspected the current code, Git state, original phase plans, and stale continuation instructions. Existing app tests were rerun: 23/23 passed.
 - Added `docs/HANDOFF.md`, a concise `CLAUDE.md` entry point, R1–R5 batch boundaries, and dated aggregate source/competitor evidence. Updated current entry points and workflow state to distinguish the built baseline from the proposed map/campaign product.
-- The user authorized documentation only in this batch. No app code, dependencies, hosting, remote push, official submission, or outreach was changed. The account five-hour usage window was not treated as a project deadline or a known remaining allowance.
+- The user authorized documentation only in this batch. No app code, dependencies, hosting, official submission, or outreach was changed, and nothing was pushed in that batch. The account five-hour usage window was not treated as a project deadline or a known remaining allowance.
 - Next: R1 after the user directs the next work batch. No map/campaign implementation or new community validation is claimed.
 
 ### 2026-10-21 — User-requested UI investigation and repair
@@ -115,7 +140,7 @@ Change the status row and next phase. Add a short entry below with:
 - Fixed wrong official links for missing object IDs, cross-source/group observation carryover, duplicate-key selection/export disagreement, loading-time edit races, and missing addresses/direct source references in exports. A new source/group clears its observation and date; a failed refresh preserves the reviewed draft.
 - Current automated checks: `node --test` passed 23/23. Chromium browser checks exercised changed output, downloaded Markdown, a simulated failed refresh, real live load (389 public records), cleared context, missing observation date, arrow-key tabs, and all three views at 1440, 1024, 768, 390, and 320 pixels. No browser errors or measured horizontal overflow were observed. The fictional sample's A4 PDF was visually inspected.
 - An independent visual review found two mobile issues, both fixed and re-inspected: wordmark wrapping at 320 pixels and overlong candidate options at 390 pixels. The mechanical design detector returned no findings. Screenshots and detailed evidence are in [the UI review](ui-review/README.md) and [test plan](TEST-PLAN.md).
-- Phases 4 and 5 remain in progress rather than being declared fully complete. Keep the implemented design and finish remaining reliability/acceptance and stage checks in subsequent requested batches. No push, deployment, or official submission occurred.
+- Phases 4 and 5 remain in progress rather than being declared fully complete. Keep the implemented design and finish remaining reliability/acceptance and stage checks in subsequent requested batches. No push, deployment, or official submission occurred in that batch.
 
 ### 2026-10-21 — Phase execution handoff prepared
 

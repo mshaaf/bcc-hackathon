@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-10-21 — R4: "Closed isn't fixed"
+
+- New `lib/recurrence.mjs`: a closed report is re-reported if another non-duplicate, non-canceled report follows within 30 days and 150 m. Real result: 210 of 350 closed reports (60%); 26 spots with 5+ reports hold 56% of reports. The stat line, busy-spot shading and worst-first spot list show it; the rule's sensitivity (44% at 100 m, 79% at 250 m) is documented.
+- Campaigns gain a recipient and a lasting-fix ask; the brief now leads with recurrence evidence. Nothing is sent.
+- Recorded real snapshot (`scripts/record-snapshot.mjs`, `GET /api/recorded`) behind a third, always-labeled source button.
+- Fictional follow-up default on; open campaigns stay editable during a slow refresh; focus management; projector sizes; A4 brief inspected.
+- Need check recorded in the revision spec (section 9). `docs/PITCH.md` drafted.
+
 ## 2026-10-21 — R1–R3: map workspace and saved campaigns
 
 - R1: 311 query returns WGS84 geometry with per-record geo status; Leaflet vendored; DC GIS basemap; Ward 8 MPD query proven separately (not integrated); revision spec.

@@ -68,7 +68,7 @@ em { font-style:normal; font-weight:600 }
 .sw.ring { border-style:dashed; background:transparent }
 .sw.outside { background:#fff; border-style:dotted; border-color:#8c7a99 }
 .hint { position:absolute; left:60px; top:12px; right:12px; z-index:500; width:max-content; max-width:calc(100% - 72px); margin:0; padding:5px 10px; background:var(--surface); border:1px solid var(--line); border-radius:8px; font-size:12px; color:var(--muted) }
-.map-note { position:absolute; left:12px; right:12px; top:54px; z-index:500; width:max-content; max-width:calc(100% - 24px); margin:0; padding:6px 10px; background:var(--error-bg); color:var(--error); border-radius:8px; font-size:12px }
+.map-note { position:absolute; left:60px; right:12px; top:54px; z-index:500; width:max-content; max-width:calc(100% - 24px); margin:0; padding:6px 10px; background:var(--error-bg); color:var(--error); border-radius:8px; font-size:12px }
 
 .panel { background:var(--surface); border-left:1px solid var(--line); overflow:auto; max-height:calc(100vh - 110px); padding:0 20px 24px }
 .tabs { position:sticky; top:0; z-index:5; display:flex; gap:4px; padding:12px 0 0; margin:0 -20px 12px; padding-left:20px; padding-right:20px; background:var(--surface); border-bottom:1px solid var(--line) }
@@ -239,10 +239,83 @@ input:hover,select:hover,textarea:hover { border-color:var(--plum) }
   .form-row { grid-template-columns:1fr }
 }
 
+/* R4: the insight, recorded notice, stage sizes */
+.stat-line { background:var(--plum); color:var(--on-plum); font-size:14px!important; line-height:1.4 }
+.stat-line strong { color:var(--signal) }
+.stat-caveat { display:block; margin-top:2px; font-size:12px; opacity:.88 }
+.recorded-notice { background:#e8dcf0; color:var(--plum); font-weight:650; border-left:4px solid var(--plum) }
+.headline { margin:8px 0 0; font-size:14px; font-weight:650; color:var(--plum); line-height:1.35 }
+.caveat { margin:4px 0 0; font-size:12px; color:var(--muted) }
+.sw.spot { width:26px; border:0; border-radius:3px; background:linear-gradient(90deg,#f5cd55,#e08a1e,#c4561b,#8f2d56) }
+.check-fictional { padding:8px 10px; border-radius:6px; background:var(--signal); color:var(--signal-ink) }
+.check-fictional strong { font-weight:700 }
+.paper-lead { margin:0 0 6px; font-size:17px; font-weight:650; line-height:1.4; color:var(--plum) }
+.paper-recorded { margin-left:8px; background:var(--soft); color:var(--plum) }
+.paper-request { padding:8px 12px; border-left:3px solid var(--plum); background:var(--paper) }
+.paper-note-first { margin-top:6px; padding-top:0; border-top:0 }
+#c-headline { font-size:15px }
+/* the primary action stays on screen however long the report list is */
+#new-campaign { white-space:nowrap; flex:none }
+#explore-panel .review-action { position:sticky; bottom:0; z-index:4; margin:12px -20px 0; padding:10px 20px; background:var(--surface); border-top:1px solid var(--line); box-shadow:0 -6px 12px rgb(48 35 56 / 6%) }
+@media (min-width:1600px) { #explore-panel .review-action { margin-left:-28px; margin-right:-28px; padding-left:28px; padding-right:28px } }
+@media (max-width:900px) { #explore-panel .review-action { position:static; margin:12px 0 0; padding:12px 0 0; box-shadow:none } }
+
+@media (min-width:901px) {
+  body { height:100vh }
+  .workspace { min-height:0; overflow:hidden }
+  .map-wrap,#map { min-height:0 }
+  .panel { max-height:none; height:100% }
+  .workspace[data-view="brief"] { overflow:auto }
+  .workspace[data-view="brief"] .panel { height:auto }
+}
+@media (min-width:1600px) {
+  :root { --panel-w:600px }
+  body { font-size:17px }
+  .top { padding:12px 24px }
+  .brand { font-size:24px }
+  .status-strip p { padding:8px 24px; font-size:15px }
+  .stat-line { font-size:17px!important }
+  .stat-caveat { font-size:14px }
+  .source-button { min-height:42px; font-size:14px }
+  .panel { padding:0 28px 28px }
+  .tabs { margin:0 -28px 14px; padding-left:28px; padding-right:28px }
+  .tab { font-size:16px; min-height:46px }
+  h1 { font-size:32px }
+  h2 { font-size:16px }
+  .headline { font-size:17px }
+  .caveat,.tally,.field-hint,.card-meta,.record-meta,.hint,.legend,.save-status,.scope-status { font-size:14px }
+  .scope-status { font-size:16px }
+  .record-address { font-size:16px }
+  .record-date strong { font-size:15px }
+  .record-date { font-size:13px }
+  .status-pill { font-size:13px }
+  .radius-set label,.kind-set label { font-size:15px }
+  .field-label { font-size:14px }
+  input,select,textarea { font-size:16px }
+  .button { font-size:15px; min-height:46px }
+  .tracks dd { font-size:15px }
+  .tracks dt { font-size:13px }
+}
+@media (min-width:901px) and (max-height:760px) {
+  .top { padding:6px 16px }
+  .brand { font-size:18px }
+  .brand-mark { width:26px; height:26px }
+  .status-strip p { padding:4px 16px }
+  .stat-caveat { display:none }
+  .legend { bottom:30px; font-size:11px }
+  h1 { font-size:20px }
+}
+@media (max-width:560px) {
+  .stat-line { font-size:13px!important }
+  .source-button { font-size:11px; padding:6px 8px }
+}
+
 @media print {
   html { background:white!important }
   @page { size:A4; margin:16mm }
-  body { min-width:0; background:white; color:#201a24; font-size:11pt; display:block }
+  body { min-width:0; height:auto; background:white; color:#201a24; font-size:11pt; display:block }
+  .workspace { overflow:visible!important }
+  .paper-lead { font-size:12pt }
   .skip-link,.top,.status-strip,.map-wrap,.tabs,.save-status,#explore-panel,#campaign-panel,.brief-toolbar,.brief-return { display:none!important }
   .workspace { display:block }
   .panel { max-height:none; overflow:visible; border:0; padding:0; background:none }
