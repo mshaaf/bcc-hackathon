@@ -1,0 +1,118 @@
+<div id="mock-blockops" class="concept-screen">
+  <style>
+    #mock-blockops{--bo-paper:light-dark(#f4f1f7,#211c28);--bo-white:light-dark(#fffefd,#2c2534);--bo-ink:light-dark(#302338,#f0e7f5);--bo-muted:light-dark(#6b6073,#b9aec3);--bo-line:light-dark(#dcd3e3,#504359);--bo-plum:light-dark(#5b316b,#cda8e0);--bo-onplum:light-dark(#fff9ff,#281731);--bo-yellow:light-dark(#f5cd55,#6c531d);--bo-yellowink:light-dark(#49390d,#f8e4ab);--bo-soft:light-dark(#ebe3f0,#3c2d46);--bo-green:light-dark(#e0ece3,#293d31);--bo-greenink:light-dark(#365c41,#b5dcc0);box-sizing:border-box;min-width:0;background:var(--bo-paper);color:var(--bo-ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.4;border:1px solid var(--bo-line);border-radius:14px;overflow-wrap:anywhere}
+    #mock-blockops *{box-sizing:border-box;min-width:0}
+    #mock-blockops .bo-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:19px 25px;border-bottom:1px solid var(--bo-line);background:var(--bo-white);border-radius:14px 14px 0 0}
+    #mock-blockops .bo-brand{font-family:"Archivo",sans-serif;font-size:24px;font-weight:700;letter-spacing:-1.1px;display:flex;align-items:center;gap:11px}
+    #mock-blockops .bo-mark{width:27px;height:27px;background:var(--bo-plum);display:grid;place-items:center;color:var(--bo-onplum);font-size:16px;letter-spacing:-1px;border-radius:3px;transform:rotate(-5deg)}
+    #mock-blockops .bo-group{text-align:right;color:var(--bo-muted);font-size:12px}
+    #mock-blockops .bo-group strong{display:block;color:var(--bo-ink);font-size:14px;font-weight:500}
+    #mock-blockops .bo-fiction{padding:8px 25px;background:var(--bo-yellow);color:var(--bo-yellowink);font-size:12px}
+    #mock-blockops .bo-main{display:grid;grid-template-columns:minmax(0,1.24fr) minmax(0,.9fr);gap:24px;padding:23px 25px 20px}
+    #mock-blockops .bo-topic{display:flex;align-items:start;justify-content:space-between;gap:10px;margin-bottom:18px}
+    #mock-blockops h2{font-family:"Archivo",sans-serif;font-size:30px;line-height:1.1;letter-spacing:-1.2px;font-weight:600;margin:0 0 7px}
+    #mock-blockops p{margin:0}
+    #mock-blockops .bo-sub{color:var(--bo-muted);font-size:14px}
+    #mock-blockops .bo-tag{color:var(--bo-plum);background:var(--bo-soft);padding:5px 9px;white-space:nowrap;font-size:12px;border-radius:4px;margin-top:3px}
+    #mock-blockops .bo-sectionhead{display:flex;gap:9px;align-items:center;justify-content:space-between;margin-bottom:9px}
+    #mock-blockops .bo-sectionhead h3{margin:0;font-weight:500;font-size:15px}
+    #mock-blockops .bo-count{font-size:12px;color:var(--bo-muted)}
+    #mock-blockops .bo-records{background:var(--bo-white);border:1px solid var(--bo-line);border-radius:8px;overflow:hidden}
+    #mock-blockops .bo-record{display:grid;grid-template-columns:19px minmax(0,1fr) auto;gap:11px;align-items:center;padding:12px 13px;border-bottom:1px solid var(--bo-line)}
+    #mock-blockops .bo-record:last-child{border-bottom:0}
+    #mock-blockops .bo-record:has(input:checked){background:var(--bo-soft)}
+    #mock-blockops .bo-record input{width:17px;height:17px;margin:0;accent-color:var(--bo-plum)}
+    #mock-blockops .bo-record strong{display:block;font-size:14px;font-weight:500}
+    #mock-blockops .bo-record small{display:block;font-size:12px;color:var(--bo-muted);margin-top:2px}
+    #mock-blockops .bo-closed{font-size:12px;padding:3px 6px;background:var(--bo-green);color:var(--bo-greenink);border-radius:3px}
+    #mock-blockops .bo-history{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;padding-left:2px;min-height:22px;color:var(--bo-muted);font-size:12px}
+    #mock-blockops .bo-history span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bo-plum);margin-right:6px;vertical-align:middle}
+    #mock-blockops .bo-warning{margin-top:8px;color:var(--bo-yellowink);background:var(--bo-yellow);padding:7px 10px;font-size:12px;border-radius:4px}
+    #mock-blockops .bo-right{background:var(--bo-white);border:1px solid var(--bo-line);border-radius:9px;padding:18px;align-self:start}
+    #mock-blockops .bo-right h3{font-family:"Archivo",sans-serif;font-size:20px;font-weight:500;margin:0 0 13px;letter-spacing:-.5px}
+    #mock-blockops .bo-label{display:block;font-size:12px;font-weight:500;margin-bottom:6px;color:var(--bo-muted)}
+    #mock-blockops textarea,#mock-blockops select{width:100%;font:inherit;font-size:14px;color:var(--bo-ink);background:var(--bo-paper);border:1px solid var(--bo-line);border-radius:5px;padding:9px 10px;margin:0 0 13px;line-height:1.4}
+    #mock-blockops textarea{resize:vertical;min-height:68px}
+    #mock-blockops .bo-observation{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+    #mock-blockops .bo-observation .bo-label{margin:0}
+    #mock-blockops .bo-unverified{font-size:12px;color:var(--bo-muted)}
+    #mock-blockops .bo-task{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--bo-line);padding:9px 0;color:var(--bo-muted);font-size:12px}
+    #mock-blockops .bo-task strong{font-weight:500;color:var(--bo-ink)}
+    #mock-blockops button{font-family:inherit;font-size:14px;border-radius:5px;padding:10px 13px;border:1px solid var(--bo-line);background:var(--bo-white);color:var(--bo-ink);min-height:40px}
+    #mock-blockops .bo-primary{background:var(--bo-plum);color:var(--bo-onplum);border-color:var(--bo-plum);width:100%;margin-top:6px}
+    #mock-blockops .bo-note{font-size:12px;color:var(--bo-muted);text-align:center;margin-top:7px}
+    #mock-blockops .bo-briefmeta{color:var(--bo-muted);font-size:12px;margin-bottom:12px}
+    #mock-blockops .bo-brieffacts{margin:0 0 13px;padding:0;list-style:none}
+    #mock-blockops .bo-brieffacts li{padding:7px 0;border-bottom:1px solid var(--bo-line);font-size:13px}
+    #mock-blockops .bo-briefsub{font-size:12px;color:var(--bo-muted);margin-top:12px;margin-bottom:4px}
+    #mock-blockops .bo-brieftext{font-size:14px}
+    #mock-blockops .bo-back{margin-top:15px;width:100%}
+    #mock-blockops .bo-foot{display:flex;justify-content:space-between;gap:12px;padding:12px 25px;border-top:1px solid var(--bo-line);font-size:12px;color:var(--bo-muted)}
+    #mock-blockops [hidden]{display:none!important}
+    @media(max-width:650px){#mock-blockops .bo-main{grid-template-columns:1fr;padding:20px 17px;gap:17px}#mock-blockops .bo-head{padding:16px 17px;flex-wrap:wrap}#mock-blockops .bo-group{text-align:left}#mock-blockops .bo-fiction{padding:8px 17px}#mock-blockops .bo-foot{padding:12px 17px;flex-wrap:wrap}#mock-blockops h2{font-size:28px}#mock-blockops .bo-topic{flex-wrap:wrap}#mock-blockops textarea,#mock-blockops select{font-size:16px}}
+  </style>
+  <header class="bo-head">
+    <div class="bo-brand"><span class="bo-mark" aria-hidden="true">b.</span>block ops</div>
+    <div class="bo-group"><strong>Riverbend Block Circle</strong>Community worktable</div>
+  </header>
+  <div class="bo-fiction">Concept preview · Fictional sample records</div>
+  <div class="bo-main">
+    <section aria-label="Review sample reports">
+      <div class="bo-topic"><div><h2>Keep the whole story.</h2><p class="bo-sub">Demo Site A · Service follow-up</p></div><span class="bo-tag">In review</span></div>
+      <div class="bo-sectionhead"><h3>Which reports belong together?</h3><span class="bo-count" data-bo-count aria-live="polite">2 selected</span></div>
+      <div class="bo-records">
+        <label class="bo-record cursor-interaction"><input class="cursor-interaction" type="checkbox" data-bo-record="a1" checked><span><strong>DEMO-101 · July 8</strong><small>Demo Site A · Fictional collection request</small></span><span class="bo-closed">Closed</span></label>
+        <label class="bo-record cursor-interaction"><input class="cursor-interaction" type="checkbox" data-bo-record="a2" checked><span><strong>DEMO-102 · July 29</strong><small>Demo Site A · Fictional collection request</small></span><span class="bo-closed">Closed</span></label>
+        <label class="bo-record cursor-interaction"><input class="cursor-interaction" type="checkbox" data-bo-record="b1"><span><strong>DEMO-103 · September 3</strong><small>Demo Site B · A different fictional site</small></span><span class="bo-closed">Closed</span></label>
+      </div>
+      <div class="bo-history" data-bo-history aria-label="Selected sample history"><span>July 8</span><span>July 29</span></div>
+      <p class="bo-warning" data-bo-warning hidden>Demo Site B is a different location. Review before grouping.</p>
+      <p class="bo-sub" style="margin-top:14px;font-size:12px">Record status describes the ticket. Present conditions need a resident's observation.</p>
+    </section>
+    <aside class="bo-right" aria-label="Plan and preview the group brief">
+      <div data-bo-editor>
+        <h3>Our next move</h3>
+        <div class="bo-observation"><label class="bo-label" for="bo-observation">Resident observation</label><span class="bo-unverified">Unverified</span></div>
+        <textarea id="bo-observation" rows="2">We haven't checked this site this week.</textarea>
+        <label class="bo-label" for="bo-action">What do we want to ask?</label>
+        <select id="bo-action" class="cursor-interaction"><option value="explain">Ask for a closure explanation</option><option value="meeting">Bring this history to our meeting</option></select>
+        <div class="bo-task"><span><strong>Records keeper</strong> · Verify selected IDs</span><span>20 min</span></div>
+        <div class="bo-task"><span><strong>Meeting speaker</strong> · Review our ask</span><span>15 min</span></div>
+        <button type="button" class="bo-primary cursor-interaction" data-bo-preview>Preview our brief</button>
+        <p class="bo-note">Review together. Nothing is sent.</p>
+      </div>
+      <div data-bo-output hidden aria-live="polite">
+        <h3>Our group brief</h3>
+        <p class="bo-briefmeta" data-bo-briefmeta></p>
+        <ul class="bo-brieffacts" data-bo-brieffacts></ul>
+        <p class="bo-briefsub">Resident observation · fictional</p><p class="bo-brieftext" data-bo-briefobservation></p>
+        <p class="bo-briefsub">Our request</p><p class="bo-brieftext" data-bo-briefask></p>
+        <button type="button" class="bo-back cursor-interaction" data-bo-back>Edit our plan</button>
+      </div>
+    </aside>
+  </div>
+  <footer class="bo-foot"><span>Current condition: unverified</span><span>Group reviewed · No dispatch or submission</span></footer>
+  <script>
+    (() => {
+      const root=document.getElementById('mock-blockops');if(!root)return;
+      const q=s=>root.querySelector(s);
+      const records=[{key:'a1',id:'DEMO-101',date:'July 8',site:'Demo Site A'},{key:'a2',id:'DEMO-102',date:'July 29',site:'Demo Site A'},{key:'b1',id:'DEMO-103',date:'September 3',site:'Demo Site B'}];
+      const checks=[...root.querySelectorAll('[data-bo-record]')];
+      function update(){
+        const selected=records.filter(r=>checks.find(c=>c.dataset.boRecord===r.key).checked);
+        q('[data-bo-count]').textContent=selected.length+' selected';
+        q('[data-bo-history]').replaceChildren(...selected.map(r=>{const el=document.createElement('span');el.textContent=r.date;return el;}));
+        q('[data-bo-warning]').hidden=!selected.some(r=>r.key==='b1');
+        q('[data-bo-briefmeta]').textContent='Fictional sample · '+selected.length+' selected report'+(selected.length===1?'':'s');
+        q('[data-bo-brieffacts]').replaceChildren(...selected.map(r=>{const li=document.createElement('li');li.textContent=r.id+' · '+r.date+' · '+r.site+' · Closed';return li;}));
+        if(!selected.length)q('[data-bo-brieffacts]').textContent='No reports selected. Choose a record to include.';
+        q('[data-bo-briefobservation]').textContent=q('#bo-observation').value.trim()||'No resident observation added. Current condition unverified.';
+        q('[data-bo-briefask]').textContent=q('#bo-action').value==='meeting'?'Bring the selected record history to our next group meeting and agree on a follow-up request.':'Please explain the recorded closure and the route for requesting follow-up.';
+      }
+      checks.forEach(c=>c.addEventListener('change',update));q('#bo-observation').addEventListener('input',update);q('#bo-action').addEventListener('change',update);
+      q('[data-bo-preview]').addEventListener('click',()=>{update();q('[data-bo-editor]').hidden=true;q('[data-bo-output]').hidden=false;});
+      q('[data-bo-back]').addEventListener('click',()=>{q('[data-bo-output]').hidden=true;q('[data-bo-editor]').hidden=false;});
+      update();
+    })();
+  </script>
+</div>

@@ -1,0 +1,28 @@
+{
+  "namespace": "sparc-state (local fallback)",
+  "key": "current-phase-bcc-hackathon-foundation",
+  "phase": 1,
+  "phase_name": "specification",
+  "documentation_status": "complete",
+  "product_selection": "pending",
+  "implementation_started": false,
+  "requirements_artifact": "docs/SPECIFICATION.md",
+  "conditional_profiles": [
+    "docs/specs/block-ops.md",
+    "docs/specs/casebreaker.md",
+    "docs/specs/peoples-chamber.md",
+    "docs/specs/reclaim.md",
+    "docs/specs/room.md",
+    "docs/specs/switch.md"
+  ],
+  "acceptance_status": {
+    "workspace": "passed checks recorded in docs/workflow/verification.json",
+    "application": "not implemented"
+  },
+  "requested_methods": [
+    "sparc-spec",
+    "research-synthesize",
+    "goal-plan"
+  ],
+  "remote_memory_written": false
+}

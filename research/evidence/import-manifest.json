@@ -1,0 +1,230 @@
+{
+  "imported": "2026-10-21",
+  "files": [
+    {
+      "source": "outputs/full-research.md",
+      "destination": "research/full-research.md",
+      "source_sha256": "0a7db57a728428dabf67084eb96726b9318754c223bb78cbd95fad1588fbdfd1",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "4796cfe82c6d1f2f004f9ae7fba9fcc05f0e6554401c82e9e7bb8e74979d65fe",
+      "transformations": [
+        "normalize local reference to repository path"
+      ]
+    },
+    {
+      "source": "outputs/decision-brief.md",
+      "destination": "research/decision-brief.md",
+      "source_sha256": "fd7f1c7451ec62a2e98a4fbbb2092ae9b5b00d9d7aae6ead2b9c75d2bfe73bcb",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "e97e5bec82d436468cab0c8c761d681ce408275d9dd0708f6fa41cb5fdf2748f",
+      "transformations": [
+        "normalize local reference to repository path",
+        "remove extra blank lines at EOF"
+      ]
+    },
+    {
+      "source": "outputs/aura-reassessment.md",
+      "destination": "research/aura-reassessment.md",
+      "source_sha256": "3b1bb88ecf28d1a7bd834f078d63542a30769e5bfffea3f7c8d5edf560ac1345",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "cf6c846ab007b0f67087674d565bae3ba0462f67784ecef57315feb1542148fe",
+      "transformations": [
+        "remove extra blank lines at EOF"
+      ]
+    },
+    {
+      "source": "outputs/six-finalists-product-and-pitch.md",
+      "destination": "docs/FINALISTS.md",
+      "source_sha256": "7d3013980acd740fa34fbacb65d688a6cf07b5d3a9936e447dbe17a7b8d990d9",
+      "copy": "byte-identical",
+      "destination_sha256": "7d3013980acd740fa34fbacb65d688a6cf07b5d3a9936e447dbe17a7b8d990d9",
+      "transformations": []
+    },
+    {
+      "source": "work/track-ai.md",
+      "destination": "research/track-notes/track-ai.md",
+      "source_sha256": "1fdfbb8cf1080e544de34d86fa268ad3d9a17b72298f381ca355cb31d426f858",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "dcc4afd22c041bb2082c37455960b6b997dbca0401f9e96b6f96c7eda141d79f",
+      "transformations": [
+        "remove extra blank lines at EOF"
+      ]
+    },
+    {
+      "source": "work/track-health.md",
+      "destination": "research/track-notes/track-health.md",
+      "source_sha256": "9da1848f97b27798c7a48833ce5c3ae4bb3b78c7b2dd64d80645655540a5c7e8",
+      "copy": "byte-identical",
+      "destination_sha256": "9da1848f97b27798c7a48833ce5c3ae4bb3b78c7b2dd64d80645655540a5c7e8",
+      "transformations": []
+    },
+    {
+      "source": "work/track-community.md",
+      "destination": "research/track-notes/track-community.md",
+      "source_sha256": "7f0ea0c70f399a6f6bd943d516ceb7d0c4bd7901ee86e05eb6d365c892306f56",
+      "copy": "byte-identical",
+      "destination_sha256": "7f0ea0c70f399a6f6bd943d516ceb7d0c4bd7901ee86e05eb6d365c892306f56",
+      "transformations": []
+    },
+    {
+      "source": "work/aura-ai.md",
+      "destination": "research/track-notes/aura-ai.md",
+      "source_sha256": "3353d58b13d80d4002da5e32b8c0013f26317567f6bc66a2630d420d5733f23d",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "d856703f956bba8e2476f53909b5e3c755e790d83d39614dc5392ff5a6491336",
+      "transformations": [
+        "remove extra blank lines at EOF"
+      ]
+    },
+    {
+      "source": "work/aura-health.md",
+      "destination": "research/track-notes/aura-health.md",
+      "source_sha256": "df7da5db851d6bd6513bec31fcd9af2ae01d78ae6575a49bb0b8de2296f7e2a6",
+      "copy": "byte-identical",
+      "destination_sha256": "df7da5db851d6bd6513bec31fcd9af2ae01d78ae6575a49bb0b8de2296f7e2a6",
+      "transformations": []
+    },
+    {
+      "source": "work/aura-community.md",
+      "destination": "research/track-notes/aura-community.md",
+      "source_sha256": "76334f452950dd994d7a114af886c24df72d6cc3dec67151ba65904466aa7727",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "f7abedcf73c5b5b7e229dbe253df435851aef9f686e218bbc55d64351be8b551",
+      "transformations": [
+        "normalize local reference to repository path"
+      ]
+    },
+    {
+      "source": "work/finalists-ai.md",
+      "destination": "research/track-notes/finalists-ai.md",
+      "source_sha256": "4ba302d56ec6e12cf36e78e9fa627ac2d0083138de05e86a86d70702af08f6f2",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "49085800def74141e2f155be5ded3b78c792163b806713655e5997b0c826a8b8",
+      "transformations": [
+        "remove extra blank lines at EOF"
+      ]
+    },
+    {
+      "source": "work/finalists-health.md",
+      "destination": "research/track-notes/finalists-health.md",
+      "source_sha256": "f647b67756cf1a245f9ae97a80f68906a2c8c741116556df794dac721e608e8f",
+      "copy": "byte-identical",
+      "destination_sha256": "f647b67756cf1a245f9ae97a80f68906a2c8c741116556df794dac721e608e8f",
+      "transformations": []
+    },
+    {
+      "source": "work/finalists-community.md",
+      "destination": "research/track-notes/finalists-community.md",
+      "source_sha256": "a9dea585a2a563c13ce056950c804087bdbf6f71c9a873d816089d63a493de79",
+      "copy": "byte-identical",
+      "destination_sha256": "a9dea585a2a563c13ce056950c804087bdbf6f71c9a873d816089d63a493de79",
+      "transformations": []
+    },
+    {
+      "source": "work/decision-synthesis.md",
+      "destination": "research/track-notes/decision-synthesis.md",
+      "source_sha256": "9828822a70950ac5ec8a20754e57ad55e1b0b06ce0abb0d8f38aa692a55c92ad",
+      "copy": "content preserved with recorded text normalization",
+      "destination_sha256": "e247aac170844b18e4ae318822c5efac6e304c704d1359c1c3ef7b09c28a9d18",
+      "transformations": [
+        "remove extra blank lines at EOF"
+      ]
+    },
+    {
+      "source": "work/aura-dc311-evidence.json",
+      "destination": "research/evidence/dc311-summary.json",
+      "source_sha256": "3e32c5a08ff329ac5fa0e052ca83532ddb5e737535b01e1c1684fbce7d9e1e1d",
+      "copy": "byte-identical",
+      "destination_sha256": "3e32c5a08ff329ac5fa0e052ca83532ddb5e737535b01e1c1684fbce7d9e1e1d",
+      "transformations": []
+    },
+    {
+      "source": "work/dc311-schema.json",
+      "destination": "research/evidence/dc311-schema.json",
+      "source_sha256": "16663052c3442d985f43d1409bde21461607b88e85df67c95ac8b4dfbff5da8d",
+      "copy": "byte-identical",
+      "destination_sha256": "16663052c3442d985f43d1409bde21461607b88e85df67c95ac8b4dfbff5da8d",
+      "transformations": []
+    },
+    {
+      "source": "work/aura-dc311-response.json",
+      "destination": "data/local/dc311-response-2026-10-20.json",
+      "source_sha256": "9ba47e346557b0ea416d6dc37010e978e18a27d73852ba42c3a0634ac34fbe29",
+      "copy": "byte-identical",
+      "destination_sha256": "9ba47e346557b0ea416d6dc37010e978e18a27d73852ba42c3a0634ac34fbe29",
+      "transformations": []
+    },
+    {
+      "source": "work/qa/results.json",
+      "destination": "previews/qa/results.json",
+      "source_sha256": "3f9ca0df64812de735e0d6a10e17c4bc6b561078fbd32ee867f033e0b6b37274",
+      "copy": "byte-identical",
+      "destination_sha256": "3f9ca0df64812de735e0d6a10e17c4bc6b561078fbd32ee867f033e0b6b37274",
+      "transformations": []
+    },
+    {
+      "source": "work/finalists-shell.html",
+      "destination": "previews/source/finalists-shell.html",
+      "source_sha256": "ca1b8ae29bffc94c61cdf17ef6db2f97f77433671665ea564de4690c39e08f6c",
+      "copy": "byte-identical",
+      "destination_sha256": "ca1b8ae29bffc94c61cdf17ef6db2f97f77433671665ea564de4690c39e08f6c",
+      "transformations": []
+    },
+    {
+      "source": "work/previews/room.html",
+      "destination": "previews/source/concepts/room.html",
+      "source_sha256": "b3f735308a8ca263eb816f403ada2b1881d24a53a090a02168b364f03882d447",
+      "copy": "byte-identical",
+      "destination_sha256": "b3f735308a8ca263eb816f403ada2b1881d24a53a090a02168b364f03882d447",
+      "transformations": []
+    },
+    {
+      "source": "work/previews/block-ops.html",
+      "destination": "previews/source/concepts/block-ops.html",
+      "source_sha256": "b873e0136c66afb0fc7f1b93c08bf80eec93bee1616f219f10ace4a7202817b0",
+      "copy": "byte-identical",
+      "destination_sha256": "b873e0136c66afb0fc7f1b93c08bf80eec93bee1616f219f10ace4a7202817b0",
+      "transformations": []
+    },
+    {
+      "source": "work/previews/casebreaker.html",
+      "destination": "previews/source/concepts/casebreaker.html",
+      "source_sha256": "8e1c9b795596aca6e7ab2a4d4488f719e7927618ffed65eb6a2e07e34ab900fa",
+      "copy": "byte-identical",
+      "destination_sha256": "8e1c9b795596aca6e7ab2a4d4488f719e7927618ffed65eb6a2e07e34ab900fa",
+      "transformations": []
+    },
+    {
+      "source": "work/previews/reclaim.html",
+      "destination": "previews/source/concepts/reclaim.html",
+      "source_sha256": "309eff5cdc47d6b8102a4fd43c0d8b3f48b0e9e9f7a9048c8b79ed81da4fb2ad",
+      "copy": "byte-identical",
+      "destination_sha256": "309eff5cdc47d6b8102a4fd43c0d8b3f48b0e9e9f7a9048c8b79ed81da4fb2ad",
+      "transformations": []
+    },
+    {
+      "source": "work/previews/chamber.html",
+      "destination": "previews/source/concepts/chamber.html",
+      "source_sha256": "452b3d92e8faf7300438342cdf3b5d8793828307ec114d8f40ec899ff24eab09",
+      "copy": "byte-identical",
+      "destination_sha256": "452b3d92e8faf7300438342cdf3b5d8793828307ec114d8f40ec899ff24eab09",
+      "transformations": []
+    },
+    {
+      "source": "work/previews/switch.html",
+      "destination": "previews/source/concepts/switch.html",
+      "source_sha256": "4b3cc220c7772d26b651290b354ba6145938c25ca3c1d71b1930cade32660aa1",
+      "copy": "byte-identical",
+      "destination_sha256": "4b3cc220c7772d26b651290b354ba6145938c25ca3c1d71b1930cade32660aa1",
+      "transformations": []
+    },
+    {
+      "source": "conversation visualization: hackathon-finalists.html",
+      "destination": "previews/source/finalists.fragment.html",
+      "source_sha256": "84fd0e22d2ae82af19bb6fdfb4da79084554457cb0fa409b4490857920a5aaec",
+      "copy": "byte-identical",
+      "destination_sha256": "84fd0e22d2ae82af19bb6fdfb4da79084554457cb0fa409b4490857920a5aaec",
+      "transformations": []
+    }
+  ]
+}

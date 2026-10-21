@@ -1,0 +1,84 @@
+{
+  "checked_utc": "2026-10-21T15:35:29.722732+00:00",
+  "status": "passed",
+  "markdown_files": 44,
+  "relative_links_checked": 335,
+  "broken_links": [],
+  "workstation_paths_in_markdown": [],
+  "json_files_parsed": 9,
+  "imported_artifacts": 26,
+  "normalized_imports": [
+    "research/full-research.md",
+    "research/decision-brief.md",
+    "research/aura-reassessment.md",
+    "research/track-notes/track-ai.md",
+    "research/track-notes/aura-ai.md",
+    "research/track-notes/aura-community.md",
+    "research/track-notes/finalists-ai.md",
+    "research/track-notes/decision-synthesis.md"
+  ],
+  "raw_snapshot_recount": {
+    "rows": 475,
+    "distinct_request_ids": 475,
+    "candidate_multi_record_groups": 68,
+    "transfer_limit_exceeded": false
+  },
+  "portable_preview": {
+    "status": "passed",
+    "browser": "155.0.8059.85",
+    "server_preview": true,
+    "file_preview": true,
+    "variants": 6,
+    "presentation_beats": 18,
+    "changed_output": true,
+    "missing_date_confirmation_isolated": true,
+    "responsive_widths": [
+      {
+        "width": 1024,
+        "viewport": 992,
+        "scroll": 992
+      },
+      {
+        "width": 736,
+        "viewport": 704,
+        "scroll": 704
+      },
+      {
+        "width": 390,
+        "viewport": 358,
+        "scroll": 358
+      },
+      {
+        "width": 320,
+        "viewport": 288,
+        "scroll": 288
+      }
+    ],
+    "browser_errors": []
+  },
+  "git_configuration": {
+    "origin": "https://github.com/mshaaf/bcc-hackathon.git",
+    "branch": "main",
+    "remote_initially_empty": true,
+    "remote_visibility": "public",
+    "push_performed": false
+  },
+  "remote_push": "not performed",
+  "credential_review": {
+    "text_files_checked": 63,
+    "findings": [],
+    "method": "local pattern check and context review; no Ruflo service called"
+  },
+  "scope": "workspace and previews only; product not implemented",
+  "import_verification": "all 26 destinations verified against original hash or recorded link/EOF normalization",
+  "git_checks": {
+    "staged_whitespace": "passed",
+    "ignored_raw_snapshot": "passed",
+    "tracked_files": 63,
+    "tracked_sensitive_uploads_or_env_files": 0,
+    "origin": "passed",
+    "branch": "main",
+    "commit_status": "initial local documentation commit; see git log",
+    "remote_push": "not performed"
+  }
+}

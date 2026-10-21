@@ -1,0 +1,80 @@
+<div id="mock-chamber" class="concept-screen">
+  <style>
+    #mock-chamber{--ch-bg:light-dark(#f2eee7,#211e20);--ch-paper:light-dark(#fffdf8,#302a2d);--ch-ink:light-dark(#3b2630,#f0e4e7);--ch-muted:light-dark(#75636a,#c4b0b8);--ch-line:light-dark(#d8ccc9,#58474f);--ch-wine:light-dark(#722b41,#c995a6);--ch-onwine:light-dark(#fff8f3,#2b1720);--ch-floor:light-dark(#612336,#391925);--ch-floorink:light-dark(#fff4eb,#f4dfd9);--ch-brass:light-dark(#ead8a6,#5a492b);--ch-brassink:light-dark(#5c481e,#f0ddaf);--ch-soft:light-dark(#ede1e3,#482d38);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.4;background:var(--ch-bg);color:var(--ch-ink);border:1px solid var(--ch-line);border-radius:14px;min-width:0;box-sizing:border-box;overflow-wrap:anywhere}
+    #mock-chamber *{box-sizing:border-box;min-width:0}
+    #mock-chamber .ch-head{padding:17px 24px;display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid var(--ch-line)}
+    #mock-chamber .ch-brand{font-family:"Lora",serif;font-size:23px;letter-spacing:-.8px;font-weight:500}
+    #mock-chamber .ch-practice{font-size:12px;color:var(--ch-muted);max-width:220px;text-align:right}
+    #mock-chamber .ch-fiction{padding:7px 24px;background:var(--ch-brass);color:var(--ch-brassink);font-size:12px}
+    #mock-chamber .ch-main{padding:20px 24px;display:grid;grid-template-columns:minmax(145px,.7fr) minmax(0,1.6fr) minmax(170px,.8fr);gap:18px;align-items:start}
+    #mock-chamber h2,#mock-chamber h3,#mock-chamber p{margin:0}
+    #mock-chamber .ch-context{padding-top:5px}
+    #mock-chamber .ch-smallhead{font-size:12px;color:var(--ch-muted);margin-bottom:10px}
+    #mock-chamber .ch-context h3{font-family:"Lora",serif;font-size:21px;line-height:1.25;font-weight:500;letter-spacing:-.5px;margin-bottom:15px}
+    #mock-chamber .ch-notice{padding:13px 12px;background:var(--ch-paper);border-top:4px solid var(--ch-wine);font-size:13px}
+    #mock-chamber .ch-notice strong{display:block;font-size:13px;font-weight:500;margin-bottom:7px}
+    #mock-chamber .ch-notice p{color:var(--ch-muted);font-size:12px;margin-top:8px}
+    #mock-chamber .ch-contextnote{font-size:12px;color:var(--ch-muted);margin-top:16px;line-height:1.5}
+    #mock-chamber .ch-floor{background:var(--ch-floor);color:var(--ch-floorink);padding:20px;border-radius:70px 70px 8px 8px}
+    #mock-chamber .ch-floorintro{text-align:center;padding:2px 9px 16px}
+    #mock-chamber .ch-floorintro p{font-size:12px;color:var(--ch-floorink);opacity:.85;margin-bottom:8px}
+    #mock-chamber .ch-floorintro h2{font-family:"Lora",serif;font-size:29px;line-height:1.15;letter-spacing:-.9px;font-weight:500}
+    #mock-chamber .ch-timer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:15px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--ch-floorink)}
+    #mock-chamber .ch-time{font-family:"Archivo",sans-serif;font-size:28px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+    #mock-chamber button{font-family:inherit;font-size:13px;padding:10px 12px;min-height:40px;border-radius:4px;border:1px solid var(--ch-line);background:var(--ch-paper);color:var(--ch-ink)}
+    #mock-chamber .ch-floorbutton{background:var(--ch-floorink);color:var(--ch-floor);border-color:var(--ch-floorink);font-size:12px}
+    #mock-chamber label{font-size:12px;display:block;margin-bottom:5px}
+    #mock-chamber textarea{font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.45;width:100%;resize:vertical;padding:9px 10px;background:var(--ch-paper);color:var(--ch-ink);border:1px solid var(--ch-line);border-radius:4px;margin:0 0 12px;min-height:67px}
+    #mock-chamber .ch-ask{min-height:76px}
+    #mock-chamber .ch-chair{padding-top:5px}
+    #mock-chamber .ch-chair h3{font-family:"Lora",serif;font-size:21px;font-weight:500;letter-spacing:-.4px;margin-bottom:10px}
+    #mock-chamber select{font:inherit;font-size:13px;width:100%;padding:9px;background:var(--ch-paper);border:1px solid var(--ch-line);color:var(--ch-ink);border-radius:4px;margin-bottom:14px}
+    #mock-chamber .ch-quote{font-family:"Lora",serif;font-size:18px;line-height:1.4;margin-bottom:16px}
+    #mock-chamber .ch-suggestion{border-left:3px solid var(--ch-wine);padding-left:11px;margin-bottom:13px;font-size:13px;line-height:1.5}
+    #mock-chamber .ch-suggestion small{display:block;font-family:"DM Sans",sans-serif;font-size:12px;color:var(--ch-muted);margin-bottom:6px}
+    #mock-chamber .ch-use{color:var(--ch-wine);background:var(--ch-soft);border-color:var(--ch-soft);width:100%;margin-bottom:9px}
+    #mock-chamber .ch-previewbutton{background:var(--ch-wine);color:var(--ch-onwine);border-color:var(--ch-wine);width:100%}
+    #mock-chamber .ch-fixed{font-size:12px;color:var(--ch-muted);margin-top:10px}
+    #mock-chamber .ch-statement{background:var(--ch-paper);color:var(--ch-ink);padding:16px;border-radius:4px}
+    #mock-chamber .ch-statement h3{font-family:"Lora",serif;font-size:21px;font-weight:500;margin-bottom:13px}
+    #mock-chamber .ch-statement p{font-size:14px;line-height:1.6;margin-bottom:11px}
+    #mock-chamber .ch-statement small{font-size:12px;color:var(--ch-muted)}
+    #mock-chamber .ch-back{width:100%;margin-top:12px}
+    #mock-chamber .ch-foot{padding:11px 24px;border-top:1px solid var(--ch-line);display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--ch-muted)}
+    #mock-chamber [hidden]{display:none!important}
+    @media(max-width:760px){#mock-chamber .ch-main{grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr);padding:18px 17px}#mock-chamber .ch-context{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.1fr;gap:0 18px}#mock-chamber .ch-contextnote{grid-column:1/-1;margin-top:9px}#mock-chamber .ch-context h3{font-size:21px;margin:0}#mock-chamber .ch-smallhead{margin-bottom:6px}#mock-chamber .ch-head{padding:16px 17px}#mock-chamber .ch-fiction{padding:7px 17px}}
+    @media(max-width:500px){#mock-chamber .ch-main{grid-template-columns:1fr}#mock-chamber .ch-context{grid-template-columns:1fr;gap:10px}#mock-chamber .ch-contextnote{margin:0}#mock-chamber .ch-head{flex-wrap:wrap}#mock-chamber .ch-practice{text-align:left;max-width:none}#mock-chamber .ch-floor{padding:22px 17px 17px}#mock-chamber .ch-floorintro h2{font-size:28px}#mock-chamber .ch-foot{flex-wrap:wrap;padding:11px 17px}#mock-chamber textarea,#mock-chamber select{font-size:16px}}
+  </style>
+  <header class="ch-head"><div class="ch-brand">People's Chamber</div><div class="ch-practice">A place to practice.<br>Not an official Council proceeding.</div></header>
+  <div class="ch-fiction">Concept preview · Fictional practice notice</div>
+  <div class="ch-main">
+    <aside class="ch-context" aria-label="Fictional practice context"><div><p class="ch-smallhead">Our practice context</p><h3>Neighborhood services</h3></div><div class="ch-notice"><strong>Fictional practice notice</strong>A conversation about service-request closure explanations.<p>No official hearing date or submission deadline.</p></div><p class="ch-contextnote">Your experience belongs to you. Institutional facts need a source.</p></aside>
+    <section class="ch-floor" aria-label="Testimony rehearsal">
+      <div class="ch-floorintro"><p>Your voice, prepared</p><h2 data-ch-title>Take the floor.</h2></div>
+      <div class="ch-timer"><span class="ch-time" data-ch-time role="timer" aria-label="Practice time remaining">02:00</span><button class="ch-floorbutton cursor-interaction" type="button" data-ch-start>Start rehearsal</button></div>
+      <div data-ch-editor><label for="ch-experience">My experience</label><textarea id="ch-experience" rows="2">Our neighborhood group wants clearer explanations when service requests close.</textarea><label for="ch-ask">My request</label><textarea id="ch-ask" class="ch-ask" rows="3">Please explain what happened when our requests were closed.</textarea></div>
+      <div class="ch-statement" data-ch-statement hidden aria-live="polite"><h3>My statement</h3><p data-ch-previewexperience></p><p data-ch-previewask></p><small>Fictional rehearsal draft · Nothing submitted</small><button class="ch-back cursor-interaction" type="button" data-ch-back>Back to rehearsal</button></div>
+    </section>
+    <aside class="ch-chair" aria-label="Human chair practice prompt"><p class="ch-smallhead">Human chair · Fixed prompts</p><h3>A question from the chair</h3><label for="ch-question">Choose a practice question</label><select id="ch-question" class="cursor-interaction"><option value="action">Make the action specific</option><option value="use">Explain who it helps</option></select><p class="ch-quote" data-ch-question>“What specific action are you asking for?”</p><div class="ch-suggestion"><small>A focused version of your ask</small><span data-ch-suggestion>Please include an explanation when a service request closes and a clear route to request follow-up.</span></div><button class="ch-use cursor-interaction" type="button" data-ch-use>Use this focused ask</button><button class="ch-previewbutton cursor-interaction" type="button" data-ch-preview>Preview my testimony</button><p class="ch-fixed">Practice with a person. These prompts are fixed, not a live official response.</p></aside>
+  </div>
+  <footer class="ch-foot"><span data-ch-status aria-live="polite">Practice draft · You control the words</span><span>No official submission</span></footer>
+  <script>
+    (()=>{
+      const root=document.getElementById('mock-chamber');if(!root)return;const q=s=>root.querySelector(s);
+      const prompts={action:{question:'What specific action are you asking for?',ask:'Please include an explanation when a service request closes and a clear route to request follow-up.'},use:{question:'How would residents use that change?',ask:'Please make closure explanations easy to find so neighborhood groups can understand what happened and choose their next step.'}};
+      let remaining=120,timer=null;
+      function draft(){q('[data-ch-previewexperience]').textContent=q('#ch-experience').value.trim()||'Add your own experience before sharing this statement.';q('[data-ch-previewask]').textContent=q('#ch-ask').value.trim()||'Add the action you want to request.';}
+      function clock(){q('[data-ch-time]').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0');}
+      q('#ch-question').addEventListener('change',()=>{const p=prompts[q('#ch-question').value];q('[data-ch-question]').textContent='“'+p.question+'”';q('[data-ch-suggestion]').textContent=p.ask;});
+      q('[data-ch-use]').addEventListener('click',()=>{q('#ch-ask').value=prompts[q('#ch-question').value].ask;draft();q('[data-ch-status]').textContent='Focused ask added · Edit it in your own words';});
+      q('[data-ch-preview]').addEventListener('click',()=>{draft();q('[data-ch-editor]').hidden=true;q('[data-ch-statement]').hidden=false;q('[data-ch-title]').textContent='Your words, together.';q('[data-ch-status]').textContent='Testimony preview · Nothing submitted';});
+      q('[data-ch-back]').addEventListener('click',()=>{q('[data-ch-editor]').hidden=false;q('[data-ch-statement]').hidden=true;q('[data-ch-title]').textContent='Take the floor.';});
+      q('#ch-experience').addEventListener('input',draft);q('#ch-ask').addEventListener('input',draft);
+      q('[data-ch-start]').addEventListener('click',()=>{
+        if(timer){clearInterval(timer);timer=null;q('[data-ch-start]').textContent='Resume rehearsal';q('[data-ch-status]').textContent='Practice paused';return;}
+        if(remaining===0)remaining=120;q('[data-ch-start]').textContent='Pause rehearsal';q('[data-ch-title]').textContent='The floor is yours.';q('[data-ch-status]').textContent='Your practice turn · Human chair';clock();
+        timer=setInterval(()=>{remaining-=1;clock();if(remaining<=0){clearInterval(timer);timer=null;q('[data-ch-start]').textContent='Rehearse again';q('[data-ch-status]').textContent='Practice time complete · Review your request';}},1000);
+      });draft();
+    })();
+  </script>
+</div>

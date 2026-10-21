@@ -1,0 +1,149 @@
+{
+  "errors": [],
+  "sizes": [
+    {
+      "width": 990,
+      "key": "blockops",
+      "scroll": 990,
+      "height": 602
+    },
+    {
+      "width": 990,
+      "key": "chamber",
+      "scroll": 990,
+      "height": 656
+    },
+    {
+      "width": 992,
+      "key": "switch",
+      "scroll": 992,
+      "height": 639
+    },
+    {
+      "width": 992,
+      "key": "casebreaker",
+      "scroll": 992,
+      "height": 545
+    },
+    {
+      "width": 992,
+      "key": "room",
+      "scroll": 992,
+      "height": 788
+    },
+    {
+      "width": 992,
+      "key": "reclaim",
+      "scroll": 992,
+      "height": 816
+    },
+    {
+      "width": 702,
+      "key": "blockops",
+      "scroll": 702,
+      "height": 635
+    },
+    {
+      "width": 702,
+      "key": "chamber",
+      "scroll": 702,
+      "height": 779
+    },
+    {
+      "width": 704,
+      "key": "switch",
+      "scroll": 704,
+      "height": 661
+    },
+    {
+      "width": 704,
+      "key": "casebreaker",
+      "scroll": 704,
+      "height": 600
+    },
+    {
+      "width": 704,
+      "key": "room",
+      "scroll": 704,
+      "height": 1014
+    },
+    {
+      "width": 704,
+      "key": "reclaim",
+      "scroll": 704,
+      "height": 1101
+    },
+    {
+      "width": 356,
+      "key": "blockops",
+      "scroll": 356,
+      "height": 1119
+    },
+    {
+      "width": 356,
+      "key": "chamber",
+      "scroll": 356,
+      "height": 1434
+    },
+    {
+      "width": 358,
+      "key": "switch",
+      "scroll": 358,
+      "height": 1154
+    },
+    {
+      "width": 358,
+      "key": "casebreaker",
+      "scroll": 358,
+      "height": 897
+    },
+    {
+      "width": 358,
+      "key": "room",
+      "scroll": 358,
+      "height": 1561
+    },
+    {
+      "width": 358,
+      "key": "reclaim",
+      "scroll": 358,
+      "height": 1571
+    },
+    {
+      "width": 286,
+      "key": "blockops",
+      "scroll": 286,
+      "height": 1247
+    },
+    {
+      "width": 286,
+      "key": "chamber",
+      "scroll": 286,
+      "height": 1525
+    },
+    {
+      "width": 288,
+      "key": "switch",
+      "scroll": 288,
+      "height": 1338
+    },
+    {
+      "width": 288,
+      "key": "casebreaker",
+      "scroll": 288,
+      "height": 1023
+    },
+    {
+      "width": 288,
+      "key": "room",
+      "scroll": 288,
+      "height": 1801
+    },
+    {
+      "width": 288,
+      "key": "reclaim",
+      "scroll": 288,
+      "height": 1793
+    }
+  ]
+}

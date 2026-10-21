@@ -1,0 +1,98 @@
+<div id="mock-reclaim" class="concept-screen">
+  <style>
+    #mock-reclaim { --rc-ground:light-dark(#edf1f5,#1c2633);--rc-paper:light-dark(#ffffff,#293545);--rc-ink:light-dark(#20374e,#eaf1f9);--rc-quiet:light-dark(#576b7d,#b9c8d9);--rc-line:light-dark(#ccd7e0,#4c6074);--rc-active:light-dark(#294e70,#bdd7ed);--rc-on-active:light-dark(#ffffff,#193047);--rc-highlight:light-dark(#f1e2b4,#5c4e29);--rc-soft:light-dark(#dfe9f1,#33495e);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.45;background:var(--rc-ground);color:var(--rc-ink);min-height:550px;padding:22px 25px;min-width:0;box-sizing:border-box; }
+    #mock-reclaim *,#mock-reclaim *::before,#mock-reclaim *::after { box-sizing:border-box; }
+    #mock-reclaim h2,#mock-reclaim h3,#mock-reclaim p { margin:0; }
+    #mock-reclaim button { font:inherit;color:inherit;border:0;background:transparent;min-height:40px; }
+    #mock-reclaim button:focus-visible,#mock-reclaim input:focus-visible { outline:3px solid var(--rc-active);outline-offset:3px; }
+    #mock-reclaim .rc-head { display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border-bottom:1px solid var(--rc-line);padding-bottom:17px; }
+    #mock-reclaim .rc-brand { font-family:"Archivo",sans-serif;font-size:25px;font-weight:500;letter-spacing:-1.2px; }
+    #mock-reclaim .rc-concept { font-size:12px;color:var(--rc-quiet); }
+    #mock-reclaim .rc-intro { display:flex;justify-content:space-between;align-items:end;gap:15px;margin:20px 0 22px; }
+    #mock-reclaim .rc-intro h2 { font-family:"Space Grotesk",sans-serif;font-size:30px;font-weight:500;letter-spacing:-1px;line-height:1.15; }
+    #mock-reclaim .rc-person { text-align:right;color:var(--rc-quiet);font-size:13px; }
+    #mock-reclaim .rc-layout { display:grid;grid-template-columns:minmax(125px,.67fr) minmax(290px,1.8fr) minmax(185px,1fr);gap:20px;align-items:start; }
+    #mock-reclaim .rc-layout>* { min-width:0; }
+    #mock-reclaim .rc-section-title { font-size:13px;font-weight:500;margin-bottom:12px; }
+    #mock-reclaim .rc-doc { display:block;text-align:left;width:100%;padding:12px 10px;border:1px solid var(--rc-line);border-radius:7px;margin-bottom:9px; }
+    #mock-reclaim .rc-doc span { display:block;font-size:12px;color:var(--rc-quiet);margin-top:4px; }
+    #mock-reclaim .rc-doc[aria-pressed="true"] { background:var(--rc-active);color:var(--rc-on-active);border-color:var(--rc-active); }
+    #mock-reclaim .rc-doc[aria-pressed="true"] span { color:var(--rc-on-active); }
+    #mock-reclaim .rc-guide { margin-top:20px;color:var(--rc-quiet);font-size:12px; }
+    #mock-reclaim .rc-sheet { background:var(--rc-paper);padding:16px 18px;border-radius:2px 15px 2px 2px; }
+    #mock-reclaim .rc-sheet-top { display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--rc-quiet);padding-bottom:13px;border-bottom:1px solid var(--rc-line); }
+    #mock-reclaim .rc-sheet h3 { font-size:19px;font-weight:500;margin:15px 0 6px; }
+    #mock-reclaim .rc-date { padding:7px 9px;margin:0 -9px 9px;font-size:13px; }
+    #mock-reclaim .rc-date.rc-missing { background:var(--rc-highlight); }
+    #mock-reclaim .rc-lab-row { width:100%;display:grid;grid-template-columns:1fr auto;gap:13px;text-align:left;padding:12px 10px;margin:0 -1px 5px;border:1px solid var(--rc-line);border-radius:4px;align-items:center; }
+    #mock-reclaim .rc-lab-row[aria-pressed="true"] { background:var(--rc-highlight);border-color:var(--rc-line); }
+    #mock-reclaim .rc-lab-row span { font-size:13px; }
+    #mock-reclaim .rc-lab-row strong { font-family:"Space Grotesk",sans-serif;font-size:29px;font-weight:500;font-variant-numeric:tabular-nums; }
+    #mock-reclaim .rc-unit { color:var(--rc-quiet);font-size:12px;margin:9px 0 13px; }
+    #mock-reclaim .rc-source-message { color:var(--rc-quiet);font-size:12px;min-height:18px; }
+    #mock-reclaim .rc-confirm { display:flex;align-items:start;gap:9px;border-top:1px solid var(--rc-line);padding-top:13px;margin-top:12px;font-size:13px; }
+    #mock-reclaim .rc-confirm input { width:16px;height:16px;flex:none;accent-color:var(--rc-active);margin:2px 0 0; }
+    #mock-reclaim .rc-packet { border-left:2px solid var(--rc-active);padding-left:17px; }
+    #mock-reclaim .rc-packet h3 { font-family:"Space Grotesk",sans-serif;font-size:21px;font-weight:500;line-height:1.2; }
+    #mock-reclaim .rc-packet-status { display:block;font-size:12px;background:var(--rc-soft);padding:8px 9px;margin:14px 0; }
+    #mock-reclaim .rc-item { margin-bottom:15px;font-size:13px; }
+    #mock-reclaim .rc-item-label { color:var(--rc-quiet);font-size:12px;margin-bottom:4px; }
+    #mock-reclaim .rc-preview { padding:10px 13px;width:100%;background:var(--rc-active);color:var(--rc-on-active);border-radius:6px;margin-top:2px;font-weight:500; }
+    #mock-reclaim .rc-footer { margin-top:19px;color:var(--rc-quiet);font-size:12px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap; }
+    #mock-reclaim .rc-expanded { background:var(--rc-paper);border:1px solid var(--rc-line);border-radius:8px;margin-top:18px;padding:19px; }
+    #mock-reclaim .rc-expanded h3 { font-family:"Space Grotesk",sans-serif;font-size:23px;font-weight:500;margin-bottom:10px; }
+    #mock-reclaim .rc-expanded p+p { margin-top:9px; }
+    #mock-reclaim [hidden] { display:none!important; }
+    @media (max-width:800px) { #mock-reclaim { padding:20px; }#mock-reclaim .rc-layout { grid-template-columns:minmax(130px,.7fr) minmax(270px,1.8fr); }#mock-reclaim .rc-packet { grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:0 20px; }#mock-reclaim .rc-packet h3,#mock-reclaim .rc-packet-status { grid-column:1/-1; } }
+    @media (max-width:540px) { #mock-reclaim { padding:18px 16px; }#mock-reclaim .rc-intro { display:block; }#mock-reclaim .rc-person { text-align:left;margin-top:9px; }#mock-reclaim .rc-intro h2 { font-size:28px; }#mock-reclaim .rc-layout { display:block; }#mock-reclaim .rc-docs { display:grid;grid-template-columns:1fr 1fr;gap:8px; }#mock-reclaim .rc-docs h3,#mock-reclaim .rc-guide { grid-column:1/-1; }#mock-reclaim .rc-guide { margin:0 0 17px; }#mock-reclaim .rc-doc { margin:0;min-height:65px; }#mock-reclaim .rc-sheet { padding:18px 14px; }#mock-reclaim .rc-packet { display:block;margin-top:23px; }#mock-reclaim .rc-lab-row strong { font-size:27px; } }
+  </style>
+  <header class="rc-head"><div class="rc-brand">reclaim</div><div class="rc-concept">Concept preview · Fictional records</div></header>
+  <div class="rc-intro"><h2>Make the evidence visible.</h2><div class="rc-person">Jordan Ellis [fictional]<br>Historical kidney records</div></div>
+  <div class="rc-layout">
+    <aside class="rc-docs" aria-label="Sample documents">
+      <h3 class="rc-section-title">Your documents</h3>
+      <button type="button" class="rc-doc cursor-interaction" data-rc-doc="dated" aria-pressed="true">June 12, 2019<span>Historical lab · 1 page</span></button>
+      <button type="button" class="rc-doc cursor-interaction" data-rc-doc="missing" aria-pressed="false">Date missing<span>Historical lab · 1 page</span></button>
+      <p class="rc-guide">Select a value to inspect its original source.</p>
+    </aside>
+    <section class="rc-sheet" aria-label="Fictional original report excerpt">
+      <div class="rc-sheet-top"><span>Demo lab report</span><span>Page 1</span></div>
+      <h3>Kidney function</h3>
+      <p class="rc-date" id="reclaim-date">Collected June 12, 2019 · Specimen DEMO-019</p>
+      <button type="button" class="rc-lab-row cursor-interaction" data-rc-field="with" aria-pressed="false"><span>Reported eGFR<br>with Black variable</span><strong>23.3</strong></button>
+      <button type="button" class="rc-lab-row cursor-interaction" data-rc-field="without" aria-pressed="true"><span>Reported eGFR<br>without Black variable</span><strong>19.2</strong></button>
+      <p class="rc-unit">Both values: mL/min/1.73m² · same specimen</p>
+      <p class="rc-source-message" id="reclaim-source" aria-live="polite">Selected source: reported value without Black variable.</p>
+      <label class="rc-confirm"><input type="checkbox" id="reclaim-confirm" class="cursor-interaction"><span>I checked these fields against this page.</span></label>
+    </section>
+    <aside class="rc-packet" aria-label="Records to discuss">
+      <h3>Records to discuss</h3>
+      <p class="rc-packet-status" id="reclaim-status" aria-live="polite">Check the source first</p>
+      <div class="rc-item"><p class="rc-item-label">Selected reported pair</p><p>23.3 / 19.2</p></div>
+      <div class="rc-item"><p class="rc-item-label">Historical date</p><p id="reclaim-packet-date">June 12, 2019 · not yet checked</p></div>
+      <div class="rc-item"><p class="rc-item-label">Waiting-time / dialysis start</p><p>Not provided. Ask your team.</p></div>
+      <button type="button" class="rc-preview cursor-interaction" id="reclaim-preview" aria-expanded="false" aria-controls="reclaim-expanded">Preview packet</button>
+    </aside>
+  </div>
+  <section class="rc-expanded" id="reclaim-expanded" aria-label="Review packet preview" hidden>
+    <h3>For discussion with your transplant team</h3>
+    <p id="reclaim-output">No checked report yet. Confirm fields to include a source reference.</p>
+    <p><strong>My question:</strong> Can you help confirm whether these older records belong in my waiting-time review?</p>
+    <p>Missing information stays visible. Your transplant team determines eligibility and submits any request.</p>
+  </section>
+  <footer class="rc-footer"><span>For transplant-team review. No eligibility or time-credit decision.</span><span>HRSA illustrative values · Patient and reports invented</span></footer>
+  <script>
+    (() => {
+      const root=document.getElementById('mock-reclaim');
+      if(!root) return;
+      const q=s=>root.querySelector(s);
+      let doc='dated';
+      const checked={dated:false,missing:false};
+      function render(){const missing=doc==='missing';const confirmed=checked[doc];q('#reclaim-date').textContent=missing?'Collection date not present · Specimen DEMO-020':'Collected June 12, 2019 · Specimen DEMO-019';q('#reclaim-date').classList.toggle('rc-missing',missing);q('#reclaim-confirm').checked=confirmed;q('#reclaim-status').textContent=confirmed?(missing?'Values checked · date still needed':'1 checked record to discuss'):'Check the source first';q('#reclaim-packet-date').textContent=missing?'Missing from this page. Request the dated report.':(confirmed?'June 12, 2019 · checked by you':'June 12, 2019 · not yet checked');q('#reclaim-output').textContent=confirmed?(missing?'Included: Demo report, page 1; reported pair 23.3 / 19.2, mL/min/1.73m². Collection date missing; waiting-time / dialysis start not provided.':'Included: June 12, 2019, specimen DEMO-019, Demo report page 1; reported pair 23.3 / 19.2, mL/min/1.73m². Waiting-time / dialysis start not provided.'):'No checked report yet. Confirm fields to include a source reference.';}
+      root.querySelectorAll('[data-rc-doc]').forEach(button=>button.addEventListener('click',()=>{doc=button.dataset.rcDoc;root.querySelectorAll('[data-rc-doc]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));render();}));
+      root.querySelectorAll('[data-rc-field]').forEach(button=>button.addEventListener('click',()=>{root.querySelectorAll('[data-rc-field]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));q('#reclaim-source').textContent=button.dataset.rcField==='with'?'Selected source: reported value with Black variable.':'Selected source: reported value without Black variable.';}));
+      q('#reclaim-confirm').addEventListener('change',()=>{checked[doc]=q('#reclaim-confirm').checked;render();});
+      q('#reclaim-preview').addEventListener('click',()=>{const panel=q('#reclaim-expanded');panel.hidden=!panel.hidden;q('#reclaim-preview').setAttribute('aria-expanded',String(!panel.hidden));q('#reclaim-preview').textContent=panel.hidden?'Preview packet':'Close packet preview';});
+    })();
+  </script>
+</div>

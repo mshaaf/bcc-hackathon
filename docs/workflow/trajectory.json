@@ -1,0 +1,40 @@
+{
+  "recorded_utc": "2026-10-21T15:33:51.119155+00:00",
+  "remote_trajectory_id": null,
+  "steps": [
+    {
+      "id": "inspect",
+      "status": "completed",
+      "note": "Observed in current setup; not a Ruflo service event."
+    },
+    {
+      "id": "connect",
+      "status": "completed",
+      "note": "Observed in current setup; not a Ruflo service event."
+    },
+    {
+      "id": "import",
+      "status": "completed",
+      "note": "Observed in current setup; not a Ruflo service event."
+    },
+    {
+      "id": "synthesize",
+      "status": "completed",
+      "note": "Observed in current setup; not a Ruflo service event."
+    },
+    {
+      "id": "specify-and-plan",
+      "status": "completed",
+      "note": "Observed in current setup; not a Ruflo service event."
+    },
+    {
+      "id": "verify",
+      "status": "completed",
+      "note": "Observed in current setup; not a Ruflo service event."
+    }
+  ],
+  "product_work": "not started",
+  "commit": "Initial local documentation commit; git log is authoritative",
+  "push": "not performed",
+  "setup_status": "complete"
+}

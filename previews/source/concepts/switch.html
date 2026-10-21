@@ -1,0 +1,126 @@
+<div id="mock-switch" class="concept-screen">
+  <style>
+    #mock-switch { --sw-page:light-dark(#eceefa,#1b1e32); --sw-paper:light-dark(#fffdf8,#272b41); --sw-ink:light-dark(#202143,#f1efff); --sw-muted:light-dark(#595c78,#bfc2dc); --sw-line:light-dark(#ced1e4,#4c506b); --sw-accent:light-dark(#5040bf,#b8a8ff); --sw-on-accent:light-dark(#ffffff,#221943); --sw-soft:light-dark(#dedbf5,#393455); --sw-warning:light-dark(#943d25,#ffc1a8); --sw-warn-bg:light-dark(#fce8df,#492e2d); --sw-good:light-dark(#295c4c,#a0dbbe); --sw-good-bg:light-dark(#e4f0e9,#263e37); color:var(--sw-ink); background:var(--sw-page); font:14px/1.45 'DM Sans',sans-serif; width:100%; min-width:0; padding:22px 26px 18px; }
+    #mock-switch, #mock-switch * { box-sizing:border-box; min-width:0; }
+    #mock-switch [hidden] { display:none!important; }
+    #mock-switch button { font:inherit; color:inherit; }
+    #mock-switch .sw-header { display:flex; align-items:center; justify-content:space-between; gap:18px; padding-bottom:15px; border-bottom:1px solid var(--sw-line); }
+    #mock-switch .sw-brand { font:500 24px/1 'Archivo',sans-serif; letter-spacing:-1px; }
+    #mock-switch .sw-brand em { font-style:normal; font-weight:400; color:var(--sw-accent); }
+    #mock-switch .sw-context { color:var(--sw-muted); font-size:12px; text-align:right; }
+    #mock-switch .sw-disclosure { margin:10px 0 0; font-size:12px; color:var(--sw-muted); }
+    #mock-switch .sw-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:25px; margin:20px 0 18px; }
+    #mock-switch h2 { font:500 34px/1.04 'Archivo',sans-serif; letter-spacing:-1.3px; margin:0; }
+    #mock-switch .sw-heading p { max-width:240px; color:var(--sw-muted); margin:0; }
+    #mock-switch .sw-facts { display:flex; flex-wrap:wrap; gap:7px 18px; border-top:1px solid var(--sw-line); padding:11px 0 12px; }
+    #mock-switch .sw-facts span { font-size:12px; }
+    #mock-switch .sw-facts b { font-weight:500; color:var(--sw-accent); }
+    #mock-switch .sw-workspace { display:grid; grid-template-columns:1.03fr 1fr; gap:15px; }
+    #mock-switch .sw-source { background:var(--sw-paper); border-radius:5px 24px 5px 5px; padding:20px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; }
+    #mock-switch .sw-section-line { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    #mock-switch .sw-section-line span { color:var(--sw-muted); font-size:12px; }
+    #mock-switch .sw-source h3, #mock-switch .sw-output h3 { font-size:14px; font-weight:500; margin:0; }
+    #mock-switch .sw-quote { font:400 20px/1.43 'Lora',serif; letter-spacing:-.3px; margin:10px 0 8px; }
+    #mock-switch .sw-switch-line { display:flex; align-items:center; gap:12px; padding-top:12px; border-top:1px solid var(--sw-line); }
+    #mock-switch .sw-toggle { display:inline-flex; align-items:center; gap:10px; background:var(--sw-soft); border:1px solid var(--sw-line); padding:6px 11px 6px 6px; border-radius:30px; min-height:44px; }
+    #mock-switch .sw-lever { position:relative; display:inline-block; width:56px; height:30px; background:var(--sw-accent); border-radius:18px; flex-shrink:0; }
+    #mock-switch .sw-knob { position:absolute; top:4px; left:4px; height:22px; width:22px; border-radius:50%; background:var(--sw-on-accent); transition:transform .18s ease; }
+    #mock-switch .sw-toggle[aria-pressed="true"] .sw-knob { transform:translateX(26px); }
+    #mock-switch .sw-wording-name { color:var(--sw-muted); font-size:12px; }
+    #mock-switch .sw-output { padding:18px; border:1px solid var(--sw-line); border-radius:5px; background:var(--sw-page); }
+    #mock-switch .sw-test-label { display:inline-block; margin:12px 0 8px; padding:3px 7px; background:var(--sw-warn-bg); color:var(--sw-warning); font-size:12px; }
+    #mock-switch .sw-claim { margin:0 0 11px; font:500 20px/1.25 'Archivo',sans-serif; letter-spacing:-.4px; }
+    #mock-switch .sw-text-action { background:var(--sw-paper); border:1px solid var(--sw-line); border-radius:4px; padding:8px 12px; min-height:40px; font-weight:500; }
+    #mock-switch .sw-evidence { margin-top:11px; border-left:3px solid var(--sw-warning); padding:7px 0 7px 11px; }
+    #mock-switch .sw-evidence p { margin:0; font-size:13px; }
+    #mock-switch .sw-evidence q { color:var(--sw-warning); font-weight:500; }
+    #mock-switch .sw-evidence .sw-evidence-note { font-size:12px; color:var(--sw-muted); margin-top:4px; }
+    #mock-switch .sw-confirmed { color:var(--sw-good); background:var(--sw-good-bg); margin:11px 0 0; padding:9px 11px; font-size:13px; }
+    #mock-switch .sw-footer { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-top:15px; }
+    #mock-switch .sw-footer p { margin:0; font-size:12px; color:var(--sw-muted); max-width:390px; }
+    #mock-switch .sw-confirm { background:var(--sw-accent); color:var(--sw-on-accent); border:1px solid var(--sw-accent); border-radius:4px; padding:11px 15px; min-height:44px; font-weight:500; }
+    #mock-switch .sw-confirm:disabled { background:var(--sw-soft); color:var(--sw-muted); border-color:var(--sw-line); }
+    @media(max-width:640px) { #mock-switch { padding:18px 16px; } #mock-switch .sw-heading { display:block; } #mock-switch .sw-heading p { margin-top:10px; max-width:none; } #mock-switch .sw-workspace { grid-template-columns:1fr; } #mock-switch .sw-footer { align-items:stretch; flex-direction:column; } #mock-switch .sw-context { max-width:120px; } #mock-switch h2 { font-size:30px; } }
+    @media(prefers-reduced-motion:reduce) { #mock-switch .sw-knob { transition:none; } }
+  </style>
+  <header class="sw-header">
+    <div class="sw-brand">THE <em>SWITCH</em></div>
+    <div class="sw-context">Workforce intake<br>Jordan Ellis / sample case</div>
+  </header>
+  <p class="sw-disclosure">Concept preview · Fictional sample · Illustrative output, not a model finding</p>
+  <section class="sw-heading">
+    <h2>Same person.<br>Same qualifications.</h2>
+    <p>Change the wording. Ask the summary to show its evidence.</p>
+  </section>
+  <div class="sw-facts" aria-label="Shared qualification facts">
+    <span><b>Locked facts</b></span><span>3 years leading shifts</span><span>Trained 5 people</span><span>CPR current</span><span>Tuesday nights unavailable</span>
+  </div>
+  <div class="sw-workspace">
+    <section class="sw-source">
+      <div>
+        <div class="sw-section-line"><h3>Jordan’s words</h3><span class="sw-wording-letter">Wording A</span></div>
+        <p class="sw-quote">“Three years running closing shifts. Trained five new folks. Weekends work for me; Tuesday nights don’t. My CPR card’s current.”</p>
+      </div>
+      <div class="sw-switch-line">
+        <button class="sw-toggle cursor-interaction" type="button" aria-pressed="false" aria-label="Switch wording" data-sw-action="switch"><span class="sw-lever" aria-hidden="true"><span class="sw-knob"></span></span><span>Switch wording</span></button>
+        <span class="sw-wording-name">Same facts.<br>Another wording.</span>
+      </div>
+    </section>
+    <section class="sw-output" aria-live="polite">
+      <div class="sw-section-line"><h3>The claim under review</h3><span>Summary specimen</span></div>
+      <span class="sw-test-label">Controlled test mutation</span>
+      <p class="sw-claim">Available Tuesday evenings.</p>
+      <button class="sw-text-action cursor-interaction" type="button" data-sw-action="evidence" aria-expanded="false">Show me where</button>
+      <div class="sw-evidence" hidden>
+        <p>Source: <q class="sw-source-quote">Tuesday nights don’t.</q></p>
+        <p class="sw-evidence-note">This sample claim reverses Jordan’s availability.</p>
+      </div>
+      <p class="sw-confirmed" hidden>Preview correction confirmed. Jordan is unavailable Tuesday evenings.</p>
+    </section>
+  </div>
+  <footer class="sw-footer">
+    <p>The sample deliberately changes one fact to demonstrate review. This wording pair is not a validated dialect benchmark.</p>
+    <button class="sw-confirm cursor-interaction" type="button" data-sw-action="confirm" disabled>Confirm source meaning</button>
+  </footer>
+  <script>
+    (() => {
+      const root = document.getElementById('mock-switch');
+      if (!root) return;
+      const toggle = root.querySelector('[data-sw-action="switch"]');
+      const evidence = root.querySelector('[data-sw-action="evidence"]');
+      const confirm = root.querySelector('[data-sw-action="confirm"]');
+      const quote = root.querySelector('.sw-quote');
+      const proof = root.querySelector('.sw-evidence');
+      const confirmation = root.querySelector('.sw-confirmed');
+      let alternate = false;
+      const statements = [
+        '“Three years running closing shifts. Trained five new folks. Weekends work for me; Tuesday nights don’t. My CPR card’s current.”',
+        '“I have managed closing shifts for three years and trained five new employees. I am available on weekends, but not on Tuesday evenings. My CPR certification is current.”'
+      ];
+      toggle.addEventListener('click', () => {
+        alternate = !alternate;
+        toggle.setAttribute('aria-pressed', String(alternate));
+        quote.textContent = statements[Number(alternate)];
+        root.querySelector('.sw-wording-letter').textContent = alternate ? 'Wording B' : 'Wording A';
+        root.querySelector('.sw-source-quote').textContent = alternate ? 'not on Tuesday evenings.' : 'Tuesday nights don’t.';
+        root.querySelector('.sw-claim').textContent = 'Available Tuesday evenings.';
+        proof.hidden = true;
+        confirmation.hidden = true;
+        evidence.setAttribute('aria-expanded', 'false');
+        confirm.disabled = true;
+        confirm.textContent = 'Confirm source meaning';
+      });
+      evidence.addEventListener('click', () => {
+        proof.hidden = !proof.hidden;
+        evidence.setAttribute('aria-expanded', String(!proof.hidden));
+        confirm.disabled = proof.hidden;
+      });
+      confirm.addEventListener('click', () => {
+        root.querySelector('.sw-claim').textContent = 'Unavailable Tuesday evenings.';
+        confirmation.hidden = false;
+        confirm.textContent = 'Confirmed in preview';
+        confirm.disabled = true;
+      });
+    })();
+  </script>
+</div>

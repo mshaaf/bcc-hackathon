@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap">
+<div id="bcc-finalists">
+  <style>
+    #bcc-finalists { width:100%; min-width:0; }
+    #bcc-finalists .review-tools { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:0 100px 14px 0; }
+    #bcc-finalists .review-tools .review-track { max-width:44ch; }
+    #bcc-finalists .concept-stage { min-height:var(--preview-stage-height,660px); min-width:0; }
+    #bcc-finalists .product-preview { min-width:0; }
+    #bcc-finalists .concept-screen { width:100%; min-width:0; }
+    #bcc-finalists .pitch-preview { --pitch-bg:light-dark(#f5f7fc,#152135); --pitch-ink:light-dark(#152135,#eef2fa); --pitch-muted:light-dark(#475774,#b8c8e0); --pitch-accent:light-dark(#3057b7,#b5caff); --pitch-rule:light-dark(#cad4e6,#415774); min-width:0; color:var(--pitch-ink); font-family:'DM Sans',sans-serif; }
+    #bcc-finalists [data-key="switch"] .pitch-preview { --pitch-bg:light-dark(#eeeefe,#211e39); --pitch-ink:light-dark(#282147,#f2efff); --pitch-muted:light-dark(#51496d,#c7bfe5); --pitch-accent:light-dark(#6742b6,#c8aeff); --pitch-rule:light-dark(#c9bfdf,#554971); }
+    #bcc-finalists [data-key="blockops"] .pitch-preview { --pitch-bg:light-dark(#f4f1f7,#211c28); --pitch-ink:light-dark(#302338,#f0e7f5); --pitch-muted:light-dark(#6b6073,#b9aec3); --pitch-accent:light-dark(#5b316b,#cda8e0); --pitch-rule:light-dark(#dcd3e3,#504359); }
+    #bcc-finalists [data-key="casebreaker"] .pitch-preview { --pitch-bg:light-dark(#edf1e9,#1d2b24); --pitch-ink:light-dark(#233c32,#e6f0e9); --pitch-muted:light-dark(#4c675b,#b2c9bc); --pitch-accent:light-dark(#265f4d,#a3d9c0); --pitch-rule:light-dark(#c2d0c2,#435d4e); }
+    #bcc-finalists [data-key="room"] .pitch-preview { --pitch-bg:light-dark(#fff6e8,#30281c); --pitch-ink:light-dark(#3d3021,#fff0d9); --pitch-muted:light-dark(#756047,#d5c0a4); --pitch-accent:light-dark(#714b9b,#dbb4fa); --pitch-rule:light-dark(#dfccb0,#67543d); }
+    #bcc-finalists [data-key="reclaim"] .pitch-preview { --pitch-bg:light-dark(#edf6f2,#172e29); --pitch-ink:light-dark(#173e34,#e1f6eb); --pitch-muted:light-dark(#4f6a60,#b3cec2); --pitch-accent:light-dark(#a45339,#f7baa2); --pitch-rule:light-dark(#b9d0c4,#41655a); }
+    #bcc-finalists [data-key="chamber"] .pitch-preview { --pitch-bg:light-dark(#f6efeb,#301f25); --pitch-ink:light-dark(#502335,#faeaf1); --pitch-muted:light-dark(#795b66,#d6b5c4); --pitch-accent:light-dark(#9a6320,#ebc282); --pitch-rule:light-dark(#d7bcc8,#674150); }
+    #bcc-finalists .pitch-slide { box-sizing:border-box; min-height:560px; padding:32px clamp(22px,5%,58px) 34px; background:var(--pitch-bg); border:1px solid var(--pitch-rule); display:flex; flex-direction:column; }
+    #bcc-finalists .pitch-top { display:flex; align-items:center; justify-content:space-between; gap:20px; border-bottom:1px solid var(--pitch-rule); padding-bottom:18px; color:var(--pitch-muted); font-size:14px; }
+    #bcc-finalists .pitch-brand { font-family:'Archivo',sans-serif; font-size:20px; font-weight:700; color:var(--pitch-ink); }
+    #bcc-finalists .pitch-center { padding:36px 0 30px; flex:1; }
+    #bcc-finalists .pitch-center h2 { font-family:'Archivo',sans-serif; font-size:clamp(28px,4.8vw,54px); line-height:1.08; letter-spacing:-0.04em; font-weight:600; max-width:20ch; margin:0 0 22px; color:var(--pitch-ink); }
+    #bcc-finalists [data-key="reclaim"] .pitch-center h2 { font-family:'Lora',Georgia,serif; letter-spacing:-0.035em; }
+    #bcc-finalists [data-key="switch"] .pitch-center h2 { font-family:'Space Grotesk',sans-serif; }
+    #bcc-finalists .pitch-body { font-size:clamp(16px,2.2vw,22px); line-height:1.5; max-width:50ch; margin:0; color:var(--pitch-muted); }
+    #bcc-finalists .pitch-highlight { margin:26px 0 0; font-weight:500; font-size:clamp(19px,2.8vw,29px); line-height:1.3; max-width:36ch; color:var(--pitch-accent); }
+    #bcc-finalists .pitch-footer { border-top:1px solid var(--pitch-rule); padding-top:18px; font-size:13px; line-height:1.5; color:var(--pitch-muted); }
+    #bcc-finalists .pitch-controls { display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding-top:12px; }
+    #bcc-finalists .pitch-note { margin:12px 0 0; min-height:38px; }
+    @media(max-width:650px) {
+      #bcc-finalists .review-tools { padding-right:0; padding-top:4px; }
+      #bcc-finalists .review-tools .review-track { max-width:100%; flex-basis:100%; }
+      #bcc-finalists .pitch-slide { min-height:540px; }
+      #bcc-finalists .pitch-top { align-items:flex-start; flex-direction:column; gap:7px; }
+      #bcc-finalists .pitch-center { padding:30px 0; }
+    }
+  </style>
+  <div class="viz-carousel" aria-label="Six hackathon finalists">
+    <section data-variant="Block Ops" data-key="blockops" aria-label="Block Ops concept">
+      <div class="review-tools"><span class="review-track text-small">Track 3 · Community Development</span><div class="viz-row"><button type="button" class="btn" data-preview-mode="product" aria-pressed="true">Product</button><button type="button" class="btn" data-preview-mode="pitch" aria-pressed="false">Presentation</button></div></div>
+      <div class="concept-stage"><div class="product-preview"><!--MOCK-BLOCKOPS--></div><div class="pitch-preview" hidden></div></div>
+    </section>
+    <section data-variant="People’s Chamber" data-key="chamber" aria-label="People’s Chamber concept" hidden>
+      <div class="review-tools"><span class="review-track text-small">Track 3 · Community Development</span><div class="viz-row"><button type="button" class="btn" data-preview-mode="product" aria-pressed="true">Product</button><button type="button" class="btn" data-preview-mode="pitch" aria-pressed="false">Presentation</button></div></div>
+      <div class="concept-stage"><div class="product-preview"><!--MOCK-CHAMBER--></div><div class="pitch-preview" hidden></div></div>
+    </section>
+    <section data-variant="The Switch" data-key="switch" aria-label="The Switch concept" hidden>
+      <div class="review-tools"><span class="review-track text-small">Track 1 · AI: Ethics and Access</span><div class="viz-row"><button type="button" class="btn" data-preview-mode="product" aria-pressed="true">Product</button><button type="button" class="btn" data-preview-mode="pitch" aria-pressed="false">Presentation</button></div></div>
+      <div class="concept-stage"><div class="product-preview"><!--MOCK-SWITCH--></div><div class="pitch-preview" hidden></div></div>
+    </section>
+    <section data-variant="Casebreaker" data-key="casebreaker" aria-label="Casebreaker concept" hidden>
+      <div class="review-tools"><span class="review-track text-small">Track 1 · AI: Ethics and Access</span><div class="viz-row"><button type="button" class="btn" data-preview-mode="product" aria-pressed="true">Product</button><button type="button" class="btn" data-preview-mode="pitch" aria-pressed="false">Presentation</button></div></div>
+      <div class="concept-stage"><div class="product-preview"><!--MOCK-CASEBREAKER--></div><div class="pitch-preview" hidden></div></div>
+    </section>
+    <section data-variant="The Room" data-key="room" aria-label="The Room concept" hidden>
+      <div class="review-tools"><span class="review-track text-small">Track 2 · Modern Healthcare Outcomes</span><div class="viz-row"><button type="button" class="btn" data-preview-mode="product" aria-pressed="true">Product</button><button type="button" class="btn" data-preview-mode="pitch" aria-pressed="false">Presentation</button></div></div>
+      <div class="concept-stage"><div class="product-preview"><!--MOCK-ROOM--></div><div class="pitch-preview" hidden></div></div>
+    </section>
+    <section data-variant="Reclaim" data-key="reclaim" aria-label="Reclaim concept" hidden>
+      <div class="review-tools"><span class="review-track text-small">Track 2 · Modern Healthcare Outcomes</span><div class="viz-row"><button type="button" class="btn" data-preview-mode="product" aria-pressed="true">Product</button><button type="button" class="btn" data-preview-mode="pitch" aria-pressed="false">Presentation</button></div></div>
+      <div class="concept-stage"><div class="product-preview"><!--MOCK-RECLAIM--></div><div class="pitch-preview" hidden></div></div>
+    </section>
+  </div>
+  <script>
+  (() => {
+    const root = document.getElementById('bcc-finalists');
+    const stories = {
+      blockops: {
+        brand:'Block Ops',
+        slides:[
+          {phase:'Opening',title:'A neighborhood needs a clear record',body:'Several service reports. A meeting tomorrow. The group needs to decide what belongs in its case and what to ask next.',highlight:'“Help us make the history clear.”',footer:'Fictional neighborhood scenario. The eventual build uses dated public records.',note:'Presenter A introduces the neighborhood group. Presenter B opens the case table.'},
+          {phase:'Live demonstration',title:'The judge becomes the records keeper',body:'Inspect a questionable report and remove it. Watch the timeline, supporting evidence and final request change.',highlight:'“Does this report belong to the same issue?”',footer:'The judge’s choice must change the actual brief. Resident observations stay separately attributed.',note:'Switch to Product. Ask the judge to remove the unrelated report, choose the next step, then preview the brief.'},
+          {phase:'Closing',title:'A brief the group can review',body:'The neighborhood leaves with a checked history, a chosen request and an action plan it controls.',highlight:'The group owns the next move.',footer:'Show the finished brief. Claim preparation and source accuracy, not a city response or a resolved issue.',note:'Presenter B opens the output. Presenter A states the next validation step: test its usefulness with a neighborhood group.'}
+        ]
+      },
+      chamber:{
+        brand:'People’s Chamber',
+        slides:[
+          {phase:'Opening',title:'A resident takes the floor',body:'You know what happened in your neighborhood. A short practice session helps you turn that experience into a specific request.',highlight:'“Chair, give me the floor.”',footer:'Fictional practice session. No official hearing, chair or submission is represented.',note:'Presenter A introduces the resident. Invite the judge to take the practice chair role.'},
+          {phase:'Live demonstration',title:'One question sharpens the request',body:'The resident speaks. The chair asks a practice question. The resident revises their own ask while the original experience stays visible.',highlight:'“What specific action are you asking for?”',footer:'A fixed human-chair prompt is sufficient. Source context and personal experience remain separate.',note:'Switch to Product. Use the floor control, reveal the question, revise the ask, then preview the statement.'},
+          {phase:'Closing',title:'A statement ready for review',body:'The resident keeps an editable statement and a clear handoff to the official submission process.',highlight:'The resident owns the words.',footer:'Show the statement and source references. Nothing has been submitted.',note:'Presenter B opens the output. Presenter A explains the difference between preparation and official submission.'}
+        ]
+      },
+      switch:{
+        brand:'The Switch',
+        slides:[
+          {phase:'Opening',title:'The AI’s version of your qualifications',body:'An intake summary may travel farther than your original statement. People should be able to inspect what it says about them.',highlight:'Same qualifications. What did the summary preserve?',footer:'Fictional candidate. Any displayed checker-test output is illustrative, not a measured model finding.',note:'Presenter A introduces the fictional applicant and the fixed qualification facts.'},
+          {phase:'Live demonstration',title:'The judge challenges a claim',body:'Switch between reviewed wording versions. Select a summary claim and inspect the exact words supporting it.',highlight:'“Show me where.”',footer:'In the final build, run actual model calls or label a recorded run. A passing pair remains a pass.',note:'Switch to Product. Change wording, challenge the sample claim, and inspect the human approval step.'},
+          {phase:'Closing',title:'An applicant can approve the record',body:'Supported facts become a summary the applicant can inspect. A test receipt preserves the experiment and its limits.',highlight:'A claim needs evidence before it travels.',footer:'Before selection, establish a real experiment with reviewed pairs and identical-input controls.',note:'Presenter B shows the receipt. Presenter A reports only evaluation results actually measured during the build.'}
+        ]
+      },
+      casebreaker:{
+        brand:'Casebreaker',
+        slides:[
+          {phase:'Opening',title:'Two records tell different stories',body:'A screening report says Pending. A supplied source disposition says Dismissed. The applicant needs a precise way to request review.',highlight:'“Follow this entry to its source.”',footer:'Fictional applicant, Training Court and case DEMO-2024-017. No real legal conclusion.',note:'Presenter A introduces the applicant and the two supplied documents.'},
+          {phase:'Live demonstration',title:'The judge follows the connection',body:'Open both source excerpts, check the matching case and court, then decide whether the disagreement belongs in the packet.',highlight:'Pending / Dismissed',footer:'The connection is the app’s document comparison, not a reconstruction of a vendor’s hidden system.',note:'Switch to Product. Inspect both fields, confirm the discrepancy, then preview the request.'},
+          {phase:'Closing',title:'A precise request with its sources',body:'The applicant gets a factual comparison, supporting pages and a reviewed request they can carry to the reporting company or navigator.',highlight:'An exact discrepancy replaces a vague objection.',footer:'The prototype prepares a request. It does not change court, employer or screening-company records.',note:'Presenter B opens the packet. Presenter A explains conservative matching and unresolved cases.'}
+        ]
+      },
+      room:{
+        brand:'The Room',
+        slides:[
+          {phase:'Opening',title:'The question that needs an answer',body:'Maya wants to leave a routine visit knowing what happens next. She chooses the communication goal and how a supporter can help.',highlight:'“I want to leave knowing what happens next.”',footer:'Fictional routine-visit scenario. Communication practice offers no medical answers.',note:'Presenter A introduces Maya. Ask the judge to choose the communication goal.'},
+          {phase:'Live demonstration',title:'The patient chooses when to retry',body:'Practice one exchange, pause or retry, then switch into the agreed supporter role. The patient’s original words remain visible.',highlight:'“Help me ask; let me answer.”',footer:'The counterpart uses neutral practice prompts. No accent, confidence or medical scoring.',note:'Switch to Product. Change the goal, try a different question and inspect the resulting visit card.'},
+          {phase:'Closing',title:'A visit card the patient controls',body:'The chosen question, original concern and supporter agreement travel together. Unanswered clinical questions stay unanswered.',highlight:'Practice is optional. The words are yours.',footer:'Show the card. Validate communication usefulness with community reviewers before claiming benefit.',note:'Presenter B opens the card. Presenter A states the scope and the direct roleplay competitors honestly.'}
+        ]
+      },
+      reclaim:{
+        brand:'Reclaim',
+        slides:[
+          {phase:'Opening',title:'An old record may matter today',body:'A transplant candidate has historical lab pages from different providers. An existing policy offers a review process when the evidence meets its requirements.',highlight:'“Which original pages should we ask about?”',footer:'Fictional records. HRSA supplies the numerical worked example and policy context.',note:'Presenter A explains the historical calculation and existing remedy in plain language.'},
+          {phase:'Live demonstration',title:'The judge asks for the original page',body:'Inspect the same-test pair, confirm the source fields, then open an incomplete record and see what remains unknown.',highlight:'23.3 / 19.2',footer:'Illustrative reported values, not new clinical calculations. No eligibility or waiting-time award.',note:'Switch to Product. Open the source, confirm the dated record, then inspect the missing-date state.'},
+          {phase:'Closing',title:'A clear question for the transplant team',body:'The candidate gets an original-page index, confirmed facts and a missing-record checklist for a real review conversation.',highlight:'The evidence stays attached to the question.',footer:'The transplant program determines eligibility and submits any official request. No time credit is predicted.',note:'Presenter B previews the packet. Presenter A acknowledges that remaining demand and coordinator usefulness need validation.'}
+        ]
+      }
+    };
+    const stageIndices = {};
+    function renderPitch(section) {
+      const key = section.dataset.key;
+      const index = stageIndices[key] || 0;
+      const story = stories[key];
+      const slide = story.slides[index];
+      const target = section.querySelector('.pitch-preview');
+      target.innerHTML = `<div class="pitch-slide" role="group" aria-label="${story.brand} presentation ${slide.phase}"><div class="pitch-top"><span class="pitch-brand">${story.brand}</span><span>${slide.phase}</span></div><div class="pitch-center"><h2>${slide.title}</h2><p class="pitch-body">${slide.body}</p><p class="pitch-highlight">${slide.highlight}</p></div><div class="pitch-footer">${slide.footer}</div></div><div class="pitch-controls"><button type="button" class="btn" data-pitch-nav="-1" ${index===0?'disabled':''}>Previous beat</button><span class="text-small">${index+1} of 3</span><button type="button" class="btn" data-pitch-nav="1" ${index===2?'disabled':''}>Next beat</button></div><p class="pitch-note text-small" aria-live="polite">${slide.note}</p>`;
+    }
+    root.querySelectorAll('[data-key]').forEach(renderPitch);
+    let sizingFrame = 0;
+    function sizeStages() {
+      cancelAnimationFrame(sizingFrame);
+      sizingFrame=requestAnimationFrame(()=>{
+        let tallest=0;
+        root.querySelectorAll('.viz-carousel > [data-key]').forEach(section=>{
+          const before=section.getAttribute('style');
+          const stage=section.querySelector('.concept-stage');
+          section.style.cssText=`position:absolute;visibility:hidden;width:${root.clientWidth}px;display:block!important;pointer-events:none;`;
+          stage.style.minHeight='0';
+          tallest=Math.max(tallest,stage.scrollHeight);
+          stage.style.removeProperty('min-height');
+          if(before===null)section.removeAttribute('style');else section.setAttribute('style',before);
+        });
+        root.style.setProperty('--preview-stage-height',`${Math.ceil(tallest)}px`);
+      });
+    }
+    let priorWidth=0;
+    new ResizeObserver(entries=>{const width=entries[0].contentRect.width;if(width!==priorWidth){priorWidth=width;sizeStages();}}).observe(root);
+    root.addEventListener('click',sizeStages);
+    root.addEventListener('input',sizeStages);
+    root.addEventListener('change',sizeStages);
+    if(document.fonts)document.fonts.ready.then(sizeStages);
+    sizeStages();
+    root.addEventListener('click', event => {
+      const viewButton = event.target.closest('[data-preview-mode]');
+      if(viewButton) {
+        const section=viewButton.closest('[data-key]');
+        const isPitch=viewButton.dataset.previewMode==='pitch';
+        section.querySelector('.product-preview').hidden=isPitch;
+        section.querySelector('.pitch-preview').hidden=!isPitch;
+        section.querySelectorAll('[data-preview-mode]').forEach(button=>button.setAttribute('aria-pressed', String(button===viewButton)));
+        return;
+      }
+      const nav = event.target.closest('[data-pitch-nav]');
+      if(nav) {
+        const section=nav.closest('[data-key]');
+        const key=section.dataset.key;
+        stageIndices[key]=Math.max(0,Math.min(2,(stageIndices[key]||0)+Number(nav.dataset.pitchNav)));
+        renderPitch(section);
+      }
+    });
+  })();
+  </script>
+</div>
