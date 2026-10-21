@@ -1,6 +1,6 @@
 # Block Ops — 3-minute pitch (draft, finalized in R5)
 
-**Scope changed; this R4 script is historical.** The user now wants a community that joins and carries out shared missions. The new demo should show a real phone join, discussion, task commitment and cross-device update; see [community scope](specs/community-missions.md). Shared features remain unbuilt. Also, `reReportedKeys` currently compares report creation dates, so this script's “after closure” statistic is unsupported until S1 corrects the wording or verifies/uses closure dates. Do not rehearse the old number as a closure outcome.
+**Scope changed; this R4 script is historical.** The user now wants a community that joins and carries out shared missions. The new demo should show a real phone join, discussion, task commitment and cross-device update; see [community scope](specs/community-missions.md). Shared features remain unbuilt. S1.1 corrected the wording: the statistic compares report **filing** dates, not closure dates, so it must never be described as happening after a closure. The measured numbers below are unchanged historical results; their interpretation is "another report filed nearby within 30 days of the earlier report being filed, among reports now marked Closed."
 
 Pitch line: **"Closed isn't fixed."**
 
@@ -8,7 +8,7 @@ Status: R4 draft. Numbers below were true on the live data at 2026-10-21 19:17Z 
 
 ## What the audience should leave with
 
-1. A real number from real public data: most closed dumping tickets in Ward 8 are followed by another report within about a block and a month.
+1. A real number from real public data: most dumping tickets in Ward 8 that are now marked Closed had another report filed within about a block and a month of their own filing.
 2. That residents can see it, on a map, in seconds, for any block.
 3. That the output is not "another ticket" but a short escalation to someone who can approve a lasting fix, with the group's tasks and follow-ups attached.
 
@@ -16,17 +16,17 @@ Status: R4 draft. Numbers below were true on the live data at 2026-10-21 19:17Z 
 
 **0:00 – The number (20 s).** Screen: the app already loaded on live data, purple stat line visible.
 
-> "DC closes every dumping ticket. So how often does a closed ticket get followed by another report right next to it? In Ward 8 over the last 90 days: **[210 of 350 — 60%]** of closed reports had another report within 150 meters in the next 30 days. **[26]** spots with five or more reports hold **[56%]** of everything reported. Closed isn't fixed."
+> "DC closes every dumping ticket. So how often does a ticket that is now closed have another report filed right next to it soon after? In Ward 8 over the last 90 days: **[210 of 350 — 60%]** of closed reports had another report filed within 150 meters within 30 days of their own filing. **[26]** spots with five or more reports hold **[56%]** of everything reported. Closed isn't fixed."
 
-Say the caveat in one breath: "'Nearby' means within 150 meters, block-level locations. It is not proof of the same pile, and we leave out duplicates and cancelled tickets."
+Say the caveat in one breath: "'Nearby' means within 150 meters, block-level locations. We compare filing dates, not closure dates, so the later report may have come before the ticket closed. It is not proof of the same pile, and we leave out duplicates and cancelled tickets."
 
 **0:20 – Why it matters (20 s).** Point at the shaded map.
 
-> "DC publishes every ticket, a citywide heat map of counts, and response-time reports. What it doesn't show a neighborhood is that a spot keeps coming back, and nothing helps a group ask for a lasting fix. The darker the shading, the more closed tickets were followed by another one nearby."
+> "DC publishes every ticket, a citywide heat map of counts, and response-time reports. What it doesn't show a neighborhood is that a spot keeps coming back, and nothing helps a group ask for a lasting fix. The darker the shading, the more closed tickets had another one filed nearby soon after."
 
 **0:40 – Pick the worst spot (25 s).** Action: open "Jump to a busy spot" (keyboard works), choose the top entry, or click a dark spot. The list and headline change.
 
-> "Here is the worst one: **[21 reports, all closed, 20 followed by another report nearby within 30 days, median gap about 3½ days]**. Every dot is an official 311 record; this list opens each original record."
+> "Here is the worst one: **[21 reports, all closed, 20 followed by another report filed nearby within 30 days of filing, median gap about 3½ days]**. Every dot is an official 311 record; this list opens each original record."
 
 **1:05 – Start a campaign (25 s).** Action: remove one report that does not belong (shows the group controls the evidence), press **New campaign here**. The campaign opens, named for the block, with the objective prefilled.
 
@@ -42,13 +42,13 @@ Say the caveat in one breath: "'Nearby' means within 150 meters, block-level loc
 
 **2:40 – Close (20 s).**
 
-> "311 closes tickets. Neighbors need to see when a closed spot keeps coming back, and to ask for a lasting fix. That's Block Ops."
+> "311 closes tickets. Neighbors need to see when a spot keeps getting reported, and to ask for a lasting fix. That's Block Ops."
 
 ## Honest Q&A
 
 - **Have you talked to residents?** No, not yet. "We built from public data and the product idea; the first thing we'd do next is take this to a block association or an ANC commissioner and see whether the ask is something they'd send." (Change only if the team has actually done interviews.)
-- **Does DC already publish this?** We checked: DC publishes the tickets, a rolling 30-day dumping layer, DPW Cards with a citywide heat map and response-time reports, and DumpBusters describes cleanups, signage and enforcement. We found nothing that shows a block's closed-then-reported-again pattern or helps residents ask for a lasting fix. DPW says publicly that repeat locations matter, and it may track them internally; we don't know. Our claim is that residents can't see or act on it. Sources are in `docs/specs/campaign-revision.md` section 9.
-- **Is it the same pile?** We can't know and don't claim it. The data only says another report was filed nearby. The label always says "another report nearby within 30 days."
+- **Does DC already publish this?** We checked: DC publishes the tickets, a rolling 30-day dumping layer, DPW Cards with a citywide heat map and response-time reports, and DumpBusters describes cleanups, signage and enforcement. We found nothing that shows a block's pattern of closed reports followed by more reports or helps residents ask for a lasting fix. DPW says publicly that repeat locations matter, and it may track them internally; we don't know. Our claim is that residents can't see or act on it. Sources are in `docs/specs/campaign-revision.md` section 9.
+- **Is it the same pile?** We can't know and don't claim it. The data only says another report was filed nearby. The label always says "followed by another report within 30 days of filing"; we do not have verified closure dates.
 - **Isn't 60% just reports about a big building or a busy street?** Possibly for some spots, which is why the map shows where, the list shows every record, and the group decides what belongs. And the number depends on the rule: at 100 meters it is 44%, at 250 meters 79%, with a 14-day window 45% on the same data. We chose 150 m and 30 days and say so.
 - **Is it a failure of DPW?** We don't say that. A ticket can be correctly closed and the same corner can still keep getting dumped on. The ask is for a lasting fix, not blame.
 - **Where does the data come from?** DC's public 311 service-request layer (FeatureServer/21) and the public Ward boundary. Locations are block-level or intersection points. Duplicates and cancelled tickets are excluded from the recurrence numbers.

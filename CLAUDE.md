@@ -8,7 +8,7 @@ Read [AGENTS.md](AGENTS.md), [Sonnet handoff](docs/SONNET-HANDOFF.md), [communit
 
 - Block Ops / Track 3 is selected. The user wants a neighborhood community: join → discuss → organize a mission → claim work → post progress.
 - R1–R4 built a real DC map and browser-local campaigns. Shared community/identity/posts/commitments and public hosting are unbuilt.
-- **Next work order: S1.1.** Correct recurrence wording based on report creation dates. This needs no backend. S1.2–S1.3 establish shared provider/Auth and group membership; S2 discussion; S3 missions; S4 phone readiness; then R5 release.
+- **S1.1 done** (recurrence wording corrected to filing dates). **Next work order: S1.2.** S1.2–S1.3 establish shared provider/Auth and group membership; S2 discussion; S3 missions; S4 phone readiness; then R5 release.
 - The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. This task refactors documentation only; a later named implementation batch supplies authorization to edit that code.
 - Supabase is recommended, not provisioned. Do not treat fakes, localStorage or skipped integration tests as shared-backend proof.
 - Preserve other assistants' work, historical source evidence and existing local campaigns. DIRECTION-REVIEW is historical context with qualifications; the social spec governs the current scope.
@@ -26,7 +26,7 @@ node server.mjs
 
 Current app: `http://127.0.0.1:8000`. Check an existing server before starting another. No baseline install/build or provider credentials required. Run `node --test` at relevant phase boundaries; no need to re-run the full browser/research suite for a documentation edit.
 
-`server.mjs` has explicit assets and GET-only source routes. `public/app.mjs`, `public/map.mjs`, `public/storage.mjs`, `lib/block-ops.mjs`, `lib/campaign.mjs` are the existing browser/data/campaign modules. `lib/recurrence.mjs` uses report dates while current copy wrongly says closure dates; fix shared helper and all callers in S1.1.
+`server.mjs` has explicit assets and GET-only source routes. `public/app.mjs`, `public/map.mjs`, `public/storage.mjs`, `lib/block-ops.mjs`, `lib/campaign.mjs` are the existing browser/data/campaign modules. `lib/recurrence.mjs` uses report filing dates, not closure dates; all copy must say “followed by another report within 30 days of filing”, never “after a closure”.
 
 Preserve IDs/dates/statuses, unknowns, excluded evidence, source links, failed-refresh recovery and safe text rendering. Local campaigns publish only through a reviewed copy; typed owner names are not authenticated commitments. New shared writes need real backend permissions and claim concurrency checks. Never expose secret/service-role keys. Keep the existing stack unless a requirement warrants change.
 

@@ -1,5 +1,9 @@
 # Change log
 
+## 2026-10-21 — S1.1: recurrence wording uses filing dates
+
+- Recurrence copy, caveat, brief export, legend, spot list and pitch now say "followed by another report within 30 days of filing" and disclose that closure dates are not used. Calculation, radii, windows and data unchanged. Regression covers a report filed before the earlier one closed.
+
 ## 2026-10-21 — Sonnet work-order handoff
 
 - Recorded Sonnet 5.5 as the user's implementation executor; split social phases into ten bounded work orders, starting with the provider-independent recurrence wording correction.

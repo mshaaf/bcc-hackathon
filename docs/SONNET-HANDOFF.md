@@ -4,7 +4,7 @@ Updated October 21, 2026. The user selected **Sonnet 5.5 in Claude** to edit the
 
 ## Start here
 
-**Next work order: S1.1.** Finish the report-date wording correction before provider setup. The community feature set is already specified; do not restart project selection or broad research.
+**S1.1 is done** (report-date wording corrected). **Next work order: S1.2** (provider/Auth proof; needs real access). The community feature set is already specified; do not restart project selection or broad research.
 
 Read [community scope](specs/community-missions.md), [the requested work order](superpowers/plans/2026-10-21-community-missions.md), and [the ledger](PHASE-STATUS.md). `CLAUDE.md` and `AGENTS.md` carry shared rules. The [older detailed handoff](archive/2026-10-21-handoff-through-r4.md) and [direction review](DIRECTION-REVIEW.md) are historical evidence, not the next instructions.
 

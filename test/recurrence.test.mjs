@@ -28,7 +28,7 @@ test("the boundaries are inclusive and the rule looks forward only", () => {
   assert.deepEqual(keys([rec("A"), rec("B", { days: 30, meters: 149 })]), ["request:A"], "30 days exactly, just inside 150 m");
   assert.deepEqual(keys([rec("A"), rec("B", { days: 30.01, meters: 100 })]), [], "just over 30 days");
   assert.deepEqual(keys([rec("A"), rec("B", { days: 5, meters: 152 })]), [], "just over 150 m");
-  assert.deepEqual(keys([rec("A", { days: 10 }), rec("B", { days: 0, status: "Open", meters: 20 })]), [], "an earlier report does not re-report a later closure");
+  assert.deepEqual(keys([rec("A", { days: 10 }), rec("B", { days: 0, status: "Open", meters: 20 })]), [], "an earlier report is not followed by a later-filed one");
   assert.deepEqual(keys([rec("A"), rec("B", { days: 0, status: "Open", meters: 20 })]), [], "same timestamp is not after");
   assert.deepEqual(keys([rec("A")]), [], "a report never re-reports itself");
 });
@@ -117,9 +117,33 @@ test("area recurrence: reports, closed, re-reported, first and latest date, medi
 test("headline wording stays 'another report nearby' and never claims the same pile or a failed cleanup", () => {
   const stat = areaRecurrence([rec("a", { days: 0 }), rec("b", { days: 4, meters: 10 }), rec("c", { days: 10, meters: 10, status: "Open" })]);
   const line = recurrenceHeadline(stat, value => `D${Math.round((value - T0) / DAY)}`);
-  assert.match(line, /3 reports since D0 · 2 closed · 2 re-reported within 30 days of a closure · median gap 5 days/);
-  assert.match(recurrenceHeadline.caveat, /another report nearby/i);
+  assert.match(line, /3 reports since D0 · 2 closed · 2 followed by another report within 30 days of filing · median gap 5 days/);
+  assert.match(recurrenceHeadline.caveat, /another report .*nearby/i);
   assert.match(recurrenceHeadline.caveat, /not .*same pile/i, "the caveat names what the number does NOT mean");
   assert.doesNotMatch(line, /same pile|failed|fault|negligen|broken/i, "the headline itself makes none of those claims");
-  assert.match(recurrenceHeadline({ reports: 1, closed: 1, reReported: 0, first: at(0), latest: at(0), medianGapDays: null }, () => "D0"), /1 report since D0 · 1 closed · 0 re-reported within 30 days of a closure$/);
+  assert.match(recurrenceHeadline({ reports: 1, closed: 1, reReported: 0, first: at(0), latest: at(0), medianGapDays: null }, () => "D0"), /1 report since D0 · 1 closed · 0 followed by another report within 30 days of filing$/);
+});
+
+test("a later filing is counted, but no wording says it came after the closure", () => {
+  // A filed day 0 and resolved day 9; B filed day 1 nearby, before A closed. The algorithm counts B (it only sees filing dates).
+  const a = { ...rec("A", { days: 0 }), resolutionDate: at(9) };
+  const b = rec("B", { days: 1, status: "Open", meters: 20 });
+  assert.deepEqual(keys([a, b]), ["request:A"]);
+  const line = recurrenceHeadline(areaRecurrence([a, b]), () => "D0");
+  assert.match(line, /1 followed by another report within 30 days of filing/);
+  const closureClaim = /(after|following|of|since) (a |the |its )?(closure|closed)|re-reported/i;
+  assert.doesNotMatch(line, closureClaim);
+  assert.doesNotMatch(recurrenceHeadline.caveat, closureClaim);
+  assert.match(recurrenceHeadline.caveat, /filing dates, not closure dates/i);
+  assert.match(recurrenceHeadline.caveat, /may have been filed before the closure/i);
+});
+
+test("summary 'mature' subset means filed 30+ days before asOf, and reports with unknown dates are left out", () => {
+  const old = rec("old", { days: 0 });
+  const recent = rec("recent", { days: 60, meters: 5000 });
+  const undated = rec("undated", { date: null, meters: 9000 });
+  const summary = recurrenceSummary([old, recent, undated], { asOf: at(75) });
+  assert.equal(summary.closedLocated, 2, "the undated report cannot be placed in time");
+  assert.equal(summary.matureClosed, 1, "only the report filed 75 days ago is mature; the one filed 15 days ago is not");
+  assert.equal(recurrenceSummary.matureLabel, "reports filed at least 30 days ago");
 });

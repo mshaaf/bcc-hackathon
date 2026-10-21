@@ -183,10 +183,10 @@ function renderStatLine() {
   if (!summary.closedLocated) { line.hidden = true; return; }
   line.hidden = false;
   const lead = element("strong", "", "Closed isn't fixed. ");
-  const main = `${summary.reReported} of ${summary.closedLocated} closed reports (${summary.pct}%) had another report nearby within ${RECURRENCE_RULE.days} days · ${summary.spots.count} spots with ${RECURRENCE_RULE.minSpotReports}+ reports hold ${Math.round(summary.spots.share * 100)}% of reports. `;
-  const mature = summary.matureClosed ? `Counting only closures at least ${RECURRENCE_RULE.days} days old: ${summary.matureReReported} of ${summary.matureClosed} (${summary.maturePct}%). ` : "";
+  const main = `${summary.reReported} of ${summary.closedLocated} closed reports (${summary.pct}%) had another report filed nearby within ${RECURRENCE_RULE.days} days of filing · ${summary.spots.count} spots with ${RECURRENCE_RULE.minSpotReports}+ reports hold ${Math.round(summary.spots.share * 100)}% of reports. `;
+  const mature = summary.matureClosed ? `Counting only ${recurrenceSummary.matureLabel}: ${summary.matureReReported} of ${summary.matureClosed} (${summary.maturePct}%). ` : "";
   const window = `${shortDate(`${snapshot.window.start}T12:00:00-04:00`)}–${shortDate(Date.parse(snapshot.retrievedAt))}${snapshot.mode === "recorded" ? ", recorded" : ""}. `;
-  line.append(lead, `${main}${mature}`, element("span", "stat-caveat", `${window}“Nearby” means within ${RECURRENCE_RULE.meters} m (block-level locations); it is not necessarily the same pile, and duplicates and canceled reports are left out.`));
+  line.append(lead, `${main}${mature}`, element("span", "stat-caveat", `${window}“Nearby” means within ${RECURRENCE_RULE.meters} m (block-level locations); it is not necessarily the same pile. Filing dates are used, not closure dates, and duplicates and canceled reports are left out.`));
 }
 
 function renderFreshness() {
@@ -251,7 +251,7 @@ function renderScopeControls() {
   const placeholder = element("option", "", center && matching < 0 ? "Custom area from the map" : "Choose a spot (worst first)…");
   placeholder.value = "";
   select.replaceChildren(placeholder, ...busySpots.map((spot, index) => {
-    const option = element("option", "", `${areaBlockName({ ...state, area: { center: spot.center, radiusM: state.area.radiusM } })} · ${plural(spot.count, "report")} · ${spot.reReported} re-reported`);
+    const option = element("option", "", `${areaBlockName({ ...state, area: { center: spot.center, radiusM: state.area.radiusM } })} · ${plural(spot.count, "report")} · ${spot.reReported} followed by another report`);
     option.value = String(index);
     return option;
   }));

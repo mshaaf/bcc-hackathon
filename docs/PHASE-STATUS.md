@@ -4,7 +4,7 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next work order:** S1.1. The plan refactor is prepared; social implementation has not started. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **Next work order:** S1.2 (needs real Supabase access). S1.1 is done; shared social features are not built. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task writes the plan only; shared features/provider setup remain unbuilt.
 
@@ -12,7 +12,7 @@ The map/local-campaign revision R1–R4 is implemented. The user now explicitly 
 
 | Work order | Deliverable | Status |
 |---|---|---|
-| S1.1 | Report-date wording/regressions, no provider prerequisite | Not started |
+| S1.1 | Report-date wording/regressions, no provider prerequisite | Done 2026-10-21 (local commit) |
 | S1.2 | Shared provider/SDK/Auth proof | Not started |
 | S1.3 | Community membership and access | Not started |
 | S2.1 | Posts/replies backend | Not started |
@@ -75,6 +75,14 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — S1.1 report-date wording
+
+- Kept the report-creation-date algorithm, radii and windows. Relabeled everything: "followed by another report within 30 days of filing", among reports now marked Closed; the mature subset is "reports filed at least 30 days ago". Caveat now says filing dates, not closure dates, and the later report may predate the closure.
+- Changed `lib/recurrence.mjs` (headline, caveat, comments, `recurrenceSummary.matureLabel`), `public/app.mjs` (stat line, busy-spot list), `public/index.html` (legend), `docs/PITCH.md`, README/CLAUDE/HANDOFF pointers, `scripts/browser-check.mjs` expectations. The brief export picks up the new text through `recurrenceHeadline`.
+- Added regressions: A filed Oct 1/resolved Oct 10 with B filed Oct 2 is counted but no headline/caveat claims "after closure"; mature-subset label; undated reports excluded. They failed before the fix.
+- Checks: `node --test` 87 pass, 0 fail; `git diff --check` clean; generated brief inspected. `scripts/browser-check.mjs` regexes were updated but **not re-run** (needs Chrome, network, writes screenshots). The "Closed isn't fixed" slogan is kept as the product name only.
+- Historical measurements (210 of 350, 60%; 26 spots, 56%) are unchanged data, now read as filing-date results. Not touched: provider, SDK, schema, push, deployment.
 
 ### 2026-10-21 — Sonnet execution plan refactor
 

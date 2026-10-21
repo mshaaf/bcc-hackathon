@@ -334,19 +334,19 @@ const space = () => key(" ", "Space", 32, { text: " " });
 async function insight(P, name, mobile) {
   await resetPage();
   const statLine = await q("#stat-line");
-  const m = /Closed isn't fixed\. (\d+) of (\d+) closed reports \((\d+)%\) had another report nearby within 30 days · (\d+) spots with 5\+ reports hold (\d+)% of reports\./.exec(statLine ?? "");
-  check(`${P}header stat line shows the ward-wide number`, m && Number(m[1]) / Number(m[2]) * 100 > 40 && /Counting only closures at least 30 days old/.test(statLine) && /not necessarily the same pile/.test(statLine) && /block-level/.test(statLine), (statLine ?? "").slice(0, 160));
+  const m = /Closed isn't fixed\. (\d+) of (\d+) closed reports \((\d+)%\) had another report filed nearby within 30 days of filing · (\d+) spots with 5\+ reports hold (\d+)% of reports\./.exec(statLine ?? "");
+  check(`${P}header stat line shows the ward-wide number`, m && Number(m[1]) / Number(m[2]) * 100 > 40 && /Counting only reports filed at least 30 days ago/.test(statLine) && /not necessarily the same pile/.test(statLine) && /block-level/.test(statLine), (statLine ?? "").slice(0, 160));
   const options = await optionTexts();
-  check(`${P}busy spots are listed worst first with re-report counts`, /re-reported/.test(options[1]) && options.slice(1).every(text => /\d+ reports · \d+ re-reported/.test(text)) && Number(/(\d+) re-reported/.exec(options[1])[1]) >= Number(/(\d+) re-reported/.exec(options[2])[1]), options[1]);
+  check(`${P}busy spots are listed worst first with followed-by counts`, /followed by another report/.test(options[1]) && options.slice(1).every(text => /\d+ reports · \d+ followed by another report/.test(text)) && Number(/(\d+) followed by another report/.exec(options[1])[1]) >= Number(/(\d+) followed by another report/.exec(options[2])[1]), options[1]);
   const title = await q("#case-title");
   check(`${P}the app starts on the worst spot`, options[1].startsWith(title), title);
   const explore = await q("#area-headline");
-  check(`${P}explore shows the area headline`, /^\d+ reports since [A-Z][a-z]{2} \d+ · \d+ closed · \d+ re-reported within 30 days of a closure/.test(explore), explore);
-  check(`${P}busy spots are shaded on the map and the legend explains the shading`, (await count(".leaflet-spots-pane path")) >= 3 && /Shading: closed reports followed by another nearby/.test(await q(".legend")), `${await count(".leaflet-spots-pane path")} shaded spots`);
+  check(`${P}explore shows the area headline`, /^\d+ reports since [A-Z][a-z]{2} \d+ · \d+ closed · \d+ followed by another report within 30 days of filing/.test(explore), explore);
+  check(`${P}busy spots are shaded on the map and the legend explains the shading`, (await count(".leaflet-spots-pane path")) >= 3 && /Shading: closed reports followed by another filed nearby/.test(await q(".legend")), `${await count(".leaflet-spots-pane path")} shaded spots`);
   await shot(`${name}-r4-1-explore`, mobile);
   await click("#new-campaign"); await sleep(500);
   const headline = await q("#c-headline");
-  check(`${P}campaign headline: reports, closed, re-reported within 30 days, median gap`, /^\d+ reports since [A-Z][a-z]{2} \d+ · \d+ closed · \d+ re-reported within 30 days of a closure( · median gap [\d.]+ days?)?$/.test(headline) && /another report nearby/.test(await q("#c-caveat")) && /not mean the same pile/.test(await q("#c-caveat")), headline);
+  check(`${P}campaign headline: reports, closed, followed by another report within 30 days of filing, median gap`, /^\d+ reports since [A-Z][a-z]{2} \d+ · \d+ closed · \d+ followed by another report within 30 days of filing( · median gap [\d.]+ days?)?$/.test(headline) && /another report was filed nearby/.test(await q("#c-caveat")) && /not mean the same pile/.test(await q("#c-caveat")), headline);
 
   // escalation brief
   await type("#ask-recipient", "Ward 8 Councilmember office");

@@ -266,8 +266,9 @@ test("the brief leads with recurrence evidence, then the ask, tasks and follow-u
   assert.match(markdown, /\*\*To:\*\* Ward 8 Councilmember office/);
   assert.match(markdown, /\*\*Requested lasting fix:\*\* Scheduled cleanup \\\+ check-in/);
   assert.match(markdown, /Nothing has been sent/);
-  assert.match(markdown, /re-reported within 30 days of a closure/);
-  assert.match(markdown, /another report nearby/);
+  assert.match(markdown, /followed by another report within 30 days of filing/);
+  assert.match(markdown, /filing dates, not closure dates/);
+  assert.doesNotMatch(markdown, /within 30 days of a closure/);
   const content = buildCampaignBriefContent(campaign);
   assert.equal(content.recurrence.stat.reports, 3);
   assert.equal(content.recurrence.stat.reReported, 0, "A closed 40 days before B, C is the latest: nothing follows within 30 days");

@@ -6,7 +6,7 @@ Start with [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [community scope](specs/commu
 
 - R1–R4 delivered the map, source/evidence workflow and browser-local campaigns. Social features are unbuilt.
 - The confirmed goal is a community where neighbors discuss concerns, start missions, commit to jobs and post progress.
-- **Next work order: S1.1**, correcting report-date claims. This needs no backend access. Then S1.2–S1.3 prove shared Auth/storage. S2 adds discussion, S3 shared missions, S4 hardening/phone readiness. R5 release follows.
+- S1.1 (report-date wording) is done. **Next work order: S1.2**, then S1.3, proving shared Auth/storage. S2 adds discussion, S3 shared missions, S4 hardening/phone readiness. R5 release follows.
 - Supabase remains a proposed provider; project/access/hosting are unconfirmed. Never call a localStorage or mocked demo a shared deployment.
 - Historical local campaigns must survive; publication is an explicit reviewed copy.
 - Every assistant message ends with a very simple TL;DR.
