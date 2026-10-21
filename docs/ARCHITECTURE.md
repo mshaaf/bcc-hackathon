@@ -2,7 +2,7 @@
 
 ## Revision proposal versus running architecture
 
-Continue with [HANDOFF.md](HANDOFF.md), R1. The running architecture below is the baseline: one fixed 311 query, no geometry, GET-only server, in-memory draft. It does not implement maps, crime, saved campaigns, photos, or AI.
+Continue with [HANDOFF.md](HANDOFF.md), R4. R2–R3 changed the running app: the 311 query returns WGS84 geometry, the server adds a fixed `/api/ward8` boundary route, the browser has a Leaflet map workspace (`public/map.mjs`), and campaigns persist in localStorage (`public/storage.mjs`, `lib/campaign.mjs`; see [campaign-revision.md](specs/campaign-revision.md) sections 7–8). Sections below describing the baseline (no geometry, in-memory draft) are history. Crime, photos and AI are not implemented.
 
 The proposed extension adds a real geographic selection/map, separately normalized source layers, and a durable local campaign containing reviewed evidence, observations, objective, request, task owners/dates, and follow-up history. Preserve per-source IDs, dates, links, approximate location precision, and review freshness. Do not silently force MPD records into 311 link/schema logic. Persistence and map/provider choices are builder decisions to prove in R1; no database or model was selected by this handoff.
 
@@ -54,7 +54,7 @@ An optional model can propose structured fields. It cannot approve its own claim
 
 ## Storage and network
 
-Default to local in-memory draft state and the synthetic stage fixture. No database, account, local-storage persistence, or provider key is needed for this single-user workflow.
+Exploration state is in memory. Saved campaigns use browser localStorage (key `blockops.campaigns.v1`, one operator, no sync; see the revision spec section 8 for the write and failure rules). The synthetic stage fixture is the labeled practice case. No database, account, or provider key is needed.
 
 Bound the public-data query and check transfer-limit indicators. Record query and retrieval dates. Never silently turn a saved response into a live-data claim.
 

@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-21 — R1–R3: map workspace and saved campaigns
+
+- R1: 311 query returns WGS84 geometry with per-record geo status; Leaflet vendored; DC GIS basemap; Ward 8 MPD query proven separately (not integrated); revision spec.
+- R2: map-first page with area, radius (100/150/250 m), date and status filters, keyboard evidence list, outside-Ward-8 flags, `/api/ward8`, block-name titles.
+- R3: saved campaigns (localStorage), owned tasks, typed dated follow-ups, per-campaign brief and Markdown export; fixed user exclusions being re-selected on radius/filter changes; storage never overwrites unreadable data.
+- Checks: 66/66 unit tests; 70/70 browser checks at 1440 and 390 px (see PHASE-STATUS.md). Nothing pushed or deployed before the R3 push.
+
 ## 2026-10-21 — Claude handoff and campaign revision proposal
 
 - Added a detailed built-versus-proposed handoff, source/competitor findings, code map, reuse constraints, R1–R5 batches, acceptance checks, and copy/paste prompts.

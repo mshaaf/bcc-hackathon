@@ -18,7 +18,7 @@ Block Ops turns source-linked service requests, reviewed by the group, into a br
 
 ## Operating Context
 
-Ward 8 / Illegal Dumping is the initial bounded DC public-data scope. A separately labeled fictional practice case supports rehearsal. The current app runs locally with Node built-ins and native browser modules, with in-memory draft state, Markdown download, and browser print.
+Ward 8 / Illegal Dumping is the initial bounded DC public-data scope. A separately labeled fictional practice case supports rehearsal. The current app runs locally with Node built-ins and native browser modules, a Leaflet map workspace over live DC 311 records, campaigns saved in browser localStorage (one operator, no sync), Markdown download, and browser print.
 
 ## Capabilities and Constraints
 

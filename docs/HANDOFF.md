@@ -44,7 +44,7 @@ Git remote is `https://github.com/mshaaf/bcc-hackathon.git`; local branch is `ma
 | Source review and brief | Built: include/exclude, original fields, source links, dated observation, ask, two role tasks, current-state Markdown and browser print. |
 | Map workspace UI | R2/R3: map-first page at `/` with Explore → Campaign → Brief tabs. Saved campaigns (localStorage, one browser), owned tasks, typed dated follow-ups, per-campaign brief/export. |
 | Offline sample | Built: five invented records, clearly labeled fictional. It is not a saved DC response or community research. |
-| Maps, spatial filtering, crime layer | R1: disposable `/prototype` map (Leaflet vendored, DC GIS basemap) plots live records; proximity helper exists. Not the product UI. Crime: Ward 8 MPD query proven in `scripts/prove-geo.mjs`, not consumed by the app. |
+| Maps, spatial filtering, crime layer | Built in R2: Leaflet (vendored) over the DC GIS basemap plots live records with area, radius, date and status controls (the R1 `/prototype` page is deleted). Crime: Ward 8 MPD query proven in `scripts/prove-geo.mjs`, not consumed by the app. |
 | Saved campaigns, task owners/due dates, progress and follow-up evidence | R3: built, single operator, `localStorage` (`blockops.campaigns.v1`). No sharing or sync. |
 | Photos, AI summary/drafting, agency routing | Unbuilt. No model/provider credentials or verified routing catalog selected. |
 | Shared accounts, mobile synchronization, notifications, camera feeds | Unbuilt and outside the recommended first revision. |
@@ -168,11 +168,11 @@ Avoid making “exclude a checkbox and download a PDF” the main reveal again. 
 
 ## 9. Current checks and remaining uncertainty
 
-At the documentation handoff, `node --test` was rerun and passed **23/23** (10 data/source, 4 server, 9 workflow). No application source was modified in this batch.
+At the end of R3, `node --test` passes **66/66** (the 23 baseline checks plus geometry, scope, campaign and storage tests), and `node scripts/browser-check.mjs` passes 70/70 in real Chrome at 1440 and 390 px. See [PHASE-STATUS.md](PHASE-STATUS.md) for dated evidence.
 
 Prior UI repair evidence, linked from [TEST-PLAN.md](TEST-PLAN.md), includes actual Markdown download, a sample A4 PDF, live loading of 389 records, HTTP 502 recovery, context clearing, keyboard tabs, and 1440/1024/768/390/320-pixel views. Those checks validate the current worktable only. They do not validate a map, campaign persistence, crime integration, AI, projection readability, community demand, or competitive uniqueness.
 
-Most important unresolved items for R1: the first campaign scenario/category; actual geospatial 311 records for it; the exact local-save behavior; the visible judge action; and whether any model adds enough value to justify setup. Routine stack/library choices belong to the builder. Do not reopen the six-finalist research or claim community interviews happened.
+Original R1 questions (now resolved in the revision spec; kept for history): the first campaign scenario/category; actual geospatial 311 records for it; the exact local-save behavior; the visible judge action; and whether any model adds enough value to justify setup. Routine stack/library choices belong to the builder. Do not reopen the six-finalist research or claim community interviews happened.
 
 ## 10. Copy/paste prompts
 
