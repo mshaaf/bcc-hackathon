@@ -2,15 +2,17 @@
 
 **Track 3 — Community Development.** The user wants a neighborhood community where people discuss a concern, organize a mission, claim jobs and post progress. The map and evidence brief support that shared work.
 
-**Built:** R1–R4 provide a real Ward 8 / dumping map, source review, browser-local saved campaigns, tasks/follow-ups, exports and a recorded backup. **Unbuilt:** shared membership, discussions, authenticated commitments and public phone access. Supabase is the recommended shared provider; project/access/hosting are unconfirmed.
+**Web app for the project:** keep the existing stack and build connected Community, Missions, task-detail and Map screens. No framework rewrite, native build or installable packaging is required. [Product](PRODUCT.md) and [app experience](DESIGN.md).
 
-**Executor:** Sonnet 5.5 in the user's Claude session. **B1 is complete** (shared identity, joining, posts/replies, live discussion across independent browsers, verified on a local Supabase stack; see [setup](docs/COMMUNITY-SETUP.md)). **Next batch:** B2 (shared missions). S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
+**Built locally:** R1–R4 map/source/local campaigns and B1 Supabase identity, membership, posts/replies and live updates. **Open:** [B1 review repairs](docs/B1-REVIEW.md), shared missions/commitments and public phone access. No hosted project or public deployment exists.
+
+**Executor:** Sonnet 5.5 in the user's Claude session. **B1 is built locally with open review repairs** (see [setup](docs/COMMUNITY-SETUP.md)). **Next batch:** B2, the B1 repairs plus S3.1–S3.3 shared missions as one outcome. S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Start here
 
-1. [Context checkpoint](docs/CONTEXT-CHECKPOINT.md) for a fresh session; [Sonnet handoff](docs/SONNET-HANDOFF.md) for the complete B1 assignment and copyable prompt.
+1. [Context checkpoint](docs/CONTEXT-CHECKPOINT.md) for a fresh session; [Sonnet handoff](docs/SONNET-HANDOFF.md) for the current B2 web-app assignment and copyable prompt.
 2. [Community scope](docs/specs/community-missions.md) and [work-order plan](docs/superpowers/plans/2026-10-21-community-missions.md): named increments, interfaces and acceptance checks.
 3. [Phase/work-order ledger](docs/PHASE-STATUS.md): completed history and next work; [current decisions](docs/DECISIONS.md).
 4. [CLAUDE.md](CLAUDE.md) / [AGENTS.md](AGENTS.md): shared instructions, including a simple TL;DR after every message.
@@ -23,7 +25,7 @@ Requires Node.js 20+. No baseline package install or provider key is required.
 node server.mjs
 ```
 
-Open `http://127.0.0.1:8000`. Inspect an already-running process before starting a second server. Live and recorded DC data retain source references; the practice case is invented and clearly labeled. Campaigns currently save only in this browser, not across neighbors' devices.
+Open `http://127.0.0.1:8000`. Inspect an already-running process before starting a second server. Live and recorded DC data retain source references; the practice case is invented and clearly labeled. Local campaigns save only in this browser. Community conversation is shared through local Supabase; full setup is in [COMMUNITY-SETUP](docs/COMMUNITY-SETUP.md). Run `node --env-file=.env server.mjs` with the configured local backend for that experience.
 
 Focused recurrence checks: `node --test test/recurrence.test.mjs`. Full unit suite at a phase boundary: `node --test`. The independent S1.1 review passed 87 tests on October 21; browser checks were not rerun in that review. [Test evidence](docs/TEST-PLAN.md).
 

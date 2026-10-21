@@ -4,9 +4,9 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B1 (S1.2–S2.2) is complete and verified against a local Supabase stack** (see the B1 entry below); **next batch: B2 (S3.1–S3.3)**, shared missions. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B1 is built and its happy-path checks pass locally, with [four independent-review defects open](B1-REVIEW.md)**. **Next batch: B2**, those repairs plus S3.1–S3.3 shared missions in a connected web app. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
-The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest task reviews S1.1 and saves context/assignments; shared features/provider setup remain unbuilt.
+The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The current documentation task records the confirmed web-app experience and B2 assignment. Local B1 sharing/provider setup exist; mission implementation and B1 repairs remain open.
 
 ## Work-order ledger
 
@@ -14,23 +14,23 @@ The map/local-campaign revision R1–R4 is implemented. The user now explicitly 
 |---|---|---|
 | S1.1 | Report-date wording/regressions, no provider prerequisite | Complete |
 | S1.2 | Shared provider/SDK/Auth proof | Complete (local Supabase; hosted project not tried) |
-| S1.3 | Community membership and access | Complete |
-| S2.1 | Posts/replies backend | Complete |
-| S2.2 | Community feed and cross-browser discussion | Complete (two-profile and phone-width evidence; real phones not tested) |
+| S1.3 | Community membership and access | In progress |
+| S2.1 | Posts/replies backend | In progress |
+| S2.2 | Community feed and cross-browser discussion | In progress |
 | S3.1 | Discussion-origin and reviewed-import mission creation | Not started |
 | S3.2 | Atomic mission joining/claiming/leaving | Not started |
 | S3.3 | Mission UI, links and shared export | Not started |
 | S4.1 | Access/recovery/accessible interaction | Not started |
 | S4.2 | Deployment prep and authorized real-phone proof | Not started |
 
-Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outcome, B2 groups S3.1–S3.3, B3 groups S4.1–S4.2. The user now prefers substantial batches; continue within the authorized batch rather than handing back after every order. S1.1 is complete; no other order is complete from this review/documentation update.
+Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outcome, B2 groups S3.1–S3.3, B3 groups S4.1–S4.2. The user now prefers substantial batches; continue within the authorized batch rather than handing back after every order. S1.1/S1.2 remain complete. S1.3/S2.1/S2.2 are reopened for the confirmed B1 repairs; their built behavior and earlier passing evidence remain valid. Complete those repairs within B2, not separate hand-back batches.
 
 ## Social delivery ledger
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | Complete locally |
-| S2 | Community joining, feed, posts and replies across devices | Complete locally (independent browser profiles on one machine) |
+| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | In progress |
+| S2 | Community joining, feed, posts and replies across devices | In progress |
 | S3 | Shared missions, task commitments and follow-ups | Not started |
 | S4 | Recovery, permissions, real phones and authorized deployment proof | Not started |
 
@@ -62,7 +62,7 @@ R1 evidence and the R2–R3 specification: [campaign-revision.md](specs/campaign
 | 5 | Polished product and judge interaction | In progress | User requested an early UI correction: three-step worktable, full addresses, live summary, dedicated brief, and responsive/print checks delivered. Final stage rehearsal remains. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
 
-Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; current continuation is B1, starting with S1.2, after the completed S1.1 correction. For the active revision, do not skip an unfinished phase or silently substitute another idea.
+Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; current continuation is B2, with the confirmed B1 repair gate followed by S3. For the active revision, do not skip an unfinished phase or silently substitute another idea.
 
 ## Update after every phase
 
@@ -75,6 +75,13 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — Independent B1 findings and B2 web-app handoff
+
+- At `f36867b`, independent checks passed 97 unit tests and 13 explicit local backend tests. Extra probes reproduced loss of newer drafts, membership DELETE metadata exposure, and old-post replay after leaving; manual UI review confirmed the disconnected composer label. [Review](B1-REVIEW.md), [recorded evidence](workflow/b1-independent-review.json). These defects remain open, so affected acceptance rows are reopened; original builder evidence below is preserved.
+- User confirmed a web app is sufficient and no framework/native rewrite is required. Updated product/design, scope, handoff/checkpoint and active instructions for connected Community/Missions/Map screens with phone/desktop interaction.
+- Next assignment is B2: repair these B1 defects and finish S3.1–S3.3 in one outcome batch. Current task changes documentation only; no app/backend repair, mission implementation, push or deployment is claimed.
+- Documentation/link/JSON/consistency checks are recorded under `web_app_b2_handoff` in workflow verification after validation. Product tests were not rerun for this documentation-only change.
 
 ### 2026-10-21 — B1: working shared community (S1.2–S2.2)
 

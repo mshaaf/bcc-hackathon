@@ -1,14 +1,11 @@
 # Block Ops — current handoff
 
-**Implementation executor:** Sonnet 5.5 in the user's Claude session. The user selected that executor; no model/API setting was changed by the documentation task.
+**Executor:** Sonnet 5.5 in the user's Claude session. **Form factor:** a web application using the existing stack; no framework/native rewrite is required.
 
-Start with [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md) for a context reset, then [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [community scope](specs/community-missions.md), [the work-order plan](superpowers/plans/2026-10-21-community-missions.md), and [PHASE-STATUS.md](PHASE-STATUS.md).
+Start with [SONNET-HANDOFF](SONNET-HANDOFF.md) for the complete next assignment and prompt; [CONTEXT-CHECKPOINT](CONTEXT-CHECKPOINT.md) after a reset. [PRODUCT](../PRODUCT.md) and [DESIGN](../DESIGN.md) describe the connected app experience.
 
-- R1–R4 delivered the map, source/evidence workflow and browser-local campaigns. Social features are unbuilt.
-- The confirmed goal is a community where neighbors discuss concerns, start missions, commit to jobs and post progress.
-- S1.1 is complete at `9f09667`; independent checks passed 87 tests and inspected a counterexample brief. **B1 is complete (local Supabase); next batch: B2 (S3)**. B1 delivered a shared community with joining, posts/replies and two-browser live updates. Work orders are internal checkpoints; the user wants fewer hand-backs. B2 covers S3 missions, B3 covers S4 readiness, then R5 release.
-- Supabase remains a proposed provider; project/access/hosting are unconfirmed. Never call a localStorage or mocked demo a shared deployment.
-- Historical local campaigns must survive; publication is an explicit reviewed copy.
-- Every assistant message ends with a very simple TL;DR.
+R1–R4 map/local campaigns and B1 shared discussion are built locally. Independent review passed 97 unit tests plus 13 explicit backend checks, but [four B1 repairs](B1-REVIEW.md) remain open. **Next is B2: those repairs plus all S3 mission work**, as one substantial batch. Follow [scope](specs/community-missions.md), S3 in [the plan](superpowers/plans/2026-10-21-community-missions.md), [ledger](PHASE-STATUS.md) and [setup](COMMUNITY-SETUP.md).
 
-The detailed previous handoff is [archived here](archive/2026-10-21-handoff-through-r4.md). Do not read it by default or execute its obsolete R1/R5 prompts. Historical data/source facts can be consulted when needed.
+The outcome is discussion → mission → authenticated job commitment → progress/follow-up across independent browsers, with Community/Missions/Map in one app context. Preserve source fidelity and local campaigns; publication is an explicit reviewed copy. Supabase runs locally via CLI/Docker; no hosted project, public URL or actual other-network phone proof exists. B3 handles readiness; R5 follows for release/rehearsal.
+
+No push/deployment is included in the next local implementation batch. Every message ends with a simple TL;DR. Preserve earlier research/history; do not execute obsolete R1/B1 prompts from old documents.

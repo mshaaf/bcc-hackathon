@@ -1,20 +1,22 @@
 # Community Missions Implementation Plan
 
-> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. The original planning task did not implement product changes. S1.1 is now complete; current continuation is B1 below.
+> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. The original planning task did not implement product changes. S1.1 is complete; B1 is built locally with open review repairs; current continuation is B2 below.
 
 **Goal:** neighbors join a community, discuss a local concern, commit to mission tasks, and share progress across their own devices.
 
 **Architecture:** preserve Node/native browser/Leaflet and the audited source/campaign logic. Add a managed shared backend, authenticated participants and row-level permissions. Keep posts, membership and claims independently writable; publish a reviewed copy of a local campaign instead of synchronizing its whole local store.
 
-**Tech Stack:** existing Node.js 20+ ES modules and Leaflet; recommended Supabase Postgres/Auth/Realtime, subject to actual project access and dependency proof in S1. No project, SDK, migrations or hosting have been provisioned. Pin the chosen SDK version when implementing.
+**Tech Stack:** existing Node.js 20+ ES modules, Leaflet and B1 local Supabase Auth/Postgres/Realtime with vendored SDK. Reuse the current web app; no framework/native rewrite is required. Use additive migrations and preserve existing data. Hosted project/public access remain unproven.
 
 **Spec:** [community-missions.md](../../specs/community-missions.md). The user's community-first intent is confirmed; named provider, one-group/guest defaults and detailed interfaces below are builder proposals to review against the user's next execution instruction.
 
 ## Current outcome batches
 
-The user now wants larger batches and fewer hand-backs. **S1.1 is complete at `9f09667`**, independently reviewed with 87 tests passing. **Next: B1 (S1.2–S2.2)** — ship real shared community joining, posts/replies and live discussion across two independent browsers. Use [SONNET-HANDOFF.md](../../SONNET-HANDOFF.md) for its outcome checks and copyable assignment, and [CONTEXT-CHECKPOINT.md](../../CONTEXT-CHECKPOINT.md) after a context reset.
+The user wants larger outcome batches and an **app experience; a web app is sufficient**. **Next: B2**, consisting of the [B1 repair gate](../../B1-REVIEW.md) plus S3.1–S3.3. B1's local happy-path evidence is valid, but its four confirmed review defects remain open. [SONNET-HANDOFF](../../SONNET-HANDOFF.md) is the single current assignment/prompt; [CONTEXT-CHECKPOINT](../../CONTEXT-CHECKPOINT.md) is the reset reference.
 
-B2 groups S3.1–S3.3 into working missions/commitments; B3 groups S4.1–S4.2 into recovery and phone readiness, with publication only when authorized. Then R5 release. Detailed work orders below are internal checklists, not instructions to stop between orders inside an authorized batch.
+B2 delivers discussion → mission → authenticated job commitment → progress/follow-up within one connected Community/Missions/Map app. Retain the existing stack/identity, phone and desktop support, current navigation/back paths and drafts. Apply [PRODUCT](../../../PRODUCT.md) and [DESIGN](../../../DESIGN.md). Do not redo B1 wholesale or stop after each internal work order.
+
+B3 groups S4.1–S4.2 into remaining recovery/phone readiness, with public publication only when authorized; R5 follows for presentation/release. No implementation is performed by this documentation update.
 
 ## Sonnet execution protocol
 
@@ -89,7 +91,7 @@ Before editing, inspect Git and the named callers/tests. Fix the shared root cau
 
 ### S1.3 — Shared community membership and access
 
-**Status:** Complete (B1). Join/leave as SQL functions (`join_community`, `leave_community`, `community_preview`) rather than the planned `getCommunity(id)` alone; `getCommunityPreview`/`getCommunity` exist in `public/community-api.mjs`.
+**Status:** Built locally in B1; acceptance reopened for the confirmed permission/event repairs. Join/leave as SQL functions (`join_community`, `leave_community`, `community_preview`) rather than the planned `getCommunity(id)` alone; `getCommunityPreview`/`getCommunity` exist in `public/community-api.mjs`.
 
 **Files:** create `lib/community.mjs`, `test/community.test.mjs`; extend `public/community-api.mjs` and `test/community-access.integration.mjs`; add community/membership migrations using the verified provider workflow. Do not invent applied migration history.
 
@@ -110,7 +112,7 @@ Before editing, inspect Git and the named callers/tests. Fix the shared root cau
 
 ### S2.1 — Posts and replies backend
 
-**Status:** Complete (B1). Implemented as `create_post`, `edit_post`, `hide_post` functions; `editOwnPost`, `hidePost`, `createPost`, `listPosts`, `subscribeCommunity` in the API wrapper.
+**Status:** Built locally in B1; acceptance reopened for operation-replay authorization repair. Implemented as `create_post`, `edit_post`, `hide_post` functions; `editOwnPost`, `hidePost`, `createPost`, `listPosts`, `subscribeCommunity` in the API wrapper.
 
 Create post/reply entities and their permissions in this order.
 
@@ -120,7 +122,7 @@ Create post/reply entities and their permissions in this order.
 
 ### S2.2 — Community UI and cross-browser discussion
 
-**Status:** Complete (B1) with `scripts/community-browser-check.mjs` (51/51) instead of extending `scripts/browser-check.mjs`, which only gained a `#/map` entry. Real phones are not tested.
+**Status:** Built locally in B1; acceptance reopened for draft and accessibility repairs. Earlier browser proof used `scripts/community-browser-check.mjs` (51/51) instead of extending `scripts/browser-check.mjs`, which only gained a `#/map` entry. Real phones are not tested.
 
 - [ ] Make the default screen the community feed: purpose, join action, members, chronological posts, replies, and active-mission area. Keep the existing map reachable as discovery. Label seeded/sample content accurately.
 - [ ] Implement immediate cross-device update using permitted Realtime subscriptions plus canonical re-fetch. Show sending/error/reconnect states and preserve unsent text. Clean up subscriptions when changing views.
@@ -130,6 +132,10 @@ Create post/reply entities and their permissions in this order.
 **Exit:** neighbors can genuinely gather and converse from separate browsers. This must work before adding more categories or optional social features.
 
 ## S3 — Turn discussion into a shared mission
+
+**B2 entry/exit:** repair [the confirmed B1 defects](../../B1-REVIEW.md), then complete S3.1–S3.3 in the same authorized batch. Add regressions for delayed sends with newer drafts/navigation, outsider DELETE events, leave/replay/cross-community operations and the rendered composer label. Update selected-navigation/status/focus semantics in place. Evidence must confirm these repairs before acceptance; existing passing happy-path tests do not establish them.
+
+Deliver the mission UI as part of the existing web app shell. A compact discoverable mission list, mission detail/task controls, clear back paths and the reachable map are sufficient. No separate site, native build or framework rewrite is required. Use new migrations for applied schema changes; do not reset the user's existing database.
 
 **Files:** create `public/mission.mjs`, `test/community-mission.test.mjs`; modify `public/community-api.mjs`, `lib/community.mjs`, `lib/campaign.mjs`, `public/app.mjs`, `public/index.html`, `public/styles.css`, backend migrations/permissions and the browser driver. Keep `public/storage.mjs` for local drafts; do not replace every local save with a whole shared JSON write.
 
@@ -176,7 +182,7 @@ Add mission/member/task entities here, with claims denied until the S3.2 operati
 
 ## Handoff protocol
 
-Execute the user-requested outcome batch, starting at its first unfinished order. **B1 (S1.2–S2.2) is next; S1.1 is complete.** R1–R4 remain historical completed increments; R5 waits for the shared workflow. Preserve unrelated edits. DIRECTION-REVIEW is a committed historical input with corrections, not the active execution plan.
+Execute the user-requested outcome batch, starting at its first unfinished order. **B2 (B1 review repairs plus S3.1–S3.3) is next; S1.1 is complete.** R1–R4 remain historical completed increments; R5 waits for the shared workflow. Preserve unrelated edits. DIRECTION-REVIEW is a committed historical input with corrections, not the active execution plan.
 
 Keep actual commands/results, current run instructions, cuts and next action in the ledger. Ask only for material missing access or product decisions; continue routine authorized work across internal orders. The single current copy/paste assignment lives in [SONNET-HANDOFF.md](../../SONNET-HANDOFF.md), avoiding a second stale prompt here.
 

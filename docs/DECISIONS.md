@@ -1,14 +1,14 @@
 # Decision log
 
-## Latest clarification — application form factor
+## Latest clarification — a web app is sufficient
 
-The user explicitly confirmed that Block Ops should be an **application**, and that a refactor is not necessarily needed. Apply this to the current browser-based implementation: connected community, mission, map and task screens with consistent navigation and responsive phone/desktop interaction. Keep the existing Node/native browser/Leaflet/Supabase stack and make focused changes in place. This clarification does not select a new framework, require a native rewrite or expand the feature scope. The four open B1 review defects still need repair before treating the shared foundation as finished.
+The user explicitly confirmed that Block Ops should be an **application**, a **web app is sufficient for the project**, and a refactor is not necessarily needed. Apply this to the current browser-based implementation: connected community, mission, map and task screens with consistent navigation and responsive phone/desktop interaction. Keep the existing Node/native browser/Leaflet/Supabase stack and make focused changes in place. This clarification does not select a new framework, require a native rewrite or expand the feature scope. The [four open B1 review defects](B1-REVIEW.md) must be repaired in the same substantial B2 batch as S3.1–S3.3. [Current assignment and prompt](SONNET-HANDOFF.md). This documentation task does not implement those features.
 
 ## Latest execution direction — larger Sonnet batches
 
 The user selected **Sonnet 5.5 in Claude** for implementation and now explicitly wants larger outcome-based assignments, not a hand-back after every small work order. The label records their preference, not a verified API identifier or benchmark. Implement inline, without automatic subagents.
 
-S1.1 is complete at `9f09667`. **B1 (S1.2–S2.2) is complete on a local Supabase stack** (see PHASE-STATUS); **B2 (S3) is next**. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Backend access is unconfirmed, not an established blocker until inspected.
+S1.1 is complete at `9f09667`. **B1 is built on local Supabase with open review repairs** (see PHASE-STATUS); **B2 (those repairs plus S3) is next**. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Local backend access is established; hosted access and public phone readiness remain unproven.
 
 Current context and execution contract: [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md), and [detailed plan](superpowers/plans/2026-10-21-community-missions.md). This review/checkpoint task changes documentation only; the prepared assignment is for Sonnet's implementation session.
 

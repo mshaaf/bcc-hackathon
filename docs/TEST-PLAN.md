@@ -1,5 +1,12 @@
 # Verification plan and evidence
 
+## Current B2 acceptance gate
+
+B1 exists locally, but [four independently confirmed defects](B1-REVIEW.md) remain open. Dated product evidence at `f36867b`: 97 default-suite passes with 13 skips, followed by 13 explicit real-backend passes; [recorded results](workflow/b1-independent-review.json). This documentation-only update reruns no product checks and claims no fixes.
+
+The next Sonnet batch must verify repaired draft/send/navigation behavior, outsider DELETE-event isolation, old-operation authorization/community binding and actual composer labeling. Then prove the full web-app path across independent sessions: discussion or reviewed local publication → mission → join → one winning task claimant → persisted update/completion → current export. Exercise leave/claim races, unauthorized direct API operations, retry/reconnect, version conflicts, phone widths 320/390, desktop and keyboard. Keep local originals/excluded evidence/source dates intact. Public hosting/actual phone access remain a later B3 proof.
+
+
 ## B1 — shared community, October 21 (local Supabase stack)
 
 Commands and exact setup: [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md).

@@ -233,5 +233,30 @@
     "provider_access": "unconfirmed; no provisioning or backend proof performed",
     "application_code_changed_in_review": false,
     "publication_performed": false
+  },
+  "web_app_b2_handoff": {
+    "checked_utc": "2026-10-21T23:26:39.931268+00:00",
+    "user_direction": "A web app is sufficient for this project; keep current stack and app form factor; no framework/native rewrite required",
+    "next_batch": "B2 (B1 repairs plus S3.1–S3.3)",
+    "assignment": "docs/SONNET-HANDOFF.md",
+    "review_repairs": "docs/B1-REVIEW.md",
+    "checkpoint": "docs/CONTEXT-CHECKPOINT.md",
+    "checks": {
+      "status": "passed",
+      "markdown_files": 64,
+      "relative_links_checked": 504,
+      "json_files_parsed": 19,
+      "broken_links": [],
+      "application_source_changes": false,
+      "credential_pattern_findings": [],
+      "workstation_paths": [],
+      "active_batch": "B2 (B1 repairs plus S3.1–S3.3)",
+      "product_tests": "not rerun: documentation only; prior B1 evidence explicitly dated to f36867b"
+    },
+    "whitespace": "git diff --check passed",
+    "application_changes": false,
+    "backend_changes": false,
+    "provider_setup": false,
+    "publication_performed": false
   }
 }

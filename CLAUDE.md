@@ -2,16 +2,16 @@
 
 **Executor preference:** the user selected Sonnet 5.5 for implementation. Do not change models automatically or infer an API identifier. Implement inline; no automatic subagents.
 
-**Product form:** the user explicitly wants an application. Keep the existing Node/native-browser/Leaflet/Supabase stack; shape community, missions, map and task details as connected app screens with consistent navigation and responsive phone/desktop interaction. A framework rewrite or broad refactor is not required. Make focused improvements in place.
+**Product form:** the user explicitly wants an application, and a web app is sufficient for the project. Keep the existing Node/native-browser/Leaflet/Supabase stack; shape community, missions, map and task details as connected app screens with consistent navigation and responsive phone/desktop interaction. A framework rewrite or broad refactor is not required. Make focused improvements in place.
 
-Read [AGENTS.md](AGENTS.md), [context checkpoint](docs/CONTEXT-CHECKPOINT.md), [Sonnet handoff](docs/SONNET-HANDOFF.md), [community scope](docs/specs/community-missions.md), and the requested work order in [the plan](docs/superpowers/plans/2026-10-21-community-missions.md). Use [PHASE-STATUS.md](docs/PHASE-STATUS.md) as the execution ledger. Do not read the full archive by default.
+Read [AGENTS.md](AGENTS.md), [context checkpoint](docs/CONTEXT-CHECKPOINT.md), [Sonnet handoff](docs/SONNET-HANDOFF.md), [B1 repairs](docs/B1-REVIEW.md), [community scope](docs/specs/community-missions.md), and the requested work order in [the plan](docs/superpowers/plans/2026-10-21-community-missions.md). Use [PHASE-STATUS.md](docs/PHASE-STATUS.md) as the execution ledger. Do not read the full archive by default.
 
 ## Current state and next action
 
 - Block Ops / Track 3 is selected. The user wants a neighborhood community: join → discuss → organize a mission → claim work → post progress.
 - R1–R4 built a real DC map and browser-local campaigns. B1 adds local Supabase identity, membership, posts/replies and live updates. Shared missions/commitments and public hosting remain unbuilt.
-- **S1.1 complete at `9f09667`**, independently reviewed: 87 tests passed; export wording checked. **B1 complete (local Supabase; see docs/PHASE-STATUS.md). Next batch: B2 (S3 shared missions)**, then B3 (S4 readiness) and R5 release. The user explicitly wants substantial batches; do not stop after every small work order.
-- The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. The current task reviews S1.1 and records the context/next assignment; the Sonnet B1 assignment authorizes its local implementation when executed in that session.
+- **S1.1 complete at `9f09667`**, independently reviewed: 87 tests passed; export wording checked. **B1 built locally, with four open review repairs. Next batch: B2 (those repairs plus S3.1–S3.3 shared missions)**, then B3 (S4 readiness) and R5 release. The user explicitly wants substantial batches; do not stop after every small work order.
+- The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. The current Sonnet assignment is the B2 web-app outcome in `docs/SONNET-HANDOFF.md`; completed B1 instructions are history, not the next task.
 - Supabase runs locally via CLI/Docker; no hosted project exists. Independent review passed 97 unit tests plus 13 explicit backend tests, but found open repairs: newer drafts erased after a send, membership DELETE metadata exposed to non-members, old-operation replay returning a post after leaving, and a disconnected composer label. Repair these within the existing design. Do not treat fakes, localStorage or skipped tests as shared-backend proof.
 - Preserve other assistants' work, historical source evidence and existing local campaigns. DIRECTION-REVIEW is historical context with qualifications; the social spec governs the current scope.
 - End every commentary/final message with a **very simple TL;DR**.

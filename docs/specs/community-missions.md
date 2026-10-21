@@ -1,6 +1,6 @@
 # Block Ops — community missions scope
 
-Date: October 21, 2026. Status: S1.1 report-date repair complete at `9f09667`; B1 (shared community, membership, posts/replies, live discussion) built and verified on a local Supabase stack. Missions, tasks and claims (S3) are unbuilt; next batch is B2. The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
+Date: October 21, 2026. Status: S1.1 report-date repair complete at `9f09667`; B1 (shared community, membership, posts/replies, live discussion) built and verified on a local Supabase stack. Four B1 review repairs remain open; missions, tasks and claims (S3) are unbuilt. Next batch is B2, those repairs plus all S3. The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
 
 ## Purpose and product picture
 
@@ -9,6 +9,12 @@ Date: October 21, 2026. Status: S1.1 report-date repair complete at `9f09667`; B
 The main experience is a neighborhood group with an activity feed and active missions. A mission is a concrete shared effort, with a location, goal, organizer, optional scheduled time, discussion, available jobs, and follow-up. The map helps find supporting public records. The brief helps communicate the group's request. Neither is the main social interaction.
 
 Example, entirely illustrative: someone starts “Clean up our corner on Saturday,” neighbors discuss the plan, one claims “Bring bags,” another claims “Document the site,” and the organizer posts a follow-up. For a streetlight problem, the mission instead coordinates documentation and a service follow-up. A ticket category does not establish that volunteers can safely handle material at a site. Plans and participant commitments are not completed work.
+
+## Confirmed web app experience
+
+The user explicitly wants an application, and a **web app is sufficient for this project**. Keep the existing stack and improve the current screens in place. Use one consistent navigation shell for Community, discoverable Missions/mission detail, task actions and Map/local campaigns. Community is the working default. Preserve session, back paths and newer unsent drafts across screen changes. A compact mission list in the current shell is sufficient; no extra dashboard, native build, installable packaging or framework rewrite is required.
+
+On a mission, prioritize goal/location/organizer/time, current participants, available or claimed jobs, and discussion/follow-up; supporting source history is inspectable secondary detail. Phone and desktop support the same join → claim → update flow with accessible controls and honest loading/empty/error/conflict states. [PRODUCT](../../PRODUCT.md) and [DESIGN](../../DESIGN.md) specify the app experience. Resolve [B1 review defects](../B1-REVIEW.md) within the next batch.
 
 ## Confirmed intent and proposed defaults
 
@@ -42,15 +48,15 @@ Defer private messages, group-directory search, followers/friends, algorithmic f
 
 Keep dumping as the first proven source category; the product's promise is broader. Add a second category only after the complete shared workflow works. Do not ship all 94 categories just to change the headline.
 
-## Shared architecture — recommendation, not provisioned infrastructure
+## Shared architecture — established locally; hosting unproven
 
-Keep the Node server, native browser modules, Leaflet map, source inspection, reviewed campaign model, exports, and recorded data fallback. Add **Supabase Postgres + Auth + Realtime** as the recommended shared backend. It supplies shared persistence, authenticated identities, and change subscriptions without writing a custom chat server. No Supabase project, credentials, SDK, schema, or hosting has been created in this planning task.
+Keep the Node server, native browser modules, Leaflet map, source inspection, reviewed campaign model, exports, and recorded data fallback. B1 added **Supabase Postgres + Auth + Realtime** locally via CLI/Docker, including the vendored SDK, schema and community write operations. Reuse this implementation and add migrations for B2; preserve existing community data. No hosted project or public app URL exists. [Setup and limits](../COMMUNITY-SETUP.md).
 
 Use anonymous Auth for the first demo so participants need no email/password; retain a session through ordinary reloads. Make the limit explicit: clearing browser data or switching devices loses access to that guest identity. This is not residency verification or a count of unique humans. Organizer recovery or permanent accounts can follow later. Supabase's authenticated database role also includes anonymous Auth users, so role alone is not authorization. [Anonymous Auth documentation](https://supabase.com/docs/guides/auth/auth-anonymous)
 
 Browser modules may write directly through the authenticated Supabase Data API **only with database-enforced permissions and validation**. Node can keep its fixed read-only 311 proxy; adding shared writes does not inherently require rewriting that proxy. Realtime subscriptions notify the client to re-fetch the permitted current state. On reconnect, re-fetch; do not assume every event was delivered. [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes)
 
-Use publishable browser configuration only. Never expose service-role/secret keys. Pin and locally bundle/vendor the selected SDK, retain its license, and add only the required HTTPS/WSS origins to CSP. No broad wildcard CSP. S1 verifies actual provider access, current SDK/CLI and cost prerequisites before installation. Hosting is unselected; prepare a deployable Node application, then publish only when the user instructs it. A public URL is necessary for unrelated phones on venue Wi-Fi/cellular; a localhost QR code will not work.
+Use publishable browser configuration only. Never expose service-role/secret keys. Pin and locally bundle/vendor the selected SDK, retain its license, and add only the required HTTPS/WSS origins to CSP. No broad wildcard CSP. Local provider access and the pinned SDK/CLI were established in B1; verify current provider documentation before database/Auth changes and preserve the narrow CSP. Hosting is unselected; prepare a deployable Node application, then publish only when the user instructs it. A public URL is necessary for unrelated phones on venue Wi-Fi/cellular; a localhost QR code will not work.
 
 ### Data and ownership contract
 
@@ -98,6 +104,7 @@ S1.1 corrected the recurrence headline at `9f09667`: `reReportedKeys` compares r
 7. Keyboard and 390/320-pixel phone layouts support join → discussion → claim → update. A real phone on another network opens the shared URL before claiming stage readiness.
 8. Group progress, city status and site observations remain distinct throughout the mission and exported brief. An evidence-free discussion-origin mission can organize work and export a plan labeled “No official 311 records attached”; it cannot manufacture a sourced conclusion. Existing evidence-required local brief guards remain intact. The recurrence-date counterexample is fixed or the unsupported closure copy removed.
 9. Publishing old local tasks creates no authenticated commitments or done counts. Imported observations retain provenance labels. Leaving and a simultaneous claim cannot leave unfinished work assigned to a non-member.
+10. Community, missions/tasks and map remain connected app screens with clear current navigation/back paths; core actions work on phone and desktop. Newer draft text survives successful sends and navigation. No native build/install step is needed for the project.
 
 ## Delivery order
 

@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-21 — Web-app experience and B2 assignment
+
+- Made the web app sufficient for the project explicit; current Community/Missions/Map screens share navigation and phone/desktop interaction without a framework/native rewrite.
+- Replaced obsolete B1 execution text with one Sonnet batch: confirmed B1 repairs plus all S3 mission participation/progress. Refreshed product/design, scope, checkpoint, ledger and local tracking; preserved review evidence.
+- Documentation only. No application, backend, provider or publication changes.
+
 ## 2026-10-21 — B1: working shared community
 
 - Shared community on Supabase (anonymous Auth, Postgres RLS + SECURITY DEFINER writes, Realtime), run locally with the Supabase CLI and Docker: join with a display name, posts, one-level replies, own-post editing, moderator hide, live updates with reconnect/re-fetch, retry that never duplicates, preserved drafts.

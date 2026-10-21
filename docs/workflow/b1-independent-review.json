@@ -1,0 +1,42 @@
+{
+  "reviewed_head": "f36867b",
+  "unit_suite": {
+    "passed": 97,
+    "failed": 0,
+    "skipped": 13
+  },
+  "explicit_local_integration_suite": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "measured_realtime_ms": 439,
+    "cold_start_warmup_posts": 1
+  },
+  "additional_probes": {
+    "replayAfterLeaving": {
+      "normalReadCount": 0,
+      "replayStatus": "returned",
+      "returnedOldPost": true
+    },
+    "concurrentRateLimit": {
+      "limit": 20,
+      "acceptedBeforeBurst": 19,
+      "acceptedInConcurrentBurst": 1,
+      "totalPersisted": 21,
+      "rejectedCodes": [
+        "rate_limited"
+      ],
+      "note": "19 initial plus 1 concurrent acceptance = 20 by the rate-test user; totalPersisted 21 also includes the earlier authors post. This probe did not establish a rate-limit bypass."
+    },
+    "outsiderDeleteEvents": {
+      "received": 2,
+      "hasMembershipIdentifiers": true
+    }
+  },
+  "draft_race": {
+    "newTextTypedWhileSending": "Second unsent message typed while the first is sending",
+    "draftAfterFirstSendCompletes": null,
+    "unsentTextLost": true,
+    "method": "Executed actual send function from current source with a controlled pending API promise and no browser mutations"
+  }
+}

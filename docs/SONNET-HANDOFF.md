@@ -1,65 +1,68 @@
-# Block Ops — Sonnet's next batch
+# Block Ops — next Sonnet assignment
 
-> **B1 is complete (October 21, local Supabase stack).** Results and limits: [PHASE-STATUS.md](PHASE-STATUS.md), [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md). **The next assignment is B2 (S3.1–S3.3)**; write its prompt from the plan's S3 section when the user asks. The B1 text below is kept as the completed contract.
+Updated October 21, 2026. **Next batch: B2 (S3.1–S3.3), including the open B1 repairs.** Build one complete web app experience using the existing implementation. The user selected Sonnet 5.5 in Claude and wants a substantial outcome, not repeated hand-backs after small work orders.
 
-Updated October 21, 2026. **S1.1 is complete and independently reviewed at `9f09667`. Do not redo it.** The user selected Sonnet 5.5 in Claude and now wants larger outcome-based assignments, not a pause after each small work order.
+## Read only what matters
 
-Read [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [the ledger](PHASE-STATUS.md), [community scope](specs/community-missions.md), and relevant code. The [detailed plan](superpowers/plans/2026-10-21-community-missions.md) supplies implementation contracts/checklists. No broad research restart or automatic subagents. Every message ends with a super-simple **TL;DR**.
+Read [AGENTS](../AGENTS.md), [CLAUDE](../CLAUDE.md), [PRODUCT](../PRODUCT.md), [DESIGN](../DESIGN.md), [B1 review](B1-REVIEW.md), [community scope](specs/community-missions.md) and S3 in [the detailed plan](superpowers/plans/2026-10-21-community-missions.md). Consult [ledger](PHASE-STATUS.md) and [setup](COMMUNITY-SETUP.md) for current state. The [checkpoint](CONTEXT-CHECKPOINT.md) explains the history after a context reset. No broad research restart or automatic subagents.
 
-## B1 — ship a working shared community
+## Actual starting point
 
-Complete **S1.2, S1.3, S2.1 and S2.2 as one batch**. The result is one community where people join, post and reply from independent browsers and see each other's persisted activity. Choose the internal work sequence and resolve routine choices. Focused checks/commits are checkpoints, not reasons to hand control back before the outcome works.
+R1–R4 map/source/local campaigns exist. B1 community joining, posts/replies and live updates run on local Supabase CLI/Docker; SDK and backend access are already established locally. Independent review at `f36867b` passed 97 unit tests and 13 explicit integration tests, then reproduced four gaps. These are open repairs, not a reason to rebuild B1 or change frameworks. S1.1 filing-date wording is complete. S3 missions/claims are unbuilt. No hosted project, public URL or real phone proof exists.
 
-The community feed becomes the default experience: clear purpose, join with a chosen display name, members, chronological posts/replies with author and time, own-post editing and moderator hiding. Keep the existing map, local campaigns, source inspection and export reachable and intact. Provide a clean, readable mobile layout and keyboard interaction. An empty mission area must be honest; do not fill it with fake participation or prematurely build S3.
+## Outcome — discussion becomes shared action
 
-Supabase Auth/Postgres/Realtime is recommended, but no actual project/access/hosting/SDK has been established. Prove real access and two distinct authenticated sessions, pin the selected SDK and keep only publishable configuration in the browser. Use anonymous Auth for the first demo if actual provider settings permit it, with clear guest-identity limits. No service-role/secret browser key or wildcard CSP.
+Repair the B1 defects and finish all of S3 in one batch. A member starts a mission from a discussion or deliberately publishes a reviewed copy of a local campaign. Another independently authenticated browser joins the same mission, claims a named job, posts an update and reports its job done. The organizer sees the persisted responsibility/progress without manual reload. Reload and reconnect preserve the same plan and commitments. Current export reflects shared state.
 
-Community membership and posts/replies require database-enforced permissions, validation and bounded writes. Test ownership and community isolation outside UI controls. Use idempotent retries and canonical re-fetch on Realtime events/reconnect. Show failure/retry states and preserve unsent text. Keep source facts, demo content and user observations distinct.
+The interface must feel like **one web application**: consistent navigation, community conversation, discoverable active missions, mission detail/task controls and the existing map/campaign view. Keep the plum/sunflower identity and existing Node/native-browser/Leaflet/Supabase stack. Make focused component/layout changes in place. A new framework, native shell, PWA packaging, separate marketing site or broad refactor is not required.
 
-### Done means demonstrated
+The mission screen should make the goal, public location, organizer, optional time and available/claimed jobs immediately understandable. Keep join/claim/release/complete actions distinct, show who committed, and provide discussion and dated follow-up. Evidence is inspectable supporting detail. Desktop and phone users need clear back paths, useful empty/error/sending/conflict states, keyboard access and drafts that survive navigation. A compact mission list in the existing shell is enough; avoid extra dashboards/settings.
 
-- Two isolated browser profiles have different authenticated IDs, join the same real persisted demo community, and keep their session on reload. Joining twice/reloading does not grow membership counts.
-- B posts/replies; A sees the exact persisted content without manual reload within five seconds on the tested healthy connection. Reconnect restores current permitted state and retried sends do not duplicate posts.
-- Backend requests reject forged authors/moderator roles, edits to others' posts, non-member access and cross-community replies. Empty/oversized bodies fail at the write boundary, not just the form.
-- Failed sends keep the draft. Own edit/moderator hide behavior is tested. Keyboard and 320/390-pixel layouts support joining, reading, posting and replying.
-- Existing map, reviewed evidence, local saves and exports still work. Run focused new checks, real provider integration and browser proof, then the existing suite at the meaningful batch boundary. Record actual results and skips separately.
-- Setup/reproduction instructions contain placeholders only. Update [PHASE-STATUS.md](PHASE-STATUS.md), the checkpoint and setup/test docs; commit completed increments locally. Report the outcome, evidence and exact remaining limits.
+## Repair gate inside this batch
 
-If access/configuration is missing, ask for the **specific missing input**, continue independent safe preparation, and leave dependent checks incomplete. Do not claim a mock/localStorage/shared tab is cross-browser backend proof. Do not create paid infrastructure, push, deploy publicly, submit anything, contact others or choose a license. Stop at B1's completed outcome or a genuine blocker; do not silently add mission implementation.
+Use [B1-REVIEW](B1-REVIEW.md) for reproduction and affected code. Preserve newer drafts while a send completes, including after navigation; stop membership DELETE metadata reaching outsiders through actual event/publication rules; authorize old-operation replay before returning results and bind it to the correct community; repair the main composer label and adjacent focus/status/navigation semantics. Add regressions for the confirmed failures. Do not mark these resolved from happy-path tests alone.
+
+Use new migrations for changes to the applied backend. Preserve existing community/post data and browser-local campaigns; do not reset the running user's database to implement a migration. Use explicitly disposable test fixtures/stacks for destructive test setup. Keep credentials out of files served to browsers, logs, screenshots and Git.
+
+## Mission contracts
+
+- Support both creation paths: discussion-origin with zero official records, and deliberate reviewed local publication with the local original untouched. Preserve excluded evidence, source dates/modes and unknowns. Imported typed owners/done flags become unclaimed/not done; historical observations retain dates/fictional labels and imported/unverified-original-author provenance.
+- Mission discussion reuses community posts with explicit mission scope. Same-community source/reply links only. Organizer metadata updates use a version check, with a recoverable conflict rather than silently overwriting changes.
+- Membership and task claims are real shared rows with backend authorization. Join/retry is idempotent. Exactly one claimant wins a simultaneous race. Leaving releases unfinished claims; serialize leave/claim so no unfinished task belongs to a departed member. Active organizers archive before leaving. Preserve historical completion attribution.
+- Only permitted participants/organizers can change tasks, metadata and moderation. Test direct backend requests, not only disabled buttons. Group progress, official ticket status and site observations remain different facts.
+- Use shareable mission hash routes and a locally generated QR of the actual URL. Localhost links/QRs are local test access, not proof that a phone on cellular can join. No external QR service or invented public URL.
+- An evidence-free shared plan exports “No official 311 records attached.” Keep the existing evidence-required local campaign export guard. Fetch current permitted mission/member/task/post state before export; keep rejected evidence out.
+
+## Acceptance evidence
+
+Demonstrate two genuinely separate authenticated browser sessions: A creates/publishes, B joins/claims/posts, A sees the exact persisted changes, and reload preserves the winner. Target normal propagation within five seconds on the tested healthy connection; record cold-start/reconnect limits honestly. Demonstrate exactly one winner under concurrent claims, no orphan assignment under leave/claim races, and denial of cross-community/forged-ownership operations. Exercise new drafts during sends, retry after timeout, recovery and version conflicts.
+
+Check the community → mission → claim → update path with keyboard and at 320/390 pixels plus desktop. Inspect actual current export/download and source fidelity. Reuse existing browser helpers and isolated fixtures rather than replacing the test framework. Run focused repair/domain checks, explicit real-backend integration and browser evidence, then the full applicable suite at the batch boundary. Skips/mocks are not backend proof; report exact commands, counts and unverified items.
+
+## Execution and boundary
+
+Choose the internal implementation order and make focused local commits at meaningful completed increments. Keep working across the whole batch; no approval request after each internal work order. Ask only for a concrete missing prerequisite and continue independent work where possible. Update the ledger, checkpoint, setup/test evidence and run instructions to the actual final state. Leave incomplete acceptance open.
+
+Stop at this complete outcome or a genuine blocker. No push, public deployment, paid provisioning, outreach, official submission or license selection. B3 handles remaining readiness and authorized real-phone/public access; R5 handles final pitch/rehearsal. Defer AI, crime layers, photos, DMs, notifications, extra communities and category expansion. End **every message** with a super-simple **TL;DR**.
 
 ## Copy into Sonnet
 
 ```text
-Read AGENTS.md, CLAUDE.md, docs/CONTEXT-CHECKPOINT.md and
-docs/SONNET-HANDOFF.md. S1.1 is done at 9f09667; don't redo it.
+Read AGENTS.md, CLAUDE.md and docs/SONNET-HANDOFF.md, including
+its required scope/design/review references. Execute B2 in full:
+repair the four confirmed B1 issues and complete S3.1–S3.3.
 
-Execute B1: finish the remaining S1 work and all of S2
-(S1.2–S2.2) as one outcome-based batch. Build a real shared
-community where two independent browser sessions join, post,
-reply and see persisted updates without manual reload.
+Build Block Ops as a connected web app using the current stack
+and visual identity. No framework rewrite or native build is
+needed. Deliver community discussion → create/publish mission
+→ join → claim a job → post progress/follow-up, with clear
+navigation and usable phone/desktop screens.
 
-Use the community spec and detailed plan as contracts, choose
-your internal implementation order, and keep working through
-the whole batch without stopping after each work order.
-Preserve the map, source fidelity and browser-local campaigns.
-Make the community UI clear, mobile-friendly and presentable.
-
-Inspect actual backend access first. Ask only for a specific
-missing prerequisite; continue independent preparation while
-waiting. Don't replace real backend proof with mocks. Verify
-permissions, retry/reconnect behavior and two-browser updates.
-
-Update the ledger, checkpoint and setup/test evidence; make
-focused local commits. No push, public deployment, paid
-provisioning or S3 implementation in this batch. Report what
-works and what remains unverified. End every message with a
-super-simple TL;DR.
+Keep existing data and local campaigns intact. Verify real
+shared state across independent browsers, permissions, atomic
+claims, leave/claim races, newer drafts during sends and current
+exports. Use the handoff's acceptance checks; do not stop after
+each small work order. Update docs/evidence and commit locally.
+No push or public deployment. End every message with a simple
+TL;DR, and report exactly what passed and what remains open.
 ```
-
-## What follows
-
-**B2: S3.1–S3.3**, after B1 passes: turn discussion into a mission, deliberately publish reviewed local work, join/leave, claim/release/complete tasks atomically, share a mission link and export its current plan with honest provenance.
-
-**B3: S4.1–S4.2**, after B2: access/recovery and full participation hardening, deploy preparation and actual phone-on-another-network proof when publication is authorized. Then **R5**: truthful community-first pitch, stage rehearsal and release package.
-
-These are subsequent outcome batches, not instructions to stop after every internal checkbox or to execute beyond B1 without a new batch instruction.

@@ -1,32 +1,49 @@
-# Block Ops worktable design
+# Block Ops web app experience
 
-**Confirmed form factor:** treat Block Ops as one application. Use a persistent navigation shell, focused community/feed and mission/task screens, clear primary actions, back navigation and layouts suited to phone and desktop use. Preserve the existing identity and stack; refine current components and interactions in place. This direction does not call for a framework rewrite or broad code refactor.
+## Confirmed direction
 
-**Community-first revision:** the proposed landing surface is the group's feed and active missions; the mission page combines people, discussion, schedule, available jobs and updates. The existing map remains a discovery/evidence view. Show participants' actual commitments and distinguish plans, reported progress and checked conditions. See [the scope](docs/specs/community-missions.md); this is design direction, not implemented UI or approval of a new color system.
+The user wants an **application experience**, and a web app is sufficient for this project. Keep the existing stack, name and visual identity. Improve connected screens and interactions in place; a framework rewrite, native build or new design system is not required.
 
-**Baseline reference, not the final approved design.** The user questioned the product experience after the UI repair. Continue with [the handoff](docs/HANDOFF.md) and revision R1. Keep source fidelity and accessibility; the three-step layout below may change for map/campaign work. A new styling pass alone does not satisfy the scope concern.
+This is an operating app for neighbors carrying out work together. Read [PRODUCT](PRODUCT.md), [community scope](docs/specs/community-missions.md) and [current Sonnet assignment](docs/SONNET-HANDOFF.md). Earlier three-step worktable layouts are baseline context, not the required structure for the whole app.
 
-## Direction
+## One connected application
 
-An operating worktable for a group preparing its next move. Preserve the established plum/sunflower identity. Replace the long simultaneous form with a deliberate three-step task: review history, plan the next move, open the brief. This is an application surface, not a marketing landing page.
+Use the existing header/navigation as the starting shell. Make Community, Missions and Map easy to reach, with an obvious current section. A mission opens within that same app context and has a clear back path. Keep session and drafts across navigation; avoid reloading the whole application for ordinary actions. Reuse existing components and modules rather than introducing a new router or framework solely for appearance.
+
+| Screen | Main job | Primary actions |
+|---|---|---|
+| Community | Talk about a concern and discover active efforts | Join, post/reply, start a mission from a discussion, open a mission |
+| Missions | Find the community's active plans and current participation | Open a mission, join an effort |
+| Mission detail | Agree on responsibility and keep the plan current | Join/leave, claim/release a job, report completion, discuss/post a dated update |
+| Map and local campaigns | Inspect public evidence and prepare reviewed material | Choose area/evidence, review, publish a deliberate copy into a mission |
+
+A compact mission list inside the existing community shell is sufficient if it preserves navigation and discoverability; a separate dashboard is not required. Do not add screens or settings to fill the navigation.
+
+## Mission detail hierarchy
+
+Lead with the mission title, objective, location, organizer and optional time. Show participation and available jobs next, with one clear primary action appropriate to the viewer. A claimed task displays its actual member name; completion is a reported action, not independently verified remediation. Keep mission discussion and follow-up nearby. Source records remain inspectable in a secondary evidence disclosure, with their original dates/statuses and uncertainty.
+
+Keep community conversation and mission conversation distinguishable. Publishing a local campaign presents a clear sharing review first and leaves the local original intact. A discussion-origin mission without city data is a legitimate plan, clearly labeled as having no official records.
+
+## Responsive interaction
+
+On desktop, prioritize the feed or current mission; use supporting space for participants/evidence when it helps. On phones, stack the same workflow into readable screens with reachable actions and clear back navigation. Preserve the incumbent navigation pattern where it works. Avoid desktop-only interactions and long forms that combine every task at once.
+
+Check 320/390-pixel layouts and desktop/projection readability. Use labeled controls, visible focus, comfortable targets, correct selected-navigation semantics and concise status announcements. Cancelling a reply/edit returns focus to its trigger. Replies and incoming updates must not steal keyboard focus or erase newer drafts.
 
 ## Visual system
 
 - Ground `#f4f1f7`; paper `#fffefd`; ink `#302338`; secondary text `#6b6073`.
-- Plum `#5b316b` carries the identity, selected states, primary actions, and the desktop brief companion.
-- Sunflower `#f5cd55` emphasizes the selected evidence count and the draft-brief action. It never implies a successful city outcome.
-- Pale plum `#ebe3f0` marks secondary selection; green `#e0ece3` / `#365c41` denotes a source's closed status, not verified cleanup.
-- Typography uses the installed Avenir Next UI stack with Segoe UI and system fallbacks. No external font request or CSP change is required.
-- Use a clear hierarchy, generous separation between tasks, and compact spacing within source records. Avoid wrapping every field in a new card.
+- Plum `#5b316b`: identity, selected states and primary actions.
+- Sunflower `#f5cd55`: restrained emphasis for useful action/evidence; never a claim that the city fixed a problem.
+- Pale plum `#ebe3f0`: secondary selection. Source-closed green `#e0ece3` / `#365c41` describes source status only.
+- Keep the Avenir Next/Segoe UI/system font stack. No external font dependency is required.
+- Separate tasks and sections with hierarchy and spacing; avoid putting every field inside another card. Use concise in-app copy and progressively disclose supporting evidence.
 
-## Layout and interaction
+## Working states and product truth
 
-The first desktop viewport prioritizes a readable history, full original addresses, inclusion checkboxes, and the confirmation action. A plum companion summarizes the actual selected evidence and separates official status from current site conditions. The observation and tasks appear in their own step. The final brief has a dedicated paper layout and export toolbar.
+Show genuine loading, empty, sending, retry, conflict and reconnect states. Preserve text on failure and text typed while an earlier send is pending. A successful response must not clear a newer draft or a different community's draft. Refresh canonical permitted state after events/reconnect; do not assume every event arrived.
 
-Source detail disclosures retain raw original fields. The full address is visible before expansion; removing street numbers would hide the evidence needed to reject a candidate. Confirmation advances to the plan. Step controls support pointer, keyboard, and arrow-key navigation. Changing evidence clears source confirmation.
+Progress reflects persisted task commitments and member/organizer reports. City status, group progress and site observations stay distinct. Demo/sample content is labeled without fabricating neighbors or outcomes. A localhost link/QR is local test access, not proof that a judge's cellular phone can reach the application.
 
-At narrow widths, the companion yields to the main task, records reflow, and the final paper stays readable. Print emits the brief alone, without navigation or editor controls. Motion is limited to control feedback and respects reduced-motion preferences.
-
-## Truth and states
-
-Practice fixtures are explicitly fictional. Live results show the retrieval date and query window. Failed refresh preserves the current draft; switching source/group clears the previous context's observation. Loading locks editing so an in-flight request cannot overwrite a new edit. Exports stay disabled until the current evidence and required plan fields are ready.
+Retain the existing source-review, failed-refresh recovery, guarded local storage and print/export behavior. Evidence changes invalidate review. Print/export contains the reviewed plan and current persisted responsibilities, not the whole navigation/editor shell.
