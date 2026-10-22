@@ -22,9 +22,9 @@ Two engineers have three build days, October 21–23, 2026. One labeled Ward 8 d
 
 - R1–R4: Ward 8 map and source inspection, reviewed browser-local campaigns, local task/observation text, exports, filing-date statistics and a dated recorded fallback.
 - B1: Supabase Auth/Postgres/Realtime running locally via CLI/Docker; shared membership, posts/replies, own-post editing and moderator hiding. Independent review passed 97 unit tests and 13 explicitly enabled backend tests at `f36867b`.
-- Open B1 repairs: preservation of newer drafts during a send, membership DELETE metadata exposure, post replay after leaving, and the main composer's label association. See [review](docs/B1-REVIEW.md).
-- B2 is unbuilt: shared missions, authenticated job commitments, progress/follow-up and reviewed local publication. This is the next assignment, bundled with the B1 repairs.
-- Hosted Supabase, a public URL and actual phone access on another network remain unproven. They belong to B3 readiness; the present batch does not publish the app.
+- B1 review repairs (draft preservation, membership event exposure, operation replay authorization, composer label and focus/announcement semantics): fixed in B2; see [review](docs/B1-REVIEW.md).
+- B2 (complete locally): shared missions from a discussion or a deliberately reviewed local campaign, authenticated job claims with one winner, progress updates and dated follow-up observations, a current-state export, and the four B1 repairs. See [the ledger](docs/PHASE-STATUS.md).
+- Hosted Supabase, a public URL and actual phone access on another network remain unproven. They belong to B3 readiness; B2 does not publish the app.
 
 ## The app experience to deliver
 

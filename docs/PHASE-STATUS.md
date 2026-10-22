@@ -4,7 +4,7 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B1 is built and its happy-path checks pass locally, with [four independent-review defects open](B1-REVIEW.md)**. **Next batch: B2**, those repairs plus S3.1–S3.3 shared missions in a connected web app. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B2 is complete and verified on a local Supabase stack**: the four B1 review defects are repaired, and discussion → create/publish mission → join → claim a job → post progress/follow-up works across independent browsers. **Next batch: B3** (S4 hardening, a hosted project and real-phone proof when authorized), then R5 release. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
 The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The current documentation task records the confirmed web-app experience and B2 assignment. Local B1 sharing/provider setup exist; mission implementation and B1 repairs remain open.
 
@@ -17,9 +17,9 @@ The map/local-campaign revision R1–R4 is implemented. The user now explicitly 
 | S1.3 | Community membership and access | In progress |
 | S2.1 | Posts/replies backend | In progress |
 | S2.2 | Community feed and cross-browser discussion | In progress |
-| S3.1 | Discussion-origin and reviewed-import mission creation | Not started |
-| S3.2 | Atomic mission joining/claiming/leaving | Not started |
-| S3.3 | Mission UI, links and shared export | Not started |
+| S3.1 | Discussion-origin and reviewed-import mission creation | Complete (local Supabase) |
+| S3.2 | Atomic mission joining/claiming/leaving | Complete (local Supabase) |
+| S3.3 | Mission UI, links and shared export | Complete (local browsers; no real phone) |
 | S4.1 | Access/recovery/accessible interaction | Not started |
 | S4.2 | Deployment prep and authorized real-phone proof | Not started |
 
@@ -31,7 +31,7 @@ Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outc
 |---|---|---|
 | S1 | Shared backend/identity proof, permissions, truthful recurrence claims | In progress |
 | S2 | Community joining, feed, posts and replies across devices | In progress |
-| S3 | Shared missions, task commitments and follow-ups | Not started |
+| S3 | Shared missions, task commitments and follow-ups | Complete locally (independent browser profiles on one machine; QR/links are localhost-only) |
 | S4 | Recovery, permissions, real phones and authorized deployment proof | Not started |
 
 R5 release/rehearsal follows the social slice; do not skip directly to R5. The existing R phase rows and historical evidence below are preserved.
@@ -62,7 +62,7 @@ R1 evidence and the R2–R3 specification: [campaign-revision.md](specs/campaign
 | 5 | Polished product and judge interaction | In progress | User requested an early UI correction: three-step worktable, full addresses, live summary, dedicated brief, and responsive/print checks delivered. Final stage rehearsal remains. |
 | 6 | Presentation and release package | Not started | Depends on Phase 5. |
 
-Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; current continuation is B2, with the confirmed B1 repair gate followed by S3. For the active revision, do not skip an unfinished phase or silently substitute another idea.
+Use only **Not started**, **In progress**, **Blocked**, and **Complete** for phase statuses. The baseline rows preserve their last implementation statuses; B1 and B2 are complete locally; current continuation is B3 (S4), then R5.
 
 ## Update after every phase
 
@@ -75,6 +75,25 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — B2: shared missions and the four B1 repairs (S3.1–S3.3)
+
+**Backend:** same local Supabase stack, extended with **four new migrations applied on top of the running database (no reset; the seeded community and B1 data were untouched)**: `20261021200000_missions_and_b1_repairs`, `…210000_join_mission_hides_existence`, `…220000_join_community_announces`, `…230000_import_order`. Details and rules: [COMMUNITY-SETUP.md](COMMUNITY-SETUP.md).
+
+**B1 repairs (see the resolution note in [B1-REVIEW.md](B1-REVIEW.md)):** (1) newer unsent text survives a send that completes later, including after navigating to another community (`lib/drafts.mjs`, 7 unit tests, browser proof with a held response); (2) `community_members` is no longer in the Realtime publication, and an outsider test with a live member canary and a negative control (with the table published it fails and prints the departed member's ids) passes; (3) `create_post` authorizes membership before replaying an operation and binds it to its community/mission/parent; (4) composer label, `aria-current="page"`, a polite announcer for new posts and connection changes, focus restored on cancelling Reply/Edit.
+
+**Built:** `missions`, `mission_members`, `mission_tasks` and mission-scoped posts (discussion / progress update / dated observation with fictional and imported flags); SECURITY DEFINER `create_mission` (discussion origin with zero records, or a reviewed local campaign copy), `update_mission` (organizer, version-checked), `join/leave_mission`, `add_task`, `claim/release_task`, `set_task_done`; `leave_community` leaves missions atomically. App shell restructured into `shell.mjs` / `community.mjs` / `mission.mjs` / `posts.mjs` with Community, Missions (list, mission detail with jobs, participants, discussion, evidence, organizer edit, share link + local QR, current-state export), Start-a-mission and Publish-a-campaign screens, plus the existing Map. Local QR via vendored `qrcode-generator` 1.4.4.
+
+**Evidence (this machine, October 21):**
+- `node --test` with no backend flags: **143 tests, 116 pass, 0 fail, 27 skipped** (the 27 are the two real-backend files; skips prove nothing).
+- `RUN_COMMUNITY_INTEGRATION=1 … node --test test/community-access.integration.mjs test/community-mission.integration.mjs`: **27/27 pass** against real Auth, Postgres and Realtime: both creation paths, bounds, idempotent create, forged-origin rejection, version conflict, direct REST writes denied on all new tables, **exactly one winner among four simultaneous claimants**, owner-only release/done, no claims on archived missions, **12 leave-versus-claim races with no orphan assignment**, leaving a mission/community releases unfinished jobs but keeps finished attribution, organizer must archive first, mission-scoped post kinds, cross-community denial, organizer moderation, replay-after-leave and cross-community operation reuse rejected, outsider event isolation, and realtime join/claim notification (51 ms–519 ms steady state).
+- `node scripts/mission-browser-check.mjs`: **68/68 pass** with five independent Chrome profiles (organizer A, joiner B, racer C, stranger D, phone E) through the real app: keyboard start-a-mission from a post, a half-written form surviving navigation and reload, claim visible to the organizer in ~0.5 s, **a simultaneous claim from two browsers with one winner and a clear message for the loser**, progress update/done/fictional dated observation, reload and deep-link behavior including the join gate for a stranger, drafts during a held send/offline/timeout-after-commit retry, version-conflict recovery, **current exports downloaded and inspected** (`docs/ui-review/b2-run/export-*.md`: evidence-free "No official 311 records attached", claims and done marks matching live state, a second export after a release showing the change, a published campaign with three recorded-snapshot records and source links and without the excluded record, owner names or the unticked observation), local campaign byte-identical after publishing, organizer moderation, archive/leave rules, Realtime stopped and restarted during a claim, 390 px and 320 px mission flows with no horizontal scroll.
+- `node scripts/community-browser-check.mjs` (B1 flows on the refactored UI): **51/51**. Existing `scripts/browser-check.mjs`: **75/75 at 1440, 65/65 at 390** (the map and campaigns, now under `#/map`, with a Share action added to the campaign view).
+- Both browser checks now warm Realtime first (`scripts/support/warm.mjs`); without it, the first run after a container start failed its 5-second check honestly.
+
+**Findings along the way (all fixed or documented):** the first `join_mission` told a stranger whether a mission id existed; joins no longer announced themselves once membership left the publication; imported observations had identical timestamps and random order; a disclosure the user opened closed on every live re-render; an edit's base version drifted with live updates, hiding real conflicts; a conflict message outlived the conflict; Realtime subscribing to an unpublished table silently kills the whole channel, which had made my first outsider test vacuous (found with the negative control). Docker Desktop crashed mid-run once; containers restarted with their data intact and the affected runs were repeated.
+
+**Not proven / open:** hosted Supabase, a public URL, real phones and cellular (QR and links point at `127.0.0.1` and say so); venue networks; anonymous-auth abuse protection; load and pagination (page reads cap at 100 missions / 1,500 jobs / 1,000 posts per list); ownership transfer; screen-reader testing beyond semantics and live-region checks; Safari/Firefox. Realtime needs 15–25 s to stream after its container starts; the page re-fetches on reconnect and at most every 30 s regardless.
 
 ### 2026-10-21 — Independent B1 findings and B2 web-app handoff
 

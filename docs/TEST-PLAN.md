@@ -1,6 +1,18 @@
 # Verification plan and evidence
 
-## Current B2 acceptance gate
+## B2 — missions, October 21 (local Supabase stack)
+
+| Check | Result |
+|---|---|
+| `node --test` (no backend flags) | 143 tests: 116 pass, 0 fail, 27 skipped (the two real-backend files; a skip is not proof) |
+| `RUN_COMMUNITY_INTEGRATION=1 … node --test test/community-access.integration.mjs test/community-mission.integration.mjs` | 27/27 pass, real Auth/Postgres/Realtime; includes one-winner race, 12 leave/claim races, outsider event isolation with canary + negative control |
+| `node scripts/mission-browser-check.mjs` | 68/68: five independent profiles, keyboard, drafts during sends, race, conflict, exports downloaded and inspected, publish, archive/leave, Realtime stop/start, 390/320 px |
+| `node scripts/community-browser-check.mjs` | 51/51 on the refactored UI |
+| `node scripts/browser-check.mjs 1440` / `390` | 75/75 and 65/65 (map and campaigns under `#/map`) |
+
+Exported plans inspected: `docs/ui-review/b2-run/export-*.md`. Screenshots: `docs/ui-review/b2-run/` (desktop mission, publish preview, 390/320 px). Not tested: hosted Supabase, real phones/cellular, venue networks, abuse protection for anonymous sign-ins, load/pagination, screen readers, Safari/Firefox. See the ledger for the findings made along the way.
+
+## Earlier B2 acceptance gate (superseded by the results above)
 
 B1 exists locally, but [four independently confirmed defects](B1-REVIEW.md) remain open. Dated product evidence at `f36867b`: 97 default-suite passes with 13 skips, followed by 13 explicit real-backend passes; [recorded results](workflow/b1-independent-review.json). This documentation-only update reruns no product checks and claims no fixes.
 

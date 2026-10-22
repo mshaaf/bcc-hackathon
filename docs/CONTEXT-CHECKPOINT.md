@@ -25,7 +25,7 @@ The latest clarification: **make it an application; a web app is sufficient for 
 | R1–R4 | Ward 8 dumping map, bounded source query/inspection, reviewed exports, browser-local campaigns/tasks/observations, filing-date proximity display and real dated recorded fallback. |
 | S1.1 | Filing-date wording repair complete at `9f09667`; original thresholds/counts retained. |
 | B1 | Local Supabase Auth/Postgres/Realtime, shared membership, posts/replies, own-post editing, moderator hiding, live updates and retry/reconnect handling. Happy-path evidence passes; four independent-review defects remain open. |
-| B2 / S3 | Unbuilt: shared missions, authenticated task commitments, progress/follow-up, deliberate local publication, shared current export. Next batch includes B1 repairs. |
+| B2 / S3 | **Built and verified locally**: shared missions from a discussion or a reviewed local campaign, authenticated claims with one winner, progress/follow-up posts, current-state export, and the four B1 repairs. 27/27 backend integration, 68/68 mission browser checks. See the ledger. |
 | B3 / S4 and R5 | Remaining readiness, actual phone/public access when authorized, then pitch/release/rehearsal. Unproven. |
 
 B1 uses **real local Supabase via CLI/Docker**, not a mock. SDK 2.118.0 is vendored; CLI 2.121.0 and setup are documented in [COMMUNITY-SETUP](COMMUNITY-SETUP.md). No hosted project exists. Guest accounts are not verified residents; clearing site data/changing device loses that guest identity. Counts are accounts, not unique people.
@@ -45,7 +45,11 @@ Extra probes established four open issues, with exact source/reproduction/fix co
 
 Keep these in the next implementation batch; they are not already fixed. A concurrent rate probe did not establish a rate-limit bypass. Do not turn its all-author count into an invented finding.
 
-## Next assignment — B2 plus B1 repairs
+## Next assignment — B3 (S4) then R5
+
+B2 is complete (see [PHASE-STATUS](PHASE-STATUS.md)); the text below is the completed B2 contract, kept for context. **B3** covers what B2 could not prove: a hosted Supabase project and public URL (only when the user authorizes it), a real phone on another network, anonymous-auth abuse protection, pagination/load, and any accessibility/layout gaps found; then **R5** (truthful community-first pitch and rehearsal).
+
+### Completed B2 contract
 
 Use [SONNET-HANDOFF](SONNET-HANDOFF.md) for the complete outcome contract and copyable prompt. Finish all S3.1–S3.3 and the repair gate as one batch. A starts a mission from discussion or reviewed local work; independent B joins, claims a job and posts an update; A sees the persisted responsibility/progress, and reload/reconnect preserve it. Current export reflects shared state.
 

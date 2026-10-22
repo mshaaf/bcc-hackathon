@@ -1,0 +1,348 @@
+{
+  "at": "2026-10-22T00:11:39.799Z",
+  "base": "http://127.0.0.1:8000/",
+  "passed": 68,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "A, B and C join the same community in separate profiles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "three different authenticated users",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "navigation has Community, Missions and Map with aria-current=page on the active one",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B1 repair: the main composer's label is associated with its field",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B posts an idea; A sees it within 5 s",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B1 repair: a new post from someone else is announced to assistive technology",
+      "ok": true,
+      "detail": "1 new post in the conversation."
+    },
+    {
+      "name": "B1 repair: cancelling Reply with Escape returns focus to the Reply button",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "keyboard: Enter on 'Start a mission from this' opens the form, prefilled from the post, with the source quoted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "an empty form shows a message per field, keeps focus on the first problem and creates nothing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a half-written mission form survives navigating away and a reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A creates the mission (keyboard) and lands on its page as organizer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the discussion-origin mission says No official 311 records attached and shows three unclaimed jobs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the mission page has a share link and a locally generated QR code (flagged as localhost-only)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B sees the mission in 'Active missions' and a mission chip on the source post within 5 s, no reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B's Missions screen lists it with organizer, place and 0 of 3 jobs done",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "before joining, B cannot claim and is told to join",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A sees B join the mission (participants) within 5 s",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B claims 'Bring bags'; B's page shows it as theirs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A (organizer) sees B's commitment by name within 5 s without reload",
+      "ok": true,
+      "detail": "511 ms"
+    },
+    {
+      "name": "simultaneous claim: exactly one browser wins",
+      "ok": true,
+      "detail": "A: You claimed this job | C: Claimed by Ada eovje"
+    },
+    {
+      "name": "the loser's page says someone else claimed it first",
+      "ok": true,
+      "detail": "Someone else claimed this job first. The list now shows who has it."
+    },
+    {
+      "name": "every page names the same winner",
+      "ok": true,
+      "detail": "B: Claimed by Ada eovje"
+    },
+    {
+      "name": "database has exactly one claimant for that job",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "keyboard: Enter on 'Claim this job' claims it, and focus stays on that job's action",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B posts a progress update; A sees it labeled 'Progress update' within 5 s",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B marks their job done; A sees 'Done · reported by Ben'",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the observation form has a date and a fictional-practice box that starts checked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A sees the dated site observation labeled FICTIONAL practice entry, separate from job progress",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after a reload B keeps the mission page, membership, claim and done state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a stranger opening the mission link is asked to join the community first and sees no mission content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after joining, the stranger lands on the mission itself",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "while sending, the composer stays editable and saves the newer text as a draft",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B1 repair: a send that completes after navigating to another community keeps the newer text in the first community's saved draft",
+      "ok": true,
+      "detail": "{\"mp:163c7742-b655-480a-af53-5b8cdb1fccfa:kind\":\"observation\",\"mp:163c7742-b655-480a-af53-5b8cdb1fccfa:date\":\"2026-10-21"
+    },
+    {
+      "name": "…and does not touch the other community's drafts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "coming back, the newer unsent text is still in the composer",
+      "ok": true,
+      "detail": "Second message typed while the first is still sending eovje"
+    },
+    {
+      "name": "…and the first message was posted exactly once",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a draft in progress is saved per community in browser storage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "offline: the mission post fails with a clear message and the draft stays",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "back online: Try again posts it once",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "version conflict: a stale edit is refused with a recoverable message, the newer change is shown, and the user's text is kept",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "applying the edits on top of the latest version succeeds and every browser shows the new title",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the downloaded plan reflects current persisted state: records line, claims, done mark, update, fictional observation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "exporting again after B released the job shows it unclaimed, not the earlier cached state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the mission organizer hides an off-topic post for everyone",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "while Realtime is down the claim still succeeds for B, and A shows Reconnecting and has not heard of it",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after Realtime returns A reconnects and re-fetches the missed commitment",
+      "ok": true,
+      "detail": "6700 ms"
+    },
+    {
+      "name": "the existing local campaign still opens on the map screen with a Share-with-community action",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the preview says what is shared and what stays private (owners, done marks, unticked observations)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A shares it: the new mission page shows 3 records with source labels, unclaimed jobs and the imported observation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "evidence is inspectable with recorded-snapshot labeling and original source links",
+      "ok": true,
+      "detail": "rows=3 links=3 text=3 records shared from a reviewed campaign (inspect)  Recorded DC 311 snapshot (real data, not live), retrieved Oct 21, 2"
+    },
+    {
+      "name": "jobs arrived unclaimed and not done, with no typed owner, and only the ticked observation was imported",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the local campaign is byte-for-byte unchanged after publishing",
+      "ok": true,
+      "detail": "compared parsed JSON"
+    },
+    {
+      "name": "the sourced mission exports its reviewed records and source labels and keeps excluded evidence out",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B sees both missions in the list within 5 s and can claim a job in the published one",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "an active organizer cannot leave: the control is disabled with an explanation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "archiving makes the mission read-only for everyone (no claim buttons, no composer)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "once archived, the organizer can leave (membership row gone)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: the join screen opened from a mission link fits",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: mission page fits without horizontal scroll",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: claiming a job works and the button is inside the viewport",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: posting a progress update works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "390px: nothing overflows after claim and post, and the action buttons are at least 40 px tall",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: mission page fits without horizontal scroll",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: claiming a job works and the button is inside the viewport",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: posting a progress update works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "320px: nothing overflows after claim and post, and the action buttons are at least 40 px tall",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the map and campaigns screen is still reachable and sized",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no unexpected console errors or exceptions in any browser",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

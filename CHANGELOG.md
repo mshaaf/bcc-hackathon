@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-21 — B2: shared missions and the B1 repairs
+
+- Missions: start one from a discussion post (no 311 records needed) or share a reviewed copy of a local map campaign after a preview of exactly what is and is not copied. Join, claim a named job (database-enforced single winner), release, mark done, post progress updates and dated follow-up observations (fictional/imported labels kept), organizer edits with a version-conflict recovery, archive, share link and local QR code, and a download that reads the current shared state ("No official 311 records attached" for discussion missions).
+- One web app: top navigation Community · Missions · Map & campaigns, routes `#/community`, `#/missions`, `#/community/<id>/mission/<id>`, `#/map`; unsent text survives navigation and failed sends.
+- Repairs from the independent B1 review: newer drafts are no longer cleared by a late send, membership DELETE events no longer reach outsiders, a departed member can no longer replay an old post operation, and the composer label/focus/announcement semantics are fixed.
+- Four new migrations applied forward on the running local database. Evidence: 27/27 real-backend tests, 68/68 mission browser checks, 51/51 community, 75/75 and 65/65 map. No hosted project, public URL or real phone yet (B3).
+
 ## 2026-10-21 — Web-app experience and B2 assignment
 
 - Made the web app sufficient for the project explicit; current Community/Missions/Map screens share navigation and phone/desktop interaction without a framework/native rewrite.

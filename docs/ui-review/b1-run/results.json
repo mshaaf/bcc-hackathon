@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-21T22:39:17.589Z",
+  "at": "2026-10-22T00:09:00.519Z",
   "base": "http://127.0.0.1:8000/",
   "passed": 51,
   "failed": 0,
@@ -32,12 +32,12 @@
     {
       "name": "the two profiles hold different authenticated user IDs",
       "ok": true,
-      "detail": "0351e02f vs 1ffcefc2"
+      "detail": "e67d124c vs 76d9e4c9"
     },
     {
       "name": "A sees B appear in the member list without a reload, within 5 s",
       "ok": true,
-      "detail": "187 ms"
+      "detail": "446 ms"
     },
     {
       "name": "member count shows 2 in both browsers",
@@ -52,7 +52,7 @@
     {
       "name": "B's post (Ctrl+Enter) appears in A's browser within 5 s with the exact text",
       "ok": true,
-      "detail": "456 ms"
+      "detail": "507 ms"
     },
     {
       "name": "the post shows B's name and a time",
@@ -152,12 +152,12 @@
     {
       "name": "after Realtime returns A reconnects and the canonical re-fetch shows the missed post",
       "ok": true,
-      "detail": "6861 ms"
+      "detail": "3024 ms"
     },
     {
       "name": "after the restart a new post reaches A within 40 s",
       "ok": true,
-      "detail": "21405 ms"
+      "detail": "25207 ms"
     },
     {
       "name": "B leaves: the conversation disappears and the join form returns",

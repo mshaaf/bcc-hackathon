@@ -430,6 +430,7 @@ function renderCampaign() {
   byId("c-headline").textContent = recurrenceHeadline(areaRecurrence(campaign.evidence), shortDay);
   byId("c-caveat").textContent = recurrenceHeadline.caveat;
   byId("delete-campaign").textContent = deleteArmed ? "Confirm delete" : "Delete campaign";
+  renderShare(campaign);
   renderTracks();
   renderCampaignEvidence();
   renderObservations();
@@ -437,6 +438,19 @@ function renderCampaign() {
   renderReviewState();
   renderBrief();
   if (view === "campaign") renderMap(false);
+}
+
+// "Share with the community" links to the preview screen; the campaign itself is only read there, never changed.
+function renderShare(campaign) {
+  const blocker = exportBlocker(campaign);
+  const link = byId("share-campaign");
+  link.href = `#/missions/publish?campaign=${encodeURIComponent(campaign.id)}`;
+  link.toggleAttribute("aria-disabled", Boolean(blocker));
+  link.classList.toggle("is-disabled", Boolean(blocker));
+  link.tabIndex = blocker ? -1 : 0;
+  byId("share-hint").textContent = blocker
+    ? `Not ready to share. ${blocker}`
+    : "Publish a reviewed copy of this campaign as a shared mission neighbors can join. This campaign stays private in this browser; you choose what is copied on the next screen.";
 }
 
 function renderTracks() {
@@ -777,6 +791,8 @@ tabs.forEach((tab, index) => tab.addEventListener("keydown", event => {
   event.preventDefault();
   showView(tabs[next].dataset.view, true);
 }));
+
+byId("share-campaign").addEventListener("click", event => { if (event.currentTarget.hasAttribute("aria-disabled")) event.preventDefault(); });
 
 byId("download-brief").addEventListener("click", () => {
   const campaign = openCampaign();

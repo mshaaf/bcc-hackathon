@@ -6,7 +6,7 @@
   <title>Block Ops — Your block. Your next move.</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="/vendor/leaflet/leaflet.css"><link rel="stylesheet" href="/styles.css">
-  <script src="/vendor/leaflet/leaflet.js"></script><script src="/vendor/supabase/supabase.js"></script><script type="module" src="/community.mjs"></script><script type="module" src="/app.mjs"></script>
+  <script src="/vendor/leaflet/leaflet.js"></script><script src="/vendor/supabase/supabase.js"></script><script src="/vendor/qrcode/qrcode.js"></script><script type="module" src="/community.mjs"></script><script type="module" src="/app.mjs"></script>
 </head>
 <body>
 <a class="skip-link" href="#community-main">Skip to the community</a>
@@ -14,7 +14,8 @@
   <a class="brand" href="/" aria-label="Block Ops home"><span class="brand-mark" aria-hidden="true">b.</span><span>block ops<span class="brand-period">.</span></span></a>
   <p class="scope-label">Washington, DC<strong>Ward 8 · Illegal dumping</strong></p>
   <nav class="section-nav" aria-label="Sections">
-    <a href="#/community" data-section="community">Community</a>
+    <a href="#/community" data-section="community" data-view="feed">Community</a>
+    <a href="#/missions" data-section="community" data-view="missions">Missions</a>
     <a href="#/map" data-section="map">Map &amp; campaigns</a>
   </nav>
   <div class="source-controls" role="group" aria-label="Choose source data">
@@ -31,6 +32,7 @@
 </div>
 <main class="community" id="community" aria-label="Neighborhood community">
   <div class="community-shell" id="community-main" tabindex="-1">
+    <p class="visually-hidden" id="community-announce" role="status" aria-live="polite"></p>
     <p class="community-state" id="community-loading" role="status">Loading the community…</p>
     <section class="community-state community-card" id="community-unconfigured" hidden>
       <h1>The shared community is not set up here</h1>
@@ -47,18 +49,23 @@
       <p>The link may be mistyped, or the community may have been removed.</p>
       <p><a class="button button-secondary" href="#/community">Go to the demonstration community</a></p>
     </section>
+    <section class="community-state community-card" id="community-invalid" hidden>
+      <h1>That link is not one Block Ops recognizes</h1>
+      <p>Check the address, or start from the community.</p>
+      <p><a class="button button-secondary" href="#/community">Go to the community</a></p>
+    </section>
     <div class="form-error community-error" id="community-error" role="alert" hidden><span id="community-error-text"></span> <button class="button button-quiet" id="community-retry" type="button">Try again</button></div>
 
     <div id="community-body" hidden>
-      <header class="community-head">
-        <p class="tag"><span id="community-demo-badge" class="badge badge-demo" hidden>Demonstration community</span> <span id="community-count"></span> <span id="community-connection" class="connection" hidden></span></p>
+      <header class="community-head" id="community-head">
+        <p class="tag"><span id="community-demo-badge" class="badge badge-demo" hidden>Demonstration community</span> <a id="community-link" href="#/community"></a> <span id="community-count"></span> <span id="community-connection" class="connection" hidden></span></p>
         <h1 id="community-title"></h1>
         <p class="community-purpose" id="community-purpose"></p>
       </header>
 
       <section class="join-panel community-card" id="join-panel" aria-labelledby="join-heading" hidden>
         <h2 id="join-heading">Join to read and post</h2>
-        <p>Pick a display name. Other members will see it next to your posts. No email or password: this browser gets a guest account.</p>
+        <p id="join-why">Pick a display name. Other members will see it next to your posts. No email or password: this browser gets a guest account.</p>
         <form id="join-form" novalidate>
           <label class="field-label" for="join-name">Display name <span class="optional">1–40 characters</span></label>
           <input id="join-name" type="text" autocomplete="nickname" aria-describedby="join-error guest-note">
@@ -68,36 +75,49 @@
         <p class="field-hint" id="guest-note">Guest accounts live in this browser. Clearing site data or switching devices loses it. A guest account is not a verified resident, and member counts are accounts, not unique people.</p>
       </section>
 
-      <div class="community-grid" id="member-area" hidden>
-        <section class="conversation" aria-labelledby="conversation-heading">
-          <h2 id="conversation-heading">Conversation <span class="count-badge" id="feed-heading-count">0</span></h2>
-          <p class="empty-message" id="feed-empty" hidden>No posts yet. Start the conversation below.</p>
-          <ol class="feed" id="feed" aria-label="Posts, oldest first"></ol>
-          <div id="feed-end" aria-hidden="true"></div>
-          <div class="composer" id="composer"></div>
-        </section>
-        <aside class="community-side" aria-label="About this community">
-          <section class="side-card" aria-labelledby="missions-heading">
-            <h2 id="missions-heading">Missions</h2>
-            <p class="empty-message">No shared missions yet. Shared missions are not available in this version.</p>
-            <p class="field-hint">Your saved map campaigns stay private in this browser. <a href="#/map">Open the map and campaigns</a>.</p>
-          </section>
-          <section class="side-card" aria-labelledby="members-heading">
-            <h2 id="members-heading">Members <span class="count-badge" id="member-heading-count">0</span></h2>
-            <ul class="member-list" id="member-list"></ul>
-          </section>
-          <section class="side-card" aria-labelledby="you-heading">
-            <h2 id="you-heading">You</h2>
-            <form id="rename-form" novalidate>
-              <label class="field-label" for="rename-input">Display name</label>
-              <div class="inline-form"><input id="rename-input" type="text" autocomplete="nickname"><button class="button button-secondary" type="submit">Save</button></div>
-            </form>
-            <p class="field-hint" id="rename-note" role="status" hidden></p>
-            <p class="field-hint">You are a guest on this browser. Clearing site data or switching devices loses this identity.</p>
-            <button class="button button-quiet" id="leave-button" type="button">Leave this community</button>
-            <div id="leave-confirm" hidden><p>Leave and stop seeing the conversation? You can join again; your earlier posts keep your name.</p><button class="button button-primary" id="leave-yes" type="button">Leave</button> <button class="button button-quiet" id="leave-no" type="button">Stay</button></div>
-          </section>
-        </aside>
+      <div id="member-area" hidden>
+        <nav class="crumbs" id="crumbs" aria-label="Breadcrumb" hidden></nav>
+
+        <div id="view-feed" hidden>
+          <div class="community-grid">
+            <section class="conversation" aria-labelledby="conversation-heading">
+              <h2 id="conversation-heading">Conversation <span class="count-badge" id="feed-heading-count">0</span></h2>
+              <p class="empty-message" id="feed-empty" hidden>No posts yet. Start the conversation below.</p>
+              <ol class="feed" id="feed" aria-label="Posts, oldest first"></ol>
+              <div id="feed-end" aria-hidden="true"></div>
+              <div class="composer" id="composer"></div>
+            </section>
+            <aside class="community-side" aria-label="About this community">
+              <section class="side-card" aria-labelledby="missions-heading">
+                <h2 id="missions-heading">Active missions</h2>
+                <ul class="mission-mini" id="mission-mini"></ul>
+                <p class="empty-message" id="mission-mini-empty">No missions yet. Start one from a post, or bring a reviewed map campaign.</p>
+                <p><a class="button button-secondary" id="mission-all-link" href="#/missions">All missions</a> <a class="button button-primary" id="mission-new-link" href="#/missions/new">Start a mission</a></p>
+              </section>
+              <section class="side-card" aria-labelledby="members-heading">
+                <h2 id="members-heading">Members <span class="count-badge" id="member-heading-count">0</span></h2>
+                <ul class="member-list" id="member-list"></ul>
+              </section>
+              <section class="side-card" aria-labelledby="you-heading">
+                <h2 id="you-heading">You</h2>
+                <form id="rename-form" novalidate>
+                  <label class="field-label" for="rename-input">Display name</label>
+                  <div class="inline-form"><input id="rename-input" type="text" autocomplete="nickname"><button class="button button-secondary" type="submit">Save</button></div>
+                </form>
+                <p class="field-hint" id="rename-note" role="status" hidden></p>
+                <p class="field-hint">You are a guest on this browser. Clearing site data or switching devices loses this identity.</p>
+                <p class="form-error" id="leave-error" role="alert" hidden></p>
+                <button class="button button-quiet" id="leave-button" type="button">Leave this community</button>
+                <div id="leave-confirm" hidden><p>Leave and stop seeing the conversation? You will also leave any missions. You can join again; your earlier posts keep your name.</p><button class="button button-primary" id="leave-yes" type="button">Leave</button> <button class="button button-quiet" id="leave-no" type="button">Stay</button></div>
+              </section>
+            </aside>
+          </div>
+        </div>
+
+        <div id="view-missions" hidden></div>
+        <div id="view-mission" hidden></div>
+        <div id="view-new" hidden></div>
+        <div id="view-publish" hidden></div>
       </div>
     </div>
   </div>
@@ -222,6 +242,11 @@
           <textarea id="c-request" rows="3"></textarea>
           <div class="review-action"><p id="review-status" aria-live="polite"></p><button class="button button-primary" id="mark-reviewed" type="button">Mark reviewed</button></div>
           <p class="form-error" id="review-error" role="alert" hidden></p>
+        </section>
+        <section aria-labelledby="h-share">
+          <h2 id="h-share">Share with the community</h2>
+          <p class="field-hint" id="share-hint">Publish a reviewed copy of this campaign as a shared mission neighbors can join. This campaign stays private in this browser; you choose what is copied on the next screen.</p>
+          <a class="button button-secondary" id="share-campaign" href="#/missions/publish">Preview and share…</a>
         </section>
         <div class="plan-actions"><button class="button button-quiet" id="delete-campaign" type="button">Delete campaign</button><button class="button button-primary" type="button" data-view="brief">Open the brief <span aria-hidden="true">→</span></button></div>
       </div>

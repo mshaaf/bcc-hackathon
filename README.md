@@ -6,13 +6,13 @@
 
 **Built locally:** R1–R4 map/source/local campaigns and B1 Supabase identity, membership, posts/replies and live updates. **Open:** [B1 review repairs](docs/B1-REVIEW.md), shared missions/commitments and public phone access. No hosted project or public deployment exists.
 
-**Executor:** Sonnet 5.5 in the user's Claude session. **B1 is built locally with open review repairs** (see [setup](docs/COMMUNITY-SETUP.md)). **Next batch:** B2, the B1 repairs plus S3.1–S3.3 shared missions as one outcome. S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
+**Executor:** Sonnet 5.5 in the user's Claude session. **B1 and B2 are complete locally** (shared community, missions, claims and progress across independent browsers, verified on a local Supabase stack; see [setup](docs/COMMUNITY-SETUP.md)). **Next batch:** B3 (hardening, hosted project and real-phone proof when authorized). S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 
 ## Start here
 
-1. [Context checkpoint](docs/CONTEXT-CHECKPOINT.md) for a fresh session; [Sonnet handoff](docs/SONNET-HANDOFF.md) for the current B2 web-app assignment and copyable prompt.
+1. [Context checkpoint](docs/CONTEXT-CHECKPOINT.md) for a fresh session; [Sonnet handoff](docs/SONNET-HANDOFF.md) for the completed B2 contract; B3 is next.
 2. [Community scope](docs/specs/community-missions.md) and [work-order plan](docs/superpowers/plans/2026-10-21-community-missions.md): named increments, interfaces and acceptance checks.
 3. [Phase/work-order ledger](docs/PHASE-STATUS.md): completed history and next work; [current decisions](docs/DECISIONS.md).
 4. [CLAUDE.md](CLAUDE.md) / [AGENTS.md](AGENTS.md): shared instructions, including a simple TL;DR after every message.

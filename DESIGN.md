@@ -6,6 +6,8 @@ The user wants an **application experience**, and a web app is sufficient for th
 
 This is an operating app for neighbors carrying out work together. Read [PRODUCT](PRODUCT.md), [community scope](docs/specs/community-missions.md) and [current Sonnet assignment](docs/SONNET-HANDOFF.md). Earlier three-step worktable layouts are baseline context, not the required structure for the whole app.
 
+**Implemented in B1/B2:** the navigation is Community · Missions · Map & campaigns with `aria-current` on the active section; the Community screen has the feed plus an Active-missions card; Missions lists efforts; mission detail leads with title, goal, organizer, place, time and progress, then the viewer's primary action, jobs with named claimants, participants, discussion/progress/dated observations, an inspectable evidence disclosure (or "No official 311 records attached"), a share link with a locally drawn QR code, and organizer controls. Publishing a local campaign goes through a preview of what is and is not copied. Colors are unchanged apart from status chips. Screenshots: `docs/ui-review/b2-run/`.
+
 ## One connected application
 
 Use the existing header/navigation as the starting shell. Make Community, Missions and Map easy to reach, with an obvious current section. A mission opens within that same app context and has a clear back path. Keep session and drafts across navigation; avoid reloading the whole application for ordinary actions. Reuse existing components and modules rather than introducing a new router or framework solely for appearance.

@@ -1,4 +1,6 @@
-# Block Ops — next Sonnet assignment
+# Block Ops — Sonnet assignments
+
+> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). **The next assignment is B3 (S4)**; write its prompt from the plan's S4 section when the user asks. Everything below is the completed B2 contract, kept for reference.
 
 Updated October 21, 2026. **Next batch: B2 (S3.1–S3.3), including the open B1 repairs.** Build one complete web app experience using the existing implementation. The user selected Sonnet 5.5 in Claude and wants a substantial outcome, not repeated hand-backs after small work orders.
 

@@ -143,6 +143,8 @@ Deliver the mission UI as part of the existing web app shell. A compact discover
 
 ### S3.1 — Create/publish missions with provenance
 
+**Status:** Complete (B2). `create_mission` handles both paths; the publish preview is `#/missions/publish?campaign=<local id>`.
+
 Add mission/member/task entities here, with claims denied until the S3.2 operations and permissions exist.
 
 - [ ] Add failing tests for a discussion-origin mission with zero official records and a same-group source-post link; deliberate local publication with original untouched; excluded evidence absent; imported owners/done flags reset to unclaimed/not done; historical observations marked imported/original author unverified; fictional labels preserved; and cross-community creation denied.
@@ -150,11 +152,15 @@ Add mission/member/task entities here, with claims denied until the S3.2 operati
 
 ### S3.2 — Membership, claims and progress
 
+**Status:** Complete (B2). Atomic claim/release/done/leave with real-backend race tests.
+
 - [ ] Add direct-backend tests for idempotent joins; two simultaneous task claims with exactly one winner; own-task release/completion; another user's unauthorized edit; and leave/claim races with no orphan assignment.
 - [ ] Implement the shared mission model/permissions, both creation paths, and atomic claim/release/complete/leave operations. Leaving releases unfinished claims; the active organizer must archive before leaving; community departure removes all mission memberships/unfinished claims atomically. Serialize membership removal with claims. Reuse campaign builders for sourced missions; add an evidence-free shared plan export that clearly says “No official 311 records attached” without weakening existing local campaign export guards. Fetch current task/member/post state separately before export.
 - [ ] Run the focused backend/concurrency checks and commit S3.2.
 
 ### S3.3 — Mission UI, sharing and export
+
+**Status:** Complete locally (B2). Real phones on another network are not tested (B3).
 
 - [ ] Add a reviewed local-publication preview and a “Start a mission” action on a discussion. Use `/#/community/<uuid>/mission/<uuid>` deep links and one locally generated QR representation of the real reachable URL. QR generation may use one pinned small library; no external QR service gets participant data.
 - [ ] Build the mission page: objective/location/organizer/time, source evidence disclosure, join button, named jobs, member commitments, discussion and follow-up updates. Let members report their own job complete; organizer controls mission metadata/progress. Source status is unchanged by group progress.

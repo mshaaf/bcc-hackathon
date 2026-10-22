@@ -375,6 +375,67 @@ body[data-section="map"] .community { display:none }
 }
 @media print { .community,.section-nav { display:none!important } }
 
+/* B2: missions, jobs, shared screens */
+.community-head.compact { margin:0 0 4px }
+.community-head.compact .tag { margin:0 }
+.community-head a { color:var(--plum); font-weight:650 }
+.crumbs ol { display:flex; flex-wrap:wrap; gap:2px 6px; list-style:none; margin:0 0 10px; padding:0; font-size:13px }
+.crumbs li + li::before { content:"›"; margin-right:6px; color:var(--muted) }
+.crumbs a { color:var(--plum) }
+.crumbs [aria-current] { color:var(--muted) }
+.page-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:4px 0 8px }
+.page-actions { display:flex; flex-wrap:wrap; gap:8px }
+a.button { text-decoration:none }
+a.button-primary { color:var(--on-plum) }
+a.button.is-disabled,a.button[aria-disabled] { opacity:.5; pointer-events:none }
+.mission-list { list-style:none; margin:12px 0; padding:0; display:grid; gap:12px }
+.mission-card { padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--surface); display:grid; gap:4px }
+.mission-title { font-weight:700; font-size:17px; color:var(--plum); overflow-wrap:anywhere }
+.status-planning { background:var(--soft) }
+.status-scheduled { background:var(--signal); color:var(--signal-ink) }
+.status-in_progress { background:var(--plum); color:var(--on-plum) }
+.status-follow_up { background:var(--green); color:var(--green-ink) }
+.status-archived { background:var(--paper); color:var(--muted); border:1px solid var(--line) }
+.archived { margin-top:16px } .archived summary { cursor:pointer; font-weight:600 }
+.mission-head h1 { overflow-wrap:anywhere }
+.mission-goal { margin:8px 0 0; max-width:68ch; font-size:15px; white-space:pre-wrap; overflow-wrap:anywhere }
+.facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:8px 16px; margin:14px 0 0; padding:12px 14px; background:var(--surface); border:1px solid var(--line); border-radius:10px }
+.facts div { min-width:0 } .facts dt { font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted) } .facts dd { margin:0; font-size:14px; overflow-wrap:anywhere }
+.mission-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin:14px 0 6px }
+.mission-section { margin-top:22px } .section-h { text-transform:none; letter-spacing:0; font-size:18px; margin-bottom:8px }
+.share-box,.evidence-box,.edit-box { margin-top:12px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:var(--surface) }
+.share-box summary,.evidence-box summary,.edit-box summary { cursor:pointer; font-weight:650; padding:4px 0; min-height:32px }
+.qr { display:block; width:min(220px,70%); height:auto; margin:10px 0 4px; border:1px solid var(--line); border-radius:6px }
+.jobs { display:grid; gap:8px; margin:8px 0 0; padding:0; list-style:none }
+.task { padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface); display:grid; gap:4px }
+.task.is-done { background:var(--green); border-color:transparent }
+.task-text strong { overflow-wrap:anywhere } .task-meta { display:block; font-size:12px; color:var(--muted) }
+.task-status { margin:0; font-size:13px; font-weight:600 } .task-status[data-state="open"] { color:var(--muted); font-weight:500 } .task-status[data-state="done"] { color:var(--green-ink) }
+.task-actions { display:flex; flex-wrap:wrap; gap:6px; margin-left:-8px }
+.task-actions .button { min-height:40px }
+.no-records { margin:0; padding:10px 12px; background:var(--paper); border-left:4px solid var(--line); font-weight:600 }
+.evidence-list { list-style:none; margin:8px 0 0; padding:0; display:grid; gap:8px }
+.evidence-row { display:grid; gap:2px; padding:8px 0; border-top:1px solid var(--line) }
+.mission-form { display:grid; gap:12px; margin-top:12px; max-width:640px }
+.preview-box { margin-top:14px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:var(--surface) }
+.preview-box ul { margin:6px 0 0; padding-left:18px; font-size:14px } .preview-box li { margin:3px 0 }
+.obs-pick { margin:14px 0; padding:10px 14px; border:1px solid var(--line); border-radius:10px; display:grid; gap:8px } .obs-pick legend { font-weight:650; padding:0 6px }
+.source-quote { margin:8px 0 12px; padding:8px 12px; border-left:4px solid var(--plum); background:var(--surface); max-width:62ch } .source-quote p { margin:0 0 4px; white-space:pre-wrap; overflow-wrap:anywhere } .source-quote cite { font-size:12px; color:var(--muted); font-style:normal }
+.mission-chips { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px } .mission-chips a { display:inline-block; padding:3px 10px; border-radius:99px; background:var(--soft); color:var(--plum); font-size:12px; font-weight:650; text-decoration:none }
+.mission-mini { list-style:none; margin:0 0 8px; padding:0; display:grid; gap:8px } .mission-mini li { display:grid; gap:1px } .mission-mini a { font-weight:650; overflow-wrap:anywhere } .mini-meta { font-size:12px; color:var(--muted) }
+.post-meta { display:flex; flex-wrap:wrap; gap:4px 8px; align-items:center; margin:6px 0 0; font-size:12px }
+.post[data-kind="update"] { border-left:4px solid var(--plum) } .post[data-kind="observation"] { border-left:4px solid var(--signal) }
+.kind-update { background:var(--plum); color:var(--on-plum) } .kind-observation { background:var(--signal); color:var(--signal-ink) }
+.composer-extra { display:grid; gap:8px; margin:6px 0 }
+.conflict { display:block }
+.field-hint a,.empty-message a { color:var(--plum) }
+@media (max-width:560px) {
+  .mission-actions .button,.page-actions .button { flex:1 1 auto }
+  .task-actions .button { flex:1 1 auto }
+  .facts { grid-template-columns:1fr 1fr }
+  .mission-head h1 { font-size:22px }
+}
+
 @media print {
   html { background:white!important }
   @page { size:A4; margin:16mm }

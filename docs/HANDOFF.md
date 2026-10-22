@@ -4,7 +4,7 @@
 
 Start with [SONNET-HANDOFF](SONNET-HANDOFF.md) for the complete next assignment and prompt; [CONTEXT-CHECKPOINT](CONTEXT-CHECKPOINT.md) after a reset. [PRODUCT](../PRODUCT.md) and [DESIGN](../DESIGN.md) describe the connected app experience.
 
-R1–R4 map/local campaigns and B1 shared discussion are built locally. Independent review passed 97 unit tests plus 13 explicit backend checks, but [four B1 repairs](B1-REVIEW.md) remain open. **Next is B2: those repairs plus all S3 mission work**, as one substantial batch. Follow [scope](specs/community-missions.md), S3 in [the plan](superpowers/plans/2026-10-21-community-missions.md), [ledger](PHASE-STATUS.md) and [setup](COMMUNITY-SETUP.md).
+R1–R4 map/local campaigns, B1 shared discussion and B2 shared missions are built and verified locally (local Supabase; no hosted project, public URL or real phone). **Next is B3** (S4), then R5. Follow [scope](specs/community-missions.md), the [plan](superpowers/plans/2026-10-21-community-missions.md), the [ledger](PHASE-STATUS.md) and [setup](COMMUNITY-SETUP.md).
 
 The outcome is discussion → mission → authenticated job commitment → progress/follow-up across independent browsers, with Community/Missions/Map in one app context. Preserve source fidelity and local campaigns; publication is an explicit reviewed copy. Supabase runs locally via CLI/Docker; no hosted project, public URL or actual other-network phone proof exists. B3 handles readiness; R5 follows for release/rehearsal.
 

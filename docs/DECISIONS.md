@@ -8,9 +8,19 @@ The user explicitly confirmed that Block Ops should be an **application**, a **w
 
 The user selected **Sonnet 5.5 in Claude** for implementation and now explicitly wants larger outcome-based assignments, not a hand-back after every small work order. The label records their preference, not a verified API identifier or benchmark. Implement inline, without automatic subagents.
 
-S1.1 is complete at `9f09667`. **B1 is built on local Supabase with open review repairs** (see PHASE-STATUS); **B2 (those repairs plus S3) is next**. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Local backend access is established; hosted access and public phone readiness remain unproven.
+S1.1 is complete at `9f09667`. **B1 and B2 are complete on local Supabase** (see PHASE-STATUS); **B3 (S4) is next**. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Local backend access is established; hosted access and public phone readiness remain unproven.
 
 Current context and execution contract: [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md), and [detailed plan](superpowers/plans/2026-10-21-community-missions.md). This review/checkpoint task changes documentation only; the prepared assignment is for Sonnet's implementation session.
+
+## B2 builder decisions (October 21)
+
+- **Missions are rows, not a synced campaign blob.** `missions`, `mission_members`, `mission_tasks` and mission-scoped `posts` (kinds discussion/update/observation). All writes are SECURITY DEFINER functions; tables are SELECT-only under RLS.
+- **Atomic claims by locking:** the claimant's membership row `FOR SHARE` plus the task row `FOR UPDATE`; `leave_mission` deletes the membership first, then releases unfinished claims. Finished jobs keep their claimant.
+- **Evidence is a copy.** Publishing a reviewed local campaign sends reviewed evidence, task text and ticked observations as JSON on the mission; typed owners and done flags are never sent; the local campaign is only read. Imported observations are posts by the publisher flagged `imported`, so nothing is attributed to their original (unverified) author.
+- **Version check from when you started editing:** an organizer edit is based on the version on screen until a field has a draft, then frozen, so a change made elsewhere is a recoverable conflict, not a silent overwrite.
+- **Membership is not published to Realtime** (B1 repair): its DELETE events leak row keys. Join/leave bump `activity_at` on the community/mission row instead.
+- **App shape:** `shell.mjs` owns routes/state/live updates/drafts/send; views are `community.mjs` (feed) and `mission.mjs` (missions). Links without a community id mean the community last visited. QR codes are drawn locally with a vendored MIT library.
+- **Migrations only move forward.** Fixes after the first B2 migration shipped as new migrations; the user's running database was never reset.
 
 ## B1 builder decisions (October 21)
 

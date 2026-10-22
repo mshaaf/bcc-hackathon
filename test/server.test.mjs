@@ -135,10 +135,11 @@ test("shared community settings are optional, browser-safe, and add only the exa
     assert.match(csp, /connect-src 'self' http:\/\/127\.0\.0\.1:54321 ws:\/\/127\.0\.0\.1:54321;/);
     assert.doesNotMatch(csp, /\*/, "no wildcard sources");
     assert.match(csp, /script-src 'self';/);
-    for (const path of ["/community.mjs", "/community-api.mjs", "/lib/community.mjs", "/vendor/supabase/supabase.js"]) {
+    for (const path of ["/community.mjs", "/community-api.mjs", "/lib/community.mjs", "/lib/mission.mjs", "/lib/drafts.mjs", "/shell.mjs", "/posts.mjs", "/mission.mjs", "/vendor/supabase/supabase.js", "/vendor/qrcode/qrcode.js"]) {
       assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, path);
     }
     assert.equal((await fetch(`${baseUrl}/vendor/supabase/LICENSE`)).status, 404, "only listed files are served");
+    assert.equal((await fetch(`${baseUrl}/vendor/qrcode/README.txt`)).status, 404);
     assert.equal((await fetch(`${baseUrl}/supabase/config.toml`)).status, 404);
   });
 });

@@ -1,6 +1,6 @@
-# Shared community — setup, tests and limits
+# Shared community and missions — setup, tests and limits
 
-Placeholders only. No real credential is committed. The shared community uses Supabase (Postgres, Auth, Realtime). B1 was verified against a **local** Supabase stack started with the Supabase CLI and Docker. **No hosted Supabase project exists or has been tested** (see "What is not proven").
+Placeholders only. No real credential is committed. The shared community and missions use Supabase (Postgres, Auth, Realtime). B1 and B2 were verified against a **local** Supabase stack started with the Supabase CLI and Docker. **No hosted Supabase project exists or has been tested** (see "What is not proven").
 
 ## What runs where
 
@@ -8,6 +8,8 @@ Placeholders only. No real credential is committed. The shared community uses Su
 |---|---|---|
 | Node app (`server.mjs`) | `http://127.0.0.1:8000` | Serves the pages and read-only DC 311 proxies. Also serves `GET /api/community-config` (URL + **publishable** key + default community id) and the CSP. |
 | Browser SDK | `public/vendor/supabase/supabase.js` | `@supabase/supabase-js` **2.118.0** UMD bundle, MIT, license beside it. Loaded as a same-origin script; no CDN. |
+| QR code | `public/vendor/qrcode/qrcode.js` | `qrcode-generator` **1.4.4** (MIT). Draws the mission QR in the browser; no request leaves the page. |
+| App modules | `public/shell.mjs` (routing, state, live updates, drafts, send path), `community.mjs` (feed), `mission.mjs` (missions, jobs, publish), `posts.mjs` (threads), `lib/community.mjs`, `lib/mission.mjs`, `lib/drafts.mjs` | Native ES modules; no build step. |
 | Database, Auth, Realtime | Supabase | Schema in `supabase/migrations/`, seed in `supabase/seed.sql`, local settings in `supabase/config.toml`. |
 
 The browser only ever receives the project URL and the publishable key. `server.mjs` refuses to start if the key looks like a secret or service-role key. All permissions are enforced in Postgres, not in the page.
@@ -18,7 +20,8 @@ Needs Node 20+ (Node 22+ for the Realtime tests, which use the global `WebSocket
 
 ```sh
 npx supabase@2.121.0 start          # first run pulls Docker images (a few GB)
-npx supabase@2.121.0 db reset       # applies supabase/migrations and supabase/seed.sql
+npx supabase@2.121.0 db reset       # FIRST-TIME or disposable stacks only: wipes the local database, then applies migrations + seed
+npx supabase@2.121.0 migration up   # an existing stack: applies only new migrations and keeps its data
 npx supabase@2.121.0 status -o env  # prints API_URL, PUBLISHABLE_KEY and SECRET_KEY for this machine
 
 cp .env.example .env                # fill COMMUNITY_SUPABASE_URL and COMMUNITY_SUPABASE_PUBLISHABLE_KEY (ignored by Git)
@@ -32,6 +35,16 @@ Without those two variables the Community page says the shared community is not 
 ## Guest identity (anonymous Auth)
 
 Joining creates a Supabase **anonymous** user. A display name is a label, not a credential and not a residency check. The session lives in that browser's `localStorage`; clearing site data or switching device loses the identity (and its posts stay under the old, now unreachable, account). Counts are **accounts**, not unique people. Anonymous users share the `authenticated` database role, so every policy checks membership or ownership explicitly instead of trusting the role.
+
+## Migrations (applied in order; never edit an applied one)
+
+| File | What |
+|---|---|
+| `20261021120000_community_posts.sql` | B1: communities, members, posts, RLS, join/leave/post/edit/hide functions, Realtime publication |
+| `20261021200000_missions_and_b1_repairs.sql` | B2: missions, mission members, tasks, claims, mission-scoped posts; B1 repairs: drop `community_members` from the Realtime publication, authorize before replaying an operation |
+| `20261021210000_join_mission_hides_existence.sql` | A non-member gets `mission_not_found` for joining, never confirming an id exists |
+| `20261021220000_join_community_announces.sql` | Join bumps `communities.activity_at` (membership is no longer published) |
+| `20261021230000_import_order.sql` | Imported observations keep the organizer's order |
 
 ## Data model and rules (B1)
 
@@ -53,6 +66,17 @@ docker exec supabase_db_blockops psql -U postgres -c "update public.communities 
 
 A member's user id is visible to that member only via the browser's stored session; the Community page does not show it. Use the Supabase Studio/SQL or `auth.users` locally.
 
+## Missions, jobs and claims (B2)
+
+`missions` (organizer, title 1–120, goal 1–1,000, public location 1–200, optional time, status planning/scheduled/in progress/follow-up/archived, `origin` discussion or local campaign, optional same-community source post, `version`, evidence/source JSON for a published campaign), `mission_members`, `mission_tasks` (description 1–200, optional due date, at most one claimant, done flag), and `posts` gain `mission_id`, `kind` (discussion / update / observation), `observed_on`, `fictional`, `imported`.
+
+- All writes are `SECURITY DEFINER` functions again: `create_mission` (both creation paths, idempotent per `(organizer, operation)`), `update_mission` (organizer only, `expected version` or `version_conflict`), `join_mission`, `leave_mission`, `add_task`, `claim_task`, `release_task`, `set_task_done`; `create_post`, `hide_post` and `leave_community` were extended. Tables stay SELECT-only under RLS for community members.
+- **One winner:** `claim_task` locks the claimant's mission-membership row `FOR SHARE` and the task row `FOR UPDATE`; a second claimant gets `already_claimed`. `leave_mission` deletes the membership first (needing that same lock), then releases unfinished claims, so a leave/claim race cannot leave an unfinished job with a departed member. Finished jobs keep `claimed_by`/`claimed_name`. Leaving the community leaves its missions the same way; an organizer of a non-archived mission must archive first.
+- **Publishing a local campaign** sends only reviewed evidence, job text/due dates (never owners or done flags), and the observations the organizer ticks (stored as `imported` observations by the publisher, original author unverified). The local campaign in the browser is only read.
+- **Realtime** publishes `posts`, `missions`, `mission_tasks` and `communities` (single-uuid keys, row-security checked). Membership tables are not published; join/leave bump `communities.activity_at` / `missions.activity_at`.
+- Evidence and source JSON written by one member are coerced to plain typed fields before display and rendered with `textContent`.
+- Limits: 100 missions, 1,500 job rows and 2,000 mission-membership rows are read per community by the page; 1,000 posts per list. A large community needs pagination (not built).
+
 ## Tests
 
 ```sh
@@ -61,19 +85,25 @@ RUN_COMMUNITY_INTEGRATION=1 \
 COMMUNITY_SUPABASE_URL=http://127.0.0.1:54321 \
 COMMUNITY_SUPABASE_PUBLISHABLE_KEY=<publishable key> \
 COMMUNITY_SUPABASE_SECRET_KEY=<secret key> \
-node --test test/community-access.integration.mjs   # real Auth + Postgres + Realtime
+node --test test/community-access.integration.mjs test/community-mission.integration.mjs   # real Auth + Postgres + Realtime
 
-COMMUNITY_SUPABASE_URL=... COMMUNITY_SUPABASE_SECRET_KEY=... node scripts/community-browser-check.mjs   # app must be running with the community env
+# app must be running with the community env (node --env-file=.env server.mjs); Docker is used to stop/start Realtime and to run psql
+COMMUNITY_SUPABASE_URL=... COMMUNITY_SUPABASE_SECRET_KEY=... node scripts/community-browser-check.mjs   # B1: community, 51 checks
+COMMUNITY_SUPABASE_URL=... COMMUNITY_SUPABASE_SECRET_KEY=... node scripts/mission-browser-check.mjs     # B2: missions end to end
+node scripts/browser-check.mjs 1440   # existing map and campaign driver (opens #/map); also 390
 ```
 
 - A skipped integration run is **not** backend proof. With `RUN_COMMUNITY_INTEGRATION=1` and missing variables the file fails with a message naming them.
 - The secret key is used only by those two test programs (to create throwaway communities, set a moderator, delete test users). It is never sent to a browser.
 - Right after `supabase db reset`, Realtime can need a few seconds before it streams; the integration test warms it up first and prints a note when it did.
-- The browser check launches independent Chrome instances with separate profiles, creates a throwaway community, stops and restarts the local Realtime container to exercise reconnect, writes screenshots and `results.json` to `docs/ui-review/b1-run/`, and cleans up its data.
+- The integration tests use throwaway communities and users in whatever stack you point them at and delete them afterwards; they never `db reset`. Run the two integration files one after the other if you also watch for stray events: other tests' cleanup emits DELETE events carrying only a row id.
+- Realtime stops streaming for roughly 15–20 s after its container starts (measured). The page re-fetches on reconnect and at most every 30 s regardless, so staleness is bounded.
+- The browser checks launch independent Chrome instances with separate profiles, creates a throwaway community, stops and restarts the local Realtime container to exercise reconnect, writes screenshots and `results.json` to `docs/ui-review/b1-run/`, and cleans up its data.
 
 ## What is not proven
 
 - No hosted Supabase project, hosting target, public URL or real phone on another network (that is B3/S4.2).
 - Abuse protection for anonymous sign-ins on a public project (CAPTCHA, per-IP limits) is not configured or tested.
 - Propagation timings are from one machine over localhost, not from a venue network.
-- Missions, tasks, claims and mission updates are not built (B2).
+- Mission links and QR codes pointing at `127.0.0.1` work only on this computer. A phone on another network needs a public URL, which does not exist yet (B3).
+- No pagination, notifications, photo uploads, direct messages, ownership transfer or second community.

@@ -1,5 +1,7 @@
 # B1 independent review — required repairs
 
+> **Resolution (B2, October 21, 2026).** All four defects were repaired and now have regression checks; the original findings below are kept as written for the record. 1 → `lib/drafts.mjs` + `shell.mjs` `sendDraft` (`test/drafts.test.mjs`; browser: newer text during a pending send survives navigation to another community). 2 → migration `20261021200000` drops `community_members` from the Realtime publication and joins/leaves bump `activity_at` instead (`test/community-mission.integration.mjs`, outsider test, with a canary and a negative control: with the table published the same test fails and prints the departed member's ids). 3 → `create_post` authorizes before replaying and binds the operation to its community/mission/parent (`operation_conflict`, `not_member`). 4 → the composer label is paired by id (`label.control` check), nav has `aria-current="page"`, a polite announcer reports new posts and connection changes, and cancelling Reply/Edit restores focus. See the B2 entry in [PHASE-STATUS.md](PHASE-STATUS.md).
+
 Reviewed October 21, 2026, at code commit `f36867b` (backend `d52adb2`). The local shared community works on the existing happy-path checks, but the following defects remain open. Implement the repairs as part of the B2 assignment, not a set of separate hand-back tasks. No repair is claimed complete in this document.
 
 ## Evidence and scope
