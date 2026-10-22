@@ -30,7 +30,7 @@ node --env-file=.env server.mjs     # open http://127.0.0.1:8000
 
 Without those two variables the Community page says the shared community is not configured; nothing is faked. The map and local campaigns work either way, under `#/map`.
 
-`supabase/config.toml` enables anonymous sign-ins and sets the local anonymous limit to 500/hour per IP for testing. **Before any public exposure** set a real per-IP limit and enable the provider's CAPTCHA/abuse protection, then test the venue's shared-IP behavior; do not just leave the testing value.
+`supabase/config.toml` is for the **local stack only**: it enables anonymous sign-ins and sets the local anonymous limit to 500/hour per IP for testing. Never `supabase config push` it to a hosted project (it would overwrite the dashboard's real limits). **Before any public exposure** set a real per-IP limit in the hosted dashboard and test the venue's shared-IP behavior. Do **not** turn CAPTCHA on for anonymous sign-ins yet: the app sends no CAPTCHA token, so every guest would be refused until a widget and `captchaToken` are added (a feature decision; see [DEPLOYMENT](DEPLOYMENT.md#open-risk-anonymous-sign-ins)).
 
 ## Guest identity (anonymous Auth)
 
@@ -108,8 +108,8 @@ node scripts/ui-fixture-check.mjs
 
 ## What is not proven
 
-- No hosted Supabase project, hosting target, public URL or real phone on another network (that is B3/S4.2).
-- Abuse protection for anonymous sign-ins on a public project (CAPTCHA, per-IP limits) is not configured or tested.
+- No hosted Supabase project, hosting target, public URL or real phone on another network. The runbook and the acceptance checklist, including the two-phone test, are in [DEPLOYMENT](DEPLOYMENT.md); none of it has been done.
+- Abuse protection for anonymous sign-ins on a public project (per-IP limit; CAPTCHA would need a client change) is not configured or tested.
 - Propagation timings are from one machine over localhost, not from a venue network.
-- Mission links and QR codes pointing at `127.0.0.1` work only on this computer. A phone on another network needs a public URL, which does not exist yet (B3).
+- Mission links and QR codes pointing at `127.0.0.1` work only on this computer. A phone on another network needs a public HTTPS address (the link and QR are built from the address the page was opened at), which does not exist yet.
 - No pagination, notifications, photo uploads, direct messages, ownership transfer or second community.

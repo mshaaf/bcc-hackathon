@@ -4,7 +4,7 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B2 is complete and verified on a local Supabase stack**: the four B1 review defects are repaired, and discussion → create/publish mission → join → claim a job → post progress/follow-up works across independent browsers. **B3 repair batch (independent B2 review findings + hosted-deployment preparation) is coded and committed locally, but its backend checks are UNVERIFIED**: Docker was not running and assistants may not start it (see "Standing rule" below), so the new migration has not been applied and the new/old real-backend suites have not been run since. **Next:** run the unverified checks when the user starts the local stack, then the authorized hosted project and real-phone proof, then R5 release. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B2 is complete and verified on a local Supabase stack**: the four B1 review defects are repaired, and discussion → create/publish mission → join → claim a job → post progress/follow-up works across independent browsers. **B3 repair batch (independent B2 review findings + hosted-deployment preparation) and its follow-up (independent B3 review findings + mobile compaction) are coded and committed locally, but their backend checks are UNVERIFIED**: Docker was not running and assistants may not start it (see "Standing rule" below), so the new migration has not been applied and the new/old real-backend suites have not been run since. **Next:** run the unverified checks when the user starts the local stack, then the authorized hosted project and real-phone proof, then R5 release. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used.
 
 **Standing rule (user instruction, B3 batch): assistants must not open, start or restart Docker Desktop or any container.** Use only services that are already running. If a backend check cannot run, continue other independent work and record that check as **unverified**; never report a skipped or unrun check as passed. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
@@ -22,8 +22,8 @@ The map/local-campaign revision R1–R4 is implemented, and the shared community
 | S3.1 | Discussion-origin and reviewed-import mission creation | Complete (local Supabase) |
 | S3.2 | Atomic mission joining/claiming/leaving | Complete (local Supabase) |
 | S3.3 | Mission UI, links and shared export | Complete (local browsers; no real phone) |
-| S4.1 | Access/recovery/accessible interaction | In progress (B2-review repairs and interface fixes coded; migration and real-backend checks unverified) |
-| S4.2 | Deployment prep and authorized real-phone proof | In progress (config, preflight and runbook ready; hosted project and real phone not started) |
+| S4.1 | Access/recovery/accessible interaction | In progress (B2- and B3-review repairs and interface fixes coded; migration and real-backend checks unverified) |
+| S4.2 | Deployment prep and authorized real-phone proof | In progress (config, preflight, runbook and two-phone checklist ready; hosted project and real phone not started) |
 
 Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outcome, B2 groups S3.1–S3.3, B3 groups S4.1–S4.2. The user now prefers substantial batches; continue within the authorized batch rather than handing back after every order. S1.1/S1.2 remain complete. S1.3/S2.1/S2.2 were reopened for the confirmed B1 repairs, which B2 fixed (evidence in the B2 entry below).
 
@@ -77,6 +77,26 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — B3 follow-up: independent B3 review findings, mobile mission screen, deployment checklist (S4)
+
+**Constraint:** Docker/containers not opened, started or restarted; no migration applied; `127.0.0.1:54321` refused connections again. Review: [B3-REVIEW](B3-REVIEW.md).
+
+**Fixed (code, committed locally):**
+1. *Departed participant offered "Mark not done".* `taskControls` offers a claimant's actions only while they are a current mission member; the organizer keeps access; nothing on archived missions. The backend rejection (`not_mission_member`) remains the real protection.
+2. *Deploy probe overclaimed.* It now says it reached the project and found the default community, that this does **not** show the mission migrations or the B3 repairs are applied, and names `supabase migration list --linked` as the migration check. The setup doc, which still recommended turning CAPTCHA on, is reconciled with the runbook (CAPTCHA would currently refuse every guest).
+3. *Mobile mission screen.* Jobs now follow the header and the join/leave row; Download and Share moved below the jobs (all screen sizes); on phones the scope label is hidden in the community section, header/nav/crumb/facts spacing is tighter, the breadcrumb stays on one line, the source-post link is one clipped line plus the link, and the organizer's "archive before leaving" note sits beside its button. Text sizes for reading and tapping are unchanged, the plum/sunflower identity is unchanged, tab order matches the visual order. On the organizer's mission with a source post, the Jobs heading moved from about 737 px to **411 px at 390x844** and sits at **479 px at 320x640**; the first job's title is on the first screen at both sizes.
+4. *Deployment checklist.* [DEPLOYMENT](DEPLOYMENT.md) now lists what needs the user, the local database checks, the hosted-project checks (migration list, probe, dashboard settings, health check) and a seven-step two-phone test (QR join, simultaneous claim, remote update, leave/finish/reopen, reload, export, venue Wi-Fi).
+
+**Evidence (this machine):**
+- `node --test` with no backend flags: **163 tests, 132 pass, 0 fail, 31 skipped** (the two real-backend files; skips prove nothing).
+- New unit regressions pass: `taskControls` cases and the probe wording/one-request test. Negative controls: restoring the old claimant rule fails the unit regression and the interface check; the old probe message fails the wording assertions.
+- `node scripts/ui-fixture-check.mjs`: **34/34** with the SDK replaced by an in-page fake (**interface only, not backend proof**). New checks: a participant who finished a job and left keeps the attribution and has no undo button; a current participant can still undo; the first job is readable on the first screen at 390x844 and 320x640; the earlier 30 (focus, drafts, announcements, 390/320 layout) still pass. Results and screenshots: `docs/ui-review/b3-run/`.
+- `node scripts/browser-check.mjs` (map and campaigns, separate server, backend down): **74/75 at 1440** and **63/65 at 390**. Failures: the console-error check (the page asks the stopped local backend: `ERR_CONNECTION_REFUSED`) and, at 390, a live-data flow (boundary failure) that also fails intermittently on pre-change code. The earlier 75/75 and 65/65 were not reproduced; those two flows depend on live city data and timing.
+
+**UNVERIFIED (unchanged, could not run without Docker):** applying the `20261022100000` migration; the four new integration tests and the existing 27 against the replaced functions; `mission-browser-check.mjs` (68) and `community-browser-check.mjs` (51) against the new layout and ordering (they select by data attributes and ids, and the "organizer cannot leave" check still finds its disabled control and "Archive it" text in `.mission-actions`); two-browser behavior after the reorder.
+
+**Remaining before S4 can close:** the local database checks, then the hosted project and the two-phone test in [DEPLOYMENT](DEPLOYMENT.md), plus an anonymous-sign-in abuse decision. Not proven: real phones, cellular, venue networks, screen readers, Safari/Firefox, pagination, add-job idempotency.
 
 ### 2026-10-21 — B3 repair batch: independent B2 review findings and hosted-deployment preparation (S4)
 

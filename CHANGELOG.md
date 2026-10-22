@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-21 — B3 follow-up: independent B3 review findings, mobile mission screen
+
+- Fixed: a participant who left a mission is no longer offered "Mark not done" (the organizer keeps it); the deploy probe no longer claims migrations were verified and the runbook names `supabase migration list --linked` as the migration check.
+- Mobile: jobs come right after the mission header and join/leave row (Download and Share moved below them), with tighter phone spacing; the Jobs heading went from about 737 px to 411 px at 390x844.
+- Docs: deployment runbook now has what-needs-you and a seven-step two-phone checklist; setup doc reconciled (CAPTCHA would currently refuse every guest).
+- Evidence: 163 unit tests (132 pass, 0 fail, 31 skipped); interface-only fake-backend check 34/34. **Unverified (no Docker, per instruction):** the B3 migration and all real-backend suites.
+
 ## 2026-10-21 — B3 repair batch: B2 review findings and hosted-deployment preparation
 
 - Fixed (code): a malformed imported evidence record can no longer break community loading (validated at the write boundary, coerced on read, a bad row is skipped); reopening finished work can no longer leave an unfinished job assigned to a departed member (new `set_task_done`); organizer-marked jobs read "Reported done · claimed by <name>"; Add job keeps newer text typed during a save; validation errors clear as fields are fixed; a mission links back to its source post; remote changes are announced; job actions and screen headings keep focus; pages get titles.

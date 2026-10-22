@@ -1,5 +1,13 @@
 # Verification plan and evidence
 
+## B3 follow-up — October 21 (no Docker; backend checks UNVERIFIED)
+
+- `node --test`: 163 tests, 132 pass, 0 fail, 31 skipped (real-backend files; skips prove nothing).
+- New regressions: `taskControls` (departed claimant gets no undo; organizer keeps access) and the deploy probe wording (one read-only request; never claims all migrations verified). Both fail against the old behavior.
+- `scripts/ui-fixture-check.mjs`: 34/34 with a fake in-page backend (interface only): departed participant keeps attribution and has no undo button, a current participant can undo, the first job is on the first screen at 390x844 (Jobs heading at 411 px, was about 737) and 320x640 (479 px), plus the earlier 30 checks.
+- Map/campaign driver, backend down: 74/75 at 1440, 63/65 at 390 (console error from the refused backend; one live-data flow intermittent at 390). Not a clean reproduction of the earlier 75/75 and 65/65.
+- UNVERIFIED: migration application, all integration suites, `mission-browser-check.mjs`, `community-browser-check.mjs`. Checklist: [DEPLOYMENT](DEPLOYMENT.md#what-still-needs-you-nothing-below-has-been-done).
+
 ## B3 repair batch — October 21 (no Docker; backend checks UNVERIFIED)
 
 Docker and the local Supabase stack were not running and, by the user's instruction, were not started. Results below are split by what they can and cannot prove.

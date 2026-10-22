@@ -1,6 +1,6 @@
 # Block Ops — Sonnet assignments
 
-> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). The independent [B2 review](B2-REVIEW.md) was repaired in a **B3 repair batch** (committed locally; its backend checks are unverified, see the ledger). Hosted-deployment preparation is [DEPLOYMENT.md](DEPLOYMENT.md). Everything below the next heading is the completed B2 contract, kept for reference.
+> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). The independent [B2 review](B2-REVIEW.md) was repaired in a **B3 repair batch**, and the independent [B3 review](B3-REVIEW.md) (a departed participant's undo button, an overclaiming deploy probe) in a follow-up that also compacted the mobile mission screen; all committed locally, their database checks unverified (see the ledger). Hosted-deployment preparation is [DEPLOYMENT.md](DEPLOYMENT.md). Everything below the next heading is the completed B2 contract, kept for reference.
 >
 > ## Standing rule for every assistant: no Docker startup
 >
@@ -9,7 +9,7 @@
 > ## Next assignment (when authorized)
 >
 > 1. User starts the local stack → `migration up` (the `20261022100000` migration), both integration files, both mission/community browser checks; fix what they reveal and record real counts.
-> 2. User authorizes it → hosted project and a real phone per [DEPLOYMENT.md](DEPLOYMENT.md); anonymous-sign-in abuse decision; pagination.
+> 2. User authorizes it → hosted project and the two-phone test, step by step in [DEPLOYMENT.md](DEPLOYMENT.md#what-still-needs-you-nothing-below-has-been-done); anonymous-sign-in abuse decision (CAPTCHA needs a client change, so do not enable it yet); pagination.
 > 3. R5 pitch/rehearsal.
 
 Updated October 21, 2026. *(Historical B2 contract follows.)* **B2 (S3.1–S3.3), including the then-open B1 repairs:** build one complete web app experience using the existing implementation. The user selected Sonnet 5.5 in Claude and wants a substantial outcome, not repeated hand-backs after small work orders.

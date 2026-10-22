@@ -1,7 +1,7 @@
 {
   "kind": "interface-only, fake in-page backend, NOT backend proof",
-  "date": "2026-10-22T02:46:37.048Z",
-  "total": 30,
+  "date": "2026-10-22T03:00:02.076Z",
+  "total": 34,
   "failed": 0,
   "checks": [
     {
@@ -130,6 +130,16 @@
       "detail": "{\"tag\":\"BUTTON\",\"key\":\"task:00000000-0000-4000-8000-000000100011:claim\",\"text\":\"Claim this job\",\"id\":\"\",\"postId\":null}"
     },
     {
+      "name": "a current participant can undo their own finished job",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after leaving, the finished job keeps its attribution but offers no Mark not done",
+      "ok": true,
+      "detail": "{\"status\":\"✓ Reported done · claimed by you · Oct 21, 8:00 AM\",\"buttons\":[]}"
+    },
+    {
       "name": "no horizontal scrolling on the mission screen at 390px",
       "ok": true,
       "detail": ""
@@ -140,6 +150,11 @@
       "detail": ""
     },
     {
+      "name": "the first job is readable on the first screen at 390x844",
+      "ok": true,
+      "detail": "{\"height\":844,\"jobsHeading\":411,\"firstJobTitleBottom\":476}"
+    },
+    {
       "name": "no horizontal scrolling on the mission screen at 320px",
       "ok": true,
       "detail": ""
@@ -148,6 +163,11 @@
       "name": "controls are tappable at 320px",
       "ok": true,
       "detail": ""
+    },
+    {
+      "name": "the first job is readable on the first screen at 320x640",
+      "ok": true,
+      "detail": "{\"height\":640,\"jobsHeading\":479,\"firstJobTitleBottom\":544}"
     },
     {
       "name": "no page errors or console warnings during the run",

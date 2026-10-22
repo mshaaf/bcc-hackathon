@@ -1,0 +1,11 @@
+# B3 independent review — findings and resolution
+
+Review of HEAD `f5fbfaa` (the B3 repair batch `853bc64`, `2444c62`, `f5fbfaa`). Verdict: the repair direction and hosting preparation are right; two small gaps remained, and the database repair was still unverified. The original review text is kept outside the repository. Both gaps are fixed in the follow-up batch below; the database side is still **unverified** because the local stack was not running and assistants must not start it.
+
+| # | Finding | Fix | Evidence |
+|---|---|---|---|
+| 1 (P2) | A participant who finished a job and then left the mission (still in the community) was shown **Mark not done**, which the backend refuses with `not_mission_member`. | `taskControls` (`lib/mission.mjs`) decides which job actions a viewer is offered: claimant only while a current mission member, organizer always, nothing when archived. `jobRow` renders from it. The backend rejection stays the real protection. | Unit regression (departed claimant, current participant, organizer with and without membership, someone else's job, signed-out, archived); interface check (a participant finishes a job, leaves, keeps the attribution and sees no button); both fail when the old rule is restored. |
+| 2 (P2) | The deploy probe called only `community_preview` (first migration) but reported "The migrations and the default community are in place." | The probe says it reached the project and found the default community, states that it does **not** show the mission migrations or later repairs are applied, and points to `supabase migration list --linked`. The runbook's acceptance list has that command as the migration check. | Unit regression: exactly one request is made, the message says "does NOT show", never "migrations ... in place"; empty and refused answers are worded the same way. |
+| — (polish) | Mobile mission screen put header/context content before the jobs. | Jobs come right after the header and join/leave row; share/download moved below the jobs; phone spacing tightened (see the ledger). | Interface check measures the Jobs heading position at 390x844 and 320x640. |
+
+Still open: everything in [DEPLOYMENT](DEPLOYMENT.md) (applying and testing the B3 migration, hosted project, two-phone test).
