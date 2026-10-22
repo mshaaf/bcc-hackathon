@@ -1,6 +1,6 @@
 # Block Ops — current context checkpoint
 
-Updated October 21, 2026, after B1 review and the user's explicit web-app direction. Inspect `git status --short --branch` and `git log -6 --oneline` first; later changes supersede this snapshot. Current product code is `f36867b` / backend `d52adb2`; `5f0e9d3` recorded the app-form-factor direction. This handoff update follows those commits.
+Updated October 21, 2026, after the independent B2 review and the B3 repair batch. Inspect `git status --short --branch` and `git log -8 --oneline` first; later changes supersede this snapshot. B2 shipped as `a53f3c0` (backend) and `f03cd46` (UI); the B3 repair batch follows them. **Standing rule: do not open, start or restart Docker or any container; use only services already running, and mark any check that cannot run as unverified.**
 
 ## Selected project and vision
 
@@ -24,30 +24,27 @@ The latest clarification: **make it an application; a web app is sufficient for 
 |---|---|
 | R1–R4 | Ward 8 dumping map, bounded source query/inspection, reviewed exports, browser-local campaigns/tasks/observations, filing-date proximity display and real dated recorded fallback. |
 | S1.1 | Filing-date wording repair complete at `9f09667`; original thresholds/counts retained. |
-| B1 | Local Supabase Auth/Postgres/Realtime, shared membership, posts/replies, own-post editing, moderator hiding, live updates and retry/reconnect handling. Happy-path evidence passes; four independent-review defects remain open. |
+| B1 | Local Supabase Auth/Postgres/Realtime, shared membership, posts/replies, own-post editing, moderator hiding, live updates and retry/reconnect handling. Its four review defects were fixed in B2. |
 | B2 / S3 | **Built and verified locally**: shared missions from a discussion or a reviewed local campaign, authenticated claims with one winner, progress/follow-up posts, current-state export, and the four B1 repairs. 27/27 backend integration, 68/68 mission browser checks. See the ledger. |
-| B3 / S4 and R5 | Remaining readiness, actual phone/public access when authorized, then pitch/release/rehearsal. Unproven. |
+| B3 repair batch (S4, partly) | Independent B2 review findings repaired in code (malformed evidence, reopened jobs, completion label, Add job drafts, announcements/focus, error clearing, source-post link) plus hosted-deployment preparation ([DEPLOYMENT](DEPLOYMENT.md)). **Committed locally; the migration and all real-backend checks are UNVERIFIED** (Docker was off and must not be started by an assistant). |
+| Still to do | Run the unverified checks when the user starts the stack; hosted project and real phones only when authorized; then R5 pitch/release/rehearsal. |
 
 B1 uses **real local Supabase via CLI/Docker**, not a mock. SDK 2.118.0 is vendored; CLI 2.121.0 and setup are documented in [COMMUNITY-SETUP](COMMUNITY-SETUP.md). No hosted project exists. Guest accounts are not verified residents; clearing site data/changing device loses that guest identity. Counts are accounts, not unique people.
 
 Local map campaigns still use guarded localStorage. Typed legacy owner names are not authenticated commitments. Shared community state does not automatically turn a local campaign into a shared mission.
 
-## Independent review evidence and open repairs
+## Independent review history
 
-At `f36867b`, `node --test` discovered 110 tests: **97 passed, 0 failed, 13 skipped**. Explicit local integration invocation then passed **13/13**, including distinct identities, permissions, persistence, moderation and Realtime; measured delivery was 439 ms after a warm-up. Sonnet's full browser driver recorded 51 passes; it was not rerun in the independent review. Fresh join-preview inspection and two isolated UI passes supplemented the stored evidence. Actual phone/public hosting were not tested.
+- **B1 review** at `f36867b` found four defects (late send erasing newer drafts, membership DELETE metadata reaching outsiders, old-operation replay after leaving, a disconnected composer label). B2 fixed them with regressions; see [B1-REVIEW](B1-REVIEW.md).
+- **B2 review** at `f03cd46` ([B2-REVIEW](B2-REVIEW.md)) confirmed the web app and mission loop (143 unit tests, 27/27 backend on that run) and found four more: a malformed imported evidence record that broke community loading for everyone, a finished job that could be reopened into an assignment to a departed member, a "reported by <claimant>" label for organizer-marked jobs, and Add job erasing newer drafts. The B3 repair batch fixed all four in code plus three smaller app/accessibility items. **Backend-dependent evidence for those repairs is unverified**, because the local stack was not running and an assistant must not start it. Unit tests, an interface-only fake-backend browser check (30/30) and a syntax-only parse of the migration pass; read the B3 entry in [PHASE-STATUS](PHASE-STATUS.md) for exact counts and what remains unrun.
 
-Extra probes established four open issues, with exact source/reproduction/fix contracts in [B1-REVIEW](B1-REVIEW.md) and [evidence](workflow/b1-independent-review.json):
+## Next assignment
 
-1. Successful send clears newer text typed while the request was pending.
-2. An authenticated outsider receives membership identifiers through DELETE events.
-3. Replaying an old post operation returns it after leaving, before membership is checked.
-4. Renaming the main composer textarea disconnects its visible label.
+1. When the user starts the local stack: `npx supabase@2.121.0 migration up` (never `db reset`), then both integration files, `scripts/mission-browser-check.mjs` and `scripts/community-browser-check.mjs`; record real counts. Fix whatever the new migration reveals.
+2. Only when the user authorizes it: a hosted Supabase project and public URL following [DEPLOYMENT](DEPLOYMENT.md), a real phone on cellular, an anonymous-sign-in abuse decision (CAPTCHA needs a client change), pagination/load.
+3. **R5** (truthful community-first pitch and rehearsal).
 
-Keep these in the next implementation batch; they are not already fixed. A concurrent rate probe did not establish a rate-limit bypass. Do not turn its all-author count into an invented finding.
-
-## Next assignment — B3 (S4) then R5
-
-B2 is complete (see [PHASE-STATUS](PHASE-STATUS.md)); the text below is the completed B2 contract, kept for context. **B3** covers what B2 could not prove: a hosted Supabase project and public URL (only when the user authorizes it), a real phone on another network, anonymous-auth abuse protection, pagination/load, and any accessibility/layout gaps found; then **R5** (truthful community-first pitch and rehearsal).
+The text below is the completed B2 contract, kept for context.
 
 ### Completed B2 contract
 
@@ -61,7 +58,7 @@ Check direct API authorization, retry/idempotency, leave/claim races, delayed se
 
 ## Code/run map and cautions
 
-Node 20+ baseline; Node 22+ for integration Realtime tests. Existing server: `http://127.0.0.1:8000/`. Inspect an already-running server before starting another. Full local app: local Supabase stack plus `node --env-file=.env server.mjs`; plain `node server.mjs` supports the map with an unconfigured-community notice. Never print credentials from CLI status output.
+Node 20+ baseline; Node 22+ for integration Realtime tests. Existing server: `http://127.0.0.1:8000/` (may predate the latest code; a Node server reads files per request but needs a restart for `server.mjs` changes). Inspect an already-running server before starting another. `node scripts/check-deploy-config.mjs` checks hosting settings; `node scripts/ui-fixture-check.mjs` checks the interface with a fake backend and needs only Chrome. Full local app: local Supabase stack plus `node --env-file=.env server.mjs`; plain `node server.mjs` supports the map with an unconfigured-community notice. Never print credentials from CLI status output.
 
 - `server.mjs`: explicit assets, browser-safe community config, exact-origin CSP and fixed read-only DC proxies.
 - `public/community.mjs`, `public/community-api.mjs`, `lib/community.mjs`: current community UI, SDK wrapper and pure rules.

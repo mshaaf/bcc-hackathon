@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-21 — B3 repair batch: B2 review findings and hosted-deployment preparation
+
+- Fixed (code): a malformed imported evidence record can no longer break community loading (validated at the write boundary, coerced on read, a bad row is skipped); reopening finished work can no longer leave an unfinished job assigned to a departed member (new `set_task_done`); organizer-marked jobs read "Reported done · claimed by <name>"; Add job keeps newer text typed during a save; validation errors clear as fields are fixed; a mission links back to its source post; remote changes are announced; job actions and screen headings keep focus; pages get titles.
+- Hosting preparation: `PORT`/`HOST`, `/healthz`, HSTS behind HTTPS, `scripts/check-deploy-config.mjs`, [DEPLOYMENT](docs/DEPLOYMENT.md). Nothing provisioned or published.
+- Evidence: 161 unit tests, 130 pass, 0 fail, 31 skipped; interface-only fake-backend browser check 30/30. **Unverified (Docker not started, per instruction):** the new migration and all real-backend suites. Standing rule recorded: assistants do not start Docker.
+
 ## 2026-10-21 — B2: shared missions and the B1 repairs
 
 - Missions: start one from a discussion post (no 311 records needed) or share a reviewed copy of a local map campaign after a preview of exactly what is and is not copied. Join, claim a named job (database-enforced single winner), release, mark done, post progress updates and dated follow-up observations (fictional/imported labels kept), organizer edits with a version-conflict recovery, archive, share link and local QR code, and a download that reads the current shared state ("No official 311 records attached" for discussion missions).

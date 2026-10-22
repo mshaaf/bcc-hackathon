@@ -1,8 +1,18 @@
 # Block Ops — Sonnet assignments
 
-> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). **The next assignment is B3 (S4)**; write its prompt from the plan's S4 section when the user asks. Everything below is the completed B2 contract, kept for reference.
+> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). The independent [B2 review](B2-REVIEW.md) was repaired in a **B3 repair batch** (committed locally; its backend checks are unverified, see the ledger). Hosted-deployment preparation is [DEPLOYMENT.md](DEPLOYMENT.md). Everything below the next heading is the completed B2 contract, kept for reference.
+>
+> ## Standing rule for every assistant: no Docker startup
+>
+> **Do not open, start or restart Docker Desktop or any container** (including `supabase start`, `docker run/restart`, and CLI commands that need Docker such as `supabase status`, `db reset` or `migration up` against the local stack) unless the user explicitly asks for it in the current session. Use only services already running; check with a plain request to the API port (`curl http://127.0.0.1:54321/auth/v1/health`) instead. If the backend is down: continue independent work, write backend tests and migrations carefully, and **list every unrun check as unverified**. Never report a skipped, unrun or fake-backend check as backend proof. `scripts/ui-fixture-check.mjs` (fake backend, interface only) is the one browser check that runs without the stack.
+>
+> ## Next assignment (when authorized)
+>
+> 1. User starts the local stack → `migration up` (the `20261022100000` migration), both integration files, both mission/community browser checks; fix what they reveal and record real counts.
+> 2. User authorizes it → hosted project and a real phone per [DEPLOYMENT.md](DEPLOYMENT.md); anonymous-sign-in abuse decision; pagination.
+> 3. R5 pitch/rehearsal.
 
-Updated October 21, 2026. **Next batch: B2 (S3.1–S3.3), including the open B1 repairs.** Build one complete web app experience using the existing implementation. The user selected Sonnet 5.5 in Claude and wants a substantial outcome, not repeated hand-backs after small work orders.
+Updated October 21, 2026. *(Historical B2 contract follows.)* **B2 (S3.1–S3.3), including the then-open B1 repairs:** build one complete web app experience using the existing implementation. The user selected Sonnet 5.5 in Claude and wants a substantial outcome, not repeated hand-backs after small work orders.
 
 ## Read only what matters
 

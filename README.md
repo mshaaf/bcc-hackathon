@@ -6,7 +6,7 @@
 
 **Built locally:** R1–R4 map/source/local campaigns and B1 Supabase identity, membership, posts/replies and live updates. **Open:** [B1 review repairs](docs/B1-REVIEW.md), shared missions/commitments and public phone access. No hosted project or public deployment exists.
 
-**Executor:** Sonnet 5.5 in the user's Claude session. **B1 and B2 are complete locally** (shared community, missions, claims and progress across independent browsers, verified on a local Supabase stack; see [setup](docs/COMMUNITY-SETUP.md)). **Next batch:** B3 (hardening, hosted project and real-phone proof when authorized). S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
+**Executor:** Sonnet 5.5 in the user's Claude session. **B1 and B2 are complete locally** (shared community, missions, claims and progress across independent browsers, verified on a local Supabase stack; see [setup](docs/COMMUNITY-SETUP.md)). **B3 repair batch** (independent B2 review findings and hosted-deployment preparation, see [DEPLOYMENT](docs/DEPLOYMENT.md)) is coded and committed locally; its migration and real-backend checks are **unverified** until the local stack is started. Hosted project and real-phone proof need the user's authorization. S1.1 is complete at `9f09667`. A hosted Supabase project, a public URL and real phones are not yet proven. S1–S4 add the shared workflow; R5 release waits until it works. No project selection or broad research restart is needed.
 
 Repository: [mshaaf/bcc-hackathon](https://github.com/mshaaf/bcc-hackathon).
 

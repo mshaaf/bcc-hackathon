@@ -1,6 +1,6 @@
 # Shared community and missions — setup, tests and limits
 
-Placeholders only. No real credential is committed. The shared community and missions use Supabase (Postgres, Auth, Realtime). B1 and B2 were verified against a **local** Supabase stack started with the Supabase CLI and Docker. **No hosted Supabase project exists or has been tested** (see "What is not proven").
+Placeholders only. No real credential is committed. For a hosted deployment see [DEPLOYMENT](DEPLOYMENT.md). The shared community and missions use Supabase (Postgres, Auth, Realtime). B1 and B2 were verified against a **local** Supabase stack started with the Supabase CLI and Docker. **No hosted Supabase project exists or has been tested** (see "What is not proven").
 
 ## What runs where
 
@@ -45,6 +45,7 @@ Joining creates a Supabase **anonymous** user. A display name is a label, not a 
 | `20261021210000_join_mission_hides_existence.sql` | A non-member gets `mission_not_found` for joining, never confirming an id exists |
 | `20261021220000_join_community_announces.sql` | Join bumps `communities.activity_at` (membership is no longer published) |
 | `20261021230000_import_order.sql` | Imported observations keep the organizer's order |
+| `20261022100000_b3_evidence_and_reopen_repairs.sql` | B3 repairs: `create_mission` validates every shared evidence/source/observation field at the write boundary; `set_task_done` keeps the membership/assignment invariant when finished work is reopened. **Written and syntax-checked without a running backend; not yet applied or tested** (apply with `migration up`, then run both integration suites) |
 
 ## Data model and rules (B1)
 
@@ -74,7 +75,7 @@ A member's user id is visible to that member only via the browser's stored sessi
 - **One winner:** `claim_task` locks the claimant's mission-membership row `FOR SHARE` and the task row `FOR UPDATE`; a second claimant gets `already_claimed`. `leave_mission` deletes the membership first (needing that same lock), then releases unfinished claims, so a leave/claim race cannot leave an unfinished job with a departed member. Finished jobs keep `claimed_by`/`claimed_name`. Leaving the community leaves its missions the same way; an organizer of a non-archived mission must archive first.
 - **Publishing a local campaign** sends only reviewed evidence, job text/due dates (never owners or done flags), and the observations the organizer ticks (stored as `imported` observations by the publisher, original author unverified). The local campaign in the browser is only read.
 - **Realtime** publishes `posts`, `missions`, `mission_tasks` and `communities` (single-uuid keys, row-security checked). Membership tables are not published; join/leave bump `communities.activity_at` / `missions.activity_at`.
-- Evidence and source JSON written by one member are coerced to plain typed fields before display and rendered with `textContent`.
+- Evidence and source JSON written by one member is validated field by field at the write boundary (B3 migration) and, because older rows are not covered, also coerced to plain primitives on read (a row that still fails is skipped, not fatal) and rendered with `textContent`.
 - Limits: 100 missions, 1,500 job rows and 2,000 mission-membership rows are read per community by the page; 1,000 posts per list. A large community needs pagination (not built).
 
 ## Tests
@@ -90,8 +91,13 @@ node --test test/community-access.integration.mjs test/community-mission.integra
 # app must be running with the community env (node --env-file=.env server.mjs); Docker is used to stop/start Realtime and to run psql
 COMMUNITY_SUPABASE_URL=... COMMUNITY_SUPABASE_SECRET_KEY=... node scripts/community-browser-check.mjs   # B1: community, 51 checks
 COMMUNITY_SUPABASE_URL=... COMMUNITY_SUPABASE_SECRET_KEY=... node scripts/mission-browser-check.mjs     # B2: missions end to end
-node scripts/browser-check.mjs 1440   # existing map and campaign driver (opens #/map); also 390
+node scripts/browser-check.mjs 1440   # existing map and campaign driver (opens #/map); also 390 (set OUT=<dir> so it does not overwrite earlier screenshots)
+
+# needs only Chrome: the real app and server with the SDK replaced by an in-page fake. Interface behavior only; NOT backend proof.
+node scripts/ui-fixture-check.mjs
 ```
+
+**Order after a pause with the stack stopped:** the stack is started by the person at the keyboard (assistants must not start Docker unless asked, see [HANDOFF](SONNET-HANDOFF.md)). Then `migration up` (the B3 migration), `node --test` for the unit suite, both integration files, `mission-browser-check.mjs`, `community-browser-check.mjs`.
 
 - A skipped integration run is **not** backend proof. With `RUN_COMMUNITY_INTEGRATION=1` and missing variables the file fails with a message naming them.
 - The secret key is used only by those two test programs (to create throwaway communities, set a moderator, delete test users). It is never sent to a browser.

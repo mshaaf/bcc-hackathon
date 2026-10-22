@@ -4,9 +4,11 @@ This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in C
 
 **Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
 
-**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B2 is complete and verified on a local Supabase stack**: the four B1 review defects are repaired, and discussion → create/publish mission → join → claim a job → post progress/follow-up works across independent browsers. **Next batch: B3** (S4 hardening, a hosted project and real-phone proof when authorized), then R5 release. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+**Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B2 is complete and verified on a local Supabase stack**: the four B1 review defects are repaired, and discussion → create/publish mission → join → claim a job → post progress/follow-up works across independent browsers. **B3 repair batch (independent B2 review findings + hosted-deployment preparation) is coded and committed locally, but its backend checks are UNVERIFIED**: Docker was not running and assistants may not start it (see "Standing rule" below), so the new migration has not been applied and the new/old real-backend suites have not been run since. **Next:** run the unverified checks when the user starts the local stack, then the authorized hosted project and real-phone proof, then R5 release. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used.
 
-The map/local-campaign revision R1–R4 is implemented. The user now explicitly wants a shared community like a group/group chat, with mission participation and progress. Read [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The current documentation task records the confirmed web-app experience and B2 assignment. Local B1 sharing/provider setup exist; mission implementation and B1 repairs remain open.
+**Standing rule (user instruction, B3 batch): assistants must not open, start or restart Docker Desktop or any container.** Use only services that are already running. If a backend check cannot run, continue other independent work and record that check as **unverified**; never report a skipped or unrun check as passed. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
+
+The map/local-campaign revision R1–R4 is implemented, and the shared community, missions and claims (B1, B2) are built and were verified on the local stack. Scope: [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest independent review is [B2-REVIEW](B2-REVIEW.md); hosted-deployment preparation is [DEPLOYMENT](DEPLOYMENT.md).
 
 ## Work-order ledger
 
@@ -14,25 +16,25 @@ The map/local-campaign revision R1–R4 is implemented. The user now explicitly 
 |---|---|---|
 | S1.1 | Report-date wording/regressions, no provider prerequisite | Complete |
 | S1.2 | Shared provider/SDK/Auth proof | Complete (local Supabase; hosted project not tried) |
-| S1.3 | Community membership and access | In progress |
-| S2.1 | Posts/replies backend | In progress |
-| S2.2 | Community feed and cross-browser discussion | In progress |
+| S1.3 | Community membership and access | Complete (local Supabase; B1 repairs fixed in B2) |
+| S2.1 | Posts/replies backend | Complete (local Supabase) |
+| S2.2 | Community feed and cross-browser discussion | Complete (local browsers) |
 | S3.1 | Discussion-origin and reviewed-import mission creation | Complete (local Supabase) |
 | S3.2 | Atomic mission joining/claiming/leaving | Complete (local Supabase) |
 | S3.3 | Mission UI, links and shared export | Complete (local browsers; no real phone) |
-| S4.1 | Access/recovery/accessible interaction | Not started |
-| S4.2 | Deployment prep and authorized real-phone proof | Not started |
+| S4.1 | Access/recovery/accessible interaction | In progress (B2-review repairs and interface fixes coded; migration and real-backend checks unverified) |
+| S4.2 | Deployment prep and authorized real-phone proof | In progress (config, preflight and runbook ready; hosted project and real phone not started) |
 
-Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outcome, B2 groups S3.1–S3.3, B3 groups S4.1–S4.2. The user now prefers substantial batches; continue within the authorized batch rather than handing back after every order. S1.1/S1.2 remain complete. S1.3/S2.1/S2.2 are reopened for the confirmed B1 repairs; their built behavior and earlier passing evidence remain valid. Complete those repairs within B2, not separate hand-back batches.
+Phase rows summarize their child orders. **B1 groups S1.2–S2.2** into one outcome, B2 groups S3.1–S3.3, B3 groups S4.1–S4.2. The user now prefers substantial batches; continue within the authorized batch rather than handing back after every order. S1.1/S1.2 remain complete. S1.3/S2.1/S2.2 were reopened for the confirmed B1 repairs, which B2 fixed (evidence in the B2 entry below).
 
 ## Social delivery ledger
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | In progress |
-| S2 | Community joining, feed, posts and replies across devices | In progress |
+| S1 | Shared backend/identity proof, permissions, truthful recurrence claims | Complete locally |
+| S2 | Community joining, feed, posts and replies across devices | Complete locally (independent browser profiles on one machine) |
 | S3 | Shared missions, task commitments and follow-ups | Complete locally (independent browser profiles on one machine; QR/links are localhost-only) |
-| S4 | Recovery, permissions, real phones and authorized deployment proof | Not started |
+| S4 | Recovery, permissions, real phones and authorized deployment proof | In progress (repairs and preparation coded; backend, hosted and phone proof outstanding) |
 
 R5 release/rehearsal follows the social slice; do not skip directly to R5. The existing R phase rows and historical evidence below are preserved.
 
@@ -75,6 +77,29 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — B3 repair batch: independent B2 review findings and hosted-deployment preparation (S4)
+
+**Constraint:** Docker/containers were **not** opened, started or restarted. At the start `127.0.0.1:54321` (the local Supabase API) refused connections, so every check that needs the real backend could not run. They are listed as **unverified** below, not passed. Review: [B2-REVIEW](B2-REVIEW.md) (the original is outside the repository).
+
+**Fixed (code, committed locally):**
+1. *Malformed imported evidence broke community loading.* Write boundary: migration `20261022100000_b3_evidence_and_reopen_repairs.sql` validates the source, each evidence field's type and length, the observation shape and the stored size in `create_mission`. Read side: `normalizeEvidence` coerces every field to a primitive (the old code was confirmed to throw "Cannot convert object to primitive value" on the reviewed record), and `normalizeRows` skips a row that still fails instead of failing `listMissions`.
+2. *Unfinished jobs stayed assigned to departed members.* The same migration replaces `set_task_done`: membership locks first (the order `claim_task` and `leave_mission` use), a non-organizer must still be a mission member, a departed claimant's job reopens as **unclaimed**, and the claimant is re-checked after the lock.
+3. *Wrong completion label.* "✓ Reported done · claimed by <name>" (the backend stores no reporter, so none is claimed).
+4. *Add job erased newer drafts.* `sendJob` (`lib/mission.mjs`) clears only the sent text, bound to the community the form belonged to.
+5. *App-experience items from the review:* validation errors clear when the field is fixed; the mission header shows an excerpt of its source post and links back to it (`#/community/<id>?post=<id>`, focused on arrival); remote joins/leaves/claims/releases/completions/new jobs/organizer edits and new mission posts are announced; every job action keeps its own focus key; navigation moves focus to the new screen's heading, keeps it through live re-renders, and sets the page title.
+6. *Hosted-deployment preparation (nothing provisioned):* `PORT`/`HOST` from the environment (local-only defaults kept), `GET /healthz`, HSTS only behind an HTTPS proxy, `scripts/check-deploy-config.mjs` (preflight, optional read-only `--probe`), [DEPLOYMENT](DEPLOYMENT.md) runbook with acceptance steps and the anonymous-sign-in risk, `.env.example` placeholders. A server test asserts every module the pages import is actually served.
+
+**Evidence (this machine):**
+- `node --test` with no backend flags: **161 tests, 130 pass, 0 fail, 31 skipped** (the skipped are the two real-backend files, now 31 tests with the 4 new B3 ones; **skips prove nothing**).
+- New unit regressions (all pass): hostile evidence (negative control: the pre-fix normalizer throws), export with hostile fields, skip-one-bad-row, Add job during a pending save / failure / navigation / validation, completion label, remote-change descriptions, source-post route, hosting settings, health check/HSTS, preflight, served-module coverage.
+- `node scripts/ui-fixture-check.mjs`: **30/30**, real app + server + Chrome with the Supabase SDK replaced by an in-page fake (`scripts/support/fake-backend.mjs`). **Interface behavior only, not backend proof.** Covers route focus and titles, error clearing, source-post link and focus, remote-claim announcement, neutral completion label, Add job draft kept during a held save (restoring the unconditional clear makes exactly those two checks fail), focus staying on the second job action through a live update, 390 and 320 px without horizontal scroll or small tap targets, no console errors. Results/screenshots: `docs/ui-review/b3-run/`.
+- The new migration was parsed with `pglast` (7 statements, 4 PL/pgSQL bodies): **syntax only**, no semantics or behavior.
+- `node scripts/browser-check.mjs` (existing map/campaign driver, against a separate server, no backend): **not clean in this environment.** 4 runs gave 73–74/75 at 1440 and 60–62/65 at 390; failures were the "no console errors" check (the page tries the local backend, which is down: `ERR_CONNECTION_REFUSED`) and live-data/Fetch-interception flows (boundary failure, refresh flags changed status, failed refresh); one run ended in a driver error. A run against the pre-change code also failed three of those same flows, so no failure is attributed to this batch, but the earlier 75/75 and 65/65 were **not reproduced**. Treat as flaky/unverified.
+
+**UNVERIFIED (could not run without Docker):** applying the B3 migration (`supabase migration up`); the four new integration tests (malformed evidence rejected at the write boundary, a legacy malformed row not breaking another member's load or export, reopen by a departed claimant and by the organizer, leave racing a reopen); re-running the existing 27 integration tests against the replaced `create_mission`/`set_task_done`; `mission-browser-check.mjs` (68) and `community-browser-check.mjs` (51) against the new UI; two-browser claim behavior after the focus/announcement changes.
+
+**Not proven / open:** hosted Supabase, a public URL, real phones and cellular, venue networks; anonymous-sign-in abuse protection (CAPTCHA would stop every guest today because the app sends no token); load and pagination; screen readers; Safari/Firefox; add-job idempotency (a timeout then retry of Add job can add a duplicate; the button is disabled while sending).
 
 ### 2026-10-21 — B2: shared missions and the four B1 repairs (S3.1–S3.3)
 

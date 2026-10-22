@@ -1,5 +1,21 @@
 # Verification plan and evidence
 
+## B3 repair batch — October 21 (no Docker; backend checks UNVERIFIED)
+
+Docker and the local Supabase stack were not running and, by the user's instruction, were not started. Results below are split by what they can and cannot prove.
+
+**Ran and passed (no backend needed):**
+- `node --test`: 161 tests, 130 pass, 0 fail, 31 skipped (the two real-backend files; skips prove nothing).
+- New unit regressions: hostile evidence normalizes to unknowns (the pre-fix normalizer was shown to throw on the reviewed record), hostile export, bad-row skipping, Add job during a pending save / failed save / navigation / validation, completion label, remote-change descriptions, source-post route, `PORT`/`HOST`, `/healthz` and HSTS, deploy preflight, every imported module is served.
+- `node scripts/ui-fixture-check.mjs`: 30/30, with the Supabase SDK replaced by an in-page fake. Interface behavior only (focus, error clearing, announcements, labels, draft kept during a held save, 390/320 px). Negative control: restoring the unconditional draft clear fails exactly the two draft checks.
+- Migration `20261022100000_b3_evidence_and_reopen_repairs.sql` parsed with `pglast`: syntax only.
+
+**Ran, not clean:** `node scripts/browser-check.mjs` (map and campaigns) against a separate server with the backend down: 73–74/75 at 1440 and 60–62/65 at 390 over four runs. Failures: the console-error check (requests to the stopped local backend are refused) and live-data/Fetch-interception flows that also failed on the pre-change code in the same environment. The earlier 75/75 and 65/65 were not reproduced.
+
+**Unverified (written or required, not run):** applying the migration; the four new integration tests in `test/community-mission.integration.mjs` (write-boundary rejection of malformed evidence/source/observations, a legacy malformed row not breaking another member's `listMissions`/bundle, reopen by a departed claimant and by the organizer, leave racing reopen); the existing 27 integration tests against the replaced functions; `scripts/mission-browser-check.mjs` and `scripts/community-browser-check.mjs`; two-browser behavior after the UI changes. Commands: [COMMUNITY-SETUP](COMMUNITY-SETUP.md#tests).
+
+**Needs hosted / real-phone proof:** everything in the acceptance list of [DEPLOYMENT](DEPLOYMENT.md).
+
 ## B2 — missions, October 21 (local Supabase stack)
 
 | Check | Result |
