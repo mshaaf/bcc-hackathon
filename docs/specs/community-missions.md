@@ -1,6 +1,6 @@
 # Block Ops — community missions scope
 
-Date: October 21, 2026. Status: B2 (shared missions, authenticated claims, progress/follow-up, reviewed local publication, current export) built and verified on a local Supabase stack; S4 (hosted project, real phones) and R5 remain. S1.1 report-date repair complete at `9f09667`; B1 (shared community, membership, posts/replies, live discussion) built and verified on a local Supabase stack. Four B1 review repairs remain open; missions, tasks and claims (S3) are unbuilt. Next batch is B2, those repairs plus all S3. The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
+Date: October 21, 2026. Status: B1 and B2 are built and were verified on local Supabase: shared discussion, missions, authenticated claims, progress/follow-up, reviewed local publication and current exports. B1 review defects were fixed in B2. B3 repairs and its mobile follow-up are implemented; the latest migration, hosted access and real-phone proof remain open, so S4 is In progress and R5 has not started. [Latest independent review](../B3-FOLLOWUP-REVIEW.md). The user explicitly requested community participation like a Facebook group or group chat, where neighbors agree to address dumping or another local concern. This replaces single-operator campaign work as the product's main workflow. Existing R1–R4 implementation remains useful baseline work.
 
 ## Purpose and product picture
 
@@ -14,7 +14,7 @@ Example, entirely illustrative: someone starts “Clean up our corner on Saturda
 
 The user explicitly wants an application, and a **web app is sufficient for this project**. Keep the existing stack and improve the current screens in place. Use one consistent navigation shell for Community, discoverable Missions/mission detail, task actions and Map/local campaigns. Community is the working default. Preserve session, back paths and newer unsent drafts across screen changes. A compact mission list in the current shell is sufficient; no extra dashboard, native build, installable packaging or framework rewrite is required.
 
-On a mission, prioritize goal/location/organizer/time, current participants, available or claimed jobs, and discussion/follow-up; supporting source history is inspectable secondary detail. Phone and desktop support the same join → claim → update flow with accessible controls and honest loading/empty/error/conflict states. [PRODUCT](../../PRODUCT.md) and [DESIGN](../../DESIGN.md) specify the app experience. Resolve [B1 review defects](../B1-REVIEW.md) within the next batch.
+On a mission, prioritize goal/location/organizer/time, current participants, available or claimed jobs, and discussion/follow-up; supporting source history is inspectable secondary detail. Phone and desktop support the same join → claim → update flow with accessible controls and honest loading/empty/error/conflict states. [PRODUCT](../../PRODUCT.md) and [DESIGN](../../DESIGN.md) specify the app experience. [B1 review defects](../B1-REVIEW.md) are repaired; preserve those regressions.
 
 ## Confirmed intent and proposed defaults
 

@@ -1,6 +1,6 @@
 # Community Missions Implementation Plan
 
-> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. The original planning task did not implement product changes. S1.1 is complete; B1 is built locally with open review repairs; current continuation is B2 below.
+> **For agentic workers:** The user selected Sonnet 5.5 for implementation in Claude. Use superpowers:executing-plans if available for the named work-order batch; the checklists remain sufficient without that skill. Subagent-driven development is optional only if explicitly requested. Steps use checkboxes. The original planning task did not implement product changes. S1–S3 are complete locally; B1 review defects were repaired in B2. B3/S4 repairs and preparation are implemented, with database and real-device acceptance still open. The dated checklists below preserve the original work breakdown; [PHASE-STATUS](../../PHASE-STATUS.md) is authoritative for completion.
 
 **Goal:** neighbors join a community, discuss a local concern, commit to mission tasks, and share progress across their own devices.
 
@@ -12,7 +12,7 @@
 
 ## Current outcome batches
 
-The user wants larger outcome batches and an **app experience; a web app is sufficient**. **Next: B2**, consisting of the [B1 repair gate](../../B1-REVIEW.md) plus S3.1–S3.3. B1's local happy-path evidence is valid, but its four confirmed review defects remain open. [SONNET-HANDOFF](../../SONNET-HANDOFF.md) is the single current assignment/prompt; [CONTEXT-CHECKPOINT](../../CONTEXT-CHECKPOINT.md) is the reset reference.
+The user wants larger outcome batches and an **app experience; a web app is sufficient**. **Current: finish B3/S4 acceptance.** B2 delivered the [B1 repair gate](../../B1-REVIEW.md) plus S3.1–S3.3. The B3 follow-up passed independent unit and fake-backend interface checks; the latest migration and real-device behavior are unverified. [SONNET-HANDOFF](../../SONNET-HANDOFF.md) is the current assignment; [CONTEXT-CHECKPOINT](../../CONTEXT-CHECKPOINT.md) is the reset reference; [independent review](../../B3-FOLLOWUP-REVIEW.md) records the latest evidence.
 
 B2 delivers discussion → mission → authenticated job commitment → progress/follow-up within one connected Community/Missions/Map app. Retain the existing stack/identity, phone and desktop support, current navigation/back paths and drafts. Apply [PRODUCT](../../../PRODUCT.md) and [DESIGN](../../../DESIGN.md). Do not redo B1 wholesale or stop after each internal work order.
 

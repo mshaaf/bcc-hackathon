@@ -1,5 +1,15 @@
 # Verification plan and evidence
 
+## Independent B3 follow-up review — October 21
+
+Code reviewed: `a12ff11`; builder documentation: `f2cede1`. Full report: [B3-FOLLOWUP-REVIEW](B3-FOLLOWUP-REVIEW.md).
+
+- Fresh `node --test`: **163 discovered, 132 passed, 0 failed, 31 skipped**. Both new review regressions pass; no integration success is inferred from skips.
+- Fresh `OUT=docs/ui-review/b3-independent-run node scripts/ui-fixture-check.mjs`: **34/34 passed**, exit 0. Actual interface in headless Chrome, **fake backend only**. A departed claimant has no undo action while retaining completion attribution. Current participants and organizers retain appropriate controls.
+- Phone measurements: at 390×844 the Jobs heading is at y=411 and first job title ends at y=476; at 320×640 they are y=479 and y=544. No horizontal overflow; scripted tap-target/focus/draft checks pass. [Results](ui-review/b3-independent-run/fixture-results.json) and screenshots in the same folder.
+- The backend health request was refused. No Docker operation, migration application or real-backend driver was performed. The 31 integration tests, hosted access, physical phones and venue network remain **unverified**.
+- The older map/campaign driver was not rerun; its documented intermittent failures remain open. A source publication does not establish deployment readiness or measured social impact.
+
 ## B3 follow-up — October 21 (no Docker; backend checks UNVERIFIED)
 
 - `node --test`: 163 tests, 132 pass, 0 fail, 31 skipped (real-backend files; skips prove nothing).

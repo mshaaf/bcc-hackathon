@@ -1,6 +1,6 @@
 # Block Ops — current context checkpoint
 
-Updated October 21, 2026, after the independent B2 review and the B3 repair batch. Inspect `git status --short --branch` and `git log -8 --oneline` first; later changes supersede this snapshot. B2 shipped as `a53f3c0` (backend) and `f03cd46` (UI); the B3 repair batch follows them. **Standing rule: do not open, start or restart Docker or any container; use only services already running, and mark any check that cannot run as unverified.**
+Updated October 21, 2026, after the independent B3 follow-up review. Inspect `git status --short --branch` and `git log -8 --oneline` first; later changes supersede this snapshot. B2 shipped as `a53f3c0` (backend) and `f03cd46` (UI); B3 follow-up repairs are `a12ff11`, with builder docs at `f2cede1`. [Latest independent review](B3-FOLLOWUP-REVIEW.md). The user authorized committing/pushing the current work and detailed documentation to GitHub; that does not authorize deployment. **Standing rule: do not open, start or restart Docker or any container; use only services already running, and mark any check that cannot run as unverified.**
 
 ## Selected project and vision
 
@@ -16,7 +16,7 @@ The latest clarification: **make it an application; a web app is sufficient for 
 - Sonnet 5.5 in Claude is the user's implementation executor; the label is not a verified API identifier. Implement inline, without automatic subagents/model changes.
 - Give larger outcome batches. Internal work orders are checklists, not reasons to stop and ask after every task.
 - Conserve usage: no broad research/project-selection restart, redundant tests or speculative features. Resolve routine choices and keep useful work.
-- Completed checked increments are committed locally. No push, public deployment, paid provisioning, outreach, agency submission or license selection is implied.
+- Completed checked increments are committed locally. On October 21 the user explicitly authorized pushing the current work and detailed documentation to GitHub; check Git for the actual result. That does not imply public deployment, paid provisioning, outreach, agency submission or license selection.
 
 ## Built and not built
 
@@ -40,6 +40,8 @@ Local map campaigns still use guarded localStorage. Typed legacy owner names are
 - **B3 review** at `f5fbfaa` ([B3-REVIEW](B3-REVIEW.md)) found two small gaps, both fixed in code in a follow-up: a departed participant was offered "Mark not done" (now `taskControls`), and the deploy probe claimed migrations were verified (now it says what it checked and points to `migration list --linked`). The same follow-up compacted the phone mission layout (jobs first) and wrote the two-phone checklist in [DEPLOYMENT](DEPLOYMENT.md).
 
 **Backend-dependent evidence for those repairs is unverified**, because the local stack was not running and an assistant must not start it. Unit tests (163 discovered: 132 pass, 0 fail, 31 skipped), an interface-only fake-backend browser check (34/34) and a syntax-only parse of the migration pass; read the B3 entry in [PHASE-STATUS](PHASE-STATUS.md) for exact counts and what remains unrun.
+
+The **independent follow-up review at `f2cede1`** freshly reproduced 132 default-suite passes and 34/34 interface-only passes. It confirmed both B3 review findings are repaired, visually inspected the compact phone screenshots, and saved separate evidence in `docs/ui-review/b3-independent-run/`. The backend health request still failed; no migration, integration run or physical-phone test was performed. Historical syntax-parse evidence above remains builder-reported, not rerun in that independent review.
 
 ## Next assignment
 

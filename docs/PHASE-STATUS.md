@@ -2,13 +2,13 @@
 
 This is the canonical phase/work-order ledger. The user selected Sonnet 5.5 in Claude. Current S1–S4 work orders are defined in [the social plan](superpowers/plans/2026-10-21-community-missions.md), with [Sonnet handoff](SONNET-HANDOFF.md). Earlier R/baseline phases preserve history; current scope is in [DECISIONS.md](DECISIONS.md).
 
-**Repository status:** R1–R3 are pushed to the public `https://github.com/mshaaf/bcc-hackathon` (`origin/main`) at the user's instruction. Earlier entries below saying "no push" describe that batch only. Nothing has been deployed or submitted; agents commit locally and the user pushes.
+**Repository publication:** R1–R3 were pushed previously. On October 21 the user explicitly authorized reviewing and publishing all current work and detailed documentation, including the existing R4-through-B3 follow-up commits. [Repository notes](REPOSITORY.md) describe publication and synchronization checks. Earlier "no push" entries describe their original batch only. GitHub source publication does not deploy or submit the app.
 
 **Active project:** Block Ops — Track 3, Community Development; selected October 21, 2026. **B2 is complete and verified on a local Supabase stack**: the four B1 review defects are repaired, and discussion → create/publish mission → join → claim a job → post progress/follow-up works across independent browsers. **B3 repair batch (independent B2 review findings + hosted-deployment preparation) and its follow-up (independent B3 review findings + mobile compaction) are coded and committed locally, but their backend checks are UNVERIFIED**: Docker was not running and assistants may not start it (see "Standing rule" below), so the new migration has not been applied and the new/old real-backend suites have not been run since. **Next:** run the unverified checks when the user starts the local stack, then the authorized hosted project and real-phone proof, then R5 release. S1.1 is complete at `9f09667`. No hosted Supabase project, public URL or real phone has been used.
 
 **Standing rule (user instruction, B3 batch): assistants must not open, start or restart Docker Desktop or any container.** Use only services that are already running. If a backend check cannot run, continue other independent work and record that check as **unverified**; never report a skipped or unrun check as passed. **Executor:** Sonnet 5.5 in the user's Claude session. Read [HANDOFF.md](HANDOFF.md) before continuing.
 
-The map/local-campaign revision R1–R4 is implemented, and the shared community, missions and claims (B1, B2) are built and were verified on the local stack. Scope: [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest independent review is [B2-REVIEW](B2-REVIEW.md); hosted-deployment preparation is [DEPLOYMENT](DEPLOYMENT.md).
+The map/local-campaign revision R1–R4 is implemented, and the shared community, missions and claims (B1, B2) are built and were verified on the local stack. Scope: [community scope](specs/community-missions.md) and the [social plan](superpowers/plans/2026-10-21-community-missions.md). The latest independent review is [B3-FOLLOWUP-REVIEW](B3-FOLLOWUP-REVIEW.md); hosted-deployment preparation is [DEPLOYMENT](DEPLOYMENT.md).
 
 ## Work-order ledger
 
@@ -77,6 +77,14 @@ Change the status row and next phase. Add a short entry below with:
 - Local commit if available; do not write a guessed hash.
 
 ## Batch history
+
+### 2026-10-21 — Independent B3 follow-up review and authorized source publication
+
+- Reviewed `a12ff11` / `f2cede1`: both B3 findings are repaired; no new blocking defect found in the follow-up diff and connected callers.
+- Fresh default suite: **132 pass, 0 fail, 31 skipped** (163 discovered). Fresh interface-only Chrome fixture: **34/34 pass**, with separate [results/screenshots](ui-review/b3-independent-run/fixture-results.json). First job title is visible at both tested phone widths.
+- Local backend health probe refused connection. No Docker startup or migration application; real-backend, hosted and actual-phone acceptance remain **unverified**. S4 rows remain In progress, and R5 has not started.
+- Corrected stale active docs that described built missions as unbuilt; refreshed architecture, status, handoff, review and publication notes. Historical evidence remains intact. [Detailed review](B3-FOLLOWUP-REVIEW.md).
+- User explicitly authorized commit and push to `origin/main`. A remote fetch showed 16 outgoing existing commits and zero remote-only commits before the documentation update; normal publication preserves that history. No deployment, resource provisioning or submission is included.
 
 ### 2026-10-21 — B3 follow-up: independent B3 review findings, mobile mission screen, deployment checklist (S4)
 

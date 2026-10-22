@@ -1,6 +1,6 @@
 # Specification: Block Ops
 
-**Scope revision notice:** the requirements below are the implemented baseline contract. The user rejected its form/brief experience as the final product. [HANDOFF.md](../HANDOFF.md) now governs continuation toward a proposed map-centered campaign workflow, with R1 next. R1 must resolve the first scenario and update this specification before the revised production workflow is implemented. Existing acceptance results do not validate the unbuilt revision.
+**Historical baseline contract:** the requirements below describe the original form/brief implementation. R1–R4 subsequently built map/local campaigns, and B1–B2 built shared community discussion and missions. The active product contract is [community-missions.md](community-missions.md); [HANDOFF.md](../HANDOFF.md) and [the latest independent review](../B3-FOLLOWUP-REVIEW.md) describe the remaining S4 checks. Keep the baseline below as history, not current build instructions.
 
 **Track:** Community Development. **Status:** selected by the user October 21, 2026; active implementation profile. **User:** a neighborhood group preparing a service follow-up conversation.
 

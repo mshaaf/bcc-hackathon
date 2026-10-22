@@ -11,12 +11,13 @@ Read [AGENTS.md](AGENTS.md), [context checkpoint](docs/CONTEXT-CHECKPOINT.md), [
 ## Current state and next action
 
 - Block Ops / Track 3 is selected. The user wants a neighborhood community: join → discuss → organize a mission → claim work → post progress.
-- R1–R4 built a real DC map and browser-local campaigns. B1 adds local Supabase identity, membership, posts/replies and live updates. Shared missions/commitments and public hosting remain unbuilt.
+- R1–R4 built a real DC map and browser-local campaigns. B1 adds local Supabase identity, membership, posts/replies and live updates. B2 shared missions/commitments are built and were verified locally. Public hosting and real-phone access remain unproven.
 - **S1.1 complete at `9f09667`; B1 and B2 complete locally** (local Supabase; evidence in `docs/PHASE-STATUS.md`). The **B3 repair batch** (independent B2 review findings + hosted-deployment preparation) and its follow-up (independent B3 review findings, jobs-first mobile layout, two-phone checklist in `docs/DEPLOYMENT.md`) are committed locally, but the migration `20261022100000` and the real-backend checks are **unverified** (Docker was off). **Next:** when the user starts the stack, `migration up` and run the integration/browser suites; then the hosted project and real phones only when authorized; then R5 release. The user wants substantial batches; do not stop after every small work order.
 - The scope was committed as `878f251`; R4 code as `15fb58c`. `git log` and `git status` supersede stale notes. The app is one web app: `#/community` (feed), `#/missions`, `#/community/<id>/mission/<id>`, `#/map`. New backend changes need a new migration applied with `supabase migration up`; never `db reset` the user's running stack.
 - Supabase runs locally via CLI/Docker; no hosted project exists. Both independent reviews' findings are repaired in code (B1's in B2, B2's in the B3 repair batch; see `docs/B1-REVIEW.md`, `docs/B2-REVIEW.md`). Do not treat fakes, localStorage or skipped tests as shared-backend proof.
 - Preserve other assistants' work, historical source evidence and existing local campaigns. DIRECTION-REVIEW is historical context with qualifications; the social spec governs the current scope.
 - End every commentary/final message with a **very simple TL;DR**.
+- Latest independent review: [B3 follow-up](docs/B3-FOLLOWUP-REVIEW.md), 132 default-suite passes and 34/34 fake-backend interface checks. The user authorized publishing the current work and documentation to GitHub on October 21; this does not authorize Docker startup or deployment. Use Git state for the actual publication result.
 
 ## Commands and traps
 
@@ -26,7 +27,8 @@ Node.js 20+, repository root:
 git status --short --branch
 node --test test/recurrence.test.mjs
 node server.mjs                      # map/campaigns only; community needs the env below
-npx supabase@2.121.0 start           # local shared backend (Docker); then see docs/COMMUNITY-SETUP.md
+# Local backend startup/migration commands require the user's explicit instruction;
+# assistants must not start Docker. See docs/COMMUNITY-SETUP.md.
 node --env-file=.env server.mjs      # with COMMUNITY_SUPABASE_URL / _PUBLISHABLE_KEY set
 ```
 

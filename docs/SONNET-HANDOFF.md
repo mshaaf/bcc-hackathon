@@ -1,12 +1,18 @@
 # Block Ops — Sonnet assignments
 
-> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). The independent [B2 review](B2-REVIEW.md) was repaired in a **B3 repair batch**, and the independent [B3 review](B3-REVIEW.md) (a departed participant's undo button, an overclaiming deploy probe) in a follow-up that also compacted the mobile mission screen; all committed locally, their database checks unverified (see the ledger). Hosted-deployment preparation is [DEPLOYMENT.md](DEPLOYMENT.md). Everything below the next heading is the completed B2 contract, kept for reference.
+> **B2 is complete (October 21, local Supabase stack)** — results, findings and limits in [PHASE-STATUS.md](PHASE-STATUS.md) and [TEST-PLAN.md](TEST-PLAN.md). The independent [B2 review](B2-REVIEW.md) was repaired in a **B3 repair batch**, and the independent [B3 review](B3-REVIEW.md) (a departed participant's undo button, an overclaiming deploy probe) in a follow-up that also compacted the mobile mission screen; all committed locally, their database checks unverified (see the ledger). Hosted-deployment preparation is [DEPLOYMENT.md](DEPLOYMENT.md). Use the current S4 sections first; the explicitly labeled B2 contract later in this file is historical.
 >
 > ## Standing rule for every assistant: no Docker startup
 >
 > **Do not open, start or restart Docker Desktop or any container** (including `supabase start`, `docker run/restart`, and CLI commands that need Docker such as `supabase status`, `db reset` or `migration up` against the local stack) unless the user explicitly asks for it in the current session. Use only services already running; check with a plain request to the API port (`curl http://127.0.0.1:54321/auth/v1/health`) instead. If the backend is down: continue independent work, write backend tests and migrations carefully, and **list every unrun check as unverified**. Never report a skipped, unrun or fake-backend check as backend proof. `scripts/ui-fixture-check.mjs` (fake backend, interface only) is the one browser check that runs without the stack.
 >
-> ## Next assignment (when authorized)
+> ## Latest independent follow-up review
+>
+> The two B3 findings are fixed in `a12ff11`. Independent checks at `f2cede1`: **132 default-suite passes, 31 backend skips; 34/34 fake-backend interface checks**. Both tested phone widths show the first job within the opening screen. [Full review and remaining gates](B3-FOLLOWUP-REVIEW.md). Do not redo the completed repair batch or the historical B2 prompt below.
+>
+> The user authorized committing/pushing the current work and detailed documentation to GitHub on October 21. That does not authorize Docker startup, hosting or resource provisioning. [Publication notes](REPOSITORY.md).
+>
+> ## Remaining S4 assignment (when prerequisites are available)
 >
 > 1. User starts the local stack → `migration up` (the `20261022100000` migration), both integration files, both mission/community browser checks; fix what they reveal and record real counts.
 > 2. User authorizes it → hosted project and the two-phone test, step by step in [DEPLOYMENT.md](DEPLOYMENT.md#what-still-needs-you-nothing-below-has-been-done); anonymous-sign-in abuse decision (CAPTCHA needs a client change, so do not enable it yet); pagination.

@@ -1,0 +1,178 @@
+{
+  "kind": "interface-only, fake in-page backend, NOT backend proof",
+  "date": "2026-10-22T03:21:31.295Z",
+  "total": 34,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "the fake backend is what the page talks to (this run is interface-only)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "joining shows the community",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a discussion post appears",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "opening Missions moves focus to its heading",
+      "ok": true,
+      "detail": "{\"tag\":\"H1\",\"key\":\"route-heading\",\"text\":\"Missions\",\"id\":\"\",\"postId\":null}"
+    },
+    {
+      "name": "the page title names the screen",
+      "ok": true,
+      "detail": "Missions · Block Ops — Your block. Your next move."
+    },
+    {
+      "name": "Start a mission opens with focus on its heading",
+      "ok": true,
+      "detail": "{\"tag\":\"H1\",\"key\":\"route-heading\",\"text\":\"Start a mission\",\"id\":\"\",\"postId\":null}"
+    },
+    {
+      "name": "submitting without a title and place shows both errors",
+      "ok": true,
+      "detail": "errors=2"
+    },
+    {
+      "name": "the title field is marked invalid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fixing the title removes its error and its invalid mark",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the place error stays until the place is fixed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fixing the place clears the last error",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the mission is created and opens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the mission screen takes focus on its heading",
+      "ok": true,
+      "detail": "{\"tag\":\"H1\",\"key\":\"route-heading\",\"text\":\"Clean the Naylor Rd corner\",\"id\":\"mission-title\",\"postId\":null}"
+    },
+    {
+      "name": "the mission links back to the post it came from",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the link returns to the original post and focuses it",
+      "ok": true,
+      "detail": "{\"tag\":\"LI\",\"key\":\"post-target\",\"text\":\"AdayouOct 21, 8:00 AMDumping keeps piling up at the corner o\",\"id\":\"\",\"postId\":\"00000000-0000-4000-8000-000000100003\"}"
+    },
+    {
+      "name": "a remote claim shows on the open screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the claim and the join are announced",
+      "ok": true,
+      "detail": "Ben claimed “Bring bags”. Ben joined the mission."
+    },
+    {
+      "name": "an organizer-marked job reads 'Reported done · claimed by Ben', not 'reported by Ben'",
+      "ok": true,
+      "detail": "✓ Reported done · claimed by Ben · Oct 21, 8:00 AM"
+    },
+    {
+      "name": "the Mark not done control is offered",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the Add job button shows it is working",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the first job was added",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the newer text typed during the save is still in the field",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "and still in the saved draft",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a live update keeps keyboard focus on the Release job control",
+      "ok": true,
+      "detail": "task:00000000-0000-4000-8000-000000100011:release -> task:00000000-0000-4000-8000-000000100011:release"
+    },
+    {
+      "name": "after releasing, focus lands on a control in the same job rather than the page top",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"key\":\"task:00000000-0000-4000-8000-000000100011:claim\",\"text\":\"Claim this job\",\"id\":\"\",\"postId\":null}"
+    },
+    {
+      "name": "a current participant can undo their own finished job",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after leaving, the finished job keeps its attribution but offers no Mark not done",
+      "ok": true,
+      "detail": "{\"status\":\"✓ Reported done · claimed by you · Oct 21, 8:00 AM\",\"buttons\":[]}"
+    },
+    {
+      "name": "no horizontal scrolling on the mission screen at 390px",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "controls are tappable at 390px",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the first job is readable on the first screen at 390x844",
+      "ok": true,
+      "detail": "{\"height\":844,\"jobsHeading\":411,\"firstJobTitleBottom\":476}"
+    },
+    {
+      "name": "no horizontal scrolling on the mission screen at 320px",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "controls are tappable at 320px",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the first job is readable on the first screen at 320x640",
+      "ok": true,
+      "detail": "{\"height\":640,\"jobsHeading\":479,\"firstJobTitleBottom\":544}"
+    },
+    {
+      "name": "no page errors or console warnings during the run",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

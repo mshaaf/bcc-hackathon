@@ -1,14 +1,20 @@
 # Decision log
 
+## October 21 — independent B3 follow-up review and GitHub publication
+
+The user explicitly requested review, detailed documentation, commit and push to the supplied GitHub repository. Publication covers the existing R4-through-B3 commits and the review/documentation update. It does not authorize Docker startup, hosting, paid resources or entry submission. Preserve the existing commit history; use a normal fast-forward push, never force-push.
+
+Independent verification of `a12ff11` / `f2cede1`: both B3 review findings are repaired, 132 default-suite tests pass with 31 backend skips, and 34 fake-backend interface checks pass. The phone layout exposes the first job within the first viewport at 390×844 and 320×640. The database was unreachable; no migration was applied. S4 stays **In progress** until the database and deployment/device checks are proven. [Review and next gates](B3-FOLLOWUP-REVIEW.md).
+
 ## Latest clarification — a web app is sufficient
 
-The user explicitly confirmed that Block Ops should be an **application**, a **web app is sufficient for the project**, and a refactor is not necessarily needed. Apply this to the current browser-based implementation: connected community, mission, map and task screens with consistent navigation and responsive phone/desktop interaction. Keep the existing Node/native browser/Leaflet/Supabase stack and make focused changes in place. This clarification does not select a new framework, require a native rewrite or expand the feature scope. The [four open B1 review defects](B1-REVIEW.md) must be repaired in the same substantial B2 batch as S3.1–S3.3. [Current assignment and prompt](SONNET-HANDOFF.md). This documentation task does not implement those features.
+The user explicitly confirmed that Block Ops should be an **application**, a **web app is sufficient for the project**, and a refactor is not necessarily needed. Apply this to the current browser-based implementation: connected community, mission, map and task screens with consistent navigation and responsive phone/desktop interaction. Keep the existing Node/native browser/Leaflet/Supabase stack and make focused changes in place. This clarification does not select a new framework, require a native rewrite or expand the feature scope. The [four B1 review defects](B1-REVIEW.md) were repaired in B2 along with S3.1–S3.3. [Remaining assignment](SONNET-HANDOFF.md).
 
 ## Latest execution direction — larger Sonnet batches
 
 The user selected **Sonnet 5.5 in Claude** for implementation and now explicitly wants larger outcome-based assignments, not a hand-back after every small work order. The label records their preference, not a verified API identifier or benchmark. Implement inline, without automatic subagents.
 
-S1.1 is complete at `9f09667`. **B1 and B2 are complete on local Supabase** (see PHASE-STATUS); **B3 (S4) is next**. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Follow with B2 (S3 missions), B3 (S4 readiness), then R5 release, in later authorized batches. Local backend access is established; hosted access and public phone readiness remain unproven.
+S1.1 is complete at `9f09667`. **B1 and B2 are complete on local Supabase** (see PHASE-STATUS); **B3 (S4) is in progress**, with repairs and deployment preparation implemented. Original B1 scope: real shared identity, membership, posts/replies and live discussion across independent browsers. Detailed work orders remain internal checklists. Finish the outstanding B3 database/device checks before R5 release. Hosted access and public phone readiness remain unproven.
 
 Current context and execution contract: [CONTEXT-CHECKPOINT.md](CONTEXT-CHECKPOINT.md), [SONNET-HANDOFF.md](SONNET-HANDOFF.md), [ledger](PHASE-STATUS.md), and [detailed plan](superpowers/plans/2026-10-21-community-missions.md). This review/checkpoint task changes documentation only; the prepared assignment is for Sonnet's implementation session.
 
