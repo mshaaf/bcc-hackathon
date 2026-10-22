@@ -2,7 +2,7 @@
 import { cleanBody, describeError, toCommunityError } from "/lib/community.mjs";
 import { formatSourceDate, sourceRecordUrl } from "/lib/block-ops.mjs";
 import {
-  MISSION_STATUSES, MISSION_LIMITS, POST_KINDS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, newMissionHash, parseTaskLines, postHash, publishPayloadFromCampaign, sendJob, taskStatusText
+  MISSION_STATUSES, MISSION_LIMITS, POST_KINDS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, newMissionHash, parseTaskLines, postHash, publishPayloadFromCampaign, sendJob, taskControls, taskStatusText
 } from "/lib/mission.mjs";
 import { recurrenceHeadline, areaRecurrence } from "/lib/recurrence.mjs";
 import { OBSERVATION_KINDS } from "/lib/campaign.mjs";
@@ -163,13 +163,16 @@ function renderDetail() {
 
   const actions = el("div", "mission-actions");
   actions.append(...membershipControls(mission, member, organizer, archived));
-  const exportBtn = button("Download current plan", () => exportPlan(mission), "button button-secondary", `export:${mission.id}`);
-  actions.append(exportBtn);
-  const note = el("p", "field-hint", ui.exportNote.get(mission.id) ?? ""); note.setAttribute("role", "status"); note.hidden = !ui.exportNote.get(mission.id);
   const err = ui.actionErrors.get(mission.id);
   const problem = el("p", "form-error", err ?? ""); problem.setAttribute("role", "alert"); problem.hidden = !err;
 
-  const nodes = [header, actions, problem, note, shareBox(mission), jobsSection(mission, tasks, member, organizer, archived), participantsSection(mission, members, member), discussionSection(mission, member, archived), evidenceSection(mission)];
+  // The jobs come right after who/where/when and the join control, so a phone reaches them without scrolling past sharing tools.
+  const tools = el("section", "mission-tools"); tools.setAttribute("aria-label", "Share and download");
+  const exportBtn = button("Download current plan", () => exportPlan(mission), "button button-secondary", `export:${mission.id}`);
+  const note = el("p", "field-hint", ui.exportNote.get(mission.id) ?? ""); note.setAttribute("role", "status"); note.hidden = !ui.exportNote.get(mission.id);
+  tools.append(exportBtn, note, shareBox(mission));
+
+  const nodes = [header, actions, problem, jobsSection(mission, tasks, member, organizer, archived), tools, participantsSection(mission, members, member), discussionSection(mission, member, archived), evidenceSection(mission)];
   if (organizer) nodes.push(editSection(mission));
   host.replaceChildren(...nodes);
 }
@@ -182,7 +185,8 @@ function sourcePostLine(mission) {
   if (!post || post.hidden) { line.textContent = "Started from a discussion post that is no longer available."; return line; }
   const excerpt = [...post.body].slice(0, 140).join("") + ([...post.body].length > 140 ? "…" : "");
   const link = el("a", "", "Read the original post"); link.href = postHash(app.communityId, post.id);
-  line.append(document.createTextNode(`Started from ${post.authorName}'s post: “${excerpt}” `), link);
+  const quote = el("span", "source-excerpt", `Started from ${post.authorName}'s post: “${excerpt}”`);
+  line.append(quote, document.createTextNode(" "), link);
   return line;
 }
 
@@ -310,14 +314,13 @@ function jobRow(task, mission, member, organizer, archived) {
     node.disabled = busy; node.setAttribute("aria-label", `${label}: ${task.description}`);
     bar.append(node);
   };
-  if (!archived) {
-    if (!task.claimedName) { if (member) act("claim", "Claim this job", () => app.api.claimTask(task.id), "You claimed the job.", true); }
-    else if (task.done) { if (mine || organizer) act("reopen", "Mark not done", () => app.api.setTaskDone(task.id, false), "Job marked not done."); }
-    else {
-      if (mine || organizer) act("done", "Mark done", () => app.api.setTaskDone(task.id, true), "Job marked done.", true);
-      if (mine || organizer) act("release", mine ? "Release job" : "Release (organizer)", () => app.api.releaseTask(task.id), "Job released.");
-    }
-  }
+  const actions = {
+    claim: () => act("claim", "Claim this job", () => app.api.claimTask(task.id), "You claimed the job.", true),
+    reopen: () => act("reopen", "Mark not done", () => app.api.setTaskDone(task.id, false), "Job marked not done."),
+    done: () => act("done", "Mark done", () => app.api.setTaskDone(task.id, true), "Job marked done.", true),
+    release: () => act("release", mine ? "Release job" : "Release (organizer)", () => app.api.releaseTask(task.id), "Job released.")
+  };
+  for (const id of taskControls(task, { userId: app.userId, member, organizer, archived })) actions[id]();
   const error = ui.taskErrors.get(task.id);
   const problem = el("p", "form-error", error ?? ""); problem.setAttribute("role", "alert"); problem.hidden = !error;
   item.append(text, status, bar, problem);

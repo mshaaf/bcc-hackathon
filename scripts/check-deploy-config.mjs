@@ -1,6 +1,7 @@
 // Preflight for a hosted deploy. Reads the environment the host will provide (never prints a key) and says what is wrong.
 //   node --env-file=.env scripts/check-deploy-config.mjs [--probe]
-// --probe makes one read-only call to the configured Supabase project (community_preview) to confirm the migrations are applied.
+// --probe makes one read-only call to the configured Supabase project (community_preview). It shows the project is reachable and the default
+// community exists. It does NOT show that every migration is applied: verify that with `supabase migration list --linked` (docs/DEPLOYMENT.md).
 import { readdirSync } from "node:fs";
 import { communityConfigFrom, isMainModule, listenSettings } from "../server.mjs";
 
@@ -29,13 +30,15 @@ export function checkDeployEnv(env = process.env) {
 
 export const migrationFiles = () => readdirSync(new URL("../supabase/migrations/", import.meta.url)).filter(name => name.endsWith(".sql")).sort();
 
-async function probe(config, fetchImpl = fetch) {
+export async function probe(config, fetchImpl = fetch) {
   const response = await fetchImpl(`${config.url}/rest/v1/rpc/community_preview`, {
     method: "POST", headers: { apikey: config.publishableKey, "Content-Type": "application/json" }, body: JSON.stringify({ p_id: config.communityId })
   });
-  if (!response.ok) return { ok: false, message: `community_preview answered ${response.status}. Are all migrations applied?` };
+  if (!response.ok) return { ok: false, message: `community_preview answered ${response.status}. The first migration is probably not applied, or the URL or key is wrong.` };
   const rows = await response.json();
-  return Array.isArray(rows) && rows.length ? { ok: true, message: `community_preview found "${rows[0].title}". The migrations and the default community are in place.` } : { ok: false, message: "The migrations answer, but the default community does not exist. Run supabase/seed.sql once or set COMMUNITY_ID." };
+  return Array.isArray(rows) && rows.length
+    ? { ok: true, message: `Reached the project and found the default community "${rows[0].title}" (the first migration's community_preview answered). This does NOT show that the mission migrations or the later repairs are applied: compare \`npx supabase@2.121.0 migration list --linked\` with the migration files listed above.` }
+    : { ok: false, message: "The project answered, but the default community does not exist. Run supabase/seed.sql once or set COMMUNITY_ID." };
 }
 
 if (isMainModule(import.meta.url, process.argv[1])) {
@@ -44,7 +47,7 @@ if (isMainModule(import.meta.url, process.argv[1])) {
   for (const line of result.warnings) console.log(`WARN   ${line}`);
   for (const line of result.errors) console.log(`ERROR  ${line}`);
   console.log(`info   ${migrationFiles().length} migrations must be applied in order: ${migrationFiles().join(", ")}`);
-  console.log("manual Supabase dashboard checks (not detectable from here): anonymous sign-ins enabled; CAPTCHA/rate limits chosen for anonymous sign-ins; Realtime publication contains posts, missions, mission_tasks, communities and NOT community_members.");
+  console.log("manual checks (not detectable from here): every migration above shows as applied in `supabase migration list --linked`; anonymous sign-ins enabled; CAPTCHA/rate limits chosen for anonymous sign-ins; Realtime publication contains posts, missions, mission_tasks, communities and NOT community_members.");
   if (process.argv.includes("--probe") && result.config) {
     try { const outcome = await probe(result.config); console.log(`${outcome.ok ? "ok    " : "ERROR "} ${outcome.message}`); if (!outcome.ok) result.errors.push(outcome.message); } catch (error) { console.log(`ERROR  Could not reach the project: ${error.message}`); result.errors.push("unreachable"); }
   }

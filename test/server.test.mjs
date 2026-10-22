@@ -203,3 +203,24 @@ test("deploy preflight reports local stacks, plain-http hosts, secret keys and m
   assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "https://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc", COMMUNITY_SUPABASE_SECRET_KEY: "sb_secret_x" }).warnings.join(" "), /do not set it on the host/);
   assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "https://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc", PORT: "x" }).errors.join(" "), /PORT/);
 });
+
+
+test("B3 review: the deploy probe describes what it checked and never claims all migrations are verified", async () => {
+  const { probe } = await import("../scripts/check-deploy-config.mjs");
+  const config = { url: "https://abcd.supabase.co", publishableKey: "sb_publishable_abc", communityId: "b10c0000-0000-4000-8000-000000000001" };
+  const calls = [];
+  const preview = async (url, init) => { calls.push(String(url)); return { ok: true, status: 200, json: async () => [{ title: "Ward 8 neighbors" }] }; };
+  const found = await probe(config, preview);
+  assert.equal(found.ok, true);
+  assert.deepEqual(calls, ["https://abcd.supabase.co/rest/v1/rpc/community_preview"], "it only makes the one read-only call, so it can only know about the first migration");
+  assert.match(found.message, /default community/);
+  assert.match(found.message, /does NOT show that the mission migrations/);
+  assert.match(found.message, /migration list --linked/);
+  assert.doesNotMatch(found.message, /migrations (and|are).*in place/i);
+  const empty = await probe(config, async () => ({ ok: true, status: 200, json: async () => [] }));
+  assert.equal(empty.ok, false);
+  assert.doesNotMatch(empty.message, /migrations answer/i);
+  const refused = await probe(config, async () => ({ ok: false, status: 404, json: async () => ({}) }));
+  assert.equal(refused.ok, false);
+  assert.match(refused.message, /404/);
+});

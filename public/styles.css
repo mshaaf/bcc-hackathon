@@ -430,11 +430,32 @@ a.button.is-disabled,a.button[aria-disabled] { opacity:.5; pointer-events:none }
 .composer-extra { display:grid; gap:8px; margin:6px 0 }
 .conflict { display:block }
 .field-hint a,.empty-message a { color:var(--plum) }
+.mission-tools { margin-top:14px; display:grid; gap:8px } .mission-tools > .field-hint { margin:0 } .mission-tools .share-box { margin-top:0 }
+.source-excerpt { overflow-wrap:anywhere }
 @media (max-width:560px) {
   .mission-actions .button,.page-actions .button { flex:1 1 auto }
   .task-actions .button { flex:1 1 auto }
   .facts { grid-template-columns:1fr 1fr }
   .mission-head h1 { font-size:22px }
+  /* Phone: spend the first screen on the mission and its jobs, not on chrome. Same identity, same text sizes for anything you read or tap. */
+  body[data-section="community"] .scope-label { display:none }
+  body[data-section="community"] .top { padding:8px 14px; gap:4px 12px }
+  body[data-section="community"] .section-nav a { padding:6px 8px; flex:1 1 auto; white-space:nowrap }
+  .community { padding:8px 14px 28px }
+  .community-head.compact .tag { gap:2px 8px }
+  .crumbs ol { flex-wrap:nowrap; margin-bottom:6px; overflow:hidden }
+  .crumbs li { flex:0 0 auto } .crumbs li[aria-current] { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .mission-head .tag { margin:0 }
+  .mission-head h1 { margin:2px 0 0 }
+  .mission-goal { margin-top:4px; font-size:14px }
+  .facts { margin-top:8px; padding:8px 10px; gap:4px 12px }
+  .facts dt { font-size:10px } .facts dd { font-size:13px }
+  .source-link { margin-top:6px; font-size:13px; display:flex; flex-wrap:wrap; gap:0 8px; align-items:baseline }
+  .source-excerpt { flex:1 1 20ch; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis } .source-link a { flex:0 0 auto }
+  .mission-actions { margin:8px 0 0; gap:6px 8px }
+  .mission-actions .button-quiet { flex:0 0 auto }
+  .mission-actions .field-hint { margin:0; flex:1 1 12ch; font-size:12px }
+  .mission-section { margin-top:14px }
 }
 
 @media print {

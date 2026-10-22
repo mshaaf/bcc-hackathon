@@ -124,13 +124,37 @@ try {
   at = await active();
   check("after releasing, focus lands on a control in the same job rather than the page top", at?.tag === "BUTTON" && /Claim this job/.test(at.text), JSON.stringify(at));
 
-  // phone layouts
+  // a participant who finished a job and then left the mission is not offered an undo the database would refuse
+  const other = await browser.ev(`(async () => { const r = await window.__fake.as('u-ben', 'create_mission', { p_community: ${JSON.stringify(FAKE_COMMUNITY_ID)}, p_title: 'Ben mission', p_objective: 'Sweep the lot', p_location: 'Lot 4', p_origin: 'discussion', p_source: null, p_evidence: [], p_tasks: [{ description: 'Sweep the lot' }], p_observations: [] }); return r.data.id; })()`);
+  await browser.ev(`location.hash = '#/community/${FAKE_COMMUNITY_ID}/mission/${other}'`);
+  await browser.waitFor(`document.querySelector('[data-focus-key^="join:"]')`, 4000);
+  await browser.ev(`document.querySelector('[data-focus-key^="join:"]').click()`);
+  await browser.waitFor(`!!(${rowButton("Sweep the lot", "Claim this job")})`, 4000);
+  await browser.ev(`(${rowButton("Sweep the lot", "Claim this job")}).click()`);
+  await browser.waitFor(`!!(${rowButton("Sweep the lot", "Mark done")})`, 4000);
+  await browser.ev(`(${rowButton("Sweep the lot", "Mark done")}).click()`);
+  check("a current participant can undo their own finished job", await browser.waitFor(`!!(${rowButton("Sweep the lot", "Mark not done")})`, 4000) !== null);
+  await browser.ev(`document.querySelector('[data-focus-key^="leave:"]').click()`);
+  await browser.waitFor(`document.querySelector('[data-focus-key^="leave-yes:"]')`, 3000);
+  await browser.ev(`document.querySelector('[data-focus-key^="leave-yes:"]').click()`);
+  await browser.waitFor(`!!document.querySelector('[data-focus-key^="join:"]')`, 4000);
+  await sleep(300);
+  const departed = await browser.ev(`({ status: (${row("Sweep the lot")})?.querySelector('.task-status')?.textContent, buttons: [...(${row("Sweep the lot")}).querySelectorAll('.task-actions button')].map(b => b.textContent) })`);
+  check("after leaving, the finished job keeps its attribution but offers no Mark not done", /Reported done/.test(departed.status) && departed.buttons.length === 0, JSON.stringify(departed));
+
+  // phone layouts, on the organizer's mission: the tallest header (source post link, organizer leave note)
+  await browser.ev(`location.hash = '#/community/${FAKE_COMMUNITY_ID}/mission/${missionId}'`);
+  await browser.waitFor(`document.querySelector('#view-mission h1#mission-title')?.textContent === 'Clean the Naylor Rd corner'`, 4000);
   for (const [width, height] of [[390, 844], [320, 640]]) {
     await browser.viewport(width, height, true);
     await sleep(250);
     check(`no horizontal scrolling on the mission screen at ${width}px`, !(await browser.ev(`document.documentElement.scrollWidth > window.innerWidth + 1`)));
     const small = await browser.ev(`[...document.querySelectorAll('#view-mission button, #view-mission a.button')].filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && (r.height < 36 || r.width < 36); }).map(e => e.textContent.trim()).slice(0, 5)`);
     check(`controls are tappable at ${width}px`, small.length === 0, small.join(" | "));
+    await browser.ev(`window.scrollTo(0, 0)`);
+    const view = await browser.ev(`(() => { const rect = id => document.getElementById(id)?.getBoundingClientRect(); const task = document.querySelector('#view-mission .task'); return { height: innerHeight, jobsHeading: Math.round(rect('jobs-h')?.top ?? -1), firstJobTitleBottom: Math.round(task?.querySelector('strong')?.getBoundingClientRect().bottom ?? -1) }; })()`);
+    console.log(`measure ${width}x${height}:`, JSON.stringify(view));
+    check(`the first job is readable on the first screen at ${width}x${height}`, view.jobsHeading > 0 && view.firstJobTitleBottom > 0 && view.firstJobTitleBottom <= view.height, JSON.stringify(view));
     await browser.shot(`fixture-mission-${width}`);
   }
   check("no page errors or console warnings during the run", browser.logs.length === 0, browser.logs.slice(0, 3).join(" | "));

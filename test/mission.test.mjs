@@ -3,7 +3,7 @@ import test from "node:test";
 import { validateStore } from "../lib/campaign.mjs";
 import { clearIfUnchanged, readDrafts, writeDrafts } from "../lib/drafts.mjs";
 import {
-  describeSharedChanges, normalizeRows, postHash, sendJob, taskStatusText, MISSION_LIMITS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, normalizeEvidence,
+  describeSharedChanges, normalizeRows, postHash, sendJob, taskControls, taskStatusText, MISSION_LIMITS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, normalizeEvidence,
   normalizeMission, normalizeSource, normalizeTask, parseRoute, parseTaskLines, publishPayloadFromCampaign, publishHash
 } from "../lib/mission.mjs";
 
@@ -309,4 +309,27 @@ test("a mission started from a discussion links back to its source post by route
   assert.equal(postHash(CID, PID), `#/community/${CID}?post=${PID}`);
   assert.deepEqual(parseRoute(postHash(CID, PID)), { section: "community", view: "feed", communityId: CID, missionId: null, postId: PID, campaignId: null });
   assert.equal(parseRoute(`#/community/${CID}?post=not-an-id`).postId, null);
+});
+
+
+test("B3 review: a participant who left the mission is not offered an action the database refuses; the organizer keeps access", () => {
+  const finished = { claimedBy: "u2", claimedName: "Ben", done: true };
+  const unfinished = { claimedBy: "u2", claimedName: "Ben", done: false };
+  const open = { claimedBy: null, claimedName: null, done: false };
+  const view = over => ({ userId: "u2", member: true, organizer: false, archived: false, ...over });
+  // current participant: full control of their own jobs
+  assert.deepEqual(taskControls(finished, view()), ["reopen"]);
+  assert.deepEqual(taskControls(unfinished, view()), ["done", "release"]);
+  assert.deepEqual(taskControls(open, view()), ["claim"]);
+  // the reviewed case: finished the job, left the mission, still in the community
+  assert.deepEqual(taskControls(finished, view({ member: false })), [], "no Mark not done for a former participant");
+  assert.deepEqual(taskControls(open, view({ member: false })), [], "and nothing to claim without joining");
+  // the organizer can act on anyone's job, including a departed claimant's
+  assert.deepEqual(taskControls(finished, view({ userId: "u1", member: true, organizer: true })), ["reopen"]);
+  assert.deepEqual(taskControls(finished, view({ userId: "u1", member: false, organizer: true })), ["reopen"]);
+  assert.deepEqual(taskControls(unfinished, view({ userId: "u1", organizer: true })), ["done", "release"]);
+  // someone else's job, a signed-out viewer and archived missions
+  assert.deepEqual(taskControls(finished, view({ userId: "u3" })), []);
+  assert.deepEqual(taskControls(unfinished, view({ userId: null })), []);
+  assert.deepEqual(taskControls(unfinished, view({ organizer: true, archived: true })), []);
 });
