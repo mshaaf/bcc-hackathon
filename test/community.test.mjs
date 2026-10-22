@@ -63,7 +63,9 @@ test("a reply whose parent is not in the list stands alone instead of disappeari
 
 test("normalizePost maps database columns and marks hidden/edited posts", () => {
   const row = { id: "i", community_id: "c", parent_id: null, author_id: "u", author_name: "N", body: "", kind: "discussion", hidden_at: "2026-10-21T00:00:00Z", edited_at: null, created_at: "2026-10-21T00:00:00Z" };
-  assert.deepEqual(normalizePost(row), { id: "i", communityId: "c", parentId: null, authorId: "u", authorName: "N", body: "", kind: "discussion", hidden: true, edited: false, createdAt: "2026-10-21T00:00:00Z" });
+  assert.deepEqual(normalizePost(row), { id: "i", communityId: "c", missionId: null, parentId: null, authorId: "u", authorName: "N", body: "", kind: "discussion", observedOn: null, fictional: false, imported: false, hidden: true, edited: false, createdAt: "2026-10-21T00:00:00Z" });
+  const observation = normalizePost({ ...row, hidden_at: null, mission_id: "m", kind: "observation", observed_on: "2026-10-20", fictional: true, imported: true });
+  assert.deepEqual([observation.missionId, observation.observedOn, observation.fictional, observation.imported], ["m", "2026-10-20", true, true]);
 });
 
 test("actions: authors edit their own posts, moderators hide, replies only on visible top-level posts", () => {

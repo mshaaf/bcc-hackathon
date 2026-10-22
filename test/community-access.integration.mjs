@@ -3,32 +3,9 @@
 // Without RUN_COMMUNITY_INTEGRATION the whole file is skipped. A skip is NOT backend proof. With it set, missing config fails.
 // The secret key is used only here, to create throwaway communities, set a moderator and delete test users. It never reaches a browser.
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import test, { after, before } from "node:test";
-import { createCommunityClient } from "../public/community-api.mjs";
+import { cleanup, createClient, enabled, hasWebSocket, makeAdmin, newProfile, publishableKey, skip, sleep, tag, url, uuid } from "./support/backend.mjs";
 
-const enabled = process.env.RUN_COMMUNITY_INTEGRATION === "1";
-const url = process.env.COMMUNITY_SUPABASE_URL;
-const publishableKey = process.env.COMMUNITY_SUPABASE_PUBLISHABLE_KEY;
-const secretKey = process.env.COMMUNITY_SUPABASE_SECRET_KEY;
-const skip = enabled ? false : "set RUN_COMMUNITY_INTEGRATION=1 (see docs/COMMUNITY-SETUP.md); a skipped run proves nothing about the backend";
-
-if (enabled && !(url && publishableKey && secretKey)) {
-  throw new Error("RUN_COMMUNITY_INTEGRATION=1 needs COMMUNITY_SUPABASE_URL, COMMUNITY_SUPABASE_PUBLISHABLE_KEY and COMMUNITY_SUPABASE_SECRET_KEY (see docs/COMMUNITY-SETUP.md).");
-}
-
-// The vendored browser bundle is the SDK under test, loaded exactly as shipped.
-const { createClient } = new Function(`${readFileSync(new URL("../public/vendor/supabase/supabase.js", import.meta.url), "utf8")}\nreturn supabase;`)();
-const memoryStorage = () => { const map = new Map(); return { getItem: key => map.get(key) ?? null, setItem: (key, value) => map.set(key, value), removeItem: key => map.delete(key) }; };
-const profiles = [];
-const newProfile = (storage = memoryStorage()) => {
-  const profile = { storage, api: createCommunityClient({ url, publishableKey, createClient, authOptions: { storage, persistSession: true } }) };
-  profiles.push(profile);
-  return profile;
-};
-const uuid = () => crypto.randomUUID();
-const tag = Math.random().toString(36).slice(2, 8);
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const rejects = (promise, code) => assert.rejects(promise, error => { assert.equal(error.code, code, `expected ${code}, got ${error.code} (${error.message})`); return true; });
 
 let admin, communityX, communityY, a, b, c, aUser, bUser, cUser;
@@ -36,7 +13,7 @@ const userIds = [];
 
 before(async () => {
   if (!enabled) return;
-  admin = createClient(url, secretKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  admin = makeAdmin();
   const make = async title => (await admin.from("communities").insert({ title: `${title} ${tag}`, description: "Throwaway community for integration tests." }).select().single()).data;
   communityX = await make("Test X");
   communityY = await make("Test Y");
@@ -47,9 +24,7 @@ before(async () => {
 
 after(async () => {
   if (!enabled || !admin) return;
-  for (const profile of profiles) { await profile.api.rawClient.removeAllChannels(); profile.api.rawClient.realtime.disconnect(); }
-  await admin.from("communities").delete().in("id", [communityX?.id, communityY?.id].filter(Boolean));
-  for (const id of userIds) await admin.auth.admin.deleteUser(id);
+  await cleanup(admin, [communityX?.id, communityY?.id], userIds);
 });
 
 test("two independent browser profiles get different real authenticated identities, and each keeps its own on reload", { skip }, async () => {
@@ -199,7 +174,7 @@ test("leaving ends access, keeps history, and rejoining restores authorship and 
   assert.equal((await c.api.editOwnPost(note.id, `still Cy ${tag}`)).body, `still Cy ${tag}`, "authorship survives leaving and rejoining");
 });
 
-test("realtime: B's post reaches A's subscription within five seconds and the canonical re-fetch has the exact text", { skip: skip || (typeof WebSocket === "undefined" && "needs a global WebSocket (Node 22+)") }, async () => {
+test("realtime: B's post reaches A's subscription within five seconds and the canonical re-fetch has the exact text", { skip: skip || (!hasWebSocket && "needs a global WebSocket (Node 22+)") }, async () => {
   const states = [];
   let notify;
   const changed = new Promise(resolve => { notify = resolve; });
@@ -234,7 +209,7 @@ test("realtime: B's post reaches A's subscription within five seconds and the ca
   stop();
 });
 
-test("a non-member's realtime subscription receives no events for the community", { skip: skip || (typeof WebSocket === "undefined" && "needs a global WebSocket (Node 22+)") }, async () => {
+test("a non-member's realtime subscription receives no events for the community", { skip: skip || (!hasWebSocket && "needs a global WebSocket (Node 22+)") }, async () => {
   const outsider = newProfile();
   await outsider.api.ensureSession();
   userIds.push((await outsider.api.restoreSession()).userId);
@@ -246,7 +221,7 @@ test("a non-member's realtime subscription receives no events for the community"
   assert.deepEqual(events, [], "RLS also gates realtime delivery");
 });
 
-test("realtime: a member leaving notifies the others (row-security does not filter DELETE events, so leave bumps the community row)", { skip: skip || (typeof WebSocket === "undefined" && "needs a global WebSocket (Node 22+)") }, async () => {
+test("realtime: a member leaving notifies the others (row-security does not filter DELETE events, so leave bumps the community row)", { skip: skip || (!hasWebSocket && "needs a global WebSocket (Node 22+)") }, async () => {
   const leaver = newProfile();
   await leaver.api.ensureSession();
   const leaverId = (await leaver.api.restoreSession()).userId;
@@ -261,4 +236,18 @@ test("realtime: a member leaving notifies the others (row-security does not filt
   await leaver.api.leaveCommunity(communityX.id);
   await Promise.race([left, sleep(5000).then(() => { throw new Error(`no leave event within 5 s (saw ${tables.join(",") || "nothing"})`); })]);
   assert.ok(!(await a.api.listMembers(communityX.id)).some(member => member.userId === leaverId), "the canonical re-fetch no longer lists the leaver");
+});
+
+test("realtime: a join announces itself to members (membership rows are not published, so join bumps the community row)", { skip: skip || (!hasWebSocket && "needs a global WebSocket (Node 22+)") }, async () => {
+  const tables = [];
+  let notify;
+  const heard = new Promise(resolve => { notify = resolve; });
+  const ready = new Promise(resolve => { a.api.subscribeCommunity(communityX.id, table => { tables.push(table); if (table === "communities") notify(); }, status => { if (status === "SUBSCRIBED") resolve(); }); });
+  await Promise.race([ready, sleep(8000)]);
+  const joiner = newProfile();
+  userIds.push((await joiner.api.ensureSession()).userId);
+  tables.length = 0;
+  await joiner.api.joinCommunity(communityX.id, `Joiner ${tag}`);
+  await Promise.race([heard, sleep(5000).then(() => { throw new Error(`no join event within 5 s (saw ${tables.join(",") || "nothing"})`); })]);
+  assert.ok((await a.api.listMembers(communityX.id)).some(member => member.displayName === `Joiner ${tag}`), "the re-fetch lists the new member");
 });
