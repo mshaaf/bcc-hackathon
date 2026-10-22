@@ -6,8 +6,6 @@ import { fetchArcGisSnapshot, fetchWardBoundary } from "./lib/block-ops.mjs";
 import { DEMO_COMMUNITY_ID, isUuid } from "./lib/community.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const HOST = "127.0.0.1";
-const PORT = 8000;
 const ASSETS = new Map([
   ["/", ["public/index.html", "text/html; charset=utf-8"]],
   ["/app.mjs", ["public/app.mjs", "text/javascript; charset=utf-8"]],
@@ -33,6 +31,14 @@ const ASSETS = new Map([
   ["/api/demo", ["data/demo.json", "application/json; charset=utf-8"]]
 ]);
 
+// Where to listen. Defaults keep the app on this computer only; a host sets PORT (and HOST=0.0.0.0 to accept outside traffic).
+export function listenSettings(env = process.env) {
+  const raw = env.PORT?.trim();
+  const port = raw ? Number(raw) : 8000;
+  if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("PORT must be a whole number from 0 to 65535.");
+  return { host: env.HOST?.trim() || "127.0.0.1", port };
+}
+
 // Browser-safe shared-community settings from the environment: the project URL and the *publishable* key only.
 // Returns null when unset. Throws on a secret/service-role key so it can never be served to a browser.
 export function communityConfigFrom(env = process.env) {
@@ -53,11 +59,13 @@ export function communityConfigFrom(env = process.env) {
   return { url: parsed.origin, publishableKey, communityId, connectSources: [parsed.origin, wsOrigin] };
 }
 
-function setHeaders(response, community) {
+function setHeaders(request, response, community) {
   response.setHeader("X-Content-Type-Options", "nosniff");
   response.setHeader("Referrer-Policy", "no-referrer");
   response.setHeader("X-Frame-Options", "DENY");
   response.setHeader("Cache-Control", "no-store");
+  // Behind a host's HTTPS proxy: tell browsers to keep using HTTPS. (Never sent for plain http on this computer.)
+  if (request.headers["x-forwarded-proto"] === "https") response.setHeader("Strict-Transport-Security", "max-age=31536000");
   response.setHeader("Content-Security-Policy", `default-src 'self'; connect-src ${["'self'", ...(community?.connectSources ?? [])].join(" ")}; script-src 'self'; style-src 'self'; img-src 'self' data: https://maps2.dcgis.dc.gov; base-uri 'none'; form-action 'self'; frame-ancestors 'none'`);
 }
 
@@ -68,7 +76,7 @@ function sendJson(response, status, value) {
 
 export function createAppServer({ fetchImpl = globalThis.fetch, community = null } = {}) {
   return createServer(async (request, response) => {
-    setHeaders(response, community);
+    setHeaders(request, response, community);
     if (request.method !== "GET") {
       response.setHeader("Allow", "GET");
       sendJson(response, 405, { error: "This local app accepts read requests only." });
@@ -76,6 +84,8 @@ export function createAppServer({ fetchImpl = globalThis.fetch, community = null
     }
 
     const pathname = new URL(request.url || "/", "http://127.0.0.1").pathname;
+    if (pathname === "/healthz") { sendJson(response, 200, { ok: true }); return; } // liveness only; never touches the database or the city service
+
     if (pathname === "/api/requests") {
       try {
         sendJson(response, 200, await fetchArcGisSnapshot(fetchImpl));
@@ -120,7 +130,9 @@ export function isMainModule(moduleUrl, entryPath) {
 }
 
 if (isMainModule(import.meta.url, process.argv[1])) {
-  createAppServer({ community: communityConfigFrom() }).listen(PORT, HOST, () => {
-    console.log(`Block Ops is running at http://${HOST}:${PORT}`);
+  const { host, port } = listenSettings();
+  createAppServer({ community: communityConfigFrom() }).listen(port, host, () => {
+    console.log(`Block Ops is running at http://${host}:${port}`);
+    if (!["127.0.0.1", "localhost", "::1"].includes(host)) console.log("Listening beyond this computer: serve it only behind HTTPS (see docs/DEPLOYMENT.md).");
   });
 }

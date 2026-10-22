@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { communityConfigFrom, createAppServer, isMainModule } from "../server.mjs";
+import { readFileSync, readdirSync } from "node:fs";
+import { communityConfigFrom, createAppServer, isMainModule, listenSettings } from "../server.mjs";
 
 async function withServer(server, run) {
   await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
@@ -154,4 +155,51 @@ test("a secret or service-role key, a partial setup, or a bad URL is refused ins
   assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_URL: "javascript:alert(1)" }), /http/i);
   assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_SUPABASE_URL: "https://user:pw@x.supabase.co" }), /origin/i);
   assert.throws(() => communityConfigFrom({ ...CONFIG_ENV, COMMUNITY_ID: "not-a-uuid" }), /UUID/);
+});
+
+
+test("hosting settings: local-only by default, PORT and HOST from the environment, bad ports refused", () => {
+  assert.deepEqual(listenSettings({}), { host: "127.0.0.1", port: 8000 });
+  assert.deepEqual(listenSettings({ PORT: "10000", HOST: "0.0.0.0" }), { host: "0.0.0.0", port: 10000 });
+  assert.deepEqual(listenSettings({ PORT: " ", HOST: " " }), { host: "127.0.0.1", port: 8000 });
+  for (const PORT of ["abc", "-1", "70000", "80.5"]) assert.throws(() => listenSettings({ PORT }), /PORT must be/);
+});
+
+test("a health check answers without touching any outside service, and HSTS is sent only behind an HTTPS proxy", async () => {
+  const server = createAppServer({ fetchImpl: async () => { throw new Error("health must not call out"); } });
+  await withServer(server, async baseUrl => {
+    const health = await fetch(`${baseUrl}/healthz`);
+    assert.equal(health.status, 200);
+    assert.deepEqual(await health.json(), { ok: true });
+    assert.equal(health.headers.get("strict-transport-security"), null, "plain local http gets no HSTS");
+    const proxied = await fetch(`${baseUrl}/healthz`, { headers: { "x-forwarded-proto": "https" } });
+    assert.match(proxied.headers.get("strict-transport-security"), /max-age=\d+/);
+    assert.equal((await fetch(`${baseUrl}/healthz`, { method: "POST" })).status, 405);
+  });
+});
+
+test("every module the pages import is served (a missing route would break a hosted deploy)", async () => {
+  const server = createAppServer();
+  const files = [...readdirSync(new URL("../public/", import.meta.url)).filter(name => name.endsWith(".mjs")).map(name => `public/${name}`), ...readdirSync(new URL("../lib/", import.meta.url)).filter(name => name.endsWith(".mjs")).map(name => `lib/${name}`)];
+  const wanted = new Set(["/app.mjs", "/shell.mjs", "/community.mjs", "/mission.mjs", "/posts.mjs", "/community-api.mjs", "/map.mjs", "/storage.mjs"]);
+  for (const file of files) for (const match of readFileSync(new URL(`../${file}`, import.meta.url), "utf8").matchAll(/from\s+"(\/[^"]+\.mjs)"/g)) wanted.add(match[1]);
+  const html = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
+  for (const match of html.matchAll(/(?:src|href)="(\/[^"#?]+)"/g)) wanted.add(match[1]);
+  await withServer(server, async baseUrl => {
+    for (const path of wanted) assert.equal((await fetch(`${baseUrl}${path}`)).status, 200, `${path} must be served`);
+  });
+});
+
+test("deploy preflight reports local stacks, plain-http hosts, secret keys and missing settings without printing keys", async () => {
+  const { checkDeployEnv } = await import("../scripts/check-deploy-config.mjs");
+  const hosted = checkDeployEnv({ COMMUNITY_SUPABASE_URL: "https://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc", PORT: "10000", HOST: "0.0.0.0" });
+  assert.deepEqual(hosted.errors, []);
+  assert.deepEqual(hosted.warnings, []);
+  assert.ok(!JSON.stringify(hosted.info).includes("sb_publishable_abc"), "the key is never printed");
+  assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "http://127.0.0.1:54321", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc" }).warnings.join(" "), /local test stack/);
+  assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "http://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc" }).errors.join(" "), /must be https/);
+  assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "https://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_secret_abc" }).errors.join(" "), /secret/);
+  assert.match(checkDeployEnv({}).errors.join(" "), /not set/);
+  assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "https://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc", COMMUNITY_SUPABASE_SECRET_KEY: "sb_secret_x" }).warnings.join(" "), /do not set it on the host/);
+  assert.match(checkDeployEnv({ COMMUNITY_SUPABASE_URL: "https://abcd.supabase.co", COMMUNITY_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc", PORT: "x" }).errors.join(" "), /PORT/);
 });
