@@ -2,14 +2,14 @@
 import { cleanBody, describeError, toCommunityError } from "/lib/community.mjs";
 import { formatSourceDate, sourceRecordUrl } from "/lib/block-ops.mjs";
 import {
-  MISSION_STATUSES, MISSION_LIMITS, POST_KINDS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, newMissionHash, parseTaskLines, publishPayloadFromCampaign
+  MISSION_STATUSES, MISSION_LIMITS, POST_KINDS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, newMissionHash, parseTaskLines, postHash, publishPayloadFromCampaign, sendJob, taskStatusText
 } from "/lib/mission.mjs";
 import { recurrenceHeadline, areaRecurrence } from "/lib/recurrence.mjs";
 import { OBSERVATION_KINDS } from "/lib/campaign.mjs";
 import { createCampaignStorage } from "/storage.mjs";
 import { renderThreads } from "/posts.mjs";
 import {
-  announce, app, byId, clearDraft, dayFormat, el, emit, errorFor, focusKey, getDraft, go, hasDraft, isMissionMember, isOrganizer, isSending, membersFor, missionById, plural,
+  announce, app, byId, clearDraft, clearDraftIfUnchanged, dayFormat, el, emit, errorFor, focusKey, getDraft, go, hasDraft, isMissionMember, isOrganizer, isSending, membersFor, missionById, plural,
   refreshSoon, sendDraft, setDraft, setError, store, tasksFor, textForm, timeFormat
 } from "/shell.mjs";
 import { newOperationId } from "/lib/community.mjs";
@@ -29,7 +29,8 @@ export function renderMissionView(view) {
 
 // ---------- small form helpers (all text is a persisted draft) ----------
 
-function draftField({ key, label, type = "text", rows = 0, hint = "", error = "", placeholder = "", maxLength = 0, required = false, fallback = "" }) {
+// `revalidate: { check, clear }` removes a shown error as soon as the edited field is valid again (check() returns "" when it is).
+function draftField({ key, label, type = "text", rows = 0, hint = "", error = "", placeholder = "", maxLength = 0, required = false, fallback = "", revalidate = null }) {
   const id = `f-${key.replace(/[^a-z0-9]/gi, "-")}`;
   const wrap = el("div", "field-block");
   const lab = el("label", "field-label", label);
@@ -44,7 +45,15 @@ function draftField({ key, label, type = "text", rows = 0, hint = "", error = ""
   if (hint) { described.push(`${id}-hint`); }
   if (error) { described.push(`${id}-err`); input.setAttribute("aria-invalid", "true"); }
   if (described.length) input.setAttribute("aria-describedby", described.join(" "));
-  input.addEventListener("input", () => setDraft(key, input.value));
+  input.addEventListener("input", () => {
+    setDraft(key, input.value);
+    const shown = wrap.querySelector(`#${id}-err`);
+    if (shown && revalidate && !revalidate.check()) {
+      shown.remove(); revalidate.clear();
+      input.removeAttribute("aria-invalid");
+      if (hint) input.setAttribute("aria-describedby", `${id}-hint`); else input.removeAttribute("aria-describedby");
+    }
+  });
   wrap.append(lab, input);
   if (hint) { const h = el("p", "field-hint", hint); h.id = `${id}-hint`; wrap.append(h); }
   if (error) { const e = el("p", "form-error", error); e.id = `${id}-err`; wrap.append(e); }
@@ -149,6 +158,8 @@ function renderDetail() {
   fact("Organizer", mission.organizerName); fact("Where", mission.location); fact("When", mission.startsAt ? when(mission.startsAt) : "No time set"); fact("Progress", progressLine(tasks));
   const goal = el("p", "mission-goal", mission.objective);
   header.append(chips, h1, goal, facts);
+  const origin = sourcePostLine(mission);
+  if (origin) header.append(origin);
 
   const actions = el("div", "mission-actions");
   actions.append(...membershipControls(mission, member, organizer, archived));
@@ -161,6 +172,18 @@ function renderDetail() {
   const nodes = [header, actions, problem, note, shareBox(mission), jobsSection(mission, tasks, member, organizer, archived), participantsSection(mission, members, member), discussionSection(mission, member, archived), evidenceSection(mission)];
   if (organizer) nodes.push(editSection(mission));
   host.replaceChildren(...nodes);
+}
+
+// A mission that started from a discussion keeps a visible way back to the concern it came from.
+function sourcePostLine(mission) {
+  if (!mission.sourcePostId) return null;
+  const post = app.posts.find(item => item.id === mission.sourcePostId);
+  const line = el("p", "source-link");
+  if (!post || post.hidden) { line.textContent = "Started from a discussion post that is no longer available."; return line; }
+  const excerpt = [...post.body].slice(0, 140).join("") + ([...post.body].length > 140 ? "…" : "");
+  const link = el("a", "", "Read the original post"); link.href = postHash(app.communityId, post.id);
+  line.append(document.createTextNode(`Started from ${post.authorName}'s post: “${excerpt}” `), link);
+  return line;
 }
 
 function membershipControls(mission, member, organizer, archived) {
@@ -277,23 +300,22 @@ function jobRow(task, mission, member, organizer, archived) {
   if (task.imported) meta.push("imported from a campaign (it started unclaimed)");
   if (meta.length) text.append(el("span", "task-meta", meta.join(" · ")));
   const status = el("p", "task-status");
-  if (task.done) status.textContent = `✓ Done · reported by ${task.claimedName ?? "someone"}${task.doneAt ? ` · ${timeFormat.format(new Date(task.doneAt))}` : ""}`;
-  else if (task.claimedName) status.textContent = mine ? "You claimed this job" : `Claimed by ${task.claimedName}`;
-  else status.textContent = "Unclaimed";
+  status.textContent = taskStatusText(task, { mine, doneTime: task.done && task.doneAt ? timeFormat.format(new Date(task.doneAt)) : "" });
   status.dataset.state = task.done ? "done" : task.claimedName ? "claimed" : "open";
   const bar = el("div", "task-actions");
   const busy = ui.busy.has(`task:${task.id}`);
-  const act = (label, run, success, primary = false) => {
-    const node = button(busy ? "Working…" : label, () => taskAction(task, run, success), primary ? "button button-primary" : "button button-quiet", bar.children.length ? "" : `task:${task.id}`);
+  // Every action has its own focus key so a live re-render keeps keyboard focus on whichever control was in use.
+  const act = (id, label, run, success, primary = false) => {
+    const node = button(busy ? "Working…" : label, () => taskAction(task, id, run, success), primary ? "button button-primary" : "button button-quiet", `task:${task.id}:${id}`);
     node.disabled = busy; node.setAttribute("aria-label", `${label}: ${task.description}`);
     bar.append(node);
   };
   if (!archived) {
-    if (!task.claimedName) { if (member) act("Claim this job", () => app.api.claimTask(task.id), "You claimed the job.", true); }
-    else if (task.done) { if (mine || organizer) act("Mark not done", () => app.api.setTaskDone(task.id, false), "Job marked not done."); }
+    if (!task.claimedName) { if (member) act("claim", "Claim this job", () => app.api.claimTask(task.id), "You claimed the job.", true); }
+    else if (task.done) { if (mine || organizer) act("reopen", "Mark not done", () => app.api.setTaskDone(task.id, false), "Job marked not done."); }
     else {
-      if (mine || organizer) act("Mark done", () => app.api.setTaskDone(task.id, true), "Job marked done.", true);
-      if (mine || organizer) act(mine ? "Release job" : "Release (organizer)", () => app.api.releaseTask(task.id), "Job released.");
+      if (mine || organizer) act("done", "Mark done", () => app.api.setTaskDone(task.id, true), "Job marked done.", true);
+      if (mine || organizer) act("release", mine ? "Release job" : "Release (organizer)", () => app.api.releaseTask(task.id), "Job released.");
     }
   }
   const error = ui.taskErrors.get(task.id);
@@ -302,7 +324,16 @@ function jobRow(task, mission, member, organizer, archived) {
   return item;
 }
 
-async function taskAction(task, run, success) {
+// After an action the row is rebuilt: keep focus on the same control if it still exists, else on the row's first control, else the row.
+function focusTaskControl(taskId, actionId) {
+  const root = byId("community");
+  const row = root.querySelector(`[data-task-id="${CSS.escape(taskId)}"]`);
+  const target = root.querySelector(`[data-focus-key="${CSS.escape(`task:${taskId}:${actionId}`)}"]`) ?? row?.querySelector("button:not([disabled])");
+  if (target) { target.focus(); return; }
+  if (row) { row.tabIndex = -1; row.focus(); }
+}
+
+async function taskAction(task, actionId, run, success) {
   const key = `task:${task.id}`;
   if (ui.busy.has(key)) return;
   ui.busy.add(key); ui.taskErrors.delete(task.id); emit();
@@ -321,7 +352,7 @@ async function taskAction(task, run, success) {
   }
   ui.busy.delete(key);
   await refreshNow();
-  afterRender(() => focusKey(key));
+  afterRender(() => focusTaskControl(task.id, actionId));
 }
 
 function addJobForm(mission) {
@@ -335,15 +366,18 @@ function addJobForm(mission) {
   form.append(submit);
   form.addEventListener("submit", async event => {
     event.preventDefault();
-    const description = getDraft(descKey).trim();
-    if (!description) { ui.actionErrors.set(`job:${mission.id}`, "Describe the job first."); emit(); return; }
-    if ([...description].length > MISSION_LIMITS.task) { ui.actionErrors.set(`job:${mission.id}`, `A job can be up to ${MISSION_LIMITS.task} characters.`); emit(); return; }
-    ui.busy.add(`addjob:${mission.id}`); ui.actionErrors.delete(`job:${mission.id}`); emit();
+    const busyKey = `addjob:${mission.id}`;
+    if (ui.busy.has(busyKey)) return;
+    const communityId = app.communityId; // the form belongs to this community even if the user navigates away mid-send
+    ui.busy.add(busyKey); ui.actionErrors.delete(`job:${mission.id}`); emit();
     try {
-      await app.api.addTask({ missionId: mission.id, description, due: getDraft(dueKey) || null });
-      clearDraft(descKey); clearDraft(dueKey); announce("Job added.");
+      const sent = await sendJob({
+        addTask: input => app.api.addTask(input), readDraft: getDraft, clearSent: (key, submitted) => clearDraftIfUnchanged(communityId, key, submitted),
+        missionId: mission.id, descKey, dueKey
+      });
+      if (sent.ok) announce("Job added."); else ui.actionErrors.set(`job:${mission.id}`, sent.error);
     } catch (failure) { ui.actionErrors.set(`job:${mission.id}`, describeError(failure)); }
-    ui.busy.delete(`addjob:${mission.id}`);
+    ui.busy.delete(busyKey);
     await refreshNow();
     afterRender(() => focusKey(descKey));
   });
@@ -533,12 +567,16 @@ function renderNew() {
   } else if (sourceMissing) nodes.push(el("p", "form-error", "The post this link points to is not in this community, so the mission will not link to it."));
   const form = el("form", "mission-form"); form.noValidate = true;
   const fe = ui.createFieldErrors;
+  const fixed = name => ({
+    check: () => (name === "tasks" ? parseTaskLines(getDraft(k("tasks"))).error ?? "" : cleanMissionFields({ title: getDraft(k("title")), objective: getDraft(k("objective")), location: getDraft(k("location")), startsAt: getDraft(k("when")) }).errors?.[name] ?? ""),
+    clear: () => { delete ui.createFieldErrors[name]; }
+  });
   form.append(
-    draftField({ key: k("title"), label: "Mission title", placeholder: "Clean up the corner of Naylor Rd", error: fe.title, required: true }),
-    draftField({ key: k("objective"), label: "Goal", rows: 3, placeholder: "What should be different when this is done?", error: fe.objective, required: true }),
-    draftField({ key: k("location"), label: "Public location", placeholder: "1900 block of Naylor Rd SE", hint: "A block, intersection or landmark. Do not enter a home address.", error: fe.location, required: true }),
-    draftField({ key: k("when"), label: "Date and time (optional)", type: "datetime-local", error: fe.startsAt }),
-    draftField({ key: k("tasks"), label: "Jobs (optional, one per line)", rows: 4, placeholder: "Bring trash bags\nPhotograph the site\nTalk to the property owner", hint: `Up to ${MISSION_LIMITS.tasks} jobs. People claim them after joining.`, error: fe.tasks })
+    draftField({ key: k("title"), label: "Mission title", placeholder: "Clean up the corner of Naylor Rd", error: fe.title, required: true, revalidate: fixed("title") }),
+    draftField({ key: k("objective"), label: "Goal", rows: 3, placeholder: "What should be different when this is done?", error: fe.objective, required: true, revalidate: fixed("objective") }),
+    draftField({ key: k("location"), label: "Public location", placeholder: "1900 block of Naylor Rd SE", hint: "A block, intersection or landmark. Do not enter a home address.", error: fe.location, required: true, revalidate: fixed("location") }),
+    draftField({ key: k("when"), label: "Date and time (optional)", type: "datetime-local", error: fe.startsAt, revalidate: fixed("startsAt") }),
+    draftField({ key: k("tasks"), label: "Jobs (optional, one per line)", rows: 4, placeholder: "Bring trash bags\nPhotograph the site\nTalk to the property owner", hint: `Up to ${MISSION_LIMITS.tasks} jobs. People claim them after joining.`, error: fe.tasks, revalidate: fixed("tasks") })
   );
   if (ui.createError) { const p = el("p", "form-error", ui.createError); p.setAttribute("role", "alert"); form.append(p); }
   const submit = el("button", "button button-primary", ui.creating ? "Creating…" : ui.createError && getDraft(k("op")) ? "Try again" : "Create mission"); submit.type = "submit"; submit.disabled = ui.creating; submit.id = "create-mission";
@@ -651,11 +689,15 @@ function renderPublish() {
 
   const form = el("form", "mission-form"); form.noValidate = true;
   const fe = ui.publishFieldErrors;
+  const fixed = name => ({
+    check: () => cleanMissionFields({ title: getDraft(k("title")), objective: getDraft(k("objective")), location: getDraft(k("location")), startsAt: getDraft(k("when")) }).errors?.[name] ?? "",
+    clear: () => { delete ui.publishFieldErrors[name]; }
+  });
   form.append(
-    draftField({ key: k("title"), label: "Mission title", error: fe.title, required: true }),
-    draftField({ key: k("objective"), label: "Goal", rows: 3, error: fe.objective, required: true }),
-    draftField({ key: k("location"), label: "Public location", hint: "Shown to every community member. Edit it if the campaign name is too specific.", error: fe.location, required: true }),
-    draftField({ key: k("when"), label: "Date and time (optional)", type: "datetime-local", error: fe.startsAt })
+    draftField({ key: k("title"), label: "Mission title", error: fe.title, required: true, revalidate: fixed("title") }),
+    draftField({ key: k("objective"), label: "Goal", rows: 3, error: fe.objective, required: true, revalidate: fixed("objective") }),
+    draftField({ key: k("location"), label: "Public location", hint: "Shown to every community member. Edit it if the campaign name is too specific.", error: fe.location, required: true, revalidate: fixed("location") }),
+    draftField({ key: k("when"), label: "Date and time (optional)", type: "datetime-local", error: fe.startsAt, revalidate: fixed("startsAt") })
   );
   if (ui.publishError) { const p = el("p", "form-error", ui.publishError); p.setAttribute("role", "alert"); form.append(p); }
   const submit = el("button", "button button-primary", ui.publishing ? "Sharing…" : ui.publishError && getDraft(k("op")) ? "Try again" : "Share as a mission"); submit.type = "submit"; submit.disabled = ui.publishing; submit.id = "publish-mission";

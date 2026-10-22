@@ -259,6 +259,105 @@ test("mission discussion: scoped posts, kinds, replies, archived and cross-commu
   await rejects(post({ body: "after archive" }), "mission_archived");
 });
 
+// ---------- B3 repairs from the independent B2 review (written without a running backend; see PHASE-STATUS for run status) ----------
+
+const hostile = { toString: null, valueOf: null };
+const publishRpc = (api, args) => api.rawClient.rpc("create_mission", {
+  p_community: X.id, p_title: `Evidence ${tag}`, p_objective: "o", p_location: "l", p_starts_at: null, p_source_post: null, p_origin: "local_campaign",
+  p_source: { mode: "recorded" }, p_evidence: [{ key: "request:1", id: "1" }], p_tasks: [], p_observations: [], p_operation: uuid(), ...args
+});
+
+test("B3 repair: malformed shared evidence, source and observations are rejected at the write boundary", { skip }, async () => {
+  const item = over => [{ key: "request:1", id: "1", ...over }];
+  const badEvidence = {
+    "object request id": item({ id: hostile }), "object object id": item({ objectId: hostile }), "object date": item({ date: hostile }), "array date": item({ date: [1] }),
+    "numeric address": item({ address: 5 }), "boolean status": item({ status: true }), "string geo": item({ geo: "here" }), "geo with text coordinates": item({ geo: { lat: "1", lon: 2 } }),
+    "geo missing longitude": item({ geo: { lat: 38.8 } }), "text outsideWard": item({ outsideWard: "yes" }), "empty key": [{ key: "" }], "long key": [{ key: "k".repeat(201) }],
+    "long address": item({ address: "a".repeat(501) }), "record that is an array": [["request:1"]], "record that is a string": ["request:1"], "no records": []
+  };
+  for (const [label, evidence] of Object.entries(badEvidence)) {
+    const { error } = await publishRpc(org.api, { p_evidence: evidence });
+    assert.equal(error?.message, "invalid_evidence", `${label} must be rejected (got ${error?.message ?? "success"})`);
+  }
+  const badSource = { "numeric url": { mode: "recorded", sourceUrl: 7 }, "text radius": { mode: "recorded", radiusM: "150" }, "text window": { mode: "recorded", window: "last week" }, "object campaign name": { mode: "live", campaignName: hostile } };
+  for (const [label, source] of Object.entries(badSource)) {
+    const { error } = await publishRpc(org.api, { p_source: source });
+    assert.equal(error?.message, "invalid_evidence", `${label} must be rejected (got ${error?.message ?? "success"})`);
+  }
+  for (const [label, observations] of Object.entries({ "text fictional flag": [{ date: "2026-10-20", text: "x", fictional: "maybe" }], "non-object observation": ["note"], "object text": [{ date: "2026-10-20", text: hostile }], "observations that are not a list": { date: "2026-10-20", text: "x" } })) {
+    const { error } = await publishRpc(org.api, { p_observations: observations });
+    assert.equal(error?.message, "invalid_observations", `${label} must be rejected (got ${error?.message ?? "success"})`);
+  }
+  const ok = await publishRpc(org.api, { p_evidence: item({ objectId: 123, date: 1760000000000, geo: { lat: 38.8, lon: -76.99 }, outsideWard: false }), p_source: { mode: "recorded", window: null, radiusM: 150 } });
+  assert.equal(ok.error, null, "well-formed evidence is still accepted");
+  missionIds.push(ok.data.id);
+  assert.equal((await publishRpc(org.api, { p_origin: "discussion", p_evidence: {}, p_source: null })).error?.message, "invalid_origin");
+});
+
+test("B3 repair: a malformed stored record cannot stop another member from loading or exporting the community", { skip }, async () => {
+  // Written with the service key, as it could only have arrived before the write-boundary check existed.
+  const { data: row, error } = await admin.from("missions").insert({
+    community_id: X.id, organizer_id: org.userId, organizer_name: org.name, title: `Legacy bad record ${tag}`, objective: "o", location_text: "l", origin: "local_campaign",
+    source: { mode: "recorded", window: "nonsense", radiusM: "x" }, evidence: [{ key: "review:fixture", id: hostile, objectId: hostile, date: hostile, geo: "x", address: 7 }], operation_id: uuid()
+  }).select().single();
+  assert.equal(error, null);
+  missionIds.push(row.id);
+  const sound = await mk(`Sound neighbor ${tag}`);
+  const listed = await bo.api.listMissions(X.id);
+  assert.ok(listed.some(item => item.id === sound.id), "the rest of the list still loads");
+  const bad = listed.find(item => item.id === row.id);
+  assert.ok(bad, "the malformed mission is still listed");
+  assert.deepEqual([bad.evidence[0].id, bad.evidence[0].objectId, bad.evidence[0].date, bad.evidence[0].geo, bad.evidence[0].address], [null, null, null, null, null], "bad fields become unknown, not errors");
+  const bundle = await bo.api.getMissionBundle(X.id, row.id);
+  assert.equal(bundle.mission.id, row.id, "opening the record and exporting it also works");
+  for (const call of [() => bo.api.listMissionMembers(X.id), () => bo.api.listTasks(X.id), () => bo.api.listPosts(X.id)]) await call();
+});
+
+test("B3 repair: reopening finished work never leaves an unfinished job assigned to a departed member", { skip }, async () => {
+  const mission = await mk(`Reopen ${tag}`);
+  const [one, two] = await tasksOf(org.api, X.id, mission.id);
+  const leaver = await member(X.id, "Leaver", userIds);
+  await leaver.api.joinMission(mission.id);
+  await leaver.api.claimTask(one.id); await leaver.api.setTaskDone(one.id, true);
+  await leaver.api.claimTask(two.id); await leaver.api.setTaskDone(two.id, true);
+  await leaver.api.leaveMission(mission.id);
+  const finished = Object.fromEntries((await tasksOf(org.api, X.id, mission.id)).map(task => [task.id, task]));
+  assert.deepEqual([finished[one.id].done, finished[one.id].claimedBy], [true, leaver.userId], "finished work keeps its attribution while it stays finished");
+  // former claimant, still in the community, no longer in the mission
+  await rejects(leaver.api.setTaskDone(one.id, false), "not_mission_member");
+  await rejects(leaver.api.setTaskDone(one.id, true), "not_mission_member");
+  // the organizer reopening gets an open job, not an assignment to a non-member
+  const reopened = await org.api.setTaskDone(one.id, false);
+  assert.deepEqual([reopened.done, reopened.doneAt, reopened.claimedBy, reopened.claimedName], [false, null, null, null]);
+  assert.equal((await org.api.setTaskDone(two.id, true)).done, true, "marking an already finished job done again is a no-op");
+  const afterRejoin = await leaver.api.joinMission(mission.id);
+  assert.equal(afterRejoin.userId, leaver.userId);
+  const claimed = await leaver.api.claimTask(one.id);
+  assert.equal(claimed.claimedBy, leaver.userId, "a rejoined member can claim the open job normally");
+  // a member who is still present keeps their claim when their finished job is reopened
+  const present = (await leaver.api.setTaskDone(one.id, true)) && (await leaver.api.setTaskDone(one.id, false));
+  assert.deepEqual([present.done, present.claimedBy], [false, leaver.userId]);
+  // every unfinished job always belongs to a current mission member
+  const members = new Set((await org.api.listMissionMembers(X.id)).filter(item => item.missionId === mission.id).map(item => item.userId));
+  for (const task of await tasksOf(org.api, X.id, mission.id)) if (!task.done && task.claimedBy) assert.ok(members.has(task.claimedBy), `unfinished job ${task.description} belongs to a member`);
+});
+
+test("B3 repair: leave racing a reopen keeps every unfinished job with a current member", { skip }, async () => {
+  const mission = await mk(`Reopen race ${tag}`);
+  for (let round = 0; round < 8; round += 1) {
+    const racer = await member(X.id, `Reopener${round}`, userIds);
+    await racer.api.joinMission(mission.id);
+    const added = await org.api.addTask({ missionId: mission.id, description: `reopen race ${round}` });
+    await racer.api.claimTask(added.id); await racer.api.setTaskDone(added.id, true);
+    const reopen = round % 2 ? () => racer.api.setTaskDone(added.id, false) : () => org.api.setTaskDone(added.id, false);
+    const [, leave] = await Promise.allSettled([reopen(), racer.api.leaveMission(mission.id)]);
+    assert.equal(leave.status, "fulfilled", `leave round ${round}: ${leave.reason?.code}`);
+    const task = (await tasksOf(org.api, X.id, mission.id)).find(item => item.id === added.id);
+    assert.ok(task.done || task.claimedBy === null, `round ${round}: unfinished jobs must not stay assigned to the departed member (done=${task.done}, claimedBy=${task.claimedBy})`);
+    if (!task.done) assert.equal(task.claimedName, null);
+  }
+});
+
 test("B1 repair: an old operation cannot be replayed after leaving or across communities", { skip }, async () => {
   const guest = await member(Y.id, "Gus", userIds);
   const operationId = uuid();

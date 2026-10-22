@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { validateStore } from "../lib/campaign.mjs";
+import { clearIfUnchanged, readDrafts, writeDrafts } from "../lib/drafts.mjs";
 import {
-  MISSION_LIMITS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, normalizeEvidence,
+  describeSharedChanges, normalizeRows, postHash, sendJob, taskStatusText, MISSION_LIMITS, NO_RECORDS_LINE, buildMissionMarkdown, cleanMissionFields, isLocalOrigin, missionHash, missionProgress, normalizeEvidence,
   normalizeMission, normalizeSource, normalizeTask, parseRoute, parseTaskLines, publishPayloadFromCampaign, publishHash
 } from "../lib/mission.mjs";
 
@@ -170,4 +171,142 @@ test("markdown special characters from members cannot inject structure into the 
   const md = buildMissionMarkdown(input);
   assert.ok(!/^## heading/m.test(md));
   assert.ok(md.includes("\\[link\\]\\(http://x\\)"));
+});
+
+
+// ---------- B3 repairs from the independent B2 review ----------
+
+const hostile = () => JSON.parse('{"toString":null,"valueOf":null}'); // what a hostile client can store in a JSON column
+
+test("B3 repair: malformed stored evidence normalizes to unknowns and never throws (the reviewed crash)", () => {
+  const stored = [{ key: "review:fixture", id: hostile(), objectId: hostile(), date: hostile(), address: 7, status: true, geo: "x", category: [] }];
+  assert.doesNotThrow(() => normalizeEvidence(stored));
+  const [item] = normalizeEvidence(stored);
+  assert.deepEqual([item.key, item.id, item.objectId, item.date, item.address, item.status, item.geo, item.category], ["review:fixture", null, null, null, null, null, null, null]);
+  // numbers from the city's data keep their meaning
+  const [number] = normalizeEvidence([{ key: "k", id: 25000123, objectId: 77, date: 1760000000000 }]);
+  assert.deepEqual([number.id, number.objectId, number.date], ["25000123", 77, 1760000000000]);
+  assert.equal(normalizeEvidence([{ key: "k", date: Number.NaN, objectId: Infinity }])[0].date, null);
+});
+
+test("B3 repair: a hostile record cannot break the export or the evidence ordering either", () => {
+  const mission = normalizeMission({ id: MID, community_id: CID, organizer_id: "u1", organizer_name: "Ada", title: "T", objective: "o", location_text: "l", status: "planning", origin: "local_campaign",
+    source: { mode: "recorded", window: "nonsense", radiusM: "x", retrievedAt: hostile() }, evidence: [{ key: "a", id: hostile(), objectId: hostile(), date: hostile(), status: hostile() }, { key: "b", id: "B", date: "2026-10-01" }], version: 1 });
+  const bundle = { ...base(), mission };
+  assert.doesNotThrow(() => buildMissionMarkdown(bundle));
+  assert.match(buildMissionMarkdown(bundle), /Date unavailable/);
+});
+
+test("B3 repair: one bad row is skipped without hiding the others", () => {
+  const warnings = [];
+  const original = console.warn; console.warn = message => warnings.push(message);
+  try {
+    const rows = normalizeRows([{ n: 1 }, null, { n: 3 }], row => { if (!row) throw new TypeError("boom"); return row.n; }, "mission");
+    assert.deepEqual(rows, [1, 3]);
+    assert.equal(warnings.length, 1);
+    assert.deepEqual(normalizeRows("not a list", x => x), []);
+  } finally { console.warn = original; }
+});
+
+// Models the shell: drafts live in memory for the on-screen community and in storage for every community.
+function draftHarness(active = "X") {
+  const map = new Map();
+  const storage = { getItem: key => map.get(key) ?? null, setItem: (key, value) => map.set(key, value), removeItem: key => map.delete(key) };
+  const memory = new Map();
+  const state = { active };
+  const api = {
+    storage, memory, state,
+    set(key, value) { memory.set(key, value); writeDrafts(storage, state.active, Object.fromEntries(memory)); },
+    get: key => memory.get(key) ?? "",
+    clearFor: communityId => (key, submitted) => clearIfUnchanged({ storage, activeCommunityId: state.active, memory, communityId, key, submitted })
+  };
+  return api;
+}
+const deferred = () => { let resolve, reject; const promise = new Promise((a, b) => { resolve = a; reject = b; }); return { promise, resolve, reject }; };
+
+test("B3 repair: a newer Add job draft typed while the save is pending survives the save", async () => {
+  const h = draftHarness();
+  h.set("job:m:desc", "Bring gloves"); h.set("job:m:due", "2026-11-01");
+  const pending = deferred();
+  const sending = sendJob({ addTask: () => pending.promise, readDraft: h.get, clearSent: h.clearFor("X"), missionId: "m", descKey: "job:m:desc", dueKey: "job:m:due" });
+  h.set("job:m:desc", "Bring gloves and a second job I just started typing"); // the field stays editable during the request
+  h.set("job:m:due", "2026-11-09");
+  pending.resolve({ id: "t1" });
+  const result = await sending;
+  assert.equal(result.ok, true);
+  assert.equal(h.get("job:m:desc"), "Bring gloves and a second job I just started typing", "newer description kept");
+  assert.equal(h.get("job:m:due"), "2026-11-09", "newer due date kept");
+  assert.deepEqual(readDrafts(h.storage, "X"), { "job:m:desc": "Bring gloves and a second job I just started typing", "job:m:due": "2026-11-09" });
+});
+
+test("B3 repair: an unchanged Add job draft is cleared once the job is saved, and a failed save keeps it", async () => {
+  const h = draftHarness();
+  h.set("job:m:desc", "Photograph the site"); h.set("job:m:due", "2026-11-01");
+  const sent = [];
+  const done = await sendJob({ addTask: async input => { sent.push(input); return { id: "t" }; }, readDraft: h.get, clearSent: h.clearFor("X"), missionId: "m", descKey: "job:m:desc", dueKey: "job:m:due" });
+  assert.deepEqual(sent, [{ missionId: "m", description: "Photograph the site", due: "2026-11-01" }]);
+  assert.equal(done.ok, true);
+  assert.deepEqual([h.get("job:m:desc"), h.get("job:m:due")], ["", ""]);
+  h.set("job:m:desc", "Second job");
+  await assert.rejects(sendJob({ addTask: async () => { throw new Error("offline"); }, readDraft: h.get, clearSent: h.clearFor("X"), missionId: "m", descKey: "job:m:desc", dueKey: "job:m:due" }), /offline/);
+  assert.equal(h.get("job:m:desc"), "Second job", "nothing is lost when the save fails");
+});
+
+test("B3 repair: an Add job save that finishes after navigating to another community leaves that community's drafts alone", async () => {
+  const h = draftHarness("X");
+  h.set("job:m:desc", "Job typed in X");
+  const pending = deferred();
+  const sending = sendJob({ addTask: () => pending.promise, readDraft: h.get, clearSent: h.clearFor("X"), missionId: "m", descKey: "job:m:desc", dueKey: "job:m:due" });
+  // navigate to Y, which has its own (identical-looking) draft in memory; X's saved text is what was sent
+  const yMemory = new Map([["job:m:desc", "Job typed in X"]]);
+  h.state.active = "Y"; h.memory.clear(); for (const [key, value] of yMemory) h.memory.set(key, value);
+  pending.resolve({ id: "t" });
+  await sending;
+  assert.equal(h.get("job:m:desc"), "Job typed in X", "the on-screen community's draft is not cleared by X's completion");
+  assert.deepEqual(readDrafts(h.storage, "X"), {}, "X's own saved copy of the sent text is cleared");
+});
+
+test("B3 repair: Add job validates before sending", async () => {
+  const h = draftHarness();
+  const never = () => { throw new Error("should not send"); };
+  h.set("job:m:desc", "   ");
+  assert.deepEqual(await sendJob({ addTask: never, readDraft: h.get, clearSent: h.clearFor("X"), missionId: "m", descKey: "job:m:desc", dueKey: "job:m:due" }), { ok: false, error: "Describe the job first." });
+  h.set("job:m:desc", "x".repeat(MISSION_LIMITS.task + 1));
+  assert.match((await sendJob({ addTask: never, readDraft: h.get, clearSent: h.clearFor("X"), missionId: "m", descKey: "job:m:desc", dueKey: "job:m:due" })).error, /up to 200 characters/);
+});
+
+test("B3 repair: completion is not attributed to the claimant as its reporter", () => {
+  const organizerMarked = { description: "Bring bags", claimedName: "Ben", claimedBy: "u2", done: true };
+  const text = taskStatusText(organizerMarked, { mine: false, doneTime: "Oct 21, 3:02 PM" });
+  assert.match(text, /Reported done/);
+  assert.match(text, /claimed by Ben/);
+  assert.doesNotMatch(text, /reported by/i);
+  assert.match(taskStatusText(organizerMarked, { mine: true }), /claimed by you/);
+  assert.equal(taskStatusText({ claimedName: "Ben", done: false }, {}), "Claimed by Ben");
+  assert.equal(taskStatusText({ claimedName: "Ben", done: false }, { mine: true }), "You claimed this job");
+  assert.equal(taskStatusText({ claimedName: null, done: false }, {}), "Unclaimed");
+});
+
+test("remote changes to the open mission are described in plain words, skipping the viewer's own", () => {
+  const task = (id, over = {}) => ({ id, missionId: MID, description: `job ${id}`, claimedBy: null, claimedName: null, done: false, ...over });
+  const member = (userId, displayName) => ({ missionId: MID, userId, displayName });
+  const before = { tasks: [task("a"), task("b", { claimedBy: "u2", claimedName: "Ben" }), task("c", { claimedBy: "u2", claimedName: "Ben", done: true })], members: [member("u1", "Ada"), member("u2", "Ben")], missions: [{ id: MID, version: 1, organizerId: "u1" }] };
+  const after = {
+    tasks: [task("a", { claimedBy: "u3", claimedName: "Cy" }), task("b"), task("c", { claimedBy: "u2", claimedName: "Ben" }), task("d")],
+    members: [member("u1", "Ada"), member("u3", "Cy")], missions: [{ id: MID, version: 2, organizerId: "u1" }]
+  };
+  const said = describeSharedChanges(before, after, { missionId: MID, userId: "u9" });
+  assert.deepEqual(said.sort(), [
+    "Ben left the mission.", "Cy claimed “job a”.", "Cy joined the mission.", "New job: “job d”.", "The organizer updated the mission details.", "“job b” is unclaimed again.", "“job c” was reopened."
+  ].sort());
+  const mine = describeSharedChanges(before, after, { missionId: MID, userId: "u3" });
+  assert.ok(!mine.some(line => /Cy/.test(line)), "the viewer's own claim and join are not announced to them");
+  assert.deepEqual(describeSharedChanges(before, before, { missionId: MID, userId: "u9" }), []);
+  assert.deepEqual(describeSharedChanges(before, after, { missionId: "another", userId: "u9" }), [], "other missions are ignored");
+});
+
+test("a mission started from a discussion links back to its source post by route", () => {
+  assert.equal(postHash(CID, PID), `#/community/${CID}?post=${PID}`);
+  assert.deepEqual(parseRoute(postHash(CID, PID)), { section: "community", view: "feed", communityId: CID, missionId: null, postId: PID, campaignId: null });
+  assert.equal(parseRoute(`#/community/${CID}?post=not-an-id`).postId, null);
 });

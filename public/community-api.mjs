@@ -1,7 +1,7 @@
 // Browser-side client for the shared community (Supabase Auth + Postgres + Realtime).
 // Only the project URL and publishable key are used here; every permission is enforced by the database.
 import { CommunityError, normalizeMember, normalizePost, toCommunityError } from "../lib/community.mjs";
-import { normalizeMission, normalizeMissionMember, normalizeTask } from "../lib/mission.mjs";
+import { normalizeMission, normalizeMissionMember, normalizeRows, normalizeTask } from "../lib/mission.mjs";
 
 const POST_COLUMNS = "id,community_id,mission_id,parent_id,author_id,author_name,body,kind,observed_on,fictional,imported,hidden_at,edited_at,created_at";
 const MISSION_COLUMNS = "id,community_id,organizer_id,organizer_name,title,objective,location_text,starts_at,status,origin,source_post_id,source,evidence,version,activity_at,created_at";
@@ -51,7 +51,7 @@ export function createCommunityClient({ url, publishableKey, createClient, authO
       query = missionId ? query.eq("mission_id", missionId) : query.is("mission_id", null);
       return unwrap(await query.order("created_at", { ascending: true }).order("id", { ascending: true }).limit(POST_LIMIT)).map(normalizePost);
     }),
-    listMissions: communityId => call(async () => unwrap(await client.from("missions").select(MISSION_COLUMNS).eq("community_id", communityId).order("created_at", { ascending: false }).order("id", { ascending: true }).limit(100)).map(normalizeMission)),
+    listMissions: communityId => call(async () => normalizeRows(unwrap(await client.from("missions").select(MISSION_COLUMNS).eq("community_id", communityId).order("created_at", { ascending: false }).order("id", { ascending: true }).limit(100)), normalizeMission, "mission")),
     listMissionMembers: communityId => call(async () => unwrap(await client.from("mission_members").select(MISSION_MEMBER_COLUMNS).eq("community_id", communityId).order("joined_at", { ascending: true }).order("user_id", { ascending: true }).limit(2000)).map(normalizeMissionMember)),
     listTasks: communityId => call(async () => unwrap(await client.from("mission_tasks").select(TASK_COLUMNS).eq("community_id", communityId).order("position", { ascending: true }).order("created_at", { ascending: true }).limit(1500)).map(normalizeTask)),
     // A fresh read of everything the export needs, from the database, not from the page's cached state.

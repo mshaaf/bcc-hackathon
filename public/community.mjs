@@ -4,7 +4,7 @@ import { MISSION_STATUSES, missionHash, missionProgress, newMissionHash } from "
 import { renderThreads } from "/posts.mjs";
 import { renderMissionView } from "/mission.mjs";
 import {
-  NAME_KEY, app, applyRoute, byId, captureFocus, el, emit, isSending, joinCommunity, leaveCommunity, load, onChange, plural, restoreFocus, sendDraft, store, tasksFor, textForm
+  BASE_TITLE, NAME_KEY, app, applyRoute, byId, captureFocus, el, emit, isSending, joinCommunity, leaveCommunity, load, onChange, plural, restoreFocus, sendDraft, store, tasksFor, textForm
 } from "/shell.mjs";
 
 const VIEWS = ["feed", "missions", "mission", "new", "publish"];
@@ -45,7 +45,35 @@ function render() {
     for (const view of VIEWS) byId(`view-${view}`).hidden = view !== route.view;
     if (feed) renderFeedView(); else renderMissionView(route.view);
   }
+  if (member) tagDestination();
   restoreFocus(saved);
+  if (member) moveToDestination();
+}
+
+const destinationHeading = () => (app.route.view === "feed" ? byId("community-title") : byId(`view-${app.route.view}`)?.querySelector("h1"));
+
+// A screen's heading can take focus and keeps it across live re-renders, which rebuild the nodes: the key lets restoreFocus find the new one.
+function tagDestination() {
+  const heading = destinationHeading();
+  for (const stale of byId("community").querySelectorAll('[data-focus-key="route-heading"]')) if (stale !== heading) delete stale.dataset.focusKey;
+  if (heading) { heading.tabIndex = -1; heading.dataset.focusKey = "route-heading"; }
+  if (heading?.textContent) document.title = `${heading.textContent} · ${BASE_TITLE}`;
+}
+
+// After a navigation (not a live update): move focus to the screen's heading, or to the post a link points at.
+function moveToDestination() {
+  const route = app.route;
+  const heading = destinationHeading();
+  if (!app.routeFocus) return;
+  let target = route.view === "feed" && route.postId ? byId("feed").querySelector(`[data-post-id="${CSS.escape(route.postId)}"]`) : null;
+  if (!target && route.view === "feed" && route.postId && !app.hasLoadedOnce) return; // posts have not arrived yet
+  const post = Boolean(target);
+  target ??= heading;
+  if (!target) return;
+  app.routeFocus = false;
+  target.tabIndex = -1;
+  target.focus();
+  if (post) target.scrollIntoView({ block: "center" });
 }
 
 function renderJoin() {

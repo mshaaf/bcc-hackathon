@@ -1,7 +1,7 @@
 // App shell for the shared side of Block Ops: routing, shared state, loading, live updates, drafts and the send path.
 // Views (community.mjs, mission.mjs) render from `app` and re-render on `onChange`. Everything from other people reaches the DOM through textContent.
 import { DEMO_COMMUNITY_ID, cleanBody, describeError, isUuid, newOperationId, toCommunityError } from "/lib/community.mjs";
-import { parseRoute } from "/lib/mission.mjs";
+import { describeSharedChanges, parseRoute } from "/lib/mission.mjs";
 import { clearIfUnchanged, readDrafts, writeDrafts } from "/lib/drafts.mjs";
 import { createCommunityClient } from "/community-api.mjs";
 
@@ -36,8 +36,9 @@ export const app = {
   communityId: null, userId: null, preview: null, community: null, membership: null,
   members: [], posts: [], missions: [], missionMembers: [], tasks: [], missionPosts: [], missionPostsFor: null,
   connection: "idle", loading: true, loadError: null, loadToken: 0, unsubscribe: null, hasLoadedOnce: false,
-  drafts: new Map(), pending: new Map(), errors: new Map()
+  drafts: new Map(), pending: new Map(), errors: new Map(), routeFocus: false
 };
+export const BASE_TITLE = document.title;
 
 const listeners = new Set();
 export const onChange = fn => { listeners.add(fn); };
@@ -83,7 +84,7 @@ export function applyRoute() {
   const skip = document.querySelector(".skip-link");
   skip.href = route.section === "map" ? "#panel" : "#community-main";
   skip.textContent = route.section === "map" ? "Skip to the panel" : "Skip to the community";
-  if (route.section === "map") { teardown(); return; }
+  if (route.section === "map") { teardown(); document.title = BASE_TITLE; return; }
   const wanted = route.communityId ?? defaultCommunity();
   if (wanted !== app.communityId) {
     teardown();
@@ -174,13 +175,25 @@ export function refreshSoon() {
     if (!app.api || !app.membership) return;
     const token = app.loadToken;
     const before = new Set(app.posts.map(post => post.id));
+    const beforeMission = new Set(app.missionPosts.map(post => post.id)), missionFor = app.missionPostsFor;
+    const was = { tasks: app.tasks, members: app.missionMembers, missions: app.missions };
     try {
       const shared = await fetchShared();
       if (token !== app.loadToken) return;
       const fresh = shared.posts.filter(post => !before.has(post.id) && post.authorId !== app.userId);
       Object.assign(app, shared, { loadError: null });
-      if (app.hasLoadedOnce && fresh.length) announce(`${plural(fresh.length, "new post")} in the conversation.`);
       await refreshMissionPosts(true);
+      if (app.hasLoadedOnce) {
+        const inMission = app.route.view === "mission";
+        const freshMission = inMission && app.missionPostsFor === missionFor ? app.missionPosts.filter(post => !beforeMission.has(post.id) && post.authorId !== app.userId) : [];
+        const changes = inMission ? describeSharedChanges(was, { tasks: shared.tasks, members: shared.missionMembers, missions: shared.missions }, { missionId: app.route.missionId, userId: app.userId }) : [];
+        const said = [
+          ...(fresh.length ? [`${plural(fresh.length, "new post")} in the conversation.`] : []),
+          ...(freshMission.length ? [`${plural(freshMission.length, "new post")} in this mission's discussion.`] : []),
+          ...changes.slice(0, 3), ...(changes.length > 3 ? [`${changes.length - 3} more changes.`] : [])
+        ];
+        if (said.length) announce(said.join(" "));
+      }
       emit();
     } catch (error) {
       app.loadError = describeError(error);
@@ -333,7 +346,8 @@ export function textForm({ key, label, rows = 3, submitLabel, onSubmit, onCancel
 
 // ---------- wiring ----------
 
-window.addEventListener("hashchange", applyRoute);
+// A navigation (not a live update) moves keyboard and screen-reader focus to the new screen's heading; community.mjs consumes the flag.
+window.addEventListener("hashchange", () => { app.routeFocus = true; applyRoute(); });
 window.addEventListener("online", () => { if (app.membership && app.route.section === "community") refreshSoon(); });
 document.addEventListener("visibilitychange", () => { if (!document.hidden && app.membership && app.route.section === "community") refreshSoon(); });
 // Bound staleness whatever Realtime does: every 10 s while live updates are not confirmed, every 30 s when they are.

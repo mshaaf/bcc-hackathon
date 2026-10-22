@@ -21,6 +21,7 @@ export function renderThreads(host, posts, { missionId = null, linkMissions = fa
     const actions = postActions(post, { userId: app.userId, isModerator: canModerate });
     const item = el("li", post.parentId ? "post reply" : "post");
     item.dataset.postId = post.id;
+    if (post.id === app.route.postId) { item.tabIndex = -1; item.dataset.focusKey = "post-target"; } // a link to this post focuses it; re-renders keep that focus
     if (post.kind !== "discussion") item.dataset.kind = post.kind;
     const head = el("header", "post-head");
     head.append(el("strong", "post-author", post.authorName));
